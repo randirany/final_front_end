@@ -34,6 +34,7 @@
             "categore": {
                 "dash": "Dashboard",
                 "custom": "Customers",
+                "sms": "Send SMS",
                 "audits": "audits",
                 "insucresComp": {
                     "titleInsucresComp": "Insurance Company",
@@ -47,6 +48,8 @@
                 "departments": "Departments & Users",
                 "Dealer": "Dealers",
                 "payment": "Payments and Receipts",
+                "onlinePayment": "Online Payment",
+                "emailManagement": "Email Management",
                 "report": {
                     "titleReport": "Reports",
                     "categore": {
@@ -1938,6 +1941,148 @@
         },
         "error": {
             "fetchFailed": "Failed to fetch audit logs."
+        }
+    },
+    "sms": {
+        "breadcrumb": {
+            "dashboard": "Dashboard",
+            "sms": "Send SMS"
+        },
+        "customerList": {
+            "title": "Select Recipients",
+            "searchPlaceholder": "Search customers...",
+            "selectAll": "Select All",
+            "noResults": "No customers found"
+        },
+        "compose": {
+            "title": "Compose Message",
+            "placeholder": "Type your message here...",
+            "characters": "characters",
+            "parts": "part(s)",
+            "send": "Send SMS",
+            "sending": "Sending...",
+            "recipients": "Recipients",
+            "longMessage": "Message will be sent as multiple parts"
+        },
+        "recipients": {
+            "title": "Selected Recipients",
+            "empty": "No recipients selected",
+            "clearAll": "Clear All"
+        },
+        "confirmSend": {
+            "title": "Send SMS",
+            "text": "Are you sure you want to send this message to {{count}} recipients?",
+            "confirm": "Yes, Send"
+        },
+        "success": {
+            "sent": "SMS sent successfully to {{count}} recipients"
+        },
+        "errors": {
+            "fetchCustomers": "Failed to load customers",
+            "emptyMessage": "Please enter a message",
+            "noRecipients": "Please select at least one recipient",
+            "sendFailed": "Failed to send SMS"
+        }
+    },
+    "payment": {
+        "breadcrumb": {
+            "dashboard": "Dashboard",
+            "payment": "Online Payment"
+        },
+        "form": {
+            "title": "Payment Details",
+            "subtitle": "Enter your card information securely",
+            "amount": "Payment Amount",
+            "cardNumber": "Card Number",
+            "cardName": "Cardholder Name",
+            "expiryMonth": "Month",
+            "expiryYear": "Year",
+            "cvv": "CVV",
+            "submit": "Pay Securely",
+            "processing": "Processing Payment..."
+        },
+        "validation": {
+            "cardNumberRequired": "Card number is required",
+            "cardNumberInvalid": "Card number must be 16 digits",
+            "cardNameRequired": "Cardholder name is required",
+            "cardNameMin": "Name must be at least 3 characters",
+            "expiryMonthRequired": "Expiry month is required",
+            "expiryYearRequired": "Expiry year is required",
+            "cvvRequired": "CVV is required",
+            "cvvInvalid": "CVV must be 3 or 4 digits",
+            "amountRequired": "Amount is required",
+            "amountPositive": "Amount must be positive",
+            "amountMin": "Minimum amount is 1"
+        },
+        "company": {
+            "description": "Secure online payment processing"
+        },
+        "security": {
+            "title": "Secure Payment",
+            "ssl": "256-bit SSL encryption",
+            "pci": "PCI DSS compliant",
+            "data": "Your data is never stored"
+        },
+        "cards": {
+            "title": "Accepted Cards"
+        },
+        "help": {
+            "text": "Need help? Contact our support team for assistance with your payment."
+        },
+        "success": {
+            "title": "Payment Successful!",
+            "message": "Payment processed successfully!",
+            "description": "Your payment has been processed successfully.",
+            "newPayment": "Make Another Payment"
+        },
+        "error": {
+            "processingFailed": "Payment processing failed. Please try again."
+        }
+    },
+    "email": {
+        "breadcrumb": {
+            "dashboard": "Dashboard",
+            "emails": "Email Management"
+        },
+        "tabs": {
+            "inbox": "Inbox",
+            "compose": "Compose",
+            "bulk": "Bulk Email"
+        },
+        "inbox": {
+            "searchPlaceholder": "Search emails...",
+            "noEmails": "No emails found"
+        },
+        "compose": {
+            "title": "Compose Email",
+            "to": "To",
+            "subject": "Subject",
+            "message": "Message",
+            "send": "Send Email",
+            "sending": "Sending..."
+        },
+        "bulk": {
+            "selectCustomers": "Select Recipients",
+            "searchPlaceholder": "Search customers...",
+            "selectAll": "Select All",
+            "noCustomers": "No customers with email addresses found",
+            "compose": "Compose Bulk Email",
+            "subject": "Subject",
+            "message": "Message",
+            "info": "This email will be sent to {{count}} recipients",
+            "send": "Send Bulk Email",
+            "sending": "Sending..."
+        },
+        "success": {
+            "sent": "Email sent successfully!",
+            "bulkSent": "Bulk email sent to {{count}} recipients",
+            "deleted": "Selected emails deleted"
+        },
+        "errors": {
+            "fetchCustomers": "Failed to load customers",
+            "sendFailed": "Failed to send email",
+            "bulkSendFailed": "Failed to send bulk email",
+            "noRecipients": "Please select at least one recipient"
         }
     }
 }

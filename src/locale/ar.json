@@ -34,6 +34,7 @@
             "categore": {
                 "dash": "لوحة التحكم",
                 "custom": "العملاء",
+                "sms": "إرسال SMS",
                 "audits": "التدقيق",
                 "insucresComp": {
                     "titleInsucresComp": "شركة التأمين",
@@ -47,6 +48,8 @@
                 "departments": "الإدارات والمستخدمون",
                 "Dealer": "الوكلاء",
                 "payment": "المدفوعات والمقبوضات",
+                "onlinePayment": "الدفع الإلكتروني",
+                "emailManagement": "إدارة البريد الإلكتروني",
                 "report": {
                     "titleReport": "التقارير",
                     "categore": {
@@ -1936,6 +1939,148 @@
         },
         "error": {
             "fetchFailed": "فشل في جلب سجلات التدقيق."
+        }
+    },
+    "sms": {
+        "breadcrumb": {
+            "dashboard": "لوحة التحكم",
+            "sms": "إرسال رسائل SMS"
+        },
+        "customerList": {
+            "title": "اختيار المستقبلين",
+            "searchPlaceholder": "البحث عن العملاء...",
+            "selectAll": "اختيار الكل",
+            "noResults": "لم يتم العثور على عملاء"
+        },
+        "compose": {
+            "title": "كتابة الرسالة",
+            "placeholder": "اكتب رسالتك هنا...",
+            "characters": "حرف",
+            "parts": "جزء",
+            "send": "إرسال SMS",
+            "sending": "جارٍ الإرسال...",
+            "recipients": "المستقبلين",
+            "longMessage": "ستُرسل الرسالة في أجزاء متعددة"
+        },
+        "recipients": {
+            "title": "المستقبلين المختارين",
+            "empty": "لم يتم اختيار مستقبلين",
+            "clearAll": "مسح الكل"
+        },
+        "confirmSend": {
+            "title": "إرسال SMS",
+            "text": "هل أنت متأكد من إرسال هذه الرسالة إلى {{count}} مستقبل؟",
+            "confirm": "نعم، إرسال"
+        },
+        "success": {
+            "sent": "تم إرسال SMS بنجاح إلى {{count}} مستقبل"
+        },
+        "errors": {
+            "fetchCustomers": "فشل في تحميل العملاء",
+            "emptyMessage": "يرجى إدخال رسالة",
+            "noRecipients": "يرجى اختيار مستقبل واحد على الأقل",
+            "sendFailed": "فشل في إرسال SMS"
+        }
+    },
+    "payment": {
+        "breadcrumb": {
+            "dashboard": "لوحة التحكم",
+            "payment": "الدفع الإلكتروني"
+        },
+        "form": {
+            "title": "تفاصيل الدفع",
+            "subtitle": "أدخل معلومات بطاقتك بأمان",
+            "amount": "مبلغ الدفع",
+            "cardNumber": "رقم البطاقة",
+            "cardName": "اسم حامل البطاقة",
+            "expiryMonth": "الشهر",
+            "expiryYear": "السنة",
+            "cvv": "رمز الأمان",
+            "submit": "ادفع بأمان",
+            "processing": "جارٍ معالجة الدفع..."
+        },
+        "validation": {
+            "cardNumberRequired": "رقم البطاقة مطلوب",
+            "cardNumberInvalid": "رقم البطاقة يجب أن يكون 16 رقماً",
+            "cardNameRequired": "اسم حامل البطاقة مطلوب",
+            "cardNameMin": "الاسم يجب أن يكون 3 أحرف على الأقل",
+            "expiryMonthRequired": "شهر الانتهاء مطلوب",
+            "expiryYearRequired": "سنة الانتهاء مطلوبة",
+            "cvvRequired": "رمز الأمان مطلوب",
+            "cvvInvalid": "رمز الأمان يجب أن يكون 3 أو 4 أرقام",
+            "amountRequired": "المبلغ مطلوب",
+            "amountPositive": "المبلغ يجب أن يكون موجب",
+            "amountMin": "الحد الأدنى للمبلغ هو 1"
+        },
+        "company": {
+            "description": "معالجة آمنة للدفعات الإلكترونية"
+        },
+        "security": {
+            "title": "دفع آمن",
+            "ssl": "تشفير SSL 256-بت",
+            "pci": "متوافق مع PCI DSS",
+            "data": "بياناتك لا تُحفظ أبداً"
+        },
+        "cards": {
+            "title": "البطاقات المقبولة"
+        },
+        "help": {
+            "text": "تحتاج مساعدة؟ تواصل مع فريق الدعم للمساعدة في دفعتك."
+        },
+        "success": {
+            "title": "تم الدفع بنجاح!",
+            "message": "تم معالجة الدفعة بنجاح!",
+            "description": "تم معالجة دفعتك بنجاح.",
+            "newPayment": "إجراء دفعة أخرى"
+        },
+        "error": {
+            "processingFailed": "فشل في معالجة الدفعة. يرجى المحاولة مرة أخرى."
+        }
+    },
+    "email": {
+        "breadcrumb": {
+            "dashboard": "لوحة التحكم",
+            "emails": "إدارة البريد الإلكتروني"
+        },
+        "tabs": {
+            "inbox": "صندوق الوارد",
+            "compose": "إنشاء رسالة",
+            "bulk": "رسائل جماعية"
+        },
+        "inbox": {
+            "searchPlaceholder": "البحث في الرسائل...",
+            "noEmails": "لا توجد رسائل"
+        },
+        "compose": {
+            "title": "إنشاء رسالة إلكترونية",
+            "to": "إلى",
+            "subject": "الموضوع",
+            "message": "الرسالة",
+            "send": "إرسال الرسالة",
+            "sending": "جارٍ الإرسال..."
+        },
+        "bulk": {
+            "selectCustomers": "اختيار المستقبلين",
+            "searchPlaceholder": "البحث عن العملاء...",
+            "selectAll": "اختيار الكل",
+            "noCustomers": "لم يتم العثور على عملاء لديهم عناوين بريد إلكتروني",
+            "compose": "إنشاء رسالة جماعية",
+            "subject": "الموضوع",
+            "message": "الرسالة",
+            "info": "سيتم إرسال هذه الرسالة إلى {{count}} مستقبل",
+            "send": "إرسال رسالة جماعية",
+            "sending": "جارٍ الإرسال..."
+        },
+        "success": {
+            "sent": "تم إرسال الرسالة بنجاح!",
+            "bulkSent": "تم إرسال الرسالة الجماعية إلى {{count}} مستقبل",
+            "deleted": "تم حذف الرسائل المحددة"
+        },
+        "errors": {
+            "fetchCustomers": "فشل في تحميل العملاء",
+            "sendFailed": "فشل في إرسال الرسالة",
+            "bulkSendFailed": "فشل في إرسال الرسالة الجماعية",
+            "noRecipients": "يرجى اختيار مستقبل واحد على الأقل"
         }
     }
 }

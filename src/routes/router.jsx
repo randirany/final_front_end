@@ -28,6 +28,9 @@ import SettingsPage from "../Pages/SettingsPage.jsx";
 import Agents from "../components/Agents.jsx";
 import AuditLog from '../components/AuditLog.jsx'
 import AllInsured from "../components/AllInsured.jsx";
+import SmsSend from "../components/SmsSend.jsx";
+import OnlinePayment from "../components/OnlinePayment.jsx";
+import EmailManagement from "../components/EmailManagement.jsx";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +58,15 @@ const router = createBrowserRouter([
             }, {
                 path: '/customers',
                 element: <ProtectedRouter> <Customers /></ProtectedRouter>
+            }, {
+                path: '/sms',
+                element: <ProtectedRouter> <SmsSend /></ProtectedRouter>
+            }, {
+                path: '/payment',
+                element: <ProtectedRouter> <OnlinePayment /></ProtectedRouter>
+            }, {
+                path: '/emails',
+                element: <ProtectedRouter> <EmailManagement /></ProtectedRouter>
             }, {
                 path: '/profile/:insuredId',
                 element: <ProtectedRouter> <CustomerInfo /></ProtectedRouter>

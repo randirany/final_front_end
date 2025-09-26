@@ -77,6 +77,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 </li>
                 <li>
+                  <Link to='/sms' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2 6C2 4.34315 3.34315 3 5 3H19C20.6569 3 22 4.34315 22 6V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V6ZM5 5C4.44772 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V6C20 5.44772 19.5523 5 19 5H5Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2.29289 5.29289C2.68342 4.90237 3.31658 4.90237 3.70711 5.29289L12 13.5858L20.2929 5.29289C20.6834 4.90237 21.3166 4.90237 21.7071 5.29289C22.0976 5.68342 22.0976 6.31658 21.7071 6.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L2.29289 6.70711C1.90237 6.31658 1.90237 5.68342 2.29289 5.29289Z" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.sms")}</span>
+                  </Link>
+                </li>
+                <li>
                   <div>
                     <Link aria-expanded="false" to='/InsuranceCompany' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3">
                       <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]" ><path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75C3.87665 1.75 1.75 3.87665 1.75 6.5C1.75 9.12335 3.87665 11.25 6.5 11.25C9.12335 11.25 11.25 9.12335 11.25 6.5C11.25 3.87665 9.12335 1.75 6.5 1.75ZM3.25 6.5C3.25 4.70507 4.70507 3.25 6.5 3.25C8.29493 3.25 9.75 4.70507 9.75 6.5C9.75 8.29493 8.29493 9.75 6.5 9.75C4.70507 9.75 3.25 8.29493 3.25 6.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M17.5 12.75C14.8766 12.75 12.75 14.8766 12.75 17.5C12.75 20.1234 14.8766 22.25 17.5 22.25C20.1234 22.25 22.25 20.1234 22.25 17.5C22.25 14.8766 20.1234 12.75 17.5 12.75ZM14.25 17.5C14.25 15.7051 15.7051 14.25 17.5 14.25C19.2949 14.25 20.75 15.7051 20.75 17.5C20.75 19.2949 19.2949 20.75 17.5 20.75C15.7051 20.75 14.25 19.2949 14.25 17.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.75 6.5C12.75 3.87665 14.8766 1.75 17.5 1.75C20.1234 1.75 22.25 3.87665 22.25 6.5C22.25 9.12335 20.1234 11.25 17.5 11.25C14.8766 11.25 12.75 9.12335 12.75 6.5ZM17.5 3.25C15.7051 3.25 14.25 4.70507 14.25 6.5C14.25 8.29493 15.7051 9.75 17.5 9.75C19.2949 9.75 20.75 8.29493 20.75 6.5C20.75 4.70507 19.2949 3.25 17.5 3.25Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6.5 12.75C3.87665 12.75 1.75 14.8766 1.75 17.5C1.75 20.1234 3.87665 22.25 6.5 22.25C9.12335 22.25 11.25 20.1234 11.25 17.5C11.25 14.8766 9.12335 12.75 6.5 12.75ZM3.25 17.5C3.25 15.7051 4.70507 14.25 6.5 14.25C8.29493 14.25 9.75 15.7051 9.75 17.5C9.75 19.2949 8.29493 20.75 6.5 20.75C4.70507 20.75 3.25 19.2949 3.25 17.5Z" fill="currentColor" /></svg>
@@ -154,6 +163,27 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <span>{t("sideBar.mainMenu.categore.payment")}</span>
                     </button>
                   </div>
+                </li>
+
+                <li>
+                  <Link to='/payment' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2 6C2 4.34315 3.34315 3 5 3H19C20.6569 3 22 4.34315 22 6V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V6ZM5 5C4.44772 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V6C20 5.44772 19.5523 5 19 5H5Z" fill="currentColor"/>
+                      <path d="M4 9H20V11H4V9Z" fill="currentColor"/>
+                      <path d="M6 13H10V15H6V13Z" fill="currentColor"/>
+                      <path d="M14 13H16V15H14V13Z" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.onlinePayment")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/emails' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2 6C2 4.34315 3.34315 3 5 3H19C20.6569 3 22 4.34315 22 6V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V6ZM5 5C4.44772 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V6C20 5.44772 19.5523 5 19 5H5Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2.29289 5.29289C2.68342 4.90237 3.31658 4.90237 3.70711 5.29289L12 13.5858L20.2929 5.29289C20.6834 4.90237 21.3166 4.90237 21.7071 5.29289C22.0976 5.68342 22.0976 6.31658 21.7071 6.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L2.29289 6.70711C1.90237 6.31658 1.90237 5.68342 2.29289 5.29289Z" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.emailManagement")}</span>
+                  </Link>
                 </li>
 
               </ul>
