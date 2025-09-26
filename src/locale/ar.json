@@ -106,7 +106,15 @@
         "TotalVisa": "إجمالي مدفوعات الفيزا",
         "TotalCash": "إجمالي المدفوعات النقدية",
         "TotalBank": "إجمالي التحويلات البنكية",
-        "TotalProfit": "إجمالي الربح",
+        "TotalProfit": "إجمالي المدفوعات عن طريق الشيكات",
+         "totalCar":"إجمالي المركبات",
+         "ActiveInsurancesCount":"عدد التأمينات النشطة ",
+         "ExpiredInsurancesCount":"عدد التأمينات المنتهية",
+            "accident":"إجمالي الحوادث",
+            "Agents":"اجمالي الوكلاء",
+            "returnedChecksTotal":"اجمالي الشيكات المرتجعة",
+
+          "checkPayments":"",
         "chart": {
             "title": "نظرة عامة على المدفوعات",
             "short": "فرز حسب:",
@@ -2088,5 +2096,32 @@
             "bulkSendFailed": "فشل في إرسال الرسالة الجماعية",
             "noRecipients": "يرجى اختيار مستقبل واحد على الأقل"
         }
+    },
+    "insuranceCompany": {
+    "addTitle": "إضافة شركة تأمين",
+    "fields": {
+      "name": "اسم الشركة",
+      "insuranceTypes": "أنواع التأمين",
+      "roadServices": "الخدمات على الطريق",
+      "price": "السعر",
+      "serviceName": "اسم الخدمة"
+    },
+    "type": {
+      "compulsory": "إلزامي",
+      "comprehensive": "شامل"
+    },
+    "success": {
+      "added": "تمت إضافة الشركة بنجاح"
+    },
+    "errors": {
+      "nameRequired": "اسم الشركة مطلوب",
+      "atLeastOneType": "أضف نوع تأمين واحد على الأقل",
+      "addFailed": "فشل في إضافة الشركة"
     }
+  },
+  "common": {
+    "add": "إضافة",
+    "cancel": "إلغاء",
+    "saving": "جارٍ الحفظ..."
+  }
 }

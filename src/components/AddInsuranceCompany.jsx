@@ -1,285 +1,270 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Plus, Trash2 } from "lucide-react";
 import axios from "axios";
-import { toast } from "react-toastify"; // يمكنك إبقاؤها إذا كنت تستخدمها في أماكن أخرى
-import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 
-// مكون مساعد لعرض الرسائل داخل النموذج
-const AlertMessage = ({ message, type }) => {
-    if (!message) return null;
-    const baseClasses = 'p-4 mb-4 text-sm rounded-lg text-center';
-    const typeClasses = {
-        success: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
-        error: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
-    };
-    return (
-        <div className={`${baseClasses} ${typeClasses[type] || typeClasses.error}`} role="alert">
-            <span className="font-medium">{message}</span>
-        </div>
-    );
-};
-
-
 function AddInsuranceCompany({ onClose, isOpen, onCompanyAdded }) {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const token = localStorage.getItem("token");
 
-    const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState("private_car");
-    const [apiMessage, setApiMessage] = useState({ text: '', type: '' });
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ name: "" });
+  const [insuranceTypes, setInsuranceTypes] = useState([
+    { type: "compulsory", price: "" },
+  ]);
+  const [roadServices, setRoadServices] = useState([]);
+  const [apiMessage, setApiMessage] = useState({ text: "", type: "" });
 
-    const token = localStorage.getItem('token');
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({ name: "" });
+      setInsuranceTypes([{ type: "compulsory", price: "" }]);
+      setRoadServices([]);
+      setApiMessage({ text: "", type: "" });
+    }
+  }, [isOpen]);
 
-    const [formData, setFormData] = useState({
-        name: "",
-        contact: "",
-        address: "",
-        insuranceType: "الزامي",
-    });
+  if (!isOpen) return null;
 
-    const initialRates = {
-        "تحت_24": '', 
-        "فوق_24": '',
-        "مبلغ_العرض": '',
-        "الحد_الأدنى_لـ_60_ألف": ''
-    };
+  // --- Handlers ---
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const [vehicleCategories, setVehicleCategories] = useState([
-        { key: "private_car", label: t("insuranceCompany.tabs.privateCar"), rates: { ...initialRates } },
-        { key: "commercial_car", label: t("insuranceCompany.tabs.commercialCar"), rates: { ...initialRates } },
-        { key: "motorcycle", label: t("insuranceCompany.tabs.motorcycle"), rates: { ...initialRates } }
-    ]);
-    
-    useEffect(() => {
-        if (isOpen) {
-            setFormData({ name: "", contact: "", address: "", insuranceType: "الزامي" });
-            const updatedCategories = [
-                { key: "private_car", label: t("insuranceCompany.tabs.privateCar"), rates: { ...initialRates } },
-                { key: "commercial_car", label: t("insuranceCompany.tabs.commercialCar"), rates: { ...initialRates } },
-                { key: "motorcycle", label: t("insuranceCompany.tabs.motorcycle"), rates: { ...initialRates } }
-            ];
-            setVehicleCategories(updatedCategories);
-            setActiveTab("private_car");
-            setApiMessage({ text: '', type: '' });
-        }
-    }, [isOpen, t]);
+  const handleInsuranceChange = (index, field, value) => {
+    const updated = [...insuranceTypes];
+    updated[index][field] = value;
+    setInsuranceTypes(updated);
+  };
 
+  const handleRoadServiceChange = (index, field, value) => {
+    const updated = [...roadServices];
+    updated[index][field] = value;
+    setRoadServices(updated);
+  };
 
-    useEffect(() => {
-        const handleEscape = (e) => {
-            if (e.key === 'Escape' && isOpen && !loading) {
-                onClose(false);
-            }
-        };
-        window.addEventListener('keydown', handleEscape);
-        return () => window.removeEventListener('keydown', handleEscape);
-    }, [onClose, isOpen, loading]);
+  const addInsuranceType = () => {
+    setInsuranceTypes([...insuranceTypes, { type: "compulsory", price: "" }]);
+  };
 
+  const removeInsuranceType = (index) => {
+    setInsuranceTypes(insuranceTypes.filter((_, i) => i !== index));
+  };
 
-    if (!isOpen) {
-        return null;
+  const addRoadService = () => {
+    setRoadServices([...roadServices, { name: "", price: "" }]);
+  };
+
+  const removeRoadService = (index) => {
+    setRoadServices(roadServices.filter((_, i) => i !== index));
+  };
+
+  // --- Submit ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) {
+      setApiMessage({ text: t("insuranceCompany.errors.nameRequired"), type: "error" });
+      return;
     }
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    if (insuranceTypes.length === 0) {
+      setApiMessage({ text: t("insuranceCompany.errors.atLeastOneType"), type: "error" });
+      return;
+    }
 
-    const handleRateChange = (categoryKey, field, value) => {
-        const numValue = value === "" ? "" : Number(value);
-        setVehicleCategories((prevCategories) =>
-            prevCategories.map((category) =>
-                category.key === categoryKey
-                    ? { ...category, rates: { ...category.rates, [field]: numValue } }
-                    : category
-            )
-        );
-    };
+    try {
+      setLoading(true);
 
-    const rateFieldsConfig = [
-        { field: "تحت_24", label: t("insuranceCompany.rates.under24") },
-        { field: "فوق_24", label: t("insuranceCompany.rates.over24") },
-        { field: "مبلغ_العرض", label: t("insuranceCompany.rates.offerAmount") },
-        { field: "الحد_الأدنى_لـ_60_ألف", label: t("insuranceCompany.rates.minFor60k") },
-    ];
+      const payload = {
+        name: formData.name,
+        insuranceTypes: insuranceTypes.map((it) => ({
+          type: it.type,
+          price: Number(it.price),
+        })),
+        roadServices: roadServices.map((rs) => ({
+          name: rs.name,
+          price: Number(rs.price),
+        })),
+      };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setApiMessage({ text: '', type: '' });
+      await axios.post(
+        "http://localhost:3002/api/v1/company/addInsuranceCompany",
+        payload,
+        { headers: { token: `islam__${token}` } }
+      );
 
-        // --- Start of Form Validation ---
-        if (!formData.name.trim()) {
-            setApiMessage({ text: t("validation.companyNameRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.contact.trim()) {
-            setApiMessage({ text: t("validation.contactRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.address.trim()) {
-            setApiMessage({ text: t("validation.addressRequired"), type: 'error' });
-            return;
-        }
-        
-        if (formData.insuranceType !== "الزامي") {
-            for (const category of vehicleCategories) {
-                for (const rateField of rateFieldsConfig) {
-                    const rateValue = category.rates[rateField.field];
-                    if (isNaN(Number(rateValue)) || Number(rateValue) <= 0) {
-                        const errorMessage = `${category.label} - ${rateField.label}: ${t("validation.rateRequiredStrictlyPositive")}`;
-                        setApiMessage({ text: errorMessage, type: 'error' });
-                        return; 
-                    }
-                }
-            }
-        }
-        // --- End of Form Validation ---
+      setApiMessage({ text: t("insuranceCompany.success.added"), type: "success" });
+      setTimeout(() => {
+        if (onCompanyAdded) onCompanyAdded();
+        onClose(true);
+      }, 1500);
+    } catch (error) {
+      setApiMessage({ text: t("insuranceCompany.errors.addFailed"), type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setLoading(true);
-        try {
-            const ratesPayload = {};
-            if (formData.insuranceType !== "الزامي") {
-                vehicleCategories.forEach((category) => {
-                    ratesPayload[category.key] = {};
-                    Object.keys(category.rates).forEach(rateKey => {
-                        ratesPayload[category.key][rateKey] = Number(category.rates[rateKey]);
-                    });
-                });
-            }
-
-            const dataToSend = {
-                name: formData.name,
-                insuranceType: formData.insuranceType,
-                contact: formData.contact,
-                address: formData.address,
-                ...(formData.insuranceType !== "الزامي" && { rates: ratesPayload }),
-            };
-
-            const response = await axios.post("http://localhost:3002/api/v1/company/addInsuranceCompany", dataToSend, {
-                headers: { token: `islam__${token}` }
-            });
-
-
-            setApiMessage({
-                text:  t("insuranceCompany.addSuccess"),
-                type: 'success'
-            });
-            
-            setTimeout(() => {
-                if (onCompanyAdded) onCompanyAdded();
-                onClose(true);
-            }, 1500);
-
-        } catch (error) {
-            const apiErrorMessage =  t("insuranceCompany.addErrorGeneric");
-            setApiMessage({ text: apiErrorMessage, type: 'error' });
-        } finally {
-            // سنوقف التحميل مباشرة بعد الاستجابة، سواء كانت ناجحة أو فاشلة
-            // ستبقى الرسالة ظاهرة في حالة النجاح بفضل المؤقت الزمني
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 backdrop-blur-sm" onClick={() => !loading && onClose(false)}>
-            <div className="w-full max-w-2xl bg-white rounded-lg shadow-xl p-6 dark:bg-navbarBack h-auto max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-                <div className="flex items-center justify-between pb-3 border-b dark:border-gray-700 mb-4 sticky top-0 bg-white dark:bg-navbarBack z-10">
-                    <h2 className="text-xl font-semibold dark:text-white">
-                        {t("insuranceCompany.addTitle")}
-                    </h2>
-                    <button type="button" onClick={() => onClose(false)} className="p-1.5 rounded-full text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700" disabled={loading}>
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
-                <form className="flex-grow overflow-y-auto hide-scrollbar space-y-4 pr-1" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor="companyName" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t("insuranceCompany.form.companyName")} <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text" id="companyName" name="name" value={formData.name} onChange={handleInputChange} placeholder={t("insuranceCompany.form.companyNamePlaceholder")}
-                                className="mt-1 w-full p-2.5 border border-gray-300 dark:!border-none dark:bg-gray-700 dark:text-white rounded-md shadow-sm"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="insuranceType" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t("insuranceCompany.form.insuranceType")} <span className="text-red-500">*</span>
-                            </label>
-                            <select id="insuranceType" name="insuranceType" value={formData.insuranceType} onChange={handleInputChange}
-                                className="mt-1 w-full p-2.5 border border-gray-300 dark:!border-none dark:bg-gray-700 dark:text-white rounded-md shadow-sm"
-                            >
-                                <option value="الزامي">{t("insuranceCompany.types.mandatory")}</option>
-                                <option value="ثالث شامل">{t("insuranceCompany.types.comprehensive")}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="contactNumber" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t("insuranceCompany.form.contact")} <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text" id="contactNumber" name="contact" value={formData.contact} onChange={handleInputChange} placeholder={t("insuranceCompany.form.contactPlaceholder")}
-                                className="mt-1 w-full p-2.5 border border-gray-300 dark:!border-none dark:bg-gray-700 dark:text-white rounded-md shadow-sm"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="address" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t("insuranceCompany.form.address")} <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} placeholder={t("insuranceCompany.form.addressPlaceholder")}
-                                className="mt-1 w-full p-2.5 border border-gray-300 dark:!border-none dark:bg-gray-700 dark:text-white rounded-md shadow-sm"
-                            />
-                        </div>
-                    </div>
-
-                    {formData.insuranceType !== "الزامي" && (
-                        <div className="mt-6 border-t dark:border-gray-700 pt-6">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-                                {t("insuranceCompany.ratesTitle")}
-                            </h3>
-                            <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
-                                {vehicleCategories.map((category) => (
-                                    <button key={category.key} type="button" onClick={() => setActiveTab(category.key)}
-                                        className={`px-4 py-2 text-sm font-medium focus:outline-none -mb-px ${activeTab === category.key ? "border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400" : "border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"}`}
-                                    >
-                                        {category.label}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                                {rateFieldsConfig.map(({ field, label }) => (
-                                    <div key={field}>
-                                        <label htmlFor={`${activeTab}_${field}`} className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">{label} <span className="text-red-500">*</span></label>
-                                        <input
-                                            type="number" id={`${activeTab}_${field}`} min="0" value={vehicleCategories.find(cat => cat.key === activeTab)?.rates[field] ?? ""}
-                                            onChange={(e) => handleRateChange(activeTab, field, e.target.value)}
-                                            className="mt-1 w-full p-2.5 border border-gray-300 dark:!border-none dark:bg-gray-700 dark:text-white rounded-md shadow-sm"
-                                            placeholder={t("insuranceCompany.form.ratePlaceholder", { label })}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    
-                    <div className="pt-4">
-                        <AlertMessage message={apiMessage.text} type={apiMessage.type} />
-                    </div>
-
-                    <div className="flex justify-end pt-2 sticky bottom-0 bg-white dark:bg-navbarBack z-10">
-                        <button type="button" onClick={() => onClose(false)} disabled={loading} className="px-4 py-2 mr-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 disabled:opacity-50">
-                            {t("common.cancel")}
-                        </button>
-                        <button type="submit" disabled={loading} className={`px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 w-36 flex justify-center items-center ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}>
-                            {loading ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> : t("insuranceCompany.addButton")}
-                        </button>
-                    </div>
-                </form>
-            </div>
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 backdrop-blur-sm"
+      onClick={() => !loading && onClose(false)}
+    >
+      <div
+        className="w-full max-w-2xl bg-white dark:bg-navbarBack rounded-lg shadow-xl p-6 h-auto max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700 mb-4">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            {t("insuranceCompany.addTitle")}
+          </h2>
+          <button
+            type="button"
+            onClick={() => onClose(false)}
+            className="p-1.5 rounded-full text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
+            disabled={loading}
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-    );
+
+        {/* Form */}
+        <form className="space-y-4 overflow-y-auto" onSubmit={handleSubmit}>
+          {/* Company Name */}
+          <div>
+            <label className="block mb-1 text-gray-700 dark:text-gray-200">
+              {t("insuranceCompany.fields.name")} *
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            />
+          </div>
+
+          {/* Insurance Types */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                {t("insuranceCompany.fields.insuranceTypes")}
+              </h3>
+              <button
+                type="button"
+                onClick={addInsuranceType}
+                className="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400"
+              >
+                <Plus size={16} /> {t("common.add")}
+              </button>
+            </div>
+            {insuranceTypes.map((ins, i) => (
+              <div key={i} className="flex gap-2 mb-2">
+                <select
+                  value={ins.type}
+                  onChange={(e) => handleInsuranceChange(i, "type", e.target.value)}
+                  className="p-2 border rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                >
+                  <option value="compulsory">{t("insuranceCompany.type.compulsory")}</option>
+                  <option value="comprehensive">{t("insuranceCompany.type.comprehensive")}</option>
+                </select>
+                <input
+                  type="number"
+                  placeholder={t("insuranceCompany.fields.price")}
+                  value={ins.price}
+                  onChange={(e) => handleInsuranceChange(i, "price", e.target.value)}
+                  className="p-2 border rounded-md flex-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeInsuranceType(i)}
+                  className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Road Services */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                {t("insuranceCompany.fields.roadServices")}
+              </h3>
+              <button
+                type="button"
+                onClick={addRoadService}
+                className="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400"
+              >
+                <Plus size={16} /> {t("common.add")}
+              </button>
+            </div>
+            {roadServices.map((rs, i) => (
+              <div key={i} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder={t("insuranceCompany.fields.serviceName")}
+                  value={rs.name}
+                  onChange={(e) => handleRoadServiceChange(i, "name", e.target.value)}
+                  className="p-2 border rounded-md flex-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+                <input
+                  type="number"
+                  placeholder={t("insuranceCompany.fields.price")}
+                  value={rs.price}
+                  onChange={(e) => handleRoadServiceChange(i, "price", e.target.value)}
+                  className="p-2 border rounded-md w-32 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeRoadService(i)}
+                  className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* API message */}
+          {apiMessage.text && (
+            <div
+              className={`p-2 text-sm rounded ${
+                apiMessage.type === "success"
+                  ? "bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200"
+                  : "bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200"
+              }`}
+            >
+              {apiMessage.text}
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => onClose(false)}
+              disabled={loading}
+              className="px-4 py-2 bg-gray-100 text-gray-900 rounded-md dark:bg-gray-700 dark:text-gray-100"
+            >
+              {t("common.cancel")}
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-500"
+            >
+              {loading ? t("common.saving") : t("common.add")}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default AddInsuranceCompany;
+

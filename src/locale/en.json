@@ -107,6 +107,13 @@
         "TotalCash": "Total cash Payment",
         "TotalBank": "Total Bank Transferes",
         "TotalProfit": "Total Profit",
+        "checkPayments":"Total check",
+        "totalCar":"Total Car",
+        "ActiveInsurancesCount":"Total active Insurances",
+        "ExpiredInsurancesCount":"Total Expired Insurances",
+        "accident":"Total accident",
+         "Agents":"total Agents",
+             "returnedChecksTotal":"Total returned Checks",
         "chart": {
             "title": "Payments Overview",
             "short": "Short by:",
@@ -2090,5 +2097,34 @@
             "bulkSendFailed": "Failed to send bulk email",
             "noRecipients": "Please select at least one recipient"
         }
+        
+    },
+      "insuranceCompany": {
+    "addTitle": "Add Insurance Company",
+    "fields": {
+      "name": "Company Name",
+      "insuranceTypes": "Insurance Types",
+      "roadServices": "Road Services",
+      "price": "Price",
+      "serviceName": "Service Name"
+    },
+    "type": {
+      "compulsory": "Compulsory",
+      "comprehensive": "Comprehensive"
+    },
+    "success": {
+      "added": "Company added successfully"
+    },
+    "errors": {
+      "nameRequired": "Company name is required",
+      "atLeastOneType": "Add at least one insurance type",
+      "addFailed": "Failed to add company"
     }
+  },
+  "common": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "saving": "Saving..."
+  }
+    
 }
