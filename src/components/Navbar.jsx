@@ -1,4 +1,4 @@
-/*import { useContext, useState, useEffect, useCallback, useMemo } from 'react'; 
+/*import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { UserContext } from '../context/User';
 import avater from '../assets/Avatar.png';
 import { useTranslation } from 'react-i18next';
@@ -208,13 +208,14 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
     if (hours < 24) return t('time.hoursAgo', '{{count}}h ago', { count: hours });
     return t('time.daysAgo', '{{count}}d ago', { count: days });
   };*/
-import { useContext, useState, useEffect } from 'react'; 
+import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { UserContext } from '../context/User';
 import avater from '../assets/Avatar.png';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeProvider';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = 'http://localhost:3002/api/v1';
 const SOCKET_URL = 'http://localhost:3002';
@@ -223,14 +224,22 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
   const { logout, UserData } = useContext(UserContext);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const { t, i18n } = useTranslation(); 
+  const { t, i18n } = useTranslation();
   const { language } = i18n;
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const navigate = useNavigate();
 
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [notificationError, setNotificationError] = useState(null);
+
+  // Customer search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
     console.log("[useEffect] UserData:", UserData);
@@ -422,6 +431,99 @@ const formatTimeAgo = (dateString) => {
   return t('time.daysAgo', { count: days });
 };
 
+// Fetch customers for search
+const fetchCustomers = useCallback(async () => {
+  try {
+    const rawToken = localStorage.getItem("token");
+    if (!rawToken) return;
+
+    const token = `islam__${rawToken}`;
+    const response = await axios.get(`${API_BASE_URL}/insured/allInsured`, {
+      headers: { token }
+    });
+
+    const formattedCustomers = response.data.insuredList.map(item => ({
+      id: item._id,
+      name: `${item.first_name || ''} ${item.last_name || ''}`.trim(),
+      email: item.email,
+      mobile: item.phone_number,
+      idNumber: item.id_number,
+      city: item.city,
+      agentsName: item.agentsName
+    }));
+
+    setCustomers(formattedCustomers);
+  } catch (error) {
+    console.error('Error fetching customers for search:', error);
+  }
+}, []);
+
+// Load customers on component mount
+useEffect(() => {
+  fetchCustomers();
+}, [fetchCustomers]);
+
+// Debounced search function
+const debouncedSearch = useCallback(
+  useMemo(() => {
+    let timeoutId;
+    return (query) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (query.trim().length > 0) {
+          const filtered = customers.filter(customer =>
+            customer.name.toLowerCase().includes(query.toLowerCase()) ||
+            customer.email?.toLowerCase().includes(query.toLowerCase()) ||
+            customer.mobile?.includes(query) ||
+            customer.idNumber?.includes(query)
+          ).slice(0, 8); // Limit to 8 results
+          setSearchResults(filtered);
+        } else {
+          setSearchResults([]);
+        }
+        setSearchLoading(false);
+      }, 300);
+    };
+  }, [customers]),
+  [customers]
+);
+
+// Handle search input change
+const handleSearchChange = (e) => {
+  const query = e.target.value;
+  setSearchQuery(query);
+  setSearchDropdownOpen(true);
+
+  if (query.trim().length > 0) {
+    setSearchLoading(true);
+    debouncedSearch(query);
+  } else {
+    setSearchResults([]);
+    setSearchDropdownOpen(false);
+    setSearchLoading(false);
+  }
+};
+
+// Handle customer selection
+const handleCustomerSelect = (customer) => {
+  setSearchQuery('');
+  setSearchResults([]);
+  setSearchDropdownOpen(false);
+  navigate(`/profile/${customer.id}`);
+};
+
+// Close search dropdown when clicking outside
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.customer-search-container')) {
+      setSearchDropdownOpen(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, []);
+
 
 
   
@@ -445,6 +547,87 @@ const formatTimeAgo = (dateString) => {
             >
               <svg width="25" height="24" viewBox="0 0 25 24" fill="currentColor"><path d="M3.5625 6C3.5625 5.58579 3.89829 5.25 4.3125 5.25H20.3125C20.7267 5.25 21.0625 5.58579 21.0625 6C21.0625 6.41421 20.7267 6.75 20.3125 6.75L4.3125 6.75C3.89829 6.75 3.5625 6.41422 3.5625 6Z"></path><path d="M3.5625 18C3.5625 17.5858 3.89829 17.25 4.3125 17.25L20.3125 17.25C20.7267 17.25 21.0625 17.5858 21.0625 18C21.0625 18.4142 20.7267 18.75 20.3125 18.75L4.3125 18.75C3.89829 18.75 3.5625 18.4142 3.5625 18Z"></path><path d="M4.3125 11.25C3.89829 11.25 3.5625 11.5858 3.5625 12C3.5625 12.4142 3.89829 12.75 4.3125 12.75L20.3125 12.75C20.7267 12.75 21.0625 12.4142 21.0625 12C21.0625 11.5858 20.7267 11.25 20.3125 11.25L4.3125 11.25Z"></path></svg>
             </button>
+
+            {/* Customer Search Input */}
+            <div className="customer-search-container relative hidden md:block mx-4 flex-1 max-w-md">
+              <div className="relative">
+                <svg
+                  className={`absolute top-3 w-4 h-4 text-gray-400 dark:text-gray-500 ${language === 'ar' ? 'right-3' : 'left-3'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder={t('nav.search.placeholder', 'Search customers...')}
+                  className={`w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${language === 'ar' ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
+                  onFocus={() => searchQuery && setSearchDropdownOpen(true)}
+                />
+                {searchLoading && (
+                  <div className={`absolute top-3 w-4 h-4 ${language === 'ar' ? 'left-3' : 'right-3'}`}>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                  </div>
+                )}
+              </div>
+
+              {/* Search Results Dropdown */}
+              {searchDropdownOpen && (searchResults.length > 0 || searchLoading) && (
+                <div className={`absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-h-80 overflow-y-auto ${searchDropdownOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}>
+                  {searchLoading ? (
+                    <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                      {t('nav.search.searching', 'Searching...')}
+                    </div>
+                  ) : searchResults.length > 0 ? (
+                    <div className="py-2">
+                      <div className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-100 dark:border-gray-700">
+                        {t('nav.search.results', 'Search Results')}
+                      </div>
+                      {searchResults.map((customer) => (
+                        <button
+                          key={customer.id}
+                          onClick={() => handleCustomerSelect(customer)}
+                          className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 focus:bg-gray-50 dark:focus:bg-gray-700 focus:outline-none transition-colors duration-150"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="min-w-0 flex-1">
+                              <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                {customer.name}
+                              </div>
+                              <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                {customer.email && (
+                                  <span className="mr-2">{customer.email}</span>
+                                )}
+                                {customer.mobile && (
+                                  <span className="text-blue-600 dark:text-blue-400">{customer.mobile}</span>
+                                )}
+                              </div>
+                              {customer.city && (
+                                <div className="text-xs text-gray-400 dark:text-gray-500">
+                                  {customer.city}
+                                </div>
+                              )}
+                            </div>
+                            <div className="ml-2 flex-shrink-0">
+                              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={language === 'ar' ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+                              </svg>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                      {t('nav.search.noResults', 'No customers found')}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className=''>

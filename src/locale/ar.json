@@ -14,6 +14,12 @@
         "secondTitle": "لوحة تحكم AB",
         "Search": "بحث",
         "toggleLanguage": " تغيير اللغة",
+        "search": {
+            "placeholder": "البحث عن العملاء...",
+            "searching": "جارٍ البحث...",
+            "results": "نتائج البحث",
+            "noResults": "لم يتم العثور على عملاء"
+        },
         "dropdown": {
             "title": "الإشعارات",
             "number": "جديد",

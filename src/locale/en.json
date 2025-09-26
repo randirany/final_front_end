@@ -14,6 +14,12 @@
         "secondTitle": "AB Dashboard",
         "toggleLanguage": "Change Language",
         "Search": "Search",
+        "search": {
+            "placeholder": "Search customers...",
+            "searching": "Searching...",
+            "results": "Search Results",
+            "noResults": "No customers found"
+        },
         "dropdown": {
             "title": "Notifications",
             "number": "new",
