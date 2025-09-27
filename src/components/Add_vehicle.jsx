@@ -2,8 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
+
+const MySwal = withReactContent(Swal);
 const AlertMessage = ({ message, type }) => {
     if (!message) return null;
     const baseClasses = 'p-4 mb-4 text-sm rounded-lg text-center';

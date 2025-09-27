@@ -18,7 +18,8 @@
             "placeholder": "البحث عن العملاء...",
             "searching": "جارٍ البحث...",
             "results": "نتائج البحث",
-            "noResults": "لم يتم العثور على عملاء"
+            "noResults": "لم يتم العثور على عملاء",
+            "plateNumbers": "المركبات"
         },
         "dropdown": {
             "title": "الإشعارات",
@@ -125,7 +126,14 @@
             "ReceivedAmount": "المبلغ المستلم",
             "DueAmount": "المبلغ المستحق",
             "customersGrowth":"نظرة عامة عن الزبائن"
-        }
+        },
+        "loading": "جاري تحميل بيانات لوحة التحكم...",
+        "error": "خطأ",
+        "dataLoadError": "فشل في تحميل بعض البيانات. هل تود المحاولة مرة أخرى؟",
+        "retry": "إعادة المحاولة",
+        "continue": "المتابعة",
+        "partialDataWarning": "لم يتمكن من تحميل بعض البيانات.",
+        "refresh": "تحديث الصفحة"
     },
     "accountSettings": {
         "breadcrumbTitle": "إعدادات الحساب",
@@ -313,6 +321,14 @@
                 }
             }
         },
+        "addVehicle": {
+            "title": "إضافة مركبة؟",
+            "text": "هل تريد إضافة مركبة جديدة لهذا العميل؟"
+        },
+        "addInsurance": {
+            "title": "إضافة تأمين؟",
+            "text": "هل تريد إضافة تأمين لهذه المركبة؟"
+        },
         "validation": {
             "firstName": "الاسم الأول مطلوب",
             "lastName": "اسم العائلة مطلوب",
@@ -398,6 +414,17 @@
     "Save": "حفظ",
     "Saving...": "حفظ...",
     "Add Agent": "إضافة وكيل",
+    "login": {
+        "title": "تسجيل الدخول",
+        "subtitle": "باستخدام البريد الإلكتروني",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "emailPlaceholder": "أدخل بريدك الإلكتروني",
+        "passwordPlaceholder": "أدخل كلمة المرور",
+        "rememberMe": "تذكرني",
+        "forgotPassword": "نسيت كلمة المرور؟",
+        "loginButton": "تسجيل الدخول"
+    },
     "common": {
         "saveChanges": "حفظ",
         "exportExcel": "Excel",
@@ -408,6 +435,11 @@
         "edit": "تعديل",
         "delete": "حذف",
         "view": "عرض",
+        "errorOccurred": "حدث خطأ ما",
+        "errorDescription": "حدث خطأ غير متوقع. يرجى تحديث الصفحة.",
+        "refreshPage": "تحديث الصفحة",
+        "goBack": "العودة",
+        "persistentError": "إذا استمر هذا الخطأ، يرجى الاتصال بالدعم الفني.",
         "download": "تحميل",
         "print": "طباعة",
         "remove": "إزالة",
@@ -2244,7 +2276,12 @@
       "bankNameRequired": "اسم البنك مطلوب",
       "statusRequired": "الحالة مطلوبة",
       "imageRequired": "صورة الشيك مطلوبة"
-    }
+    },
+    "customersFetchError": "تعذر تحميل العملاء. سيتم استخدام بيانات تجريبية بدلاً من ذلك.",
+    "saveError": "فشل في حفظ الشيك. يرجى المحاولة مرة أخرى.",
+    "continue": "المتابعة بالبيانات التجريبية",
+    "retry": "إعادة المحاولة",
+    "tryAgain": "حاول مرة أخرى"
   },
   "documentSettings": {
     "title": "إعدادات المستندات",

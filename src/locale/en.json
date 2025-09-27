@@ -18,7 +18,8 @@
             "placeholder": "Search customers...",
             "searching": "Searching...",
             "results": "Search Results",
-            "noResults": "No customers found"
+            "noResults": "No customers found",
+            "plateNumbers": "Vehicles"
         },
         "dropdown": {
             "title": "Notifications",
@@ -124,7 +125,14 @@
             "ReceivedAmount": "Received Amount",
             "DueAmount": "Due Amount",
              "customersGrowth":"customer Overview"
-        }
+        },
+        "loading": "Loading dashboard data...",
+        "error": "Error",
+        "dataLoadError": "Failed to load some dashboard data. Would you like to retry?",
+        "retry": "Retry",
+        "continue": "Continue",
+        "partialDataWarning": "Some data couldn't be loaded.",
+        "refresh": "Refresh page"
     },
     "accountSettings": {
         "breadcrumbTitle": "Account Settings",
@@ -289,6 +297,14 @@
                 }
             }
         },
+        "addVehicle": {
+            "title": "Add Vehicle?",
+            "text": "Do you want to add a new vehicle for this customer?"
+        },
+        "addInsurance": {
+            "title": "Add Insurance?",
+            "text": "Do you want to add insurance for this vehicle?"
+        },
         "validation": {
             "firstName": "First name is required",
             "lastName": "Last name is required",
@@ -376,6 +392,17 @@
         "insuranceList": "Insurance List",
         "checkDetails": "Check Details"
     },
+    "login": {
+        "title": "Login",
+        "subtitle": "Using email address",
+        "email": "Email",
+        "password": "Password",
+        "emailPlaceholder": "Enter your email address",
+        "passwordPlaceholder": "Enter your password",
+        "rememberMe": "Remember me",
+        "forgotPassword": "Forgot password?",
+        "loginButton": "Login"
+    },
     "common": {
         "saveChanges": "save",
         "exportExcel": "Excel",
@@ -387,6 +414,11 @@
         "edit": "Edit",
         "delete": "Delete",
         "view": "View",
+        "errorOccurred": "Something went wrong",
+        "errorDescription": "An unexpected error occurred. Please try refreshing the page.",
+        "refreshPage": "Refresh Page",
+        "goBack": "Go Back",
+        "persistentError": "If this error persists, please contact support.",
         "download": "Download",
         "print": "Print",
         "remove": "Remove",
@@ -2246,7 +2278,12 @@
       "bankNameRequired": "Bank name is required",
       "statusRequired": "Status is required",
       "imageRequired": "Cheque image is required"
-    }
+    },
+    "customersFetchError": "Unable to load customers. Using sample data instead.",
+    "saveError": "Failed to save cheque. Please try again.",
+    "continue": "Continue with Sample Data",
+    "retry": "Retry Loading",
+    "tryAgain": "Try Again"
   },
   "documentSettings": {
     "title": "Document Settings",

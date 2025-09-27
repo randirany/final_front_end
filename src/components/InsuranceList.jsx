@@ -292,7 +292,14 @@ function InsuranceList() {
                                 </thead>
                                 <tbody>
                                     {loadingInsurances && visibleInsurances.length === 0 ? (
-                                        <tr> <td colSpan={tableColumns.length} className="text-center py-10"> <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"> <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div> {t('common.loading', 'Loading...')} </div> </td> </tr>
+                                        <tr>
+                                            <td colSpan={tableColumns.length} className="text-center py-10">
+                                                <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                                                    {t('common.loading', 'Loading...')}
+                                                </div>
+                                            </td>
+                                        </tr>
                                     ) : visibleInsurances.length > 0 ? (
                                         visibleInsurances.map((insurance) => (
                                             <tr key={insurance.id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150">
@@ -305,16 +312,43 @@ function InsuranceList() {
                                                 <td className="px-4 py-3 whitespace-nowrap">{insurance.paymentMethod}</td>
                                                 <td className="px-4 py-3 whitespace-nowrap">{insurance.insuranceCompany}</td>
                                                 <td className={`px-4 py-3 ${language === 'ar' ? 'text-left' : 'text-right'}`}>
-                                                    <IconButton aria-label={t('common.actions', "Actions")} size="small" onClick={(event) => handleMenuOpen(event, insurance.id)} className="dark:text-gray-400" > <MoreVertIcon fontSize="small" /> </IconButton>
-                                                    <Menu anchorEl={anchorEls[insurance.id]} open={Boolean(anchorEls[insurance.id])} onClose={() => handleMenuClose(insurance.id)} anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }} >
-                                                        <MenuItem onClick={() => handleDeleteInsurance(insurance.id)} className="dark:hover:bg-gray-700 text-red-600 dark:text-red-400"> <DeleteIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} /> {t('common.delete', 'Delete')} </MenuItem>
-                                                        {insurance.paymentMethod === 'check' && (<> <MenuItem onClick={() => navigate(`/check/${insuredId}/${vehicleId}/${insurance.id}`)} className="dark:hover:bg-gray-700"> <ReceiptLongIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} />{t('insuranceList.menuActions.viewCheckDetails', 'Check Details')} </MenuItem> <MenuItem onClick={() => handleOpenAddCheckModal(insurance.id)} className="dark:hover:bg-gray-700"> <AddCardIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} /> {t('insuranceList.menuActions.addCheck', 'Add Check')} </MenuItem> </>)}
+                                                    <IconButton aria-label={t('common.actions', "Actions")} size="small" onClick={(event) => handleMenuOpen(event, insurance.id)} className="dark:text-gray-400">
+                                                        <MoreVertIcon fontSize="small" />
+                                                    </IconButton>
+                                                    <Menu
+                                                        anchorEl={anchorEls[insurance.id]}
+                                                        open={Boolean(anchorEls[insurance.id])}
+                                                        onClose={() => handleMenuClose(insurance.id)}
+                                                        anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }}
+                                                        transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }}
+                                                        MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }}
+                                                    >
+                                                        <MenuItem onClick={() => handleDeleteInsurance(insurance.id)} className="dark:hover:bg-gray-700 text-red-600 dark:text-red-400">
+                                                            <DeleteIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} />
+                                                            {t('common.delete', 'Delete')}
+                                                        </MenuItem>
+                                                        {insurance.paymentMethod === 'check' && (
+                                                            <>
+                                                                <MenuItem onClick={() => navigate(`/check/${insuredId}/${vehicleId}/${insurance.id}`)} className="dark:hover:bg-gray-700">
+                                                                    <ReceiptLongIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} />
+                                                                    {t('insuranceList.menuActions.viewCheckDetails', 'Check Details')}
+                                                                </MenuItem>
+                                                                <MenuItem onClick={() => handleOpenAddCheckModal(insurance.id)} className="dark:hover:bg-gray-700">
+                                                                    <AddCardIcon fontSize="small" sx={{ mr: language === 'ar' ? 0 : 1, ml: language === 'ar' ? 1 : 0 }} />
+                                                                    {t('insuranceList.menuActions.addCheck', 'Add Check')}
+                                                                </MenuItem>
+                                                            </>
+                                                        )}
                                                     </Menu>
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
-                                        <tr> <td colSpan={tableColumns.length} className="text-center py-10 text-gray-500 dark:text-gray-400"> {searchText ? t('common.noSearchResults', 'No results found for your search.') : t('insuranceList.table.noInsurancesFound', 'No insurance records found for this vehicle.')} </td> </tr>
+                                        <tr>
+                                            <td colSpan={tableColumns.length} className="text-center py-10 text-gray-500 dark:text-gray-400">
+                                                {searchText ? t('common.noSearchResults', 'No results found for your search.') : t('insuranceList.table.noInsurancesFound', 'No insurance records found for this vehicle.')}
+                                            </td>
+                                        </tr>
                                     )}
                                 </tbody>
                             </table>

@@ -141,7 +141,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRouter><HolyLandRep /></ProtectedRouter>
             }, {
                 path: '/insured/:insuredId/:vehicleId',
-                element: <InsuranceList />
+                element: <ProtectedRouter><InsuranceList /></ProtectedRouter>
             }, {
                 path: '/check/:insuredId/:vehicleId/:insuranceId',
                 element: <CheckDetails />

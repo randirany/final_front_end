@@ -2,13 +2,19 @@ import axios from "axios"
 import { useNavigate, useParams } from "react-router-dom"
 import { useFormik } from "formik"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
 import { Bounce, toast, ToastContainer } from "react-toastify"
+
+const MySwal = withReactContent(Swal)
 function AddVehicle() {
-    const { id } = useParams() 
+    const { id } = useParams()
     const [loading, setLoading] = useState(false)
     const [imagePreview, setImagePreview] = useState(null)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     
     const formik = useFormik({
@@ -81,11 +87,28 @@ function AddVehicle() {
                     transition: Bounce,
                 })
 
-                setTimeout(() => {
-               //     navigate(`/Insurances`)
-                                navigate(`/profile/${insuredId}`, { state: { insuredId} });
+                const vehicleId = response.data.savedVehicle?._id || response.data.vehicle?._id
 
-                }, 2000)
+                // Show insurance confirmation dialog
+                const addInsurance = await MySwal.fire({
+                    title: t("customers.addInsurance.title", "Add Insurance?"),
+                    text: t("customers.addInsurance.text", "Do you want to add insurance for this vehicle?"),
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: t("common.yes", "Yes"),
+                    cancelButtonText: t("common.no", "No"),
+                    reverseButtons: true,
+                })
+
+                if (addInsurance.isConfirmed && vehicleId) {
+                    // Navigate to insurance form
+                    navigate(`/insured/${id}/${vehicleId}`)
+                } else {
+                    // Navigate to customer profile
+                    setTimeout(() => {
+                        navigate(`/profile/${id}`, { state: { insuredId: id } })
+                    }, 2000)
+                }
             } catch (error) {
 
                 if (error.response?.data?.message?.errors) {
