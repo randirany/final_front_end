@@ -3,6 +3,11 @@
         "ar": "AR",
         "en": "EN"
     },
+    "errors": {
+        "unknown": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+        "network": "خطأ في الشبكة. يرجى التحقق من الاتصال والمحاولة مرة أخرى.",
+        "notFound": "المورد المطلوب غير موجود."
+    },
       "time": {
     "now": "الآن",
     "minutesAgo": "منذ {{count}} دقيقة",
@@ -207,7 +212,8 @@
             "customerImageOptional": "صورة العميل ",
             "currentImage": "الصورة الحالية:",
             "newSelectedFile": "ملف جديد:",
-            "selectedFile": "الملف المختار:"
+            "selectedFile": "الملف المختار:",
+            "selectAgent": "اختر الوكيل"
         },
         "altText": {
             "currentCustomerImage": "صورة العميل الحالية"
@@ -219,7 +225,8 @@
         "buttons": {
             "removeFile": "إزالة",
             "submitAdd": "إرسال",
-            "submittingAdd": "جارٍ الإرسال..."
+            "submittingAdd": "جارٍ الإرسال...",
+            "add": "إضافة"
         },
         "messages": {
             "addSuccess": "تمت إضافة العميل بنجاح!",
@@ -299,9 +306,20 @@
                 "email": "البريد الإلكتروني مطلوب",
                 "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
                 "id_Number": "رقم الهوية مطلوب",
+                "invalidIdNumber": "تنسيق رقم الهوية الإسرائيلي غير صالح (يجب أن يكون 9 أرقام ويجتاز فحص Luhn)",
                 "phone_number": "رقم الهاتف مطلوب",
                 "city": "المدينة مطلوبة",
                 "birth_date": "تاريخ الميلاد مطلوب",
+                "minimumAge": "يجب أن يكون عمر العميل 16 سنة على الأقل."
+            },
+            "messages": {
+                "editErrorNoId": "معرف العميل مفقود. لا يمكن تعديل العميل.",
+                "addSuccess": "تم إضافة العميل بنجاح!",
+                "updateSuccess": "تم تحديث العميل بنجاح!"
+            }
+        },
+        "vehicles": {
+            "validation": {
                 "plateRequired": "رقم لوحة المركبة مطلوب.",
                 "modelRequired": "موديل المركبة مطلوب.",
                 "typeRequired": "نوع المركبة مطلوب.",
@@ -328,6 +346,15 @@
         "addInsurance": {
             "title": "إضافة تأمين؟",
             "text": "هل تريد إضافة تأمين لهذه المركبة؟"
+        },
+        "placeholders": {
+            "firstName": "أدخل الاسم الأول",
+            "lastName": "أدخل اسم العائلة",
+            "email": "أدخل عنوان البريد الإلكتروني",
+            "idNumber": "أدخل رقم الهوية",
+            "mobile": "أدخل رقم الهاتف",
+            "city": "أدخل المدينة",
+            "notesPlaceholder": "أضف أي ملاحظات إضافية..."
         },
         "validation": {
             "firstName": "الاسم الأول مطلوب",

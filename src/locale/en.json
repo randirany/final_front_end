@@ -3,6 +3,11 @@
         "ar": "AR",
         "en": "EN"
     },
+    "errors": {
+        "unknown": "An error occurred. Please try again.",
+        "network": "Network error. Please check your connection and try again.",
+        "notFound": "The requested resource was not found."
+    },
       "time": {
     "now": "just now",
     "minutesAgo": "{{count}}m ago",
@@ -194,7 +199,8 @@
             "customerImageOptional": "Customer Image (Optional)",
             "currentImage": "Current Image:",
             "newSelectedFile": "New file:",
-            "selectedFile": "Selected file:"
+            "selectedFile": "Selected file:",
+            "selectAgent": "Select Agent"
         },
         "altText": {
             "currentCustomerImage": "Current customer image"
@@ -206,7 +212,8 @@
         "buttons": {
             "removeFile": "Remove",
             "submitAdd": "Submit",
-            "submittingAdd": "Submitting..."
+            "submittingAdd": "Submitting...",
+            "add": "Add"
         },
         "messages": {
             "addSuccess": "Customer added successfully!",
@@ -275,9 +282,20 @@
                 "email": "Email is required.",
                 "invalidEmail": "Invalid email address.",
                 "id_Number": "Identity Number is required.",
+                "invalidIdNumber": "Invalid Israeli ID number format (must be 9 digits and pass Luhn checksum).",
                 "phone_number": "Phone number is required.",
                 "city": "City is required.",
                 "birth_date": "Birth date is required.",
+                "minimumAge": "Customer must be at least 16 years old."
+            },
+            "messages": {
+                "editErrorNoId": "Customer ID is missing. Cannot edit customer.",
+                "addSuccess": "Customer added successfully!",
+                "updateSuccess": "Customer updated successfully!"
+            }
+        },
+        "vehicles": {
+            "validation": {
                 "plateRequired": "Vehicle plate number is required.",
                 "modelRequired": "Vehicle model is required.",
                 "typeRequired": "Vehicle type is required.",
@@ -304,6 +322,15 @@
         "addInsurance": {
             "title": "Add Insurance?",
             "text": "Do you want to add insurance for this vehicle?"
+        },
+        "placeholders": {
+            "firstName": "Enter first name",
+            "lastName": "Enter last name",
+            "email": "Enter email address",
+            "idNumber": "Enter ID number",
+            "mobile": "Enter phone number",
+            "city": "Enter city",
+            "notesPlaceholder": "Add any additional notes..."
         },
         "validation": {
             "firstName": "First name is required",

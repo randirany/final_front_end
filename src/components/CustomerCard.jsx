@@ -21,13 +21,10 @@ const CustomerCard = ({ customer, onEdit, onDelete, onAddVehicle, onProfileView 
         handleMenuClose();
     };
 
-    const getInitials = (name) => {
-        if (!name) return '?';
-        const names = name.split(' ');
-        if (names.length > 1) {
-            return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
-        }
-        return names[0].substring(0, 2).toUpperCase();
+    const getInitials = (firstName, lastName) => {
+        const firstInitial = firstName && firstName.length > 0 ? firstName[0].toUpperCase() : '?';
+        const lastInitial = lastName && lastName.length > 0 ? lastName[0].toUpperCase() : '?';
+        return `${firstInitial}${lastInitial}`;
     }
 
     return (
@@ -55,15 +52,8 @@ const CustomerCard = ({ customer, onEdit, onDelete, onAddVehicle, onProfileView 
             <div className="h-24 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-900/50 dark:via-purple-900/50 dark:to-pink-900/50"></div>
 
             <div className="flex justify-center -mt-14">
-                <div className="relative w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-                   
-                   {customer.image ? <>
-                                       <img src={`${customer.image}`} alt="" className='object-cover rounded-full' />
-</>:<>
-                    <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{getInitials(customer.name)}</span>
-                   </>} {/* <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{getInitials(customer.name)}</span> */}
-                    {/* <img src={`${customer.image}`} alt="" className='object-cover rounded-full' /> */}
-                    {/* شارة التحقق */}
+                <div className="relative w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">{getInitials(customer.first_name, customer.last_name)}</span>
                     <div className="absolute bottom-1 right-1 bg-green-500 rounded-full p-0.5 border-2 border-white dark:border-gray-800">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[rgb(255,255,255)]" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -74,7 +64,7 @@ const CustomerCard = ({ customer, onEdit, onDelete, onAddVehicle, onProfileView 
 
             {/* معلومات العميل */}
             <div className="text-center px-6 py-4">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 truncate">{customer.name || 'No Name'}</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 truncate">{`${customer.first_name || ''} ${customer.last_name || ''}`.trim() || 'No Name'}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{customer.email || 'No Email'}</p>
             </div>
 

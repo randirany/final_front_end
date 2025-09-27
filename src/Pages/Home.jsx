@@ -1,7 +1,100 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ChartDashboard from './../components/ChartDashboard';
 import ChartCustromerDashboard from "../components/ChartCustromerDashboard";
 import { useTranslation } from 'react-i18next';
+
+// Custom hook for animated counter
+const useAnimatedCounter = (end, duration = 2000, isVisible = true) => {
+  const [count, setCount] = useState(0);
+  const startTime = useRef(null);
+  const animationFrame = useRef(null);
+
+  useEffect(() => {
+    if (!isVisible || end === null || end === undefined) {
+      setCount(0);
+      return;
+    }
+
+    const targetValue = typeof end === 'string' ? parseFloat(end.replace(/[^\d.-]/g, '')) || 0 : end;
+
+    if (targetValue === 0) {
+      setCount(0);
+      return;
+    }
+
+    const animate = (timestamp) => {
+      if (!startTime.current) startTime.current = timestamp;
+
+      const progress = Math.min((timestamp - startTime.current) / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+
+      setCount(Math.floor(targetValue * easeOutQuart));
+
+      if (progress < 1) {
+        animationFrame.current = requestAnimationFrame(animate);
+      } else {
+        setCount(targetValue);
+      }
+    };
+
+    animationFrame.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+      }
+      startTime.current = null;
+    };
+  }, [end, duration, isVisible]);
+
+  return count;
+};
+
+// Component for animated stat value
+const AnimatedStatValue = ({ value, originalValue }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
+
+  const animatedCount = useAnimatedCounter(value, 2000, isVisible);
+
+  // Check if the original value contains currency symbol or other formatting
+  const formatValue = (count) => {
+    if (originalValue === "—") return "—";
+
+    if (originalValue.includes('₪')) {
+      return `${count.toLocaleString()} ₪`;
+    }
+
+    return count.toLocaleString();
+  };
+
+  return (
+    <span ref={elementRef}>
+      {isVisible ? formatValue(animatedCount) : "—"}
+    </span>
+  );
+};
 
 function Home() {
   const [totalInsured, setTotalInsured] = useState(null);
@@ -136,8 +229,9 @@ ActiveInsurancesCount();
   const stats = [
     {
       name: t("home.totalCu"),
-      value: totalInsured !== null ? totalInsured.toString() : "—",
-    
+      value: totalInsured !== null ? totalInsured : null,
+      displayValue: totalInsured !== null ? totalInsured.toString() : "—",
+
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="29" cy="29" r="29" fill="#3F94D9" />
@@ -148,10 +242,11 @@ ActiveInsurancesCount();
         </svg>
       ),
     },
-    { 
-      name: t("home.TotalIncome"), 
-      value: totalIncome !== null ? `${totalIncome} ₪` : "—",
-     
+    {
+      name: t("home.TotalIncome"),
+      value: totalIncome !== null ? totalIncome : null,
+      displayValue: totalIncome !== null ? `${totalIncome} ₪` : "—",
+
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#3F94D9"></circle>
@@ -161,7 +256,8 @@ ActiveInsurancesCount();
     },
       {
       name: t("home.TotalExpenses"),
-      value: financialData ? `${financialData.totalExpenses} ₪` : "—",
+      value: financialData ? financialData.totalExpenses : null,
+      displayValue: financialData ? `${financialData.totalExpenses} ₪` : "—",
 
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
@@ -175,7 +271,8 @@ ActiveInsurancesCount();
    
     {
       name: t("home.TotalVisa"),
-      value: `${paymentMethods.visaPayments} ₪`,
+      value: paymentMethods.visaPayments,
+      displayValue: `${paymentMethods.visaPayments} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#1565C0"></circle>
@@ -189,7 +286,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalCash"),
-      value: `${paymentMethods.cashPayments} ₪`,
+      value: paymentMethods.cashPayments,
+      displayValue: `${paymentMethods.cashPayments} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -203,7 +301,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalBank"),
-      value: `${paymentMethods.bankPayments} ₪`,
+      value: paymentMethods.bankPayments,
+      displayValue: `${paymentMethods.bankPayments} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#FF9800"></circle>
@@ -217,7 +316,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.checkPayments"),
-      value: `${paymentMethods.checkPayments} ₪`,
+      value: paymentMethods.checkPayments,
+      displayValue: `${paymentMethods.checkPayments} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#9C27B0"></circle>
@@ -232,7 +332,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalProfit"),
-      value: financialData ? `${financialData.netProfit} ₪` : "—",
+      value: financialData ? financialData.netProfit : null,
+      displayValue: financialData ? `${financialData.netProfit} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -245,11 +346,11 @@ ActiveInsurancesCount();
           <rect x="33" y="30" width="2" height="10" fill="white"/>
         </svg>
       )
-    }, 
-
-        {
+    },
+    {
       name: t("home.totalCar"),
-      value: totalCar ? totalCar.totalVehicles.toString() : "—",
+      value: totalCar ? totalCar.totalVehicles : null,
+      displayValue: totalCar ? totalCar.totalVehicles.toString() : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#2196F3"></circle>
@@ -261,10 +362,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-
-            {
+    {
       name: t("home.ActiveInsurancesCount"),
-      value: getActiveInsurancesCount ? getActiveInsurancesCount.activeInsurances.toString() : "—",
+      value: getActiveInsurancesCount ? getActiveInsurancesCount.activeInsurances : null,
+      displayValue: getActiveInsurancesCount ? getActiveInsurancesCount.activeInsurances.toString() : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -275,7 +376,8 @@ ActiveInsurancesCount();
     },
           {
       name: t("home.ExpiredInsurancesCount"),
-      value: getExpiredInsurancesCount ? getExpiredInsurancesCount.expiredInsurances.toString() : "—",
+      value: getExpiredInsurancesCount ? getExpiredInsurancesCount.expiredInsurances : null,
+      displayValue: getExpiredInsurancesCount ? getExpiredInsurancesCount.expiredInsurances.toString() : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#FF5722"></circle>
@@ -285,10 +387,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-
-          {
+    {
       name: t("home.accident"),
-      value: getAccident ? getAccident.total.toString() : "—",
+      value: getAccident ? getAccident.total : null,
+      displayValue: getAccident ? getAccident.total.toString() : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#F44336"></circle>
@@ -298,10 +400,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-
-            {
+    {
       name: t("home.Agents"),
-      value: getAgents ? getAgents.total.toString() : "—",
+      value: getAgents ? getAgents.total : null,
+      displayValue: getAgents ? getAgents.total.toString() : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#795548"></circle>
@@ -313,9 +415,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-        {
+    {
       name: t("home.returnedChecksTotal"),
-      value: getReturnedChecksAmount ? `${getReturnedChecksAmount.returnedChecksTotal} ₪` : "—",
+      value: getReturnedChecksAmount ? getReturnedChecksAmount.returnedChecksTotal : null,
+      displayValue: getReturnedChecksAmount ? `${getReturnedChecksAmount.returnedChecksTotal} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#E91E63"></circle>
@@ -334,15 +437,19 @@ ActiveInsurancesCount();
   ]
 
 return (
-    <div className='py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen'>
-          <div className="grid grid-cols-1 gap-[30px] sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3">
+    <div className='py-6 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen'>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             {stats.map((item) => (
-              <div key={item.name} className="rounded-[10px] bg-[rgb(255,255,255)] dark:bg-navbarBack p-6 shadow-1">
-                {item.icon}
-                <div className="mt-6">
+              <div key={item.name} className="rounded-lg bg-white dark:bg-navbarBack p-4 lg:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center justify-center mb-4">
+                  {item.icon}
+                </div>
+                <div className="text-center">
                   <dl>
-                    <dt className="mb-1.5 text-[24px] font-bold dark:text-[rgb(255,255,255)]">{item.value}</dt>
-                    <dd className="text-sm font-medium text-[#8D8D8D] dark:text-dark3">{item.name}</dd>
+                    <dt className="text-lg lg:text-xl xl:text-2xl font-bold dark:text-white text-gray-900 mb-2">
+                      <AnimatedStatValue value={item.value} originalValue={item.displayValue} />
+                    </dt>
+                    <dd className="text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-300 leading-tight">{item.name}</dd>
                   </dl>
                 </div>
               </div>
