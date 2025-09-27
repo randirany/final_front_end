@@ -45,7 +45,6 @@ function InsuranceTakafulRep({
     useEffect(() => {
         if (isOpen) {
 
-            console.log("Opening Takaful form in ADD mode, paramsVehicleId:", paramsVehicleId);
             setFormData(JSON.parse(JSON.stringify(memoizedInitialFormData)));
             setCurrentStep(1);
 
@@ -128,7 +127,6 @@ function InsuranceTakafulRep({
         const url = `http://localhost:3002/api/v1/TakafulAccidentReport/${endpointPath}`;
         try {
             const token = `islam__${localStorage.getItem("token")}`;
-            console.log(`Submitting Takaful Data (${method}) to ${url}:`, dataToSend);
             const response = await fetch(url, {
                 method: method, headers: { 'Content-Type': 'application/json', token }, body: JSON.stringify(dataToSend)
             });
@@ -144,7 +142,6 @@ function InsuranceTakafulRep({
             }
 
         } catch (error) {
-            console.error('Submission error (Takaful):', error);
             alert(t('takaful.report.takaful.formSubmissionError') + error.message);
         } finally {
             setIsSubmitting(false);

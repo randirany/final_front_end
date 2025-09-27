@@ -94,7 +94,6 @@ function AllInsurances() {
             const res = await axios.get(`http://localhost:3002/api/v1/insured/insurances/all`, {
                 headers: { token }
             });
-            console.log(res)
             const apiData = res.data.insurances || [];
             const formattedData = apiData.map(item => ({
                 id: item._id,
@@ -113,7 +112,6 @@ function AllInsurances() {
             }));
             setAllInsurances(formattedData);
         } catch (err) {
-            console.error('Error fetching insurances:', err);
             setAllInsurances([]);
         } finally {
             setLoading(false);

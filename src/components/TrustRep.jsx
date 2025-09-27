@@ -83,7 +83,6 @@ function TrustRep() {
             }));
             setAllTrustReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Trust reports:', err);
             setAllTrustReports([]);
         } finally {
             setLoading(false);
@@ -218,7 +217,6 @@ function TrustRep() {
             await axios.delete(`http://localhost:3002/api/v1/TrustAccidentReport/delete/${id}`, { headers: { token } });
             fetchTrustReports();
         } catch (err) {
-            console.error("Error deleting Trust report:", err);
             alert(t('trust.deleteError'));
         }
         handleMenuClose(id);

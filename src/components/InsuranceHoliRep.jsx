@@ -42,7 +42,6 @@ function InsuranceHoliRep({ onClose, isOpen }) {
     useEffect(() => {
         if (isOpen) {
 
-            console.log("Opening Holi form in ADD mode, vehicleId from params:", vehicleId);
             setFormData(JSON.parse(JSON.stringify(memoizedInitialFormData)));
 
             setCurrentStep(1);
@@ -71,7 +70,6 @@ function InsuranceHoliRep({ onClose, isOpen }) {
                 }
                 currentLevel[path[path.length - 1]] = valToSet;
             } else {
-                console.error("handleChange: Invalid path or arrayDetails for", { path, arrayDetails, inputName });
             }
             return newState;
         });
@@ -147,7 +145,6 @@ function InsuranceHoliRep({ onClose, isOpen }) {
 
         try {
             const token = `islam__${localStorage.getItem("token")}`;
-            console.log(`Submitting Holi Data (${method}):`, endpoint, JSON.stringify(apiPayload, null, 2));
             const response = await fetch(endpoint, { method: method, headers: { 'Content-Type': 'application/json', token }, body: JSON.stringify(apiPayload) });
             const responseData = await response.json();
             if (!response.ok) {
@@ -161,7 +158,6 @@ function InsuranceHoliRep({ onClose, isOpen }) {
             onClose(true);
 
         } catch (error) {
-            console.error('Submission error object (Holi):', error);
             alert(t('holyLand.report.holi.formSubmissionError') + error.message);
         } finally {
             setIsSubmitting(false);

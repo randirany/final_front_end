@@ -6,7 +6,6 @@ import { useState } from "react"
 import { Bounce, toast, ToastContainer } from "react-toastify"
 function AddVehicle() {
     const { id } = useParams() 
-    console.log(id)
     const [loading, setLoading] = useState(false)
     const [imagePreview, setImagePreview] = useState(null)
     const navigate = useNavigate()
@@ -42,9 +41,7 @@ function AddVehicle() {
                     formData.append("image", values.image)
                 }
 
-                console.log("FormData contents:")
                 for (const pair of formData.entries()) {
-                    console.log(pair[0] + ": " + pair[1])
                 }
 
                 const token = localStorage.getItem("token")
@@ -61,7 +58,6 @@ function AddVehicle() {
                     price: values.price,
                 }
 
-                console.log("Sending data:", vehicleData)
 
                 const response = await axios({
                     method: "post",
@@ -72,7 +68,6 @@ function AddVehicle() {
                         "Content-Type": "application/json",
                     },
                 })
-                console.log(response)
 
                 toast.success("تمت إضافة المركبة بنجاح", {
                     position: "top-center",
@@ -92,7 +87,6 @@ function AddVehicle() {
 
                 }, 2000)
             } catch (error) {
-                console.error("Error adding vehicle:", error)
 
                 if (error.response?.data?.message?.errors) {
                     const errorMessages = Object.values(error.response.data.message.errors)

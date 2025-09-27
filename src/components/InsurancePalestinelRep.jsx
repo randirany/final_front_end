@@ -149,7 +149,6 @@ function InsurancePalestineRep({ onClose, isOpen, onReportAdded }) {
             }
 
         } catch (error) {
-            console.error('Submission error (Palestine):', error);
             alert(t('palestine.report.palestine.formSubmissionError') + error.message);
         } finally {
             setIsSubmitting(false);

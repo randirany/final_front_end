@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import router from './routes/router.jsx'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './App.css'
-import { BrowserRouter, RouterProvider } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 import UserContextProvider from './context/User.jsx'
 import './i18n.js'
 import { ThemeProvider } from './context/ThemeProvider.jsx'

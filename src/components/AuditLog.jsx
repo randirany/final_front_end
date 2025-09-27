@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -53,7 +53,6 @@ export default function AuditLogs() {
       }));
       setAllLogs(formatted);
     } catch (err) {
-      console.error('Error fetching audit logs:', err);
       setAllLogs([]);
     } finally {
       setLoadingLogs(false);

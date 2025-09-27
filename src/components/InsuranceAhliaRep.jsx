@@ -35,7 +35,6 @@ function InsuranceAhliaRep({ onClose, isOpen, onReportAdded }) {
 
     useEffect(() => {
         if (isOpen) {
-            console.log("Opening Ahlia form in ADD mode, vehicleId from params:", vehicleId);
             setFormData(JSON.parse(JSON.stringify(memoizedInitialFormData)));
             setCurrentStep(1);
 
@@ -114,14 +113,12 @@ function InsuranceAhliaRep({ onClose, isOpen, onReportAdded }) {
         const url = `http://localhost:3002/api/v1/AhliaAccidentReport/${endpointPath}`;
         try {
             const token = `islam__${localStorage.getItem("token")}`;
-            console.log(`Submitting Ahlia Data (ADD):`, url, dataToSend);
 
             const response = await axios({
                 method: method, url: url, data: dataToSend,
                 headers: { 'Content-Type': 'application/json', token }
             });
 
-            console.log(`Ahlia form submitted successfully:`, response.data);
             alert(t('formSubmissionSuccess') + (response.data.message ? `\n${response.data.message}` : ''));
 
             if (onReportAdded) {
@@ -131,7 +128,6 @@ function InsuranceAhliaRep({ onClose, isOpen, onReportAdded }) {
             }
 
         } catch (error) {
-            console.error(`Submission error (Ahlia):`, error.response?.data || error.message || error);
             alert(t('formSubmissionError') + (error.response?.data?.message || error.message));
         } finally {
             setIsSubmitting(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -194,7 +194,6 @@ export default function Agents() {
             const formatted = agentsArray.map(agent => ({ id: agent._id, name: agent.name, email: agent.email, role: agent.role, }));
             setAllAgents(formatted);
         } catch (err) {
-            console.error("Error fetching agents:", err);
             setAllAgents([]);
         } finally {
             setLoadingAgents(false);
@@ -207,9 +206,11 @@ export default function Agents() {
             try {
                 await axios.delete(`http://localhost:3002/api/v1/agents/deleteAgents/${id}`, { headers: { token } });
                 fetchAgents();
-            } catch (err) { console.error("Error deleting agent:", err); }
+            } catch {
+                // Handle error silently
+            }
+            handleMenuClose(id);
         }
-        handleMenuClose(id);
     };
 
     const handleScroll = useCallback(() => {

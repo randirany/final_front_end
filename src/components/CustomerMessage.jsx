@@ -19,10 +19,6 @@ const CustomerMessage = () => {
                     </svg>
                     <NavLink to="/message">Customers Messages</NavLink>
                 </div>
-
-                {/* <button onClick={() => { setAddCustomerOpen(true); console.log('open') }} className="bg-[#5750F1] py-[3px] px-[10px] rounded-md text-[rgb(255,255,255)] text-[12px]">
-          Add New Customer
-        </button> */}
             </div>
             <div className='flex py-4 h-[100vh] '>
                 <div className='w-80 rounded-l-lg bg-[rgb(255,255,255)] p-3 shadow-sm   overflow-y-auto hide-scrollbar   dark:bg-navbarBack'>

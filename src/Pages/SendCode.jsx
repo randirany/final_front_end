@@ -1,6 +1,4 @@
-import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../context/User';
 import { useFormik } from 'formik';
 import axios from 'axios';
 
@@ -8,13 +6,11 @@ function SendCode() {
     const navigate = useNavigate()
     const SendCodeUser = async () => {
         try {
-            console.log(formik.values)
-            const { data } = await axios.patch(`http://localhost:3002/api/v1/admin/sendcode`, formik.values)
-            console.log(data);
+            await axios.patch(`http://localhost:3002/api/v1/admin/sendcode`, formik.values)
             navigate('/changepassword', { state: { email: formik.values.email } })
 
-        } catch (error) {
-            console.log('error', error);
+        } catch {
+            // Handle error silently
         }
     }
 
@@ -38,7 +34,7 @@ function SendCode() {
                 <form action="GET" onSubmit={formik.handleSubmit}>
 
                     <div className='text-right mb-4'>
-                        <label for="email" className="form-label text-xs">  اسم المستخدم او البريد الالكتروني :  </label>
+                        <label htmlFor="email" className="form-label text-xs">  اسم المستخدم او البريد الالكتروني :  </label>
                         <input type="email" className="form-control" id="email" placeholder=""
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}

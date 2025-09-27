@@ -8,12 +8,10 @@ const fetchUserData = async () => {
     const response = await axios.get(`http://localhost:3002/api/v1/user/profile`, {
         headers: { token } 
     });
-    console.log("API Response:", response.data); 
 
     if (response.data && response.data.user) {
         return response.data.user;
     } else {
-        console.error("Unexpected API response structure:", response.data);
         throw new Error("Failed to fetch user data: Unexpected response structure");
     }
 };
@@ -33,7 +31,6 @@ function Profile() {
                 const data = await fetchUserData();
                 setUserData(data);
             } catch (err) {
-                console.error("Failed to fetch user data:", err);
                 setError(err.message || t('profile.error', 'Could not load user profile.'));
             } finally {
                 setLoading(false);

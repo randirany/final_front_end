@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -88,7 +88,6 @@ function AhlieReport() {
             }));
             setAllAhliaReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Ahlia reports:', err);
             setAllAhliaReports([]);
         } finally {
             setLoading(false);
@@ -223,7 +222,6 @@ function AhlieReport() {
             await axios.delete(`http://localhost:3002/api/v1/AhliaAccidentReport/delete/${id}`, { headers: { token } });
             fetchAhliaReports();
         } catch (err) {
-            console.error("Error deleting Ahlia report:", err);
             alert(t('ahliaReport.deleteError', "Failed to delete report."));
         }
         handleMenuClose(id);

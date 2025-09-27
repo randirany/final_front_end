@@ -1,7 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { UserContext } from '../context/User';
 import axios from 'axios';
 
 function Changepassword() {
@@ -10,13 +8,11 @@ function Changepassword() {
     const navigate = useNavigate()
     const ChangePasswordUser = async () => {
         try {
-            console.log(formik.values)
-            const { data } = await axios.patch(`http://localhost:3002/api/v1/admin/forgetpassword`, formik.values)
-            console.log(data);
+            await axios.patch(`http://localhost:3002/api/v1/admin/forgetpassword`, formik.values)
             navigate('/home')
 
-        } catch (error) {
-            console.log('error', error);
+        } catch {
+            // Handle error silently
         }
     }
 
@@ -38,7 +34,7 @@ function Changepassword() {
                 <form action="GET" onSubmit={formik.handleSubmit}>
 
                     <div className='text-right mb-4'>
-                        <label for="code" className="form-label text-xs">  رمز اعادة التعيين :  </label>
+                        <label htmlFor="code" className="form-label text-xs">  رمز اعادة التعيين :  </label>
                         <input type="text" className="form-control" id="code" placeholder=""
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
@@ -46,7 +42,7 @@ function Changepassword() {
                     </div>
 
                     <div className='text-right mb-4'>
-                        <label for="newPassword" className="form-label text-xs"> كلمة المرور الجديدة :  </label>
+                        <label htmlFor="newPassword" className="form-label text-xs"> كلمة المرور الجديدة :  </label>
                         <input type="password" className="form-control" id="newPassword" placeholder="" onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             value={formik.values.newPassword} />

@@ -18,9 +18,9 @@ function ChartCustromerDashboard() {
           customers: item.count
         }));
         setData(formatted);
-      } catch (error) {
-        console.error("Error fetching insured data by month:", error);
-      }
+      } catch {
+            // Handle error silently
+        }
     };
 
     fetchData();

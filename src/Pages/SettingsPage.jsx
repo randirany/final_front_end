@@ -60,7 +60,6 @@ function SettingsPage() {
                 setFetchUserError(t('settings.error.loadUser', 'Failed to load user data. Please try again or re-login.'));
             }
         } catch (err) {
-            console.error("Unexpected error in loadUser effect:", err);
             setFetchUserError(t('settings.error.loadUserUnexpected', 'An unexpected error occurred while loading user data.'));
         } finally {
             setIsLoadingUser(false);
@@ -74,7 +73,6 @@ function SettingsPage() {
     const getCurrentUserData = async () => {
         const token = `islam__${localStorage.getItem("token")}`;
         if (!localStorage.getItem("token") || localStorage.getItem("token") === "null" || localStorage.getItem("token") === "undefined") {
-            console.error("No token found for getCurrentUserData");
             return null;
         }
         try {
@@ -86,7 +84,6 @@ function SettingsPage() {
             }
             throw new Error("User data not found in response");
         } catch (error) {
-            console.error("Error fetching current user data:", error.response?.data?.message || error.message);
             return null;
         }
     };

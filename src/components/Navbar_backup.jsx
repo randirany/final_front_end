@@ -1,3 +1,200 @@
+/*import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { UserContext } from '../context/User';
+import avater from '../assets/Avatar.png';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../context/ThemeProvider';
+import axios from 'axios';
+import { io } from 'socket.io-client';
+import { jwtDecode } from "jwt-decode";
+
+const API_BASE_URL = 'http://localhost:3002/api/v1';
+const SOCKET_URL = 'http://localhost:3002';
+
+let socket;
+
+function Navbar({ setSidebarOpen, sidebarOpen }) {
+  const { logout, UserData } = useContext(UserContext);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const { t, i18n } = useTranslation(); 
+  const { language } = i18n;
+  const { isDarkMode, toggleDarkMode } = useTheme();
+
+  
+  const tokenForAPI = useMemo(() => {
+    const rawToken = localStorage.getItem("token");
+    if (rawToken && rawToken !== "null" && rawToken !== "undefined") {
+      return `islam__${rawToken}`;
+    }
+    return null;
+  }, []); 
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
+  const [notificationError, setNotificationError] = useState(null);
+
+  const fetchNotifications = useCallback(async () => {
+    if (!tokenForAPI) return;
+    setLoadingNotifications(true);
+    setNotificationError(null);
+    try {
+      const response = await axios.get(`${API_BASE_URL}/notification/all`, {
+        headers: { token: tokenForAPI } 
+      });
+      const fetchedNotifications = response.data.notifications || [];
+      setNotifications(fetchedNotifications);
+      setUnreadCount(fetchedNotifications.filter(n => !n.isRead).length);
+    } catch (error) {
+      setNotificationError(t('nav.dropdown.fetchError', 'Failed to load notifications.'));
+    } finally {
+      setLoadingNotifications(false);
+    }
+  }, [tokenForAPI, t]); 
+
+  useEffect(() => {
+    if (tokenForAPI) {
+      try {
+        const decoded = jwtDecode(tokenForAPI);
+      } catch {
+            // Handle error silently
+        }
+      if (UserData?._id) {
+        fetchNotifications();
+
+        if (socket) {
+            socket.disconnect();
+        }
+        
+        socket = io(SOCKET_URL, {
+          
+        });
+
+        socket.on('connect', () => {
+          if (UserData?._id) {
+            socket.emit('registerUser', UserData._id);
+          } else {
+          }
+        });
+
+        socket.on('newNotification', (newNotification) => {
+          setNotifications(prev => [newNotification, ...prev]);
+          if (!newNotification.isRead) {
+            setUnreadCount(prev => prev + 1);
+          }
+        });
+
+        socket.on('notificationUpdated', (updatedNotification) => {
+          setNotifications(prev =>
+            prev.map(n => n._id === updatedNotification._id ? updatedNotification : n)
+          );
+          setUnreadCount(prev => prev.filter(n => !n.isRead).length);
+        });
+
+        socket.on('disconnect', (reason) => {
+        });
+
+        socket.on('connect_error', (err) => {
+        });
+      } else {
+        if (socket && socket.connected) {
+            socket.disconnect();
+        }
+      }
+
+      return () => {
+        if (socket) {
+          socket.disconnect(); 
+        }
+      };
+    } else { 
+      if (socket && socket.connected) {
+        socket.disconnect();
+      }
+      setNotifications([]);
+      setUnreadCount(0);
+    }
+  }, [UserData?._id, tokenForAPI, fetchNotifications]);
+
+
+  const handleMarkAsRead = async (notificationId) => {
+    if (!tokenForAPI) return;
+    const originalNotifications = [...notifications];
+    const notificationToUpdate = notifications.find(n => n._id === notificationId);
+
+    if (notificationToUpdate && !notificationToUpdate.isRead) {
+      setNotifications(prev =>
+        prev.map(n => (n._id === notificationId ? { ...n, isRead: true } : n))
+      );
+      setUnreadCount(prev => (prev > 0 ? prev - 1 : 0));
+    } else if (!notificationToUpdate) {
+      return;
+    }
+   
+    try {
+      await axios.patch(`${API_BASE_URL}/notification/markAsRead/${notificationId}`, {}, {
+        headers: { token: tokenForAPI },
+      });
+    } catch (error) {
+      if (notificationToUpdate && !notificationToUpdate.isRead) {
+        setNotifications(originalNotifications);
+        setUnreadCount(prev => prev + 1);
+      }
+      alert(t('nav.dropdown.markReadError', 'Failed to mark as read.'));
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    if (!tokenForAPI || unreadCount === 0) return;
+    const originalNotifications = [...notifications];
+    const oldUnreadCount = unreadCount;
+
+    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    setUnreadCount(0);
+
+    try {
+      
+      await axios.put(`${API_BASE_URL}/notification/markAllAsRead`, {}, {
+        headers: { token: tokenForAPI },
+      });
+    } catch (error) {
+      setNotifications(originalNotifications);
+      setUnreadCount(oldUnreadCount);
+      alert(t('nav.dropdown.markAllReadError', 'Failed to mark all as read.'));
+    }
+  };
+
+  const toggleNotification = () => {
+    setNotificationOpen(prevState => !prevState);
+    if (profileOpen) setProfileOpen(false);
+  };
+
+  const handleThemeToggle = () => {
+    toggleDarkMode();
+  };
+
+  const handleLanguageToggle = () => {
+    const newLanguage = language === 'en' ? 'ar' : 'en';
+    i18n.changeLanguage(newLanguage);
+  };
+
+  const toggleProfile = () => {
+    setProfileOpen(prevState => !prevState);
+    if (notificationOpen) setNotificationOpen(false);
+  };
+
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.round((now - date) / 1000);
+    const minutes = Math.round(seconds / 60);
+    const hours = Math.round(minutes / 60);
+    const days = Math.round(hours / 24);
+
+    if (seconds < 60) return t('time.now', 'just now');
+    if (minutes < 60) return t('time.minutesAgo', '{{count}}m ago', { count: minutes });
+    if (hours < 24) return t('time.hoursAgo', '{{count}}h ago', { count: hours });
+    return t('time.daysAgo', '{{count}}d ago', { count: days });
+  };*/
 import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { UserContext } from '../context/User';
 import avater from '../assets/Avatar.png';
@@ -6,7 +203,6 @@ import { useTheme } from '../context/ThemeProvider';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 const API_BASE_URL = 'http://localhost:3002/api/v1';
 const SOCKET_URL = 'http://localhost:3002';
@@ -55,7 +251,7 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
         const fetchedNotifications = response.data.notifications || [];
         setNotifications(fetchedNotifications);
         setUnreadCount(fetchedNotifications.filter(n => !n.isRead).length);
-      } catch {
+      } catch (error) {
         setNotificationError(t('nav.dropdown.fetchError', 'Failed to load notifications.'));
       } finally {
         setLoadingNotifications(false);
@@ -82,19 +278,16 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
       setNotifications(prev =>
         prev.map(n => n._id === updatedNotification._id ? updatedNotification : n)
       );
-      setUnreadCount(prevCount => {
-        // Recalculate unread count based on the updated notification
-        if (updatedNotification.isRead) {
-          return Math.max(0, prevCount - 1);
-        }
-        return prevCount;
+      setUnreadCount(prev => {
+        const unread = notifications.filter(n => !n.isRead).length;
+        return unread;
       });
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason) => {
     });
 
-    socket.on('connect_error', () => {
+    socket.on('connect_error', (err) => {
     });
 
     // تنظيف عند تفكيك الكومبوننت
@@ -127,7 +320,7 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
       await axios.patch(`${API_BASE_URL}/notification/markAsRead/${notificationId}`, {}, {
         headers: { token },
       });
-    } catch {
+    } catch (error) {
       setNotifications(originalNotifications);
       setUnreadCount(prev => prev + 1);
       alert(t('nav.dropdown.markReadError', 'Failed to mark as read.'));
@@ -151,12 +344,16 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
       await axios.put(`${API_BASE_URL}/notification/markAllAsRead`, {}, {
         headers: { token },
       });
-    } catch {
+    } catch (error) {
       setNotifications(originalNotifications);
       setUnreadCount(oldUnreadCount);
       alert(t('nav.dropdown.markAllReadError', 'Failed to mark all as read.'));
     }
   };
+
+
+
+  
 
   const toggleNotification = () => {
     setNotificationOpen(prev => !prev);
@@ -285,6 +482,8 @@ useEffect(() => {
 }, []);
 
 
+
+  
   return (
     <div className={` bg-[rgb(255,255,255)] border-b-2 dark:border-b-zinc-800 dark:bg-navbarBack dark:text-dark3  z-20 fixed top-0 ${language === "en" ? "right-0" : "left-0"} 2md:[width:calc(100%-259px)] w-full`}>
       <div className='navblayout'>
@@ -445,15 +644,15 @@ useEffect(() => {
                       <div className="text-center py-4 dark:text-gray-400">{t('loading', 'Loading...')}</div>
                     ) : notificationError ? (
                       <div className="text-center py-4 text-red-500">{notificationError}</div>
-                    ) : unreadCount === 0 ? (
+                    ) : notifications.length === 0 ? (
                       <div className="text-center py-4 dark:text-gray-400">{t('nav.dropdown.noNotifications', 'No new notifications.')}</div>
                     ) : (
                       <ul className='mb-3 max-h-[23rem] space-y-1.5 overflow-y-auto'>
-                        {notifications.filter(n => !n.isRead).map((notification) => (
+                        {notifications.map((notification) => (
                           <li key={notification._id} role="menuitem">
                             <button
                               onClick={() => handleMarkAsRead(notification._id)}
-                              disabled={notification.isRead}
+                              disabled={notification.isRead} 
                               className={`w-full flex items-center gap-3 rounded-lg px-2 py-2.5 text-left outline-none hover:bg-gray-100 focus-visible:bg-gray-100 dark:hover:bg-gray-500 dark:focus-visible:bg-dark-3 ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-900/30' : 'opacity-70 dark:opacity-60'}`}
                             >
                               <img
@@ -478,9 +677,9 @@ useEffect(() => {
                         ))}
                       </ul>
                     )}
-                    {notifications.length > 0 && (
+                    {notifications.length > 0 && ( 
                       <div className="flex flex-col gap-2">
-                        {unreadCount > 0 && (
+                        {unreadCount > 0 && ( 
                           <button
                             onClick={handleMarkAllAsRead}
                             className="block w-full rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-primary outline-none transition-colors hover:bg-blue-50 focus:bg-blue-50 focus:text-primary dark:border-primary dark:text-primary dark:hover:bg-dark-3 dark:focus-visible:bg-dark-3"
@@ -488,15 +687,13 @@ useEffect(() => {
                             {t("nav.dropdown.markAllRead", "Mark all as read")}
                           </button>
                         )}
-                        <button
-                          onClick={() => {
-                            navigate('/notifications');
-                            setNotificationOpen(false);
-                          }}
-                          className="block w-full rounded-lg p-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-3 transition-colors"
-                        >
-                          {t("nav.dropdown.viewAll", "View All Notifications")}
-                        </button>
+                         {/* For example:
+                         <button
+                            className="block w-full rounded-lg p-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-3"
+                          >
+                            {t("nav.dropdown.seeAll", "See all notifications")}
+                          </button>
+                         */}
                       </div>
                     )}
                   </div>
@@ -551,10 +748,5 @@ useEffect(() => {
     </div>
   );
 }
-
-Navbar.propTypes = {
-  setSidebarOpen: PropTypes.func.isRequired,
-  sidebarOpen: PropTypes.bool.isRequired,
-};
 
 export default Navbar;

@@ -2,6 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import PropTypes from 'prop-types';
 
 export const UserContext = createContext()
 const UserContextProvider = ({ children }) => {
@@ -17,7 +18,6 @@ const UserContextProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             const decoded = jwtDecode(token);
-            console.log('uswrDate',decoded)
             const currentTime = Date.now() / 1000; // تحويل الوقت إلى ثوانٍ
             if (decoded.exp < currentTime) {
                 logout();
@@ -42,7 +42,6 @@ const UserContextProvider = ({ children }) => {
     useEffect(() => {
         let token = localStorage.getItem('token');
         if (token) {
-            console.log('change count', userCount);
             // getUser()
         }
     }, [userCount]);
@@ -51,7 +50,6 @@ const UserContextProvider = ({ children }) => {
     //     if (localStorage.getItem('token')) {
     //         try {
     //             let token = localStorage.getItem('token');
-    //             console.log("Token from LocalStorage:", token);
 
     //             const { data } = await axios.get(
     //                 `http://localhost:3002/api/v1/admin/alluser`,
@@ -62,11 +60,8 @@ const UserContextProvider = ({ children }) => {
     //                 }
     //             );
     //             setuser(data.find)
-    //             console.log('userCount', userCount)
-    //             console.log('Response:', data);
 
     //         } catch (error) {
-    //             console.error('Error:', error);
     //         }
     //     }
     // }
@@ -75,7 +70,6 @@ const UserContextProvider = ({ children }) => {
     //     if (localStorage.getItem('token')) {
     //         try {
     //             let token = localStorage.getItem('token');
-    //             console.log("Token from LocalStorage:", token);
 
     //             const { data } = await axios.delete(
     //                 `http://localhost:3002/api/v1/admin/delete/${id}`,
@@ -86,11 +80,8 @@ const UserContextProvider = ({ children }) => {
     //                 }
     //             );
     //             setUserCount((prev) => prev - 1)
-    //             console.log('userCount', userCount)
-    //             console.log('Response:', data);
 
     //         } catch (error) {
-    //             console.error('Error:', error);
     //         }
     //     }
     // }
@@ -104,10 +95,8 @@ const UserContextProvider = ({ children }) => {
     //                 Authorization: `islam__${token}`,
     //             },
     //         })
-    //         console.log(response.data.find)
     //         setInsureds(response.data.find || []);
     //     } catch (error) {
-    //         console.error("Error fetching insureds:", error)
     //         toast.error("فشل في تحميل بيانات المؤمنين")
     //     }
     // }
@@ -115,11 +104,9 @@ const UserContextProvider = ({ children }) => {
     const deleteInsurance = async (id) => {
         if (localStorage.getItem('token')) {
             try {
-                console.log('hii delete insure')
                 let token = localStorage.getItem('token');
-                console.log("Token from LocalStorage:", token);
 
-                const { data } = await axios.delete(
+                await axios.delete(
                     `http://localhost:3002/api/v1/insured/delete/${id}`,
                     {
                         headers: {
@@ -128,22 +115,23 @@ const UserContextProvider = ({ children }) => {
                     }
                 );
                 setInsuranceCount((prev) => prev - 1)
-                console.log('userCount', insuranceCount)
-                console.log('Response:', data);
-            } catch (error) {
-                console.error('Error:', error);
-            }
+            } catch {
+            // Handle error silently
+        }
         }
     }
     
     // useEffect(() => {
     //     if (token) {
-    //         console.log(insureds)
     //         getInsurance()
     //     }
     // }, [insuranceCount])
 
     return <UserContext.Provider value={{ isLogin, deleteInsurance, insureds, setLogin, logout, user, UserData, setUserData }}>{children} </UserContext.Provider>;
 }
+
+UserContextProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default UserContextProvider;

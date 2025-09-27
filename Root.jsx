@@ -8,7 +8,6 @@ import { useTheme } from './src/context/ThemeProvider';
 function Root() {
   const { t, i18n: { language } } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const isRTL = language === 'ar'; // Helper for RTL languages
   const { isDarkMode } = useTheme();
   return (
     <div>

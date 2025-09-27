@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 function AddVehicleWrapper() {
   const { id } = useParams();
-  console.log("Received ID in Wrapper:", id);
 
   return (
     <Add_vehicle

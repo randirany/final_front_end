@@ -15,7 +15,6 @@ const formatDate = (dateString, language) => {
             calendar: 'gregory' 
         });
     } catch (error) {
-        console.error("Error formatting date:", error);
         return "Invalid Date";
     }
 };
@@ -46,7 +45,6 @@ function CheckDetails() {
                 );
                 setChecks(response.data.checks || []);
             } catch (err) {
-                console.error("Error fetching check details:", err);
                 const apiError = err.response?.data?.message || t('checkDetails.alerts.fetchErrorDefault', 'Failed to fetch check details.');
                 setError(apiError);
                 toast.error(apiError);

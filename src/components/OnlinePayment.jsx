@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Card, CardContent, Typography, Box, Alert } from '@mui/material';
 import { CreditCard, Shield, Lock, CheckCircle, AlertCircle } from 'lucide-react';

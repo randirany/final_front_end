@@ -31,6 +31,7 @@ import AllInsured from "../components/AllInsured.jsx";
 import SmsSend from "../components/SmsSend.jsx";
 import OnlinePayment from "../components/OnlinePayment.jsx";
 import EmailManagement from "../components/EmailManagement.jsx";
+import NotificationsPage from "../Pages/NotificationsPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +68,9 @@ const router = createBrowserRouter([
             }, {
                 path: '/emails',
                 element: <ProtectedRouter> <EmailManagement /></ProtectedRouter>
+            }, {
+                path: '/notifications',
+                element: <ProtectedRouter> <NotificationsPage /></ProtectedRouter>
             }, {
                 path: '/profile/:insuredId',
                 element: <ProtectedRouter> <CustomerInfo /></ProtectedRouter>

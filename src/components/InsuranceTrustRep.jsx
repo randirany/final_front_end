@@ -36,7 +36,6 @@ function InsuranceTrustRep({ onClose, isOpen, onReportAdded }) {
 
     useEffect(() => {
         if (isOpen) {
-            console.log("Opening Trust form in ADD mode, vehicleId from params:", vehicleId);
             setFormData(JSON.parse(JSON.stringify(memoizedInitialFormData)));
             setCurrentStep(1);
         }
@@ -64,7 +63,6 @@ function InsuranceTrustRep({ onClose, isOpen, onReportAdded }) {
             } else if (!section && fieldKey) {
                 newState[fieldKey] = valToSet;
             } else {
-                console.warn("handleChange (Trust): Unhandled case", { section, fieldKey, arrayName, index, itemKey, eventName: inputNameFromEvent });
             }
             return newState;
         });
@@ -127,7 +125,6 @@ function InsuranceTrustRep({ onClose, isOpen, onReportAdded }) {
         try {
             const token = `islam__${localStorage.getItem("token")}`;
             const url = `http://localhost:3002/api/v1/TrustAccidentReport/${endpointPath}`;
-            console.log(`Submitting Trust Data (${method}):`, url, JSON.stringify(dataForApi, null, 2));
 
             const response = await fetch(url, {
                 method: method, headers: { 'Content-Type': 'application/json', token }, body: JSON.stringify(dataForApi)
@@ -149,7 +146,6 @@ function InsuranceTrustRep({ onClose, isOpen, onReportAdded }) {
             }
 
         } catch (error) {
-            console.error('Submission error object (Trust):', error);
             alert(t('trust.report.trust.formSubmissionError') + error.message);
         } finally {
             setIsSubmitting(false);

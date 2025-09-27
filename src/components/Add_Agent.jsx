@@ -83,7 +83,6 @@ function Add_Agent({ isOpen, onClose, onAgentAdded }) {
             onAgentAdded?.();
             onClose();
         } catch (err) {
-            console.error('Error adding agent:', err);
             toast.error(err.response?.data?.message || t('agents.messages.addError', 'Failed to add agent!'));
         } finally {
             setIsSubmitting(false);

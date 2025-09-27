@@ -100,8 +100,6 @@ function AddInsuranceThiry({ onClose, isOpen, onSubmitSuccess }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        console.log("Form Data:", formData);
-        console.log("Files:", files);
         await new Promise(resolve => setTimeout(resolve, 1500));
         setIsSubmitting(false);
         alert(t("addInsuranceThird.alerts.submitSuccess", "Insurance submitted (simulated)!"));

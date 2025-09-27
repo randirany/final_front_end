@@ -58,7 +58,6 @@ function InsuranceList() {
             });
             setCustomerData(response.data.insured || {});
         } catch (error) {
-            console.error("Error fetching customer data:", error);
             setCustomerData({});
         } finally {
             setLoadingCustomer(false);
@@ -79,7 +78,6 @@ function InsuranceList() {
                 setSelectedVehicleDetails(null);
             }
         } catch (error) {
-            console.error("Error fetching vehicle details:", error);
             setSelectedVehicleDetails(null);
         } finally {
             setLoadingVehicleDetails(false);
@@ -108,7 +106,6 @@ function InsuranceList() {
             }));
             setAllVehicleInsurances(formattedInsurances);
         } catch (error) {
-            console.log("Error fetching vehicle insurances:", error);
             setAllVehicleInsurances([]);
         } finally {
             setLoadingInsurances(false);
@@ -168,7 +165,6 @@ function InsuranceList() {
 
                     refreshInsuranceData();
                 } catch (error) {
-                    console.error("Error deleting insurance:", error);
                     toast.error(t('insuranceList.alerts.deleteError', 'Error deleting insurance record.'));
                 }
             }

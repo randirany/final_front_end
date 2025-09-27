@@ -128,7 +128,6 @@ function AddCheckModal({ isOpen, onClose, insuredId, vehicleId, insuranceId, onC
             }, 1500);
 
         } catch (error) {
-            console.error("Error adding check:", error.response || error);
             
             let errorMessage = t('addCheckModal.alerts.addCheckFailed');
             if (error.response) {

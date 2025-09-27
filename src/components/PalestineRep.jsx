@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -84,7 +84,6 @@ function PalestineRep() {
             }));
             setAllPalestineReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Palestine reports:', err);
             setAllPalestineReports([]);
         } finally {
             setLoading(false);
@@ -219,7 +218,6 @@ function PalestineRep() {
             await axios.delete(`http://localhost:3002/api/v1/PlestineAccidentReport/delete/${id}`, { headers: { token } });
             fetchPalestineReports();
         } catch (err) {
-            console.error("Error deleting Palestine report:", err);
             alert(t('palestine.deleteFailed'));
         }
         handleMenuClose(id);

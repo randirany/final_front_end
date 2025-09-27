@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Checkbox, FormControlLabel, IconButton } from '@mui/material';
 import { Search, Send, Users, MessageSquare, X } from 'lucide-react';
@@ -38,7 +38,6 @@ export default function SmsSend() {
       }));
       setCustomers(formattedData);
     } catch (err) {
-      console.error('Error fetching customers:', err);
       toast.error(t('sms.errors.fetchCustomers', 'Failed to load customers'));
       setCustomers([]);
     } finally {
@@ -140,7 +139,6 @@ export default function SmsSend() {
         setMessage('');
         setSelectedCustomers([]);
       } catch (err) {
-        console.error('Error sending SMS:', err);
         toast.error(t('sms.errors.sendFailed', 'Failed to send SMS'));
       } finally {
         setSending(false);

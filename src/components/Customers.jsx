@@ -69,7 +69,6 @@ export default function Customers() {
     const filteredCustomers = useMemo(() => {
         if (!searchText) return sortedData;
         const lowerSearch = searchText.toLowerCase();
-        console.log(sortedData);
         return sortedData.filter((customer) =>
             Object.values(customer).some((val) =>
                 String(val).toLowerCase().includes(lowerSearch)
@@ -242,7 +241,6 @@ export default function Customers() {
             }));
             setAllCustomers(formattedData);
         } catch (err) {
-            console.error('Error fetching customers:', err);
             setAllCustomers([]);
         } finally {
             setLoading(false);
@@ -286,7 +284,6 @@ export default function Customers() {
   
                     fetchCustomers(); 
                 } catch (err) {
-                    console.error("Error deleting customer:", err);
                     toast.error(err.response?.data?.message || t('customers.delete_error', 'فشل حذف العميل.'));
                 }
             }

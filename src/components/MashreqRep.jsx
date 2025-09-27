@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -86,7 +86,6 @@ function MashreqRep() {
             }));
             setAllMashreqReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Mashreq reports:', err);
             setAllMashreqReports([]);
         } finally {
             setLoading(false);
@@ -221,7 +220,6 @@ function MashreqRep() {
             await axios.delete(`http://localhost:3002/api/v1/Al_MashreqAccidentReport/delete/${id}`, { headers: { token } });
             fetchMashreqReports();
         } catch (err) {
-            console.error("Error deleting Mashreq report:", err);
             alert(t("mashreq.deleteError", "Failed to delete report."));
         }
         handleMenuClose(id);

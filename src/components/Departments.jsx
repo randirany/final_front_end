@@ -104,7 +104,6 @@ function Departments() {
             }
 
         } catch (err) {
-            console.error('Error fetching departments:', err);
             toast.error(t('departments.fetchError', 'Failed to fetch departments.'));
             setAllDepartments([]);
             setAllSystemEmployees([]);
@@ -136,7 +135,6 @@ function Departments() {
             }));
             setDepartmentEmployees(formattedEmployees);
         } catch (err) {
-            console.error(`Error fetching employees for department ${departmentId}:`, err);
             toast.error(t('employees.fetchErrorSpecific', 'Failed to fetch employees for this department.'));
             setDepartmentEmployees([]);
         } finally {
@@ -204,7 +202,6 @@ function Departments() {
                 toast.success(t('departments.deleteSuccess', 'Department deleted successfully.'));
                 fetchDepartments();
             } catch (err) {
-                console.error('Error deleting department:', err);
                 toast.error(err.response?.data?.message || t('departments.deleteError', 'Error deleting department.'));
             }
         }
@@ -231,7 +228,6 @@ function Departments() {
             setShowAddEmployeeForm(false);
             setEmployeeFormData({ name: '', email: '', password: '' });
         } catch (err) {
-            console.error('Error adding employee:', err);
             toast.error(err.response?.data?.message || t('departments.addEmployeeError', 'Error adding employee.'));
         }
     };
@@ -250,7 +246,6 @@ function Departments() {
             setShowAddHeadForm(false);
             setHeadFormData({ name: '', email: '', password: '' });
         } catch (err) {
-            console.error('Error adding department head:', err);
             toast.error(err.response?.data?.message || t('departments.addHeadError', 'Error adding department head.'));
         }
     };
@@ -280,7 +275,6 @@ function Departments() {
                     }
                 }
             } catch (err) {
-                console.error('Error removing user:', err);
                 toast.error(err.response?.data?.message || t('departments.removeUserError', 'Error removing user.'));
             }
         }
@@ -317,7 +311,6 @@ function Departments() {
             setSelectedDepartment(null);
             setDepartmentFormData({ name: '', description: '', permissions: [] });
         } catch (err) {
-            console.error('Error updating department:', err);
             toast.error(err.response?.data?.message || t('departments.updateError', 'Error updating department.'));
         }
     };
@@ -336,7 +329,6 @@ function Departments() {
             setShowEditForm(false); // Assuming this form is reused for add and edit
             setDepartmentFormData({ name: '', description: '', permissions: [] });
         } catch (err) {
-            console.error('Error adding department:', err);
             toast.error(err.response?.data?.message || t('departments.addError', 'Error adding department.'));
         }
     };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -93,7 +93,6 @@ function HolyLandRep() {
             });
             setAllHoliReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Holy Land reports:', err);
             setAllHoliReports([]);
         } finally {
             setLoading(false);
@@ -228,7 +227,6 @@ function HolyLandRep() {
             await axios.delete(`http://localhost:3002/api/v1/HolyLand/delete/${reportIdToDelete}`, { headers: { token } });
             fetchHoliReports();
         } catch (err) {
-            console.error("Error deleting Holy Land report:", err);
             alert(t('holyLand.deleteError'));
         }
         handleMenuClose(reportIdToDelete);

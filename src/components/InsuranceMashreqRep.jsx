@@ -42,7 +42,6 @@ function InsuranceMashreqRep({ onClose, isOpen, onReportAdded }) {
 
     useEffect(() => {
         if (isOpen) {
-            console.log("Opening Mashreq form in ADD mode, vehicleId from params:", vehicleId);
             setFormData(JSON.parse(JSON.stringify(memoizedInitialFormData)));
             setCurrentStep(1);
 
@@ -129,7 +128,6 @@ function InsuranceMashreqRep({ onClose, isOpen, onReportAdded }) {
         const url = `http://localhost:3002/api/v1/Al_MashreqAccidentReport/${endpointPath}`;
         try {
             const token = `islam__${localStorage.getItem("token")}`;
-            console.log(`Submitting Al Mashreq Data (ADD):`, url, dataToSend);
 
             const response = await fetch(url, {
                 method: method,
@@ -148,7 +146,6 @@ function InsuranceMashreqRep({ onClose, isOpen, onReportAdded }) {
             }
 
         } catch (error) {
-            console.error('Submission error (Mashreq):', error);
             alert(t('mashreq.formSubmissionError') + error.message);
         } finally {
             setIsSubmitting(false);

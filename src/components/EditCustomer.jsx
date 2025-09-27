@@ -49,7 +49,6 @@ function EditCustomer({ onClose, isOpen, customerData, onEditSuccess }) {
     }, [onClose, isOpen]);
 
     useEffect(() => {
-        console.log(customerData)
         if (isOpen && customerData) {
             setFormData({
                 first_name: customerData.first_name || "",

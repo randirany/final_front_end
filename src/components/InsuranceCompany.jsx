@@ -46,7 +46,6 @@ function InsuranceCompany() {
             const formattedData = res.data.map(item => ({ id: item._id, name: item.name, contact: item.contact, address: item.address, insuranceType: item.insuranceType, rates: item.rates, }));
             setAllCompanies(formattedData);
         } catch (err) {
-            console.error('Error fetching insurance companies:', err);
             setAllCompanies([]);
             toast.error(t('insuranceCompany.fetchError', 'Failed to fetch companies.'));
         } finally {
@@ -94,7 +93,6 @@ function InsuranceCompany() {
                     fetchCompanies();
 
                 } catch (err) {
-                    console.error("Error deleting insurance company:", err);
                     const errorMessage = err.response?.data?.message || t('insuranceCompany.deleteError', 'Error deleting company.');
                     toast.error(errorMessage);
                 }

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 const ThemeContext = createContext();
 
@@ -16,10 +17,8 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const htmlElement = document.documentElement;
     if (isDarkMode) {
-      console.log('dark');
       htmlElement.classList.add('dark');
     } else {
-      console.log('light');
       htmlElement.classList.remove('dark');
     }
     localStorage.setItem('darkMode', isDarkMode.toString());
@@ -34,4 +33,8 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
+};
+
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

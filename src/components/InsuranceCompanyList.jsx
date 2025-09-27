@@ -25,11 +25,9 @@ function InsuranceCompanyList() {
                 headers: { Authorization: `islam__${token}` }
             })
 
-            console.log('result', response.data)
 
             setCompanies(response.data)
         } catch (error) {
-            console.error("Error fetching companies:", error)
             alert(error instanceof Error ? error.message : "فشل في جلب شركات التأمين")
         } finally {
             setLoading(false)
@@ -50,14 +48,11 @@ function InsuranceCompanyList() {
                 headers: { Authorization: `islam__${token}` }
 
             })
-            console.log('hhhh')
 
-            console.log(response.data)
 
             setCompanies(companies.filter((company) => company._id !== companyToDelete._id))
             fetchCompanies()
         } catch (error) {
-            console.error("Error deleting company:", error)
             alert(error instanceof Error ? error.message : "فشل في حذف شركة التأمين")
         } finally {
             setDeleteLoading(false)

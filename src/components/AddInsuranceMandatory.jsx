@@ -68,10 +68,9 @@ const [company, setCompany] = useState([]);
             const res = await axios.get("http://localhost:3002/api/v1/agents/all", {
                 headers: { token }
             });
-            console.log(res.data.getAll);
             setAgents(res.data.getAll || []);
-        } catch (err) {
-            console.error("Error fetching agents:", err);
+        } catch {
+            // Handle error silently
         }
     }
 
@@ -81,10 +80,9 @@ const [company, setCompany] = useState([]);
             const res = await axios.get("http://localhost:3002/api/v1/company/all", {
                 headers: { token }
             });
-            console.log("res is "+res.data);
             setCompany(res.data || []);
-        } catch (err) {
-            console.error("Error fetching company:", err);
+        } catch {
+            // Handle error silently
         }
     }
 
@@ -201,7 +199,6 @@ const [company, setCompany] = useState([]);
                 formDataToSubmit,
                 { headers: { token, 'Content-Type': 'multipart/form-data' } }
             );
-            console.log(response.status)
             if (response.status === 200) {
                 setApiMessage(t('addInsuranceMandatory.errors.companyNotFoundGeneric', 'The specified insurance company was not found.'));
                 // return;
@@ -214,7 +211,6 @@ const [company, setCompany] = useState([]);
 
         } catch (error) {
             // --- START: MODIFIED ERROR HANDLING BLOCK ---
-            console.error("Error adding insurance:", error.response || error);
 
             let errorMessage = t('addInsuranceMandatory.alerts.addInsuranceFailed', 'Failed to add insurance. Please try again.');
 

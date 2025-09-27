@@ -24,9 +24,13 @@
             "title": "Notifications",
             "number": "new",
             "showAll": "See all notifications",
-                  "fetchError": "Failed to load notifications.",
-      "markReadError": "Failed to mark as read.",
-      "markAllReadError": "Failed to mark all as read."
+            "fetchError": "Failed to load notifications.",
+            "markReadError": "Failed to mark as read.",
+            "markAllReadError": "Failed to mark all as read.",
+            "viewAll": "View All Notifications",
+            "noNotifications": "No new notifications.",
+            "newCount": "{{count}} new",
+            "markAllRead": "Mark all as read"
         },
         "profileInf": {
             "view": "View profile",
@@ -2125,6 +2129,29 @@
     "add": "Add",
     "cancel": "Cancel",
     "saving": "Saving..."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Stay updated with your latest notifications",
+    "markAllRead": "Mark All Read",
+    "refresh": "Refresh",
+    "retry": "Try Again",
+    "noToken": "Authentication required",
+    "fetchError": "Failed to load notifications",
+    "markRead": "Mark Read",
+    "from": "From",
+    "filter": {
+      "all": "All",
+      "unread": "Unread",
+      "read": "Read"
+    },
+    "search": {
+      "placeholder": "Search notifications..."
+    },
+    "noResults": "No notifications match your search",
+    "noUnread": "No unread notifications",
+    "noRead": "No read notifications",
+    "empty": "No notifications yet"
   }
-    
+
 }

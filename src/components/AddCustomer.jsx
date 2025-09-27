@@ -79,11 +79,10 @@ function AddCustomer({ onClose, isOpen, onAddSuccess }) {
                     const res = await axios.get("http://localhost:3002/api/v1/agents/all", {
                         headers: { token }
                     });
-                    console.log(res.data.getAll);
                     setAgents(res.data.getAll || []);
-                } catch (err) {
-                    console.error("Error fetching agents:", err);
-                }
+                } catch {
+            // Handle error silently
+        }
             };
             fetchAgents();
         }

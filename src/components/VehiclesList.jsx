@@ -24,7 +24,6 @@ function VehiclesList({ id }) {
       setIsEditModalOpen(false);
       fetchVehicles()
     } catch (error) {
-      console.error("Error updating vehicle:", error);
       setError("حدث خطأ أثناء تعديل المركبة");
     }
   };
@@ -36,11 +35,9 @@ function VehiclesList({ id }) {
       const { data } = await axios.get(`http://localhost:3002/api/v1/insured/allVec/${id}`, {
         headers: { Authorization: `islam__${token}` },
       })
-      console.log("Vehicles data:", data)
       setVehicles(data.vehicles || [])
       setLoading(false)
     } catch (error) {
-      console.error("Error fetching vehicles:", error)
       setError("حدث خطأ أثناء جلب بيانات المركبات")
       setLoading(false)
     }
@@ -57,7 +54,6 @@ function VehiclesList({ id }) {
 
       fetchVehicles()
     } catch (error) {
-      console.error("Error deleting vehicle:", error)
       setError("حدث خطأ أثناء حذف المركبة")
     }
   }

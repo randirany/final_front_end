@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -86,7 +86,6 @@ function TakafulRep() {
             }));
             setAllTakafulReports(formattedData);
         } catch (err) {
-            console.error('Error fetching Takaful reports:', err);
             setAllTakafulReports([]);
         } finally {
             setLoading(false);
@@ -220,7 +219,6 @@ function TakafulRep() {
             await axios.delete(`http://localhost:3002/api/v1/TakafulAccidentReport/delete/${id}`, { headers: { token } });
             fetchTakafulReports();
         } catch (err) {
-            console.error("Error deleting Takaful report:", err);
             alert(t('takaful.deleteError', "Failed to delete report."));
         }
         handleMenuClose(id);

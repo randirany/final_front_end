@@ -228,9 +228,6 @@ function DetailsVehicle() {
                     <div className="rounded-lg bg-[rgb(255,255,255)] p-6 shadow-sm mb-6  dark:bg-navbarBack ">
                         <div className="mb-4 flex items-center justify-center">
                             <h2 className="text-[24px] font-semibold text-gray-900 dark:text-[rgb(255,255,255)]">Payments Summary</h2>
-                            {/* <button className="rounded-lg bg-[#5750F1] px-4 py-2 text-sm font-medium text-[rgb(255,255,255)] hover:bg-[#5750F1]/90" onClick={() => { setAddCustomerOpen(true); console.log('open') }}>
-                                Add New Vehicle
-                            </button> */}
                         </div>
 
                         <div className="relative ">
@@ -267,14 +264,11 @@ function DetailsVehicle() {
                                 </a>
                                 <a className="bg-secnodColor rounded-[8px] text-center py-[10px] cursor-pointer" onClick={() => {
                                     setIsReportOpen(true);
-                                    console.log(isReportOpen)
                                     setSlug('')
                                 }}>
                                     <p>Accident Report </p>
                                 </a>
-                                <a className={` rounded-[8px] text-center py-[10px] cursor-pointer ${slug == 'Payments_receipts' ? "bg-[#5750F1] text-[rgb(255,255,255)]" : "bg-secnodColor"}`} onClick={() => { setSlug('Payments_receipts'); console.log(slug) }}>
                                     <p>Payments Receipts </p>
-                                </a>
                             </div>
                         </div>
                     </div>

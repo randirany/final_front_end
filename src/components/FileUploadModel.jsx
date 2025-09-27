@@ -91,7 +91,6 @@ function FileUploadModal({ isOpen, onClose }) {
             await onUpload(files, fileDescription);
             onClose();
         } catch (error) {
-            console.error("Upload failed:", error);
             alert(t("fileUploadModal.alerts.uploadFailed", "Upload failed. Please try again."));
         } finally {
             setIsSubmitting(false);

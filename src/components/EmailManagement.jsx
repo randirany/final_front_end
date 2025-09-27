@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -132,7 +132,6 @@ export default function EmailManagement() {
 
       setCustomers(formattedData);
     } catch (err) {
-      console.error('Error fetching customers:', err);
       toast.error(t('email.errors.fetchCustomers', 'Failed to load customers'));
     } finally {
       setLoading(false);
@@ -204,7 +203,6 @@ export default function EmailManagement() {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // TODO: Replace with actual email API
-      console.log('Sending email:', values);
 
       toast.success(t('email.success.sent', 'Email sent successfully!'));
       resetForm();
@@ -229,7 +227,6 @@ export default function EmailManagement() {
       await new Promise(resolve => setTimeout(resolve, 3000));
 
       const recipients = customers.filter(c => selectedCustomers.includes(c.id));
-      console.log('Sending bulk email to:', recipients, 'Content:', values);
 
       toast.success(t('email.success.bulkSent', 'Bulk email sent to {{count}} recipients', { count: selectedCustomers.length }));
       resetForm();

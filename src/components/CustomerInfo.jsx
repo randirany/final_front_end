@@ -53,7 +53,6 @@ function CustomerInfo() {
       const response = await axios.get(`http://localhost:3002/api/v1/insured/allVec/${insuredId}`, { headers: { token } });
       setVehicles(response.data.vehicles);
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
       toast.error(t('vehicles.messages.fetchError', 'Failed to fetch vehicles.'));
     }
   }, [insuredId, t]);
@@ -64,9 +63,9 @@ function CustomerInfo() {
         const token = `islam__${localStorage.getItem("token")}`;
         const response = await axios.get(`http://localhost:3002/api/v1/insured/findInsured/${insuredId}`, { headers: { token } });
         setCustomerData(response.data.insured);
-      } catch (error) {
-        console.error("Error fetching customer data:", error);
-      }
+      } catch {
+            // Handle error silently
+        }
     };
     const fetchAllInsured = async () => {
       setLoadingAllInsured(true);
@@ -84,7 +83,6 @@ function CustomerInfo() {
         }));
         setAllInsuredCustomers(formattedData);
       } catch (error) {
-        console.error("Error fetching all insured customers:", error);
         setAllInsuredCustomers([]);
       } finally {
         setLoadingAllInsured(false);
@@ -148,7 +146,6 @@ function CustomerInfo() {
       toast.success(t("vehicles.messages.deleteSuccess", "تم حذف المركبة بنجاح!"));
       setVehicles(prev => prev.filter(v => v._id !== itemToDelete._id));
     } catch (error) {
-      console.error("Deletion failed:", error);
       const errorMessage = error.response?.data?.message || t("vehicles.messages.deleteError", "فشل حذف المركبة.");
       toast.error(errorMessage);
     } finally {
@@ -172,7 +169,6 @@ function CustomerInfo() {
       toast.success(t("customerInfo.attachments.uploadSuccess", "تم رفع الملفات بنجاح!"));
       setCustomerData(prev => ({ ...prev, attachments: res.data.attachments }));
     } catch (error) {
-      console.error(error);
       toast.error(t("customerInfo.attachments.uploadError", "فشل رفع الملفات."));
     }
   };

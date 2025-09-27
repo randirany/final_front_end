@@ -22,10 +22,6 @@ function SendMessage() {
                     </svg>
                     <NavLink to="/sendMessage">send Message </NavLink>
                 </div>
-
-                {/* <button onClick={() => { setAddCustomerOpen(true); console.log('open') }} className="bg-[#5750F1] py-[3px] px-[10px] rounded-md text-[rgb(255,255,255)] text-[12px]">
-                      Add New Customer
-                    </button> */}
             </div>
             <div className="flex gap-3 py-4 flex-row  ">
                 <div className="w-64 rounded-lg bg-[rgb(255,255,255)] shadow-sm">
