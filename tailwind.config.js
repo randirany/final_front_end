@@ -18,6 +18,11 @@ export default {
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },
+      fontFamily: {
+        'cairo': ['Cairo', 'sans-serif'],
+        'en': ['Open Sans', 'Roboto', 'Work Sans', 'Raleway', 'sans-serif'],
+        'ar': ['Cairo', 'sans-serif'],
+      },
       colors: {
 
 

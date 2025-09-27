@@ -32,6 +32,14 @@ import SmsSend from "../components/SmsSend.jsx";
 import OnlinePayment from "../components/OnlinePayment.jsx";
 import EmailManagement from "../components/EmailManagement.jsx";
 import NotificationsPage from "../Pages/NotificationsPage.jsx";
+import Cheques from "../Pages/Cheques.jsx";
+import AddCheque from "../Pages/AddCheque.jsx";
+import ViewCheque from "../Pages/ViewCheque.jsx";
+import EditCheque from "../Pages/EditCheque.jsx";
+import DocumentSettings from "../Pages/DocumentSettings.jsx";
+import AddDocumentSettings from "../Pages/AddDocumentSettings.jsx";
+import ViewDocumentSettings from "../Pages/ViewDocumentSettings.jsx";
+import EditDocumentSettings from "../Pages/EditDocumentSettings.jsx";
 
 const router = createBrowserRouter([
     {
@@ -71,6 +79,30 @@ const router = createBrowserRouter([
             }, {
                 path: '/notifications',
                 element: <ProtectedRouter> <NotificationsPage /></ProtectedRouter>
+            }, {
+                path: '/cheques',
+                element: <ProtectedRouter> <Cheques /></ProtectedRouter>
+            }, {
+                path: '/cheques/add',
+                element: <ProtectedRouter> <AddCheque /></ProtectedRouter>
+            }, {
+                path: '/cheques/view/:id',
+                element: <ProtectedRouter> <ViewCheque /></ProtectedRouter>
+            }, {
+                path: '/cheques/edit/:id',
+                element: <ProtectedRouter> <EditCheque /></ProtectedRouter>
+            }, {
+                path: '/document-settings',
+                element: <ProtectedRouter> <DocumentSettings /></ProtectedRouter>
+            }, {
+                path: '/document-settings/add',
+                element: <ProtectedRouter> <AddDocumentSettings /></ProtectedRouter>
+            }, {
+                path: '/document-settings/view/:id',
+                element: <ProtectedRouter> <ViewDocumentSettings /></ProtectedRouter>
+            }, {
+                path: '/document-settings/edit/:id',
+                element: <ProtectedRouter> <EditDocumentSettings /></ProtectedRouter>
             }, {
                 path: '/profile/:insuredId',
                 element: <ProtectedRouter> <CustomerInfo /></ProtectedRouter>

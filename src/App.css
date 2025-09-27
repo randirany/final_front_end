@@ -51,12 +51,179 @@ body::-webkit-scrollbar {
 }
 
 .MuiDataGrid-cell {
-  font-family: 'Itim';
+  font-family: var(--font-arabic);
   color: #6B7280;
 }
 .MuiDataGrid-columnHeaderTitle {
-  font-family: 'Itim';
+  font-family: var(--font-arabic);
   color: #6B7280;
+}
+
+/* Language-specific MUI DataGrid styling */
+[dir="ltr"] .MuiDataGrid-cell,
+[dir="ltr"] .MuiDataGrid-columnHeaderTitle {
+  font-family: var(--font-english);
+}
+
+[dir="rtl"] .MuiDataGrid-cell,
+[dir="rtl"] .MuiDataGrid-columnHeaderTitle {
+  font-family: var(--font-arabic);
+}
+
+/* Comprehensive font styling for all UI elements */
+/* Buttons, inputs, forms, modals, tables, etc. */
+button, input, textarea, select,
+.btn, .form-control, .form-select,
+.modal, .modal-content, .modal-header, .modal-body, .modal-footer,
+.table, .table th, .table td,
+.card, .card-body, .card-header, .card-footer,
+.nav, .nav-link, .navbar-brand,
+.dropdown-menu, .dropdown-item,
+.alert, .badge, .breadcrumb,
+.pagination, .page-link,
+.toast, .tooltip, .popover {
+  font-family: inherit;
+}
+
+/* Ensure all text elements inherit language-specific fonts */
+h1, h2, h3, h4, h5, h6, p, span, div, label, a,
+li, ul, ol, dl, dt, dd,
+th, td, caption,
+legend, fieldset {
+  font-family: inherit;
+}
+
+/* SweetAlert2 custom styling for language-specific fonts */
+.swal2-popup {
+  font-family: inherit !important;
+}
+
+.swal2-title, .swal2-content, .swal2-confirm, .swal2-cancel {
+  font-family: inherit !important;
+}
+
+/* React Toastify custom styling */
+.Toastify__toast {
+  font-family: inherit !important;
+}
+
+/* TinyMCE editor font styling */
+.tox .tox-edit-area__iframe,
+.tox-editor-container {
+  font-family: inherit !important;
+}
+
+/* Enhanced button font overrides for all button types */
+[dir="rtl"] button,
+[dir="rtl"] .MuiButton-root,
+[dir="rtl"] .MuiButton-text,
+[dir="rtl"] .MuiButton-contained,
+[dir="rtl"] .MuiButton-outlined,
+[dir="rtl"] .MuiIconButton-root,
+[dir="rtl"] .MuiFab-root,
+[dir="rtl"] .btn,
+[dir="rtl"] .button,
+[dir="rtl"] input[type="button"],
+[dir="rtl"] input[type="submit"],
+[dir="rtl"] input[type="reset"] {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Enhanced table font overrides */
+[dir="rtl"] table,
+[dir="rtl"] .table,
+[dir="rtl"] .MuiTable-root,
+[dir="rtl"] .MuiTableContainer-root,
+[dir="rtl"] .MuiTableHead-root,
+[dir="rtl"] .MuiTableBody-root,
+[dir="rtl"] .MuiTableRow-root,
+[dir="rtl"] .MuiTableCell-root,
+[dir="rtl"] .MuiTableCell-head,
+[dir="rtl"] .MuiTableCell-body,
+[dir="rtl"] thead,
+[dir="rtl"] tbody,
+[dir="rtl"] th,
+[dir="rtl"] td,
+[dir="rtl"] tr,
+[dir="rtl"] caption {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Enhanced form element font overrides */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select,
+[dir="rtl"] .MuiTextField-root,
+[dir="rtl"] .MuiTextField-root input,
+[dir="rtl"] .MuiTextField-root textarea,
+[dir="rtl"] .MuiTextField-root label,
+[dir="rtl"] .MuiInputBase-root,
+[dir="rtl"] .MuiInputBase-input,
+[dir="rtl"] .MuiInputLabel-root,
+[dir="rtl"] .MuiFormLabel-root,
+[dir="rtl"] .MuiSelect-root,
+[dir="rtl"] .MuiSelect-select,
+[dir="rtl"] .MuiFormControl-root,
+[dir="rtl"] .MuiFormControlLabel-root,
+[dir="rtl"] .MuiFormControlLabel-label,
+[dir="rtl"] .MuiFormHelperText-root,
+[dir="rtl"] .form-control,
+[dir="rtl"] .form-select,
+[dir="rtl"] label,
+[dir="rtl"] fieldset,
+[dir="rtl"] legend {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Enhanced navigation and menu font overrides */
+[dir="rtl"] .nav,
+[dir="rtl"] .nav-link,
+[dir="rtl"] .navbar,
+[dir="rtl"] .navbar-brand,
+[dir="rtl"] .navbar-nav,
+[dir="rtl"] .dropdown-menu,
+[dir="rtl"] .dropdown-item,
+[dir="rtl"] .MuiMenuItem-root,
+[dir="rtl"] .MuiMenu-list,
+[dir="rtl"] .MuiMenu-paper,
+[dir="rtl"] .MuiMenuList-root {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Enhanced modal and dialog font overrides */
+[dir="rtl"] .modal,
+[dir="rtl"] .modal-content,
+[dir="rtl"] .modal-header,
+[dir="rtl"] .modal-body,
+[dir="rtl"] .modal-footer,
+[dir="rtl"] .MuiModal-root,
+[dir="rtl"] .MuiDialog-root,
+[dir="rtl"] .MuiDialog-paper,
+[dir="rtl"] .MuiDialog-container,
+[dir="rtl"] .MuiDialogTitle-root,
+[dir="rtl"] .MuiDialogContent-root,
+[dir="rtl"] .MuiDialogContentText-root,
+[dir="rtl"] .MuiDialogActions-root,
+[dir="rtl"] .MuiBackdrop-root {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Enhanced typography and text elements */
+[dir="rtl"] .MuiTypography-root,
+[dir="rtl"] .MuiTypography-h1,
+[dir="rtl"] .MuiTypography-h2,
+[dir="rtl"] .MuiTypography-h3,
+[dir="rtl"] .MuiTypography-h4,
+[dir="rtl"] .MuiTypography-h5,
+[dir="rtl"] .MuiTypography-h6,
+[dir="rtl"] .MuiTypography-body1,
+[dir="rtl"] .MuiTypography-body2,
+[dir="rtl"] .MuiTypography-caption,
+[dir="rtl"] .MuiTypography-subtitle1,
+[dir="rtl"] .MuiTypography-subtitle2,
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6,
+[dir="rtl"] p, [dir="rtl"] span, [dir="rtl"] div, [dir="rtl"] a {
+  font-family: var(--font-arabic) !important;
 }
 
 

@@ -192,7 +192,7 @@ function AhlieReport() {
         if (filteredAhliaReports.length === 0) { toast.info(t('common.noDataToExport')); return; }
         const printWindow = window.open('', '_blank');
         const title = t('ahliaReport.printReportTitle', 'Al-Ahlia Accident Reports');
-        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:Arial,sans-serif;direction:${language === 'ar' ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${language === 'ar' ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
+        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'};direction:${language === 'ar' ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${language === 'ar' ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
         tableHeaders.filter(c => c.key !== 'actions').forEach(col => printWindow.document.write(`<th>${col.label}</th>`));
         printWindow.document.write('</tr></thead><tbody>');
         filteredAhliaReports.forEach(report => {

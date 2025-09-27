@@ -1,18 +1,41 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Readex+Pro:wght@160..700&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Itim&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Readex+Pro:wght@160..700&display=swap'); */
+/* Google Fonts Import for Cairo and English fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    /* font-family: "Readex Pro", serif; */
-    /* font-family: "Itim", serif; */
-  font-family: "Cairo", sans-serif;
+/* Root font configuration */
+:root {
+  --font-arabic: 'Cairo', sans-serif;
+  --font-english: 'Open Sans', 'Roboto', 'Work Sans', 'Raleway', sans-serif;
+}
 
-    /* direction: rtl; */
-    
+/* Global body font - default to Cairo */
+body {
+  font-family: var(--font-arabic);
+}
+
+/* Language-specific font classes */
+.font-arabic,
+[lang="ar"],
+[dir="rtl"] {
+  font-family: var(--font-arabic) !important;
+}
+
+.font-english,
+[lang="en"],
+[dir="ltr"] {
+  font-family: var(--font-english) !important;
+}
+
+/* Automatic language detection for mixed content */
+.auto-font {
+  font-family: var(--font-arabic);
+}
+
+.auto-font[lang="en"] {
+  font-family: var(--font-english);
 }
 
 @layer components {
@@ -23,5 +46,239 @@ body {
     .navblayout {
         @apply w-[95%] max-w-[1220px] m-auto
     }
+
+    /* Language-aware font utility classes */
+    .text-arabic {
+        font-family: var(--font-arabic);
+    }
+
+    .text-english {
+        font-family: var(--font-english);
+    }
+
+    .text-auto {
+        font-family: var(--font-arabic);
+    }
+
+    .text-auto[lang="en"] {
+        font-family: var(--font-english);
+    }
+}
+
+@layer utilities {
+    /* Force Cairo font for all Arabic content */
+    .force-cairo {
+        font-family: 'Cairo', sans-serif !important;
+    }
+
+    /* Force English fonts for English content */
+    .force-english {
+        font-family: 'Open Sans', 'Roboto', 'Work Sans', 'Raleway', sans-serif !important;
+    }
+}
+
+/* Comprehensive Material-UI component font overrides for Arabic */
+[dir="rtl"] .MuiButton-root,
+[dir="rtl"] .MuiButton-text,
+[dir="rtl"] .MuiButton-contained,
+[dir="rtl"] .MuiButton-outlined,
+[dir="rtl"] .MuiIconButton-root,
+[dir="rtl"] .MuiTextField-root,
+[dir="rtl"] .MuiTextField-root input,
+[dir="rtl"] .MuiTextField-root textarea,
+[dir="rtl"] .MuiTextField-root label,
+[dir="rtl"] .MuiInputBase-root,
+[dir="rtl"] .MuiInputBase-input,
+[dir="rtl"] .MuiInputLabel-root,
+[dir="rtl"] .MuiFormLabel-root,
+[dir="rtl"] .MuiSelect-root,
+[dir="rtl"] .MuiSelect-select,
+[dir="rtl"] .MuiMenuItem-root,
+[dir="rtl"] .MuiMenu-list,
+[dir="rtl"] .MuiMenu-paper,
+[dir="rtl"] .MuiModal-root,
+[dir="rtl"] .MuiDialog-root,
+[dir="rtl"] .MuiDialog-paper,
+[dir="rtl"] .MuiDialogTitle-root,
+[dir="rtl"] .MuiDialogContent-root,
+[dir="rtl"] .MuiDialogActions-root,
+[dir="rtl"] .MuiTypography-root,
+[dir="rtl"] .MuiTable-root,
+[dir="rtl"] .MuiTableHead-root,
+[dir="rtl"] .MuiTableBody-root,
+[dir="rtl"] .MuiTableRow-root,
+[dir="rtl"] .MuiTableCell-root,
+[dir="rtl"] .MuiTableCell-head,
+[dir="rtl"] .MuiTableCell-body,
+[dir="rtl"] .MuiCheckbox-root,
+[dir="rtl"] .MuiFormControlLabel-root,
+[dir="rtl"] .MuiFormControlLabel-label,
+[dir="rtl"] .MuiRadio-root,
+[dir="rtl"] .MuiSwitch-root,
+[dir="rtl"] .MuiChip-root,
+[dir="rtl"] .MuiChip-label,
+[dir="rtl"] .MuiTooltip-tooltip,
+[dir="rtl"] .MuiSnackbar-root,
+[dir="rtl"] .MuiAlert-root,
+[dir="rtl"] .MuiAlert-message,
+[dir="rtl"] .MuiPagination-root,
+[dir="rtl"] .MuiPaginationItem-root,
+[dir="rtl"] .MuiTab-root,
+[dir="rtl"] .MuiTabs-root,
+[dir="rtl"] .MuiAccordion-root,
+[dir="rtl"] .MuiAccordionSummary-root,
+[dir="rtl"] .MuiAccordionDetails-root,
+[dir="rtl"] .MuiCard-root,
+[dir="rtl"] .MuiCardHeader-root,
+[dir="rtl"] .MuiCardContent-root,
+[dir="rtl"] .MuiCardActions-root,
+[dir="rtl"] .MuiListItem-root,
+[dir="rtl"] .MuiListItemText-root,
+[dir="rtl"] .MuiListItemText-primary,
+[dir="rtl"] .MuiListItemText-secondary {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Material-UI DataGrid specific overrides for Arabic */
+[dir="rtl"] .MuiDataGrid-root,
+[dir="rtl"] .MuiDataGrid-main,
+[dir="rtl"] .MuiDataGrid-overlay,
+[dir="rtl"] .MuiDataGrid-toolbarContainer,
+[dir="rtl"] .MuiDataGrid-columnsContainer,
+[dir="rtl"] .MuiDataGrid-columnHeaders,
+[dir="rtl"] .MuiDataGrid-columnHeader,
+[dir="rtl"] .MuiDataGrid-columnHeaderTitle,
+[dir="rtl"] .MuiDataGrid-sortIcon,
+[dir="rtl"] .MuiDataGrid-menuIcon,
+[dir="rtl"] .MuiDataGrid-filterIcon,
+[dir="rtl"] .MuiDataGrid-row,
+[dir="rtl"] .MuiDataGrid-cell,
+[dir="rtl"] .MuiDataGrid-cellContent,
+[dir="rtl"] .MuiDataGrid-renderingZone,
+[dir="rtl"] .MuiDataGrid-virtualScroller,
+[dir="rtl"] .MuiDataGrid-footerContainer,
+[dir="rtl"] .MuiDataGrid-selectedRowCount,
+[dir="rtl"] .MuiTablePagination-root,
+[dir="rtl"] .MuiTablePagination-toolbar,
+[dir="rtl"] .MuiTablePagination-selectLabel,
+[dir="rtl"] .MuiTablePagination-displayedRows,
+[dir="rtl"] .MuiTablePagination-select,
+[dir="rtl"] .MuiTablePagination-actions {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Force Cairo font for all HTML elements when Arabic is active */
+html[dir="rtl"] *,
+html[dir="rtl"] *:before,
+html[dir="rtl"] *:after {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Arabic language specific overrides */
+[lang="ar"] *,
+[lang="ar"] *:before,
+[lang="ar"] *:after {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Button and interactive elements in Arabic */
+[dir="rtl"] button,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select,
+[dir="rtl"] .btn,
+[dir="rtl"] .button,
+[dir="rtl"] a,
+[dir="rtl"] label,
+[dir="rtl"] span,
+[dir="rtl"] div,
+[dir="rtl"] p,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+[dir="rtl"] table,
+[dir="rtl"] th,
+[dir="rtl"] td,
+[dir="rtl"] tr,
+[dir="rtl"] thead,
+[dir="rtl"] tbody,
+[dir="rtl"] tfoot {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Third-party library overrides for Arabic */
+[dir="rtl"] .swal2-popup,
+[dir="rtl"] .swal2-title,
+[dir="rtl"] .swal2-content,
+[dir="rtl"] .swal2-confirm,
+[dir="rtl"] .swal2-cancel,
+[dir="rtl"] .swal2-deny,
+[dir="rtl"] .swal2-close,
+[dir="rtl"] .Toastify__toast,
+[dir="rtl"] .Toastify__toast-body,
+[dir="rtl"] .react-hot-toast,
+[dir="rtl"] .tox,
+[dir="rtl"] .tox-edit-area__iframe,
+[dir="rtl"] .tox-editor-container,
+[dir="rtl"] .tox-menubar,
+[dir="rtl"] .tox-toolbar,
+[dir="rtl"] .tox-statusbar {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Specific overrides for common class names */
+[dir="rtl"] .text-sm,
+[dir="rtl"] .text-base,
+[dir="rtl"] .text-lg,
+[dir="rtl"] .text-xl,
+[dir="rtl"] .text-2xl,
+[dir="rtl"] .text-3xl,
+[dir="rtl"] .font-medium,
+[dir="rtl"] .font-semibold,
+[dir="rtl"] .font-bold,
+[dir="rtl"] .dropdown-menu,
+[dir="rtl"] .dropdown-item,
+[dir="rtl"] .nav-link,
+[dir="rtl"] .navbar-brand,
+[dir="rtl"] .card,
+[dir="rtl"] .card-header,
+[dir="rtl"] .card-body,
+[dir="rtl"] .card-footer,
+[dir="rtl"] .modal,
+[dir="rtl"] .modal-header,
+[dir="rtl"] .modal-body,
+[dir="rtl"] .modal-footer,
+[dir="rtl"] .alert,
+[dir="rtl"] .badge,
+[dir="rtl"] .breadcrumb,
+[dir="rtl"] .pagination,
+[dir="rtl"] .page-link {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Additional universal font coverage for Arabic */
+[dir="rtl"] * {
+    font-family: var(--font-arabic) !important;
+}
+
+/* Even more aggressive font override for Arabic content */
+html[lang="ar"] *,
+html[lang="ar"] *:before,
+html[lang="ar"] *:after,
+body[dir="rtl"] *,
+body[dir="rtl"] *:before,
+body[dir="rtl"] *:after {
+    font-family: 'Cairo', sans-serif !important;
+}
+
+/* Ultimate fallback for any remaining elements */
+.arabic-font,
+.ar-font,
+[data-lang="ar"] *,
+[data-direction="rtl"] * {
+    font-family: 'Cairo', sans-serif !important;
 }
 

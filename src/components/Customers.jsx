@@ -140,7 +140,7 @@ export default function Customers() {
         th { background-color: #f2f2f2; }
         tr:nth-child(even) { background-color: #f9f9f9; }
         @media print {
-            body { font-family: Arial, sans-serif; }
+            body { font-family: ${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
             .no-print { display: none; }
         }
     `);

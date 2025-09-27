@@ -190,7 +190,7 @@ function AllInsurances() {
         printWindow.document.write('<html><head><title>Print Report</title>');
         printWindow.document.write(`
             <style>
-                body { font-family: Arial, sans-serif; }
+                body { font-family: ${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
                 table { width: 100%; border-collapse: collapse; }
                 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 th { background-color: #f2f2f2; }

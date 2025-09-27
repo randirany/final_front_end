@@ -113,7 +113,7 @@ function SendMessage() {
                                                         'bold italic forecolor | alignleft aligncenter ' +
                                                         'alignright alignjustify | bullist numlist outdent indent | ' +
                                                         'removeformat | image link | help',
-                                                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                                                    content_style: `body { font-family:${language === 'ar' ? 'Cairo, sans-serif' : 'Helvetica, Arial, sans-serif'}; font-size:14px }`
                                                 }}
                                                 // onEditorChange={handleEditorChange} // استدعاء الدالة عند تغيير المحتوى
                                             />

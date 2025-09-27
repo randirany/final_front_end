@@ -628,7 +628,7 @@ function Departments() {
 
         const printWindow = window.open('', '_blank');
         printWindow.document.write('<html><head><title>' + tableTitle + '</title>');
-        printWindow.document.write('<style>body{font-family: Arial, sans-serif; margin: 20px;} table{width: 100%; border-collapse: collapse;} th,td{border: 1px solid #ddd; padding: 8px; text-align: left;} th{background-color: #f2f2f2;} h1{text-align: center;} @media print{.no-print{display:none;}}</style>');
+        printWindow.document.write('<style>body{font-family: ' + (language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif') + '; margin: 20px;} table{width: 100%; border-collapse: collapse;} th,td{border: 1px solid #ddd; padding: 8px; text-align: left;} th{background-color: #f2f2f2;} h1{text-align: center;} @media print{.no-print{display:none;}}</style>');
         printWindow.document.write('</head><body>');
         printWindow.document.write('<h1>' + tableTitle + '</h1>');
         printWindow.document.write('<table><thead><tr>');
