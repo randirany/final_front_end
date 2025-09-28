@@ -6,14 +6,15 @@
     "errors": {
         "unknown": "An error occurred. Please try again.",
         "network": "Network error. Please check your connection and try again.",
-        "notFound": "The requested resource was not found."
+        "notFound": "The requested resource was not found.",
+        "networkError": "Network Error"
     },
-      "time": {
-    "now": "just now",
-    "minutesAgo": "{{count}}m ago",
-    "hoursAgo": "{{count}}h ago",
-    "daysAgo": "{{count}}d ago"
-  },
+    "time": {
+        "now": "just now",
+        "minutesAgo": "{{count}}m ago",
+        "hoursAgo": "{{count}}h ago",
+        "daysAgo": "{{count}}d ago"
+    },
     "nav": {
         "fisrtTitle": "Dashboard",
         "secondTitle": "AB Dashboard",
@@ -36,13 +37,17 @@
             "viewAll": "View All Notifications",
             "noNotifications": "No new notifications.",
             "newCount": "{{count}} new",
-            "markAllRead": "Mark all as read"
+            "markAllRead": "Mark all as read",
+            "seeAll": "See All"
         },
         "profileInf": {
             "view": "View profile",
             "setting": "Account settings",
             "logout": "Logout"
-        }
+        },
+        "switchToLight": "Switch To Light",
+        "switchToDark": "Switch To Dark",
+        "home": "Home"
     },
     "sideBar": {
         "mainMenu": {
@@ -117,19 +122,19 @@
         "TotalCash": "Total cash Payment",
         "TotalBank": "Total Bank Transferes",
         "TotalProfit": "Total Profit",
-        "checkPayments":"Total check",
-        "totalCar":"Total Car",
-        "ActiveInsurancesCount":"Total active Insurances",
-        "ExpiredInsurancesCount":"Total Expired Insurances",
-        "accident":"Total accident",
-         "Agents":"total Agents",
-             "returnedChecksTotal":"Total returned Checks",
+        "checkPayments": "Total check",
+        "totalCar": "Total Car",
+        "ActiveInsurancesCount": "Total active Insurances",
+        "ExpiredInsurancesCount": "Total Expired Insurances",
+        "accident": "Total accident",
+        "Agents": "total Agents",
+        "returnedChecksTotal": "Total returned Checks",
         "chart": {
             "title": "Payments Overview",
             "short": "Short by:",
             "ReceivedAmount": "Received Amount",
             "DueAmount": "Due Amount",
-             "customersGrowth":"customer Overview"
+            "customersGrowth": "customer Overview"
         },
         "loading": "Loading dashboard data...",
         "error": "Error",
@@ -220,7 +225,9 @@
             "addError": "Failed to add customer.",
             "editSuccess": "Customer updated successfully!",
             "editError": "Failed to update customer.",
-            "editErrorNoId": "Customer ID is missing. Cannot update."
+            "editErrorNoId": "Customer ID is missing. Cannot update.",
+            "deleteSuccess": "Delete Success",
+            "updateSuccess": "Update Success"
         },
         "table": {
             "name": "Name",
@@ -230,69 +237,6 @@
             "address": "Address",
             "agent": "Agent",
             "actions": "Actions"
-        },
-        "vehicles": {
-            "addModal": {
-                "title": "Add New Vehicle"
-            },
-            "labels": {
-                "modelName": "Vehicle Model/Name",
-                "plateNumber": "Vehicle Plate Number",
-                "chassisNumber": "Chassis Number (VIN)",
-                "type": "Vehicle Type",
-                "ownership": "Ownership",
-                "licenseExpiry": "License Expiry Date",
-                "lastTestDate": "Last Test Date",
-                "color": "Vehicle Color",
-                "price": "Vehicle Price",
-                "imageOptional": "Vehicle Image (Optional)",
-                "selectedFiles": "Selected files:"
-            },
-            "placeholders": {
-                "modelName": "e.g., Toyota Camry",
-                "plateNumber": "Enter Plate Number",
-                "chassisNumber": "Enter Chassis Number",
-                "type": "e.g., Sedan, SUV",
-                "ownership": "e.g., Private, Company",
-                "color": "e.g., Red, Blue",
-                "price": "Enter Vehicle Price"
-            },
-            "dropArea": {
-                "text": "Drop Files here or click to upload"
-            },
-            "buttons": {
-                "submitAdd": "Submit Vehicle",
-                "submittingAdd": "Submitting..."
-            },
-            "messages": {
-                "fetchingData": "Fetching vehicle data...",
-                "notFound": "No data found for this vehicle.",
-                "correctErrors": "Please correct the errors in the form.",
-                "apiError": "Error fetching vehicle data from external API.",
-                "insuredIdMissing": "Insured ID is missing. Cannot add vehicle.",
-                "tokenMissing": "Authentication token not found. Please log in again.",
-                "addSuccess": "Vehicle added successfully!",
-                "addError": "Failed to add vehicle."
-            },
-            "validation": {
-                "Agent": "Please ensure the agent's name is correct.",
-                "alreadyExists": "This Identity Number is already registered.",
-                "firstName": "First name is required.",
-                "lastName": "Last name is required.",
-                "email": "Email is required.",
-                "invalidEmail": "Invalid email address.",
-                "id_Number": "Identity Number is required.",
-                "invalidIdNumber": "Invalid Israeli ID number format (must be 9 digits and pass Luhn checksum).",
-                "phone_number": "Phone number is required.",
-                "city": "City is required.",
-                "birth_date": "Birth date is required.",
-                "minimumAge": "Customer must be at least 16 years old."
-            },
-            "messages": {
-                "editErrorNoId": "Customer ID is missing. Cannot edit customer.",
-                "addSuccess": "Customer added successfully!",
-                "updateSuccess": "Customer updated successfully!"
-            }
         },
         "vehicles": {
             "validation": {
@@ -313,6 +257,37 @@
                 "insured": {
                     "notFound": "Insured person not found."
                 }
+            },
+            "messages": {
+                "insuredIdMissing": "Insured Id Missing"
+            },
+            "addModal": {
+                "title": "Title"
+            },
+            "labels": {
+                "modelName": "Model Name",
+                "plateNumber": "Plate Number",
+                "chassisNumber": "Chassis Number",
+                "type": "Type",
+                "ownership": "Ownership",
+                "licenseExpiry": "License Expiry",
+                "lastTestDate": "Last Test Date",
+                "color": "Color",
+                "price": "Price",
+                "imageOptional": "Image Optional"
+            },
+            "placeholders": {
+                "modelName": "Model Name",
+                "plateNumber": "Plate Number",
+                "chassisNumber": "Chassis Number",
+                "type": "Type",
+                "ownership": "Ownership",
+                "color": "Color",
+                "price": "Price"
+            },
+            "buttons": {
+                "submittingAdd": "Submitting Add",
+                "submitAdd": "Submit Add"
             }
         },
         "addVehicle": {
@@ -343,15 +318,65 @@
             "Agent": "Please ensure that Agent name",
             "AgentReq": "Agent name is required",
             "birth_date": "Birth date is required",
-            "alreadyExists": "Identity Number already exists"
-        }
+            "alreadyExists": "Identity Number already exists",
+            "invalidIdNumber": "Invalid Id Number",
+            "minimumAge": "Minimum Age"
+        },
+        "showing_results": "Showing {{count}} of {{total}} customers",
+        "no_name": "No name",
+        "no_customers": "No customers found",
+        "no_search_results": "Try modifying search criteria or add a new customer.",
+        "add_first_customer": "Add your first customer to get started.",
+        "end_of_results": "You have reached the end of results.",
+        "edit_title": "Edit Customer",
+        "exportSheetName": "Customers",
+        "exportExcelFileName": "customers_report.xlsx",
+        "report_title": "Customers Report",
+        "exportPdfFileName": "customers_report.pdf",
+        "delete_error": "Error deleting customer.",
+        "update_error": "Error updating customer.",
+        "form": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "idNumber": "ID Number",
+            "phone": "Phone Number",
+            "email": "Email",
+            "city": "City",
+            "birthDate": "Birth Date",
+            "joiningDate": "Joining Date",
+            "notes": "Notes"
+        },
+        "no_results": "No_results",
+        "exportCsvFileName": "Export Csv File Name"
     },
     "insuranceCompany.addTitle": "Add Insurance Company",
-
     "insuranceCompany": {
-                "addSuccess": "insurance Company added successfully!",
-                        "addErrorGeneric":"insurance Company added failed!",
-
+        "addTitle": "Add Insurance Company",
+        "fields": {
+            "name": "Company Name",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services",
+            "price": "Price",
+            "serviceName": "Service Name"
+        },
+        "type": {
+            "compulsory": "Compulsory",
+            "comprehensive": "Comprehensive"
+        },
+        "success": {
+            "added": "Company added successfully"
+        },
+        "errors": {
+            "nameRequired": "Company name is required",
+            "atLeastOneType": "Add at least one insurance type",
+            "addFailed": "Failed to add company"
+        },
+        "labels": {
+            "insuranceCompany": "Insurance Company"
+        },
+        "options": {
+            "chooseinsuranceCompany": "Chooseinsurance Company"
+        },
         "table": {
             "name": "Company Name",
             "contact": "Contact Info",
@@ -359,47 +384,44 @@
             "insuranceType": "Insurance Type",
             "actions": "Actions"
         },
-        "exportSheetName": "Insurance Companies",
-        "exportExcelFileName": "insurance_companies.xlsx",
-        "exportPdfTitle": "Insurance Companies Report",
-        "exportPdfFileName": "insurance_companies.pdf",
-        "deleteConfirm": "Are you sure you want to delete this company?",
-        "deleteError": "Error deleting company.",
-        "updateError": "Error updating company.",
-        "addButton": "Add Company",
-        "searchPlaceholder": "Search companies...",
-        "noCompanies": "No insurance companies found.",
-        "editTitle": "Edit Insurance Company",
-        "saveChangesButton": "Save",
-        "editSuccess": "Insurance company updated successfully.",
-        "editErrorNoId": "Company ID is missing. Cannot update.",
-        "editErrorGeneric": "Failed to update company.",
-        "form": {
-            "companyName": "Company Name",
-            "companyNamePlaceholder": "Enter company name",
-            "insuranceType": "Insurance Type",
-            "contact": "Contact Number",
-            "contactPlaceholder": "Enter contact number",
-            "address": "Address",
-            "addressPlaceholder": "Enter address",
-            "ratePlaceholder": "Enter "
-        },
-        "types": {
-            "mandatory": "Mandatory",
-            "comprehensive": "Comprehensive Third Party"
-        },
-        "ratesTitle": "Vehicle Rates",
         "tabs": {
             "privateCar": "Private Car",
             "commercialCar": "Commercial Car",
             "motorcycle": "Motorcycle"
         },
+        "editErrorNoId": "No company ID provided for editing",
+        "editSuccess": "Company updated successfully",
+        "editErrorGeneric": "Failed to update company",
         "rates": {
-            "under24": "Price for drivers under 24",
-            "over24": "Price for drivers over 24",
-            "offerAmount": "Offer amount",
-            "minFor60k": "Minimum for 60K"
-        }
+            "under24": "Under 24",
+            "over24": "Over 24",
+            "offerAmount": "Offer Amount",
+            "minFor60k": "Minimum for 60k"
+        },
+        "editTitle": "Edit Insurance Company",
+        "form": {
+            "companyName": "Company Name",
+            "insuranceType": "Insurance Type",
+            "contact": "Contact",
+            "address": "Address"
+        },
+        "types": {
+            "mandatory": "Mandatory",
+            "comprehensive": "Comprehensive"
+        },
+        "ratesTitle": "Insurance Rates",
+        "saveChangesButton": "Save Changes",
+        "fetchError": "Failed to fetch companies",
+        "deleteError": "Error deleting company",
+        "exportSheetName": "Insurance Companies",
+        "exportExcelFileName": "insurance_companies.xlsx",
+        "exportCsvFileName": "insurance_companies.csv",
+        "exportPdfTitle": "Insurance Companies Report",
+        "exportPdfFileName": "insurance_companies.pdf",
+        "printReportTitle": "Insurance Companies Report",
+        "addButton": "Add Company",
+        "searchPlaceholder": "Search companies...",
+        "noCompanies": "No insurance companies found"
     },
     "Email": "Email",
     "Name": "Name",
@@ -409,7 +431,7 @@
     "Add Agent": "Add Agent",
     "breadcrumbs": {
         "allInsurances": "All Insurances",
-        "home": "Dashboard",
+        "home": "Home",
         "agents": "Agents",
         "auditLogs": "Audit Logs",
         "insuranceCompanies": "Insurance Companies",
@@ -431,45 +453,42 @@
         "loginButton": "Login"
     },
     "common": {
-        "saveChanges": "save",
-        "exportExcel": "Excel",
-        "exportPdf": "PDF",
-        "exportCsv": "CSV",
-        "loading": "Loading...",
-        "loadingMore": "Loading more...",
-        "notAvailable": "N/A",
-        "edit": "Edit",
-        "delete": "Delete",
-        "view": "View",
-        "errorOccurred": "Something went wrong",
-        "errorDescription": "An unexpected error occurred. Please try refreshing the page.",
-        "refreshPage": "Refresh Page",
-        "goBack": "Go Back",
-        "persistentError": "If this error persists, please contact support.",
-        "download": "Download",
-        "print": "Print",
-        "remove": "Remove",
-        "searchPlaceholder": "Search ...",
-        "actions": "Actions",
-        "endOfResults": "You've reached the end of the results",
-        "noSearchResults": "No results found for your search.",
-        "noDataToExport": "No data available to export.",
-        "notAssigned": "Not assigned",
-        "errorOccurred": "An error occurred:",
-        "saving": "Saving...",
-        "save": "Save",
-        "cancel": "Cancel",
         "add": "Add",
-        "viewDetails": "View Details",
-        "name": "Name",
-        "email": "Email",
-        "password": "Password",
+        "cancel": "Cancel",
+        "saving": "Saving...",
+        "yes": "Yes",
+        "no": "No",
+        "noDataToExport": "No Data To Export",
+        "exportCsv": "Export Csv",
+        "exportExcel": "Export Excel",
+        "exportPdf": "Export Pdf",
+        "print": "Print",
+        "loading": "Loading",
+        "delete": "Delete",
+        "noSearchResults": "No Search Results",
+        "loadingMore": "Loading More",
+        "endOfResults": "End Of Results",
+        "actions": "Actions",
+        "searchPlaceholder": "Search Placeholder",
+        "no_results": "No_results",
+        "details": "Details",
+        "noData": "No Data",
+        "errorOccurred": "Error Occurred",
+        "notAvailable": "Not Available",
+        "edit": "Edit",
         "tableView": "Table View",
-        "cardView": "Card View"
+        "cardView": "Card View",
+        "noDataToPrint": "No Data To Print",
+        "viewDetails": "View Details",
+        "remove": "Remove",
+        "saveChanges": "Save Changes",
+        "save": "Save",
+        "view": "View",
+        "download": "Download"
     },
     "validation": {
-    "rateRequiredStrictlyPositive": "This rate is required and must be a positive number (greater than 0)."
-        ,"companyNameRequired": "Company Name is required",
+        "rateRequiredStrictlyPositive": "This rate is required and must be a positive number (greater than 0).",
+        "companyNameRequired": "Company Name is required",
         "paidExceedsInsurance": "Paid amount cannot exceed the insurance amount.",
         "contactRequired": "Contact Number is required",
         "addressRequired": "Address is required",
@@ -483,7 +502,8 @@
         "emailInvalid": "Invalid email address",
         "idNumberRequired": "Identity Number is required and must be a number",
         "phoneNumberRequired": "Phone number is required",
-        "cityRequired": "City is required"
+        "cityRequired": "City is required",
+        "nameRequired": "Name Required"
     },
     "departments": {
         "detailsTitle": "Department Details",
@@ -535,7 +555,9 @@
             "head": "Head of Department",
             "employeeCount": "Employee Count",
             "permissions": "Permissions",
-            "noPermissions": "No permissions defined"
+            "noPermissions": "No permissions defined",
+            "employees": "Employees",
+            "noEmployees": "No Employees"
         },
         "form": {
             "name": "Department Name",
@@ -544,7 +566,9 @@
         },
         "validation": {
             "nameRequired": "Department name is required."
-        }
+        },
+        "exportCsvFileName": "Export Csv File Name",
+        "printTitle": "Print Title"
     },
     "employees": {
         "name": "Head Name",
@@ -568,7 +592,10 @@
             "status": "Status",
             "department": "Department",
             "actions": "Actions"
-        }
+        },
+        "exportCsvFileName": "Export Csv File Name",
+        "printTitle": "Print Title",
+        "noEmployees": "No Employees"
     },
     "permissions": {
         "addAccedent": "Add Accident",
@@ -725,7 +752,10 @@
             "carLicense": "Car License",
             "carLicenseAlt": "Car License Image",
             "carImage": "Car Image",
-            "carImageAlt": "Car Image"
+            "carImageAlt": "Car Image",
+            "none": "None",
+            "uploadSuccess": "Upload Success",
+            "uploadError": "Upload Error"
         },
         "vehicles": {
             "title": "Vehicles",
@@ -834,7 +864,8 @@
         "errors": {
             "insuredNotFound": "Insured person not found. Please try again.",
             "vehicleNotFound": "The selected vehicle was not found for this customer. Please try again.",
-            "companyNotFoundGeneric": "The specified insurance company was not found."
+            "companyNotFoundGeneric": "The specified insurance company was not found.",
+            "networkError": "Network Error"
         },
         "title": "Add New Insurance",
         "labels": {
@@ -855,13 +886,15 @@
             "chooseType": "Choose Type",
             "yes": "Yes",
             "no": "No",
-            "choosePaymentMethod": "Choose Payment Method"
+            "choosePaymentMethod": "Choose Payment Method",
+            "chooseAgent": "Choose Agent"
         },
         "placeholders": {
             "insuranceCompany": "Enter company name",
             "agent": "Enter agent name",
             "insuranceAmount": "Enter Insurance Amount",
-            "paidAmount": "Enter Paid Amount"
+            "paidAmount": "Enter Paid Amount",
+            "insuranceType": "Insurance Type"
         },
         "insuranceTypes": {
             "mandatory": "Mandatory",
@@ -950,12 +983,14 @@
         "exportSheetName": "VehicleInsurances",
         "exportExcelFileName": "vehicle_insurances.xlsx",
         "exportPdfTitle": "Vehicle Insurances Report",
-        "exportPdfFileName": "vehicle_insurances.pdf"
+        "exportPdfFileName": "vehicle_insurances.pdf",
+        "exportCsvFileName": "Export Csv File Name",
+        "pdfReportTitle": "Pdf Report Title",
+        "printReportTitle": "Print Report Title"
     },
-
     "addCheckModal": {
         "title": "Add Check Details",
-        "successAdd":"Add Check successfully",
+        "successAdd": "Add Check successfully",
         "labels": {
             "checkNumber": "Check Number",
             "checkDueDate": "Check Due Date",
@@ -1132,7 +1167,8 @@
         "deleteError": "Failed to delete report. Check console for details.",
         "showing_results": "Showing {{count}} of {{total}} reports",
         "noReportsFound": "No Ahlia reports found.",
-        "show": "Showing {{count}} of {{total}} insurance"
+        "show": "Showing {{count}} of {{total}} insurance",
+        "printReportTitle": "Print Report Title"
     },
     "navigation": {
         "home": "Home",
@@ -1352,7 +1388,106 @@
         "confirmDelete": "Are you sure you want to delete this report?",
         "deleteError": "Failed to delete report. Check console for details.",
         "showing_results": "Showing {{count}} of {{total}} reports",
-        "noReportsFound": "No Mashreq reports found."
+        "noReportsFound": "No Mashreq reports found.",
+        "modalTitle": "Al Mashreq Accident Report Form",
+        "editModalTitle": "Edit Al Mashreq Report",
+        "formSubmissionSuccess": "Al Mashreq report submitted successfully!",
+        "formSubmissionUpdateSuccess": "Al Mashreq report updated successfully!",
+        "formSubmissionError": "Error submitting Al Mashreq report: ",
+        "vehicleIdParamRequiredError": "Vehicle ID is required to create a new Al Mashreq report.",
+        "accidentDateLabel": "تاريخ الحادث",
+        "accidentTimeLabel": "وقت الحادث",
+        "agentNumberLabel": "رقم الوكيل",
+        "policyNumberLabel": "رقم الوثيقة",
+        "policyTypeLabel": "Document Type",
+        "weatherConditionLabel": "حالة الطقس",
+        "accidentLocationLabel": "مكان الحادث",
+        "accidentTypeLabel": "نوع الحادث",
+        "insuredPhoneLabel": "الهاتف",
+        "insuredFullAddressLabel": "العنوان بالكامل",
+        "insuredPersonalNumberLabel": "الرقم الشخصي",
+        "officePolicyTitle": "معلومات المكتب والوثيقة",
+        "insuredVehicleTitle": "معلومات المؤمن له والمركبة",
+        "driverInfoTitle": "معلومات السائق",
+        "accidentDetailsTitle": "تفاصيل الحادث",
+        "otherPartiesDamagesTitle": "الأطراف الأخرى والأضرار",
+        "signaturesNotesTitle": "التواقيع والملاحظات",
+        "step1Indicator": "المكتب/الوثيقة",
+        "step2Indicator": "المؤمن له/المركبة",
+        "step3Indicator": "السائق",
+        "step4Indicator": "الحادث",
+        "step5Indicator": "الأطراف الأخرى",
+        "step6Indicator": "التواقيع",
+        "branchOfficeLabel": "الفرع/المكتب",
+        "policyDurationLabel": "مدة الوثيقة (أيام/أشهر)",
+        "policyFromLabel": "الوثيقة من",
+        "policyToLabel": "الوثيقة إلى",
+        "vehicleRegNoLabel": "رقم تسجيل المركبة",
+        "vehicleUsageLabel": "استخدام المركبة",
+        "vehicleMakeYearLabel": "سنة صنع المركبة",
+        "driverJobLabel": "وظيفة السائق",
+        "driverAddressLabel": "عنوان السائق بالكامل",
+        "driverPhoneLabel": "هاتف السائق",
+        "driverLicenseNoLabel": "رقم رخصة السائق",
+        "driverLicenseTypeLabel": "نوع الرخصة",
+        "driverLicenseIssueDateLabel": "تاريخ إصدار الرخصة",
+        "driverLicenseExpiryDateLabel": "تاريخ انتهاء الرخصة",
+        "driverAgeLabel": "عمر السائق",
+        "driverIdNumberLabel": "رقم هوية السائق",
+        "roadConditionLabel": "حالة الطريق",
+        "damageToVehicleLabel": "وصف الأضرار لمركبتك",
+        "vehicleSpeedLabel": "سرعة المركبة عند الحادث",
+        "timeOfAccidentLabel": "وقت الحادث (حسب التفاصيل)",
+        "passengersCountLabel": "عدد الركاب في مركبتك",
+        "vehicleUsedPermissionLabel": "هل تم استخدام المركبة بإذن المالك؟",
+        "accidentNotifierNameLabel": "اسم مُبلغ الحادث",
+        "accidentNotifierPhoneLabel": "هاتف مُبلغ الحادث",
+        "otherVehiclesTitle": "المركبات الأخرى المشتركة في الحادث",
+        "otherVehicleItem": "مركبة أخرى ",
+        "addOtherVehicleButton": "+ إضافة مركبة أخرى",
+        "otherVehicleNumberLabel": "رقم المركبة",
+        "otherVehicleTypeLabel": "النوع/الموديل",
+        "otherVehicleMakeYearLabel": "سنة الصنع",
+        "otherVehicleColorLabel": "اللون",
+        "otherVehicleOwnerNameLabel": "اسم المالك",
+        "otherVehicleOwnerAddressLabel": "عنوان المالك",
+        "otherVehicleDriverNameLabel": "اسم السائق",
+        "otherVehicleDriverAddressLabel": "عنوان السائق",
+        "otherVehicleInsuranceCoLabel": "شركة التأمين",
+        "otherVehiclePolicyNoLabel": "رقم الوثيقة",
+        "otherVehicleWasParkedLabel": "هل كانت متوقفة؟",
+        "otherVehicleDamageDescLabel": "وصف الأضرار",
+        "vehicleDamagesOverallLabel": "وصف الأضرار لمركبتك",
+        "personalInjuriesTitle": "الإصابات الشخصية (مركبتك)",
+        "personalInjuryItem": "الشخص المصاب : {name}",
+        "addPersonalInjuryButton": "+ إضافة شخص مصاب",
+        "injuryNameLabel": "الاسم",
+        "injuryAgeLabel": "العمر",
+        "injuryJobLabel": "الوظيفة",
+        "injuryAddressLabel": "العنوان",
+        "injuryTypeLabel": "نوع الإصابة",
+        "thirdPartyInjuredNamesTitle": "أسماء المصابين من الطرف الثالث",
+        "addThirdPartyInjuredNameButton": "+ إضافة اسم مصاب من طرف ثالث",
+        "thirdPartyInjuredNameItem": "الاسم ",
+        "thirdPartyInjuredNamePlaceholder": "أدخل اسم المصاب",
+        "vehiclePassengersTitle": "ركاب مركبتك (الأسماء)",
+        "addVehiclePassengerButton": "+ إضافة اسم راكب",
+        "vehiclePassengerItem": "الراكب ",
+        "passengerNamePlaceholder": "أدخل اسم الراكب",
+        "externalWitnessesTitle": "الشهود الخارجيون (الأسماء والعناوين)",
+        "addExternalWitnessButton": "+ إضافة شاهد",
+        "externalWitnessItem": "الشاهد ",
+        "witnessNamePlaceholder": "أدخل اسم الشاهد وعنوانه",
+        "driverSignatureNameLabel": "اسم السائق وتوقيعه",
+        "driverSignatureDateLabel": "التاريخ",
+        "claimantNameLabel": "اسم المطالب",
+        "claimantSignatureLabel": "توقيع المطالب",
+        "receiverNameLabel": "اسم المستلم (مندوب الشركة)",
+        "receiverNotesLabel": "ملاحظات المستلم",
+        "generalNotesLabel": "ملاحظات عامة",
+        "plateNumberRequiredError": "رقم تسجيل المركبة مطلوب لإرسال بلاغ المشرق.",
+        "driverNameLabel": "Driver Name Label",
+        "printReportTitle": "Print Report Title"
     },
     "takaful": {
         "table": {
@@ -1504,7 +1639,8 @@
         "formSubmissionSuccess": "Takaful report submitted successfully!",
         "formSubmissionUpdateSuccess": "Takaful report updated successfully!",
         "formSubmissionError": "Error submitting Takaful report: ",
-        "vehicleIdParamRequiredError": "Vehicle ID is required to create a new Takaful report."
+        "vehicleIdParamRequiredError": "Vehicle ID is required to create a new Takaful report.",
+        "printReportTitle": "Print Report Title"
     },
     "palestine": {
         "table": {
@@ -1514,7 +1650,8 @@
             "documentNumber": "Doc. Number",
             "ownerName": "Owner Name",
             "driverName": "Driver Name",
-            "vehicleNumber": "Vehicle Number"
+            "vehicleNumber": "Vehicle Number",
+            "actions": "Actions"
         },
         "report": {
             "reportInfoTitle": "Report information",
@@ -1619,7 +1756,11 @@
             "nextButton": "Next",
             "submitButton": "Submit",
             "saveChangesButton": "Save",
-            "deleteButton": "Delete"
+            "deleteButton": "Delete",
+            "palestine": {
+                "docType": "Document Type"
+            },
+            "palestineOptionThirdParty": "Third Party"
         },
         "exportSheetName": "Palestine Reports",
         "exportExcelFileName": "Takaful_Reports.xlsx",
@@ -1634,7 +1775,10 @@
         "formSubmissionSuccess": "Takaful report submitted successfully!",
         "formSubmissionUpdateSuccess": "Takaful report updated successfully!",
         "formSubmissionError": "Error submitting Takaful report: ",
-        "vehicleIdParamRequiredError": "Vehicle ID is required to create a new Takaful report."
+        "vehicleIdParamRequiredError": "Vehicle ID is required to create a new Takaful report.",
+        "deleteConfirm": "Delete Confirm",
+        "deleteFailed": "Delete Failed",
+        "printReportTitle": "Print Report Title"
     },
     "trust": {
         "table": {
@@ -1752,7 +1896,9 @@
         "deleteConfirm": "Are you sure you want to delete this report?",
         "deleteError": "Failed to delete report. Check console for details.",
         "showing_results": "Showing {{count}} of {{total}} reports",
-        "noReportsFound": "No Trust reports found."
+        "noReportsFound": "No Trust reports found.",
+        "fieldRequiredError": "Field Required Error",
+        "printReportTitle": "Print Report Title"
     },
     "holyLand": {
         "reportsTitle": "Holy Land Reports",
@@ -1879,7 +2025,8 @@
         "deleteConfirm": "Are you sure you want to delete this report?",
         "deleteError": "Failed to delete report. See console for details.",
         "showing_results": "Showing {{count}} of {{total}} reports",
-        "noReportsFound": "No Holy Land reports found."
+        "noReportsFound": "No Holy Land reports found.",
+        "printReportTitle": "Print Report Title"
     },
     "profile": {
         "error": "Could not load user profile.",
@@ -1973,7 +2120,15 @@
         "actions": {
             "delete": "Delete",
             "edit": "Edit"
-        }
+        },
+        "messages": {
+            "addSuccess": "Add Success",
+            "addError": "Add Error"
+        },
+        "exportSheetagent": "Export Sheetagent",
+        "exportExcelFileagents": "Export Excel Fileagents",
+        "printReportTitle": "Print Report Title",
+        "noAgents": "No Agents"
     },
     "audit": {
         "pageTitle": "System Audit Logs",
@@ -1995,36 +2150,15 @@
             "ipAddress": "IP Address",
             "userAgent": "User Agent",
             "additionalData": "Additional Data / Payload",
-            "extraData": "Extra Data"
+            "extraData": "Additional Data"
         },
         "error": {
             "fetchFailed": "Failed to fetch audit logs."
-        }
-    },
-    "audit": {
-        "pageTitle": "System Audit Logs",
-        "table": {
-            "userName": "User Name",
-            "action": "Action",
-            "entity": "Entity/Resource",
-            "date": "Date & Time",
-            "actions": "Actions"
         },
-        "searchPlaceholder": "Search logs by user, action, entity...",
-        "exportSheetName": "Audit Logs",
-        "exportExcelFileName": "audit_logs_report.xlsx",
-        "exportPdfTitle": "Audit Logs Report",
-        "exportPdfFileName": "audit_logs_report.pdf",
-        "noLogsFound": "No audit logs found.",
-        "detailsDialogTitle": "Audit Log Details",
-        "details": {
-            "ipAddress": "IP Address",
-            "userAgent": "User Agent",
-            "additionalData": "Additional Data / Payload"
-        },
-        "error": {
-            "fetchFailed": "Failed to fetch audit logs."
-        }
+        "exportSheet": "Export Sheet",
+        "exportExcelFile": "Export Excel File",
+        "printReportTitle": "Print Report Title",
+        "detailsTitle": "Details Title"
     },
     "sms": {
         "breadcrumb": {
@@ -2122,7 +2256,345 @@
             "processingFailed": "Payment processing failed. Please try again."
         }
     },
+    "email": "Email",
+    "notifications": {
+        "title": "Notifications",
+        "subtitle": "Stay updated with your latest notifications",
+        "markAllRead": "Mark All Read",
+        "refresh": "Refresh",
+        "retry": "Try Again",
+        "noToken": "Authentication required",
+        "fetchError": "Failed to load notifications",
+        "markRead": "Mark Read",
+        "from": "From",
+        "filter": {
+            "all": "All",
+            "unread": "Unread",
+            "read": "Read"
+        },
+        "search": {
+            "placeholder": "Search notifications..."
+        },
+        "noResults": "No notifications match your search",
+        "noUnread": "No unread notifications",
+        "noRead": "No read notifications",
+        "empty": "No notifications yet"
+    },
+    "cheques": {
+        "title": "Cheques Management",
+        "subtitle": "Manage and track all cheques in the system",
+        "firstTitle": "Dashboard",
+        "secondeTitle": "Cheques",
+        "add_button": "Add Cheque",
+        "search_placeholder": "Search by cheque number or customer...",
+        "showing_results": "Showing {{count}} of {{total}} cheques",
+        "no_results": "No cheques found",
+        "addCheque": "Add Cheque",
+        "addChequeSubtitle": "Create a new cheque record with all necessary details",
+        "editCheque": "Edit Cheque",
+        "editChequeSubtitle": "Update cheque details",
+        "viewCheque": "View Cheque",
+        "viewChequeSubtitle": "View complete cheque details",
+        "deleteCheque": "Delete Cheque",
+        "updateCheque": "Update Cheque",
+        "chequeNumber": "Cheque Number",
+        "customer": "Customer",
+        "amount": "Amount",
+        "issueDate": "Issue Date",
+        "dueDate": "Due Date",
+        "cheque_date": "Cheque Date",
+        "bank": "Bank",
+        "bankName": "Bank Name",
+        "status": "Status",
+        "actions": "Actions",
+        "searchPlaceholder": "Search by cheque number, customer name, or bank...",
+        "selectCustomer": "Select a customer",
+        "chequeNumberPlaceholder": "Enter cheque number",
+        "bankNamePlaceholder": "Enter bank name",
+        "chequeImage": "Cheque Image",
+        "uploadChequeImage": "Click to upload or drag and drop",
+        "dropImageHere": "Drop the image here",
+        "imageUploadHint": "PNG, JPG, GIF up to 5MB",
+        "replaceImage": "Replace Image",
+        "revertToOriginal": "Revert to Original",
+        "noImageAvailable": "No image available",
+        "notes": "Notes",
+        "notesPlaceholder": "Add any additional notes about this cheque...",
+        "cancel": "Cancel",
+        "saveCheque": "Save Cheque",
+        "saving": "Saving...",
+        "updating": "Updating...",
+        "noCheques": "No cheques found",
+        "noResultsFound": "No cheques match your search criteria",
+        "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+        "previous": "Previous",
+        "next": "Next",
+        "chequeDetails": "Cheque Details",
+        "customerDetails": "Customer Details",
+        "metadata": "Metadata",
+        "createdAt": "Created At",
+        "lastUpdated": "Last Updated",
+        "notFound": "Cheque Not Found",
+        "chequeNotFoundDescription": "The requested cheque was not found or has been deleted",
+        "backToList": "Back to List",
+        "error": "Error",
+        "errorFetchingDetails": "Failed to fetch cheque details",
+        "errorUpdatingCheque": "Failed to update cheque",
+        "updateSuccess": "Update Successful",
+        "chequeUpdatedSuccessfully": "Cheque updated successfully",
+        "delete_confirm": "Are you sure you want to delete cheque number {{chequeNumber}}?",
+        "delete_confirm_text": "This action cannot be undone!",
+        "yes_delete": "Yes, Delete",
+        "successDelete": "Successfully Deleted",
+        "exportSheetName": "Cheques",
+        "exportExcelFileName": "cheques_report.xlsx",
+        "exportPdfFileName": "cheques_report.pdf",
+        "exportCsvFileName": "cheques_report.csv",
+        "report_title": "Cheques Report",
+        "validation": {
+            "chequeNumberRequired": "Cheque number is required",
+            "customerRequired": "Please select a customer",
+            "amountRequired": "Amount must be greater than 0",
+            "issueDateRequired": "Issue date is required",
+            "dueDateRequired": "Due date is required",
+            "chequeDateRequired": "Cheque date is required",
+            "bankNameRequired": "Bank name is required",
+            "statusRequired": "Status is required",
+            "imageRequired": "Cheque image is required"
+        },
+        "customersFetchError": "Unable to load customers. Using sample data instead.",
+        "saveError": "Failed to save cheque. Please try again.",
+        "continue": "Continue with Sample Data",
+        "retry": "Retry Loading",
+        "tryAgain": "Try Again",
+        "status": {
+            "pending": "Pending",
+            "cleared": "Cleared",
+            "bounced": "Bounced",
+            "cancelled": "Cancelled"
+        }
+    },
+    "documentSettings": {
+        "title": "Document Settings",
+        "subtitle": "Manage document templates and formatting settings",
+        "firstTitle": "Dashboard",
+        "secondTitle": "Document Settings",
+        "add_button": "Add Document Setting",
+        "search_placeholder": "Search by company name...",
+        "showing_results": "Showing {{count}} of {{total}} document settings",
+        "no_results": "No document settings found",
+        "addDocumentSettings": "Add Document Settings",
+        "editDocumentSettings": "Edit Document Settings",
+        "viewDocumentSettings": "View Document Settings",
+        "deleteDocumentSettings": "Delete Document Settings",
+        "updateDocumentSettings": "Update Document Settings",
+        "companyInformation": "Company Information",
+        "companyName": "Company Name",
+        "companyAddress": "Company Address",
+        "phoneNumber": "Phone Number",
+        "email": "Email",
+        "companyLogo": "Company Logo",
+        "uploadLogo": "Upload Logo",
+        "logoUploadHint": "PNG, JPG up to 2MB",
+        "headerSettings": "Header Settings",
+        "headerText": "Header Text",
+        "headerFontSize": "Header Font Size",
+        "headerBackgroundColor": "Header Background Color",
+        "headerTextColor": "Header Text Color",
+        "footerSettings": "Footer Settings",
+        "footerText": "Footer Text",
+        "footerFontSize": "Footer Font Size",
+        "footerBackgroundColor": "Footer Background Color",
+        "footerTextColor": "Footer Text Color",
+        "documentMargins": "Document Margins",
+        "topMargin": "Top Margin",
+        "bottomMargin": "Bottom Margin",
+        "leftMargin": "Left Margin",
+        "rightMargin": "Right Margin",
+        "marginUnit": "mm",
+        "isActive": "Is Active",
+        "active": "Active",
+        "inactive": "Inactive",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "actions": "Actions",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving...",
+        "updating": "Updating...",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "createdBy": "Created By",
+        "updatedBy": "Updated By",
+        "metadata": "Metadata",
+        "notSpecified": "Not specified",
+        "notAvailable": "Not available",
+        "documentSettingsNotFound": "Document settings not found",
+        "error": "Error",
+        "errorFetchingDocumentSettings": "Failed to fetch document settings",
+        "errorCreatingDocumentSettings": "Failed to create document settings",
+        "errorUpdatingDocumentSettings": "Failed to update document settings",
+        "errorDeletingDocumentSettings": "Failed to delete document settings",
+        "createSuccess": "Document settings created successfully",
+        "updateSuccess": "Document settings updated successfully",
+        "deleteSuccess": "Document settings deleted successfully",
+        "activateSuccess": "Document settings activated successfully",
+        "delete_confirm": "Are you sure you want to delete this document setting?",
+        "delete_confirm_text": "This action cannot be undone!",
+        "yes_delete": "Yes, Delete",
+        "cannot_delete_active": "Cannot delete active document settings",
+        "activate_confirm": "Are you sure you want to activate this document setting?",
+        "activate_confirm_text": "This will deactivate the current active setting.",
+        "yes_activate": "Yes, Activate",
+        "replaceImage": "Replace Image",
+        "revertToOriginal": "Revert to Original",
+        "dropImageHere": "Drop the image here",
+        "clickToUpload": "Click to upload or drag and drop",
+        "validation": {
+            "companyNameRequired": "Company name is required",
+            "companyNameMinLength": "Company name must be at least 2 characters",
+            "companyNameMaxLength": "Company name must not exceed 100 characters",
+            "companyAddressMaxLength": "Company address must not exceed 255 characters",
+            "phoneNumberPattern": "Please enter a valid phone number",
+            "emailPattern": "Please enter a valid email address",
+            "headerTextMaxLength": "Header text must not exceed 255 characters",
+            "headerFontSizeRange": "Header font size must be between 8 and 72 pixels",
+            "footerTextMaxLength": "Footer text must not exceed 255 characters",
+            "footerFontSizeRange": "Footer font size must be between 8 and 72 pixels",
+            "marginRange": "Margins must be between 0 and 50mm",
+            "logoRequired": "Logo is required",
+            "logoFileSize": "Logo file size must not exceed 2MB",
+            "logoFileType": "Logo must be a PNG or JPG image",
+            "headerTextRequired": "Header Text Required",
+            "footerTextRequired": "Footer Text Required"
+        },
+        "settingsCreatedSuccessfully": "Settings Created Successfully",
+        "errorCreatingSettings": "Error Creating Settings",
+        "addSettings": "Add Settings",
+        "addSettingsSubtitle": "Add Settings Subtitle",
+        "companyNamePlaceholder": "Company Name Placeholder",
+        "headerTextPlaceholder": "Header Text Placeholder",
+        "headerBgColor": "Header Bg Color",
+        "footerTextPlaceholder": "Footer Text Placeholder",
+        "footerBgColor": "Footer Bg Color",
+        "marginsSettings": "Margins Settings",
+        "marginTop": "Margin Top",
+        "marginBottom": "Margin Bottom",
+        "marginLeft": "Margin Left",
+        "marginRight": "Margin Right",
+        "logoUpload": "Logo Upload",
+        "dropLogoHere": "Drop Logo Here",
+        "creating": "Creating",
+        "createSettings": "Create Settings",
+        "activateError": "Activate Error",
+        "cannotDeleteActive": "Cannot Delete Active",
+        "successDelete": "Success Delete",
+        "deleteError": "Delete Error",
+        "exportSheetName": "Export Sheet Name",
+        "exportExcelFileName": "Export Excel File Name",
+        "report_title": "Report_title",
+        "exportPdfFileName": "Export Pdf File Name",
+        "exportCsvFileName": "Export Csv File Name",
+        "secondeTitle": "Seconde Title",
+        "errorFetchingSettings": "Error Fetching Settings",
+        "settingsUpdatedSuccessfully": "Settings Updated Successfully",
+        "errorUpdatingSettings": "Error Updating Settings",
+        "editSettings": "Edit Settings",
+        "editSettingsSubtitle": "Edit Settings Subtitle",
+        "replaceLogo": "Replace Logo",
+        "updateSettings": "Update Settings"
+    },
+    "insurances": {
+        "table": {
+            "insuredName": "Insured Name",
+            "plateNumber": "Plate Number",
+            "insuranceCompany": "Insurance Company",
+            "insuranceType": "Insurance Type",
+            "insuranceEndDate": "Insurance End Date",
+            "remainingDebt": "Remaining Debt",
+            "agent": "Agent"
+        },
+        "exportSheetName": "Export Sheet Name",
+        "exportExcelFileName": "Export Excel File Name",
+        "exportCsvFileName": "Export Csv File Name",
+        "report_title": "Report_title",
+        "exportPdfFileName": "Export Pdf File Name"
+    },
+    "confirmModal": {
+        "defaultTitle": "Default Title",
+        "defaultMessage": "Default Message",
+        "confirmDelete": "Confirm Delete"
+    },
+    "vehicles": {
+        "messages": {
+            "fetchError": "Fetch Error",
+            "deleteSuccess": "Delete Success",
+            "deleteError": "Delete Error"
+        },
+        "deleteModal": {
+            "title": "Title",
+            "message": "Message"
+        }
+    },
+    "policeNumberLabel": "Police Number Label",
+    "selectDefault": "Select Default",
+    "select": "Select",
+    "registerUser": "Register User",
+    "sidebar": {
+        "closeMenu": "Close Menu",
+        "openMenu": "Open Menu"
+    },
+    "user": "User",
+    "logoAlt": "Logo Alt",
+    "error": "Error",
+    "errorFetchingDocumentSettings": "Error Fetching Document Settings",
+    "ok": "Ok",
+    "documentSettingsNotFound": "Document Settings Not Found",
+    "back": "Back",
+    "viewDocumentSettings": "View Document Settings",
+    "edit": "Edit",
+    "print": "Print",
+    "download": "Download",
+    "companyInformation": "Company Information",
+    "active": "Active",
+    "companyName": "Company Name",
+    "notSpecified": "Not Specified",
+    "companyAddress": "Company Address",
+    "phoneNumber": "Phone Number",
+    "companyLogo": "Company Logo",
+    "headerSettings": "Header Settings",
+    "headerText": "Header Text",
+    "headerFontSize": "Header Font Size",
+    "headerBackgroundColor": "Header Background Color",
+    "headerTextColor": "Header Text Color",
+    "footerSettings": "Footer Settings",
+    "footerText": "Footer Text",
+    "footerFontSize": "Footer Font Size",
+    "footerBackgroundColor": "Footer Background Color",
+    "footerTextColor": "Footer Text Color",
+    "documentMargins": "Document Margins",
+    "topMargin": "Top Margin",
+    "bottomMargin": "Bottom Margin",
+    "leftMargin": "Left Margin",
+    "rightMargin": "Right Margin",
+    "metadata": "Metadata",
+    "createdAt": "Created At",
+    "notAvailable": "Not Available",
+    "updatedAt": "Updated At",
+    "createdBy": "Created By",
+    "updatedBy": "Updated By",
     "email": {
+        "errors": {
+            "fetchCustomers": "Failed to load customers",
+            "sendFailed": "Failed to send email",
+            "noRecipients": "Please select at least one recipient",
+            "bulkSendFailed": "Failed to send bulk email"
+        },
+        "success": {
+            "sent": "Email sent successfully!",
+            "bulkSent": "Bulk email sent to {{count}} recipients",
+            "deleted": "Selected emails deleted"
+        },
         "breadcrumb": {
             "dashboard": "Dashboard",
             "emails": "Email Management"
@@ -2141,8 +2613,8 @@
             "to": "To",
             "subject": "Subject",
             "message": "Message",
-            "send": "Send Email",
-            "sending": "Sending..."
+            "sending": "Sending...",
+            "send": "Send Email"
         },
         "bulk": {
             "selectCustomers": "Select Recipients",
@@ -2153,257 +2625,8 @@
             "subject": "Subject",
             "message": "Message",
             "info": "This email will be sent to {{count}} recipients",
-            "send": "Send Bulk Email",
-            "sending": "Sending..."
-        },
-        "success": {
-            "sent": "Email sent successfully!",
-            "bulkSent": "Bulk email sent to {{count}} recipients",
-            "deleted": "Selected emails deleted"
-        },
-        "errors": {
-            "fetchCustomers": "Failed to load customers",
-            "sendFailed": "Failed to send email",
-            "bulkSendFailed": "Failed to send bulk email",
-            "noRecipients": "Please select at least one recipient"
+            "sending": "Sending...",
+            "send": "Send Bulk Email"
         }
-        
-    },
-      "insuranceCompany": {
-    "addTitle": "Add Insurance Company",
-    "fields": {
-      "name": "Company Name",
-      "insuranceTypes": "Insurance Types",
-      "roadServices": "Road Services",
-      "price": "Price",
-      "serviceName": "Service Name"
-    },
-    "type": {
-      "compulsory": "Compulsory",
-      "comprehensive": "Comprehensive"
-    },
-    "success": {
-      "added": "Company added successfully"
-    },
-    "errors": {
-      "nameRequired": "Company name is required",
-      "atLeastOneType": "Add at least one insurance type",
-      "addFailed": "Failed to add company"
     }
-  },
-  "common": {
-    "add": "Add",
-    "cancel": "Cancel",
-    "saving": "Saving..."
-  },
-  "notifications": {
-    "title": "Notifications",
-    "subtitle": "Stay updated with your latest notifications",
-    "markAllRead": "Mark All Read",
-    "refresh": "Refresh",
-    "retry": "Try Again",
-    "noToken": "Authentication required",
-    "fetchError": "Failed to load notifications",
-    "markRead": "Mark Read",
-    "from": "From",
-    "filter": {
-      "all": "All",
-      "unread": "Unread",
-      "read": "Read"
-    },
-    "search": {
-      "placeholder": "Search notifications..."
-    },
-    "noResults": "No notifications match your search",
-    "noUnread": "No unread notifications",
-    "noRead": "No read notifications",
-    "empty": "No notifications yet"
-  },
-  "cheques": {
-    "title": "Cheques Management",
-    "subtitle": "Manage and track all cheques in the system",
-    "firstTitle": "Dashboard",
-    "secondeTitle": "Cheques",
-    "add_button": "Add Cheque",
-    "search_placeholder": "Search by cheque number or customer...",
-    "showing_results": "Showing {{count}} of {{total}} cheques",
-    "no_results": "No cheques found",
-    "addCheque": "Add Cheque",
-    "addChequeSubtitle": "Create a new cheque record with all necessary details",
-    "editCheque": "Edit Cheque",
-    "editChequeSubtitle": "Update cheque details",
-    "viewCheque": "View Cheque",
-    "viewChequeSubtitle": "View complete cheque details",
-    "deleteCheque": "Delete Cheque",
-    "updateCheque": "Update Cheque",
-    "chequeNumber": "Cheque Number",
-    "customer": "Customer",
-    "amount": "Amount",
-    "issueDate": "Issue Date",
-    "dueDate": "Due Date",
-    "cheque_date": "Cheque Date",
-    "bank": "Bank",
-    "bankName": "Bank Name",
-    "status": {
-      "pending": "Pending",
-      "cleared": "Cleared",
-      "bounced": "Bounced",
-      "cancelled": "Cancelled"
-    },
-    "actions": "Actions",
-    "searchPlaceholder": "Search by cheque number, customer name, or bank...",
-    "selectCustomer": "Select a customer",
-    "chequeNumberPlaceholder": "Enter cheque number",
-    "bankNamePlaceholder": "Enter bank name",
-    "chequeImage": "Cheque Image",
-    "uploadChequeImage": "Click to upload or drag and drop",
-    "dropImageHere": "Drop the image here",
-    "imageUploadHint": "PNG, JPG, GIF up to 5MB",
-    "replaceImage": "Replace Image",
-    "revertToOriginal": "Revert to Original",
-    "noImageAvailable": "No image available",
-    "notes": "Notes",
-    "notesPlaceholder": "Add any additional notes about this cheque...",
-    "cancel": "Cancel",
-    "saveCheque": "Save Cheque",
-    "saving": "Saving...",
-    "updating": "Updating...",
-    "noCheques": "No cheques found",
-    "noResultsFound": "No cheques match your search criteria",
-    "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
-    "previous": "Previous",
-    "next": "Next",
-    "chequeDetails": "Cheque Details",
-    "customerDetails": "Customer Details",
-    "metadata": "Metadata",
-    "createdAt": "Created At",
-    "lastUpdated": "Last Updated",
-    "notFound": "Cheque Not Found",
-    "chequeNotFoundDescription": "The requested cheque was not found or has been deleted",
-    "backToList": "Back to List",
-    "error": "Error",
-    "errorFetchingDetails": "Failed to fetch cheque details",
-    "errorUpdatingCheque": "Failed to update cheque",
-    "updateSuccess": "Update Successful",
-    "chequeUpdatedSuccessfully": "Cheque updated successfully",
-    "delete_confirm": "Are you sure you want to delete cheque number {{chequeNumber}}?",
-    "delete_confirm_text": "This action cannot be undone!",
-    "yes_delete": "Yes, Delete",
-    "successDelete": "Successfully Deleted",
-    "exportSheetName": "Cheques",
-    "exportExcelFileName": "cheques_report.xlsx",
-    "exportPdfFileName": "cheques_report.pdf",
-    "exportCsvFileName": "cheques_report.csv",
-    "report_title": "Cheques Report",
-    "validation": {
-      "chequeNumberRequired": "Cheque number is required",
-      "customerRequired": "Please select a customer",
-      "amountRequired": "Amount must be greater than 0",
-      "issueDateRequired": "Issue date is required",
-      "dueDateRequired": "Due date is required",
-      "chequeDateRequired": "Cheque date is required",
-      "bankNameRequired": "Bank name is required",
-      "statusRequired": "Status is required",
-      "imageRequired": "Cheque image is required"
-    },
-    "customersFetchError": "Unable to load customers. Using sample data instead.",
-    "saveError": "Failed to save cheque. Please try again.",
-    "continue": "Continue with Sample Data",
-    "retry": "Retry Loading",
-    "tryAgain": "Try Again"
-  },
-  "documentSettings": {
-    "title": "Document Settings",
-    "subtitle": "Manage document templates and formatting settings",
-    "firstTitle": "Dashboard",
-    "secondTitle": "Document Settings",
-    "add_button": "Add Document Setting",
-    "search_placeholder": "Search by company name...",
-    "showing_results": "Showing {{count}} of {{total}} document settings",
-    "no_results": "No document settings found",
-    "addDocumentSettings": "Add Document Settings",
-    "editDocumentSettings": "Edit Document Settings",
-    "viewDocumentSettings": "View Document Settings",
-    "deleteDocumentSettings": "Delete Document Settings",
-    "updateDocumentSettings": "Update Document Settings",
-    "companyInformation": "Company Information",
-    "companyName": "Company Name",
-    "companyAddress": "Company Address",
-    "phoneNumber": "Phone Number",
-    "email": "Email",
-    "companyLogo": "Company Logo",
-    "uploadLogo": "Upload Logo",
-    "logoUploadHint": "PNG, JPG up to 2MB",
-    "headerSettings": "Header Settings",
-    "headerText": "Header Text",
-    "headerFontSize": "Header Font Size",
-    "headerBackgroundColor": "Header Background Color",
-    "headerTextColor": "Header Text Color",
-    "footerSettings": "Footer Settings",
-    "footerText": "Footer Text",
-    "footerFontSize": "Footer Font Size",
-    "footerBackgroundColor": "Footer Background Color",
-    "footerTextColor": "Footer Text Color",
-    "documentMargins": "Document Margins",
-    "topMargin": "Top Margin",
-    "bottomMargin": "Bottom Margin",
-    "leftMargin": "Left Margin",
-    "rightMargin": "Right Margin",
-    "marginUnit": "mm",
-    "isActive": "Is Active",
-    "active": "Active",
-    "inactive": "Inactive",
-    "activate": "Activate",
-    "deactivate": "Deactivate",
-    "actions": "Actions",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "updating": "Updating...",
-    "createdAt": "Created At",
-    "updatedAt": "Updated At",
-    "createdBy": "Created By",
-    "updatedBy": "Updated By",
-    "metadata": "Metadata",
-    "notSpecified": "Not specified",
-    "notAvailable": "Not available",
-    "documentSettingsNotFound": "Document settings not found",
-    "error": "Error",
-    "errorFetchingDocumentSettings": "Failed to fetch document settings",
-    "errorCreatingDocumentSettings": "Failed to create document settings",
-    "errorUpdatingDocumentSettings": "Failed to update document settings",
-    "errorDeletingDocumentSettings": "Failed to delete document settings",
-    "createSuccess": "Document settings created successfully",
-    "updateSuccess": "Document settings updated successfully",
-    "deleteSuccess": "Document settings deleted successfully",
-    "activateSuccess": "Document settings activated successfully",
-    "delete_confirm": "Are you sure you want to delete this document setting?",
-    "delete_confirm_text": "This action cannot be undone!",
-    "yes_delete": "Yes, Delete",
-    "cannot_delete_active": "Cannot delete active document settings",
-    "activate_confirm": "Are you sure you want to activate this document setting?",
-    "activate_confirm_text": "This will deactivate the current active setting.",
-    "yes_activate": "Yes, Activate",
-    "replaceImage": "Replace Image",
-    "revertToOriginal": "Revert to Original",
-    "dropImageHere": "Drop the image here",
-    "clickToUpload": "Click to upload or drag and drop",
-    "validation": {
-      "companyNameRequired": "Company name is required",
-      "companyNameMinLength": "Company name must be at least 2 characters",
-      "companyNameMaxLength": "Company name must not exceed 100 characters",
-      "companyAddressMaxLength": "Company address must not exceed 255 characters",
-      "phoneNumberPattern": "Please enter a valid phone number",
-      "emailPattern": "Please enter a valid email address",
-      "headerTextMaxLength": "Header text must not exceed 255 characters",
-      "headerFontSizeRange": "Header font size must be between 8 and 72 pixels",
-      "footerTextMaxLength": "Footer text must not exceed 255 characters",
-      "footerFontSizeRange": "Footer font size must be between 8 and 72 pixels",
-      "marginRange": "Margins must be between 0 and 50mm",
-      "logoRequired": "Logo is required",
-      "logoFileSize": "Logo file size must not exceed 2MB",
-      "logoFileType": "Logo must be a PNG or JPG image"
-    }
-  }
-
 }

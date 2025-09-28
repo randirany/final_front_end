@@ -211,7 +211,7 @@ function AddCheckModal({ isOpen, onClose, insuredId, vehicleId, insuranceId, onC
                     </div>
                 </form>
             </div>
-            <ToastContainer position={language === "ar" ? "top-left" : "top-right"} autoClose={2000} hideProgressBar />
+            <ToastContainer position={(language === "ar" || language === "he") ? "top-left" : "top-right"} autoClose={2000} hideProgressBar />
         </div>
     );
 }

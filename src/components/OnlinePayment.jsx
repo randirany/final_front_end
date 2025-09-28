@@ -13,7 +13,7 @@ export default function OnlinePayment() {
   const [processing, setProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  const isRTL = language === 'ar';
+  const isRTL = (language === 'ar' || language === 'he');
 
   // Validation schema
   const validationSchema = Yup.object({

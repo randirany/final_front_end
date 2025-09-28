@@ -9,7 +9,7 @@ const ViewDocumentSettings = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language === 'ar' || i18n.language === 'he';
 
   const [documentSettings, setDocumentSettings] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -459,7 +459,7 @@ function Departments() {
         { key: 'description', label: t('departments.table.description', 'Description'), sortable: true },
         { key: 'headOfEmployee.name', label: t('departments.table.head', 'Head Of Department'), sortable: true }, // Updated key for sorting
         { key: 'employeeCount', label: t('departments.table.employeeCount', 'Employee Count'), sortable: true }, // Added sortable flag
-        { key: 'actions', label: t('departments.table.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right', sortable: false },];
+        { key: 'actions', label: t('departments.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right', sortable: false },];
 
     const employeeTableColumns = [
         { key: 'name', label: t('employees.table.name', 'Name'), sortable: true },
@@ -467,7 +467,7 @@ function Departments() {
         { key: 'role', label: t('employees.table.role', 'Role'), sortable: true },
         { key: 'status', label: t('employees.table.status', 'Status'), sortable: true }, // Assuming status is sortable
         { key: 'departmentName', label: t('employees.table.department', 'Department'), sortable: true },
-        { key: 'actions', label: t('employees.table.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right', sortable: false },];
+        { key: 'actions', label: t('employees.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right', sortable: false },];
 
     const availablePermissions = [
         "addAccedent", "showAccedent", "deleteAccedent",
@@ -531,7 +531,7 @@ function Departments() {
         }
 
         doc.setFontSize(18);
-        if (language === 'ar') {
+        if ((language === 'ar' || language === 'he')) {
             // For Arabic, set font that supports Arabic characters
             // doc.setFont('Amiri-Regular'); // Example, ensure Amiri-Regular.ttf is loaded or use a default like 'Arial'
             const textWidth = doc.getTextWidth(title);
@@ -562,12 +562,12 @@ function Departments() {
             startY: 30,
             head: head,
             body: body,
-            styles: { fontSize: 8, font: language === 'ar' ? 'Arial' : "Arial" }, // Specify font for Arabic if needed
-            headStyles: { fillColor: [41, 128, 185], textColor: 255, halign: language === 'ar' ? 'right' : 'left' },
-            bodyStyles: { halign: language === 'ar' ? 'right' : 'left' },
+            styles: { fontSize: 8, font: (language === 'ar' || language === 'he') ? 'Arial' : "Arial" }, // Specify font for Arabic if needed
+            headStyles: { fillColor: [41, 128, 185], textColor: 255, halign: (language === 'ar' || language === 'he') ? 'right' : 'left' },
+            bodyStyles: { halign: (language === 'ar' || language === 'he') ? 'right' : 'left' },
             alternateRowStyles: { fillColor: [245, 245, 245] },
             didDrawPage: function (data) {
-                if (language === 'ar') {
+                if ((language === 'ar' || language === 'he')) {
                     // Ensure text is drawn right-to-left if needed for page numbers etc.
                 }
             }
@@ -628,7 +628,7 @@ function Departments() {
 
         const printWindow = window.open('', '_blank');
         printWindow.document.write('<html><head><title>' + tableTitle + '</title>');
-        printWindow.document.write('<style>body{font-family: ' + (language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif') + '; margin: 20px;} table{width: 100%; border-collapse: collapse;} th,td{border: 1px solid #ddd; padding: 8px; text-align: left;} th{background-color: #f2f2f2;} h1{text-align: center;} @media print{.no-print{display:none;}}</style>');
+        printWindow.document.write('<style>body{font-family: ' + ((language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif') + '; margin: 20px;} table{width: 100%; border-collapse: collapse;} th,td{border: 1px solid #ddd; padding: 8px; text-align: left;} th{background-color: #f2f2f2;} h1{text-align: center;} @media print{.no-print{display:none;}}</style>');
         printWindow.document.write('</head><body>');
         printWindow.document.write('<h1>' + tableTitle + '</h1>');
         printWindow.document.write('<table><thead><tr>');
@@ -663,8 +663,8 @@ function Departments() {
     };
 
     return (
-        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={language === "ar"} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={(language === "ar" || language === "he")} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
             <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-4 md:p-[22px] rounded-md justify-between items-center mb-4 flex-wrap shadow-sm">
                 <div className="flex gap-2 md:gap-[14px] items-center text-sm md:text-base">
                     <NavLink to="/home" className="hover:underline text-blue-600 dark:text-blue-400">{t('breadcrumbs.home', 'Home')}</NavLink>
@@ -694,12 +694,12 @@ function Departments() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2, px: 2, pt: 1 }}>
                     <Tabs value={selectedTab} onChange={handleTabChange} aria-label={t('departments.tabsAriaLabel', "Department and Employee Tabs")}
                         sx={{
-                            '& .MuiTab-root': { color: language === 'ar' ? 'text.secondary' : 'text.secondary', '&.Mui-selected': { color: 'primary.main' } },
+                            '& .MuiTab-root': { color: (language === 'ar' || language === 'he') ? 'text.secondary' : 'text.secondary', '&.Mui-selected': { color: 'primary.main' } },
                             '& .MuiTabs-indicator': { backgroundColor: 'primary.main' }
                         }}
                     >
-                        <Tab icon={<Users className={`w-4 h-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />} iconPosition="start" label={t('departments.tabDepartments', "Departments")} />
-                        <Tab icon={<User className={`w-4 h-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />} iconPosition="start" label={t('departments.tabEmployees', "Employees")} />
+                        <Tab icon={<Users className={`w-4 h-4 ${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />} iconPosition="start" label={t('departments.tabDepartments', "Departments")} />
+                        <Tab icon={<User className={`w-4 h-4 ${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />} iconPosition="start" label={t('departments.tabEmployees', "Employees")} />
                     </Tabs>
                 </Box>
                 <div>
@@ -770,7 +770,7 @@ function Departments() {
                                         <tr>
                                             {departmentTableColumns.map(col => (
                                                 <th key={col.key} scope="col"
-                                                    className={`group px-6 py-3 ${col.align === 'right' ? 'text-right' : (language === 'ar' ? 'text-right' : 'text-left')} ${col.sortable ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`}
+                                                    className={`group px-6 py-3 ${col.align === 'right' ? 'text-right' : ((language === 'ar' || language === 'he') ? 'text-right' : 'text-left')} ${col.sortable ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`}
                                                     onClick={() => col.sortable && requestSort(col.key, 'departments')}
                                                 >
                                                     <div className="flex items-center">
@@ -795,16 +795,16 @@ function Departments() {
                                                     <td className="px-6 py-4 whitespace-nowrap max-w-sm truncate" title={dept.description}>{dept.description || '—'}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap">{dept.headOfEmployee?.name || '—'}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap">{dept.employees?.length || 0}</td>
-                                                    <td className={`px-6 py-4 ${departmentTableColumns.find(c => c.key === 'actions')?.align === 'right' ? 'text-right' : (language === 'ar' ? 'text-left' : 'text-right')}`}>
+                                                    <td className={`px-6 py-4 ${departmentTableColumns.find(c => c.key === 'actions')?.align === 'right' ? 'text-right' : ((language === 'ar' || language === 'he') ? 'text-left' : 'text-right')}`}>
                                                         <IconButton size="small" onClick={(e) => handleMenuOpen(e, dept._id)} className="dark:text-black hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1">
                                                             <MoreVertIcon fontSize="small" />
                                                         </IconButton>
-                                                        <Menu anchorEl={anchorEls[dept._id]} open={Boolean(anchorEls[dept._id])} onClose={() => handleMenuClose(dept._id)} anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200 shadow-lg rounded-md' }}>
-                                                            <MenuItem onClick={() => handleViewDepartment(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><Info className={`w-4 h-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('common.viewDetails', 'View Details')}</MenuItem>
-                                                            <MenuItem onClick={() => handleEditDepartment(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><EditIcon fontSize="small" className={`${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('common.edit', 'Edit')}</MenuItem>
-                                                            <MenuItem onClick={() => handleAddHead(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><PersonAddIcon fontSize="small" className={`${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('departments.menu.addHead', 'Add Head')}</MenuItem>
-                                                            <MenuItem onClick={() => handleAddEmployee(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><PersonAddIcon fontSize="small" className={`${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('departments.menu.addEmployee', 'Add Employee')}</MenuItem>
-                                                            <MenuItem onClick={() => handleDeleteDepartment(dept._id)} className="dark:hover:bg-gray-700 text-red-500 dark:text-red-400 text-sm px-4 py-2"><Users className={`w-4 h-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('common.delete', 'Delete')}</MenuItem>
+                                                        <Menu anchorEl={anchorEls[dept._id]} open={Boolean(anchorEls[dept._id])} onClose={() => handleMenuClose(dept._id)} anchorOrigin={{ vertical: 'bottom', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200 shadow-lg rounded-md' }}>
+                                                            <MenuItem onClick={() => handleViewDepartment(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><Info className={`w-4 h-4 ${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('common.viewDetails', 'View Details')}</MenuItem>
+                                                            <MenuItem onClick={() => handleEditDepartment(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><EditIcon fontSize="small" className={`${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('common.edit', 'Edit')}</MenuItem>
+                                                            <MenuItem onClick={() => handleAddHead(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><PersonAddIcon fontSize="small" className={`${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('departments.menu.addHead', 'Add Head')}</MenuItem>
+                                                            <MenuItem onClick={() => handleAddEmployee(dept)} className="dark:hover:bg-gray-700 text-sm px-4 py-2"><PersonAddIcon fontSize="small" className={`${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('departments.menu.addEmployee', 'Add Employee')}</MenuItem>
+                                                            <MenuItem onClick={() => handleDeleteDepartment(dept._id)} className="dark:hover:bg-gray-700 text-red-500 dark:text-red-400 text-sm px-4 py-2"><Users className={`w-4 h-4 ${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('common.delete', 'Delete')}</MenuItem>
                                                         </Menu>
                                                     </td>
                                                 </tr>
@@ -846,7 +846,7 @@ function Departments() {
                                         <tr>
                                             {employeeTableColumns.map(col => (
                                                 <th key={col.key} scope="col"
-                                                    className={`group px-6 py-3 ${col.align === 'right' ? 'text-right' : (language === 'ar' ? 'text-right' : 'text-left')} ${col.sortable ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`}
+                                                    className={`group px-6 py-3 ${col.align === 'right' ? 'text-right' : ((language === 'ar' || language === 'he') ? 'text-right' : 'text-left')} ${col.sortable ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`}
                                                     onClick={() => col.sortable && requestSort(col.key, 'employees')}
                                                 >
                                                     <div className="flex items-center">
@@ -874,13 +874,13 @@ function Departments() {
                                                         <td className="px-6 py-4 whitespace-nowrap">{emp.role || '—'}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap">{emp.status || '—'}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap">{emp.departmentName || departmentOfEmployee?.name || t('employees.notAssigned', 'N/A')}</td>
-                                                        <td className={`px-6 py-4 ${employeeTableColumns.find(c => c.key === 'actions')?.align === 'right' ? 'text-right' : (language === 'ar' ? 'text-left' : 'text-right')}`}>
+                                                        <td className={`px-6 py-4 ${employeeTableColumns.find(c => c.key === 'actions')?.align === 'right' ? 'text-right' : ((language === 'ar' || language === 'he') ? 'text-left' : 'text-right')}`}>
                                                             <IconButton size="small" onClick={(e) => handleMenuOpen(e, emp.id)} className="dark:text-black hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1">
                                                                 <MoreVertIcon fontSize="small" />
                                                             </IconButton>
-                                                            <Menu anchorEl={anchorEls[emp.id]} open={Boolean(anchorEls[emp.id])} onClose={() => handleMenuClose(emp.id)} anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200 shadow-lg rounded-md' }}>
+                                                            <Menu anchorEl={anchorEls[emp.id]} open={Boolean(anchorEls[emp.id])} onClose={() => handleMenuClose(emp.id)} anchorOrigin={{ vertical: 'bottom', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200 shadow-lg rounded-md' }}>
                                                                 {/* Add Edit/Delete for employee if needed */}
-                                                                <MenuItem onClick={() => handleRemoveEmployee(departmentOfEmployee?._id, emp.id, emp)} className="dark:hover:bg-gray-700 text-red-500 dark:text-red-400 text-sm px-4 py-2"><Users className={`w-4 h-4 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t('common.remove', 'Remove')}</MenuItem>
+                                                                <MenuItem onClick={() => handleRemoveEmployee(departmentOfEmployee?._id, emp.id, emp)} className="dark:hover:bg-gray-700 text-red-500 dark:text-red-400 text-sm px-4 py-2"><Users className={`w-4 h-4 ${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t('common.remove', 'Remove')}</MenuItem>
                                                             </Menu>
                                                         </td>
                                                     </tr>
@@ -910,7 +910,7 @@ function Departments() {
                     <div
                         className="bg-[rgb(255,255,255)] dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transition-all duration-300"
                         onClick={e => e.stopPropagation()}
-                        dir={language === "ar" ? "rtl" : "ltr"}
+                        dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}
                     >
                         {/* Header */}
                         <div className="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700">
@@ -1003,7 +1003,7 @@ function Departments() {
 
             {(showEditForm || (selectedTab === 0 && departmentFormData.name)) && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => { setShowEditForm(false); setSelectedDepartment(null); setDepartmentFormData({ name: '', description: '', permissions: [] }); }}>
-                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto hide-scrollbar" onClick={e => e.stopPropagation()} dir={language === "ar" ? "rtl" : "ltr"}>
+                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto hide-scrollbar" onClick={e => e.stopPropagation()} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
                         <div className="flex justify-between items-center p-2 border-b border-gray-200 dark:border-gray-700">
                             <h3 className="text-xl font-semibold text-gray-800 dark:text-dark3">
                                 {selectedDepartment ? t('departments.editTitle', 'Edit Department') : t('departments.addTitle', 'Add New Department')}
@@ -1059,7 +1059,7 @@ function Departments() {
 
             {showAddEmployeeForm && selectedDepartment && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowAddEmployeeForm(false)}>
-                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()} dir={language === "ar" ? "rtl" : "ltr"}>
+                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
                         <div className="flex items-center justify-between pb-3 border-b dark:border-gray-700 mb-4 sticky top-0 bg-[rgb(255,255,255)] dark:bg-navbarBack z-10 px-0 pt-0">
                             <h3 className="text-xl font-semibold text-gray-800 dark:text-dark3">{t('departments.addEmployeeTo', 'Add Employee to {{departmentName}}', { departmentName: selectedDepartment.name })}</h3>
                             <IconButton onClick={() => setShowAddEmployeeForm(false)} size="small" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-dark3">
@@ -1107,7 +1107,7 @@ function Departments() {
 
             {showAddHeadForm && selectedDepartment && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowAddHeadForm(false)}>
-                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()} dir={language === "ar" ? "rtl" : "ltr"}>
+                    <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-xl p-6 w-full max-w-lg" onClick={e => e.stopPropagation()} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
                         <div className="flex justify-between items-center p-2 border-b border-gray-200 dark:border-gray-700">
                             <h3 className="text-xl font-semibold text-gray-800 dark:text-dark3">{t('departments.addHeadTo', 'Add Head to {{departmentName}}', { departmentName: selectedDepartment.name })}</h3>
                             <IconButton onClick={() => setShowAddHeadForm(false)} size="small" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-dark3">

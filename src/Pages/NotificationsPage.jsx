@@ -160,7 +160,7 @@ function NotificationsPage() {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className="py-4 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="py-4 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
       {/* Breadcrumb */}
       <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-[20px] rounded-md justify-between items-center mb-6">
         <div className="flex gap-[14px] items-center">
@@ -244,7 +244,7 @@ function NotificationsPage() {
           <div className="flex-1 max-w-md">
             <div className="relative">
               <svg
-                className={`absolute top-3 w-4 h-4 text-gray-400 ${language === 'ar' ? 'right-3' : 'left-3'}`}
+                className={`absolute top-3 w-4 h-4 text-gray-400 ${(language === 'ar' || language === 'he') ? 'right-3' : 'left-3'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -256,7 +256,7 @@ function NotificationsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('notifications.search.placeholder', 'Search notifications...')}
-                className={`w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent ${language === 'ar' ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
+                className={`w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent ${(language === 'ar' || language === 'he') ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
               />
             </div>
           </div>

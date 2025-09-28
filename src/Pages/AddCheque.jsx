@@ -159,7 +159,7 @@ const AddCheque = () => {
   };
 
   return (
-    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">

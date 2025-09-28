@@ -174,7 +174,7 @@ function CustomerInfo() {
   };
 
   return (
-    <div className="navblayout py-1 dark:text-dark3" dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="navblayout py-1 dark:text-dark3" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
    
       <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-[22px] rounded-md justify-between items-center mt-[40px] " dir={language === "en" ? "ltr" : "rtl"}>
         <div className="flex gap-[14px] items-center text-sm md:text-base">

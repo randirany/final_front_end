@@ -67,7 +67,7 @@ export default function EmailManagement() {
   const [sending, setSending] = useState(false);
   const [emailSearchText, setEmailSearchText] = useState('');
 
-  const isRTL = language === 'ar';
+  const isRTL = (language === 'ar' || language === 'he');
 
   // Sample inbox data
   const sampleEmails = [

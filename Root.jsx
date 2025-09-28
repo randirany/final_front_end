@@ -14,11 +14,11 @@ function Root() {
   useEffect(() => {
     const html = document.documentElement;
     html.lang = language;
-    html.dir = language === 'ar' ? 'rtl' : 'ltr';
+    html.dir = (language === 'ar' || language === 'he') ? 'rtl' : 'ltr';
 
     // Add font class to body based on language
     document.body.className = document.body.className.replace(/font-(arabic|english)/g, '');
-    document.body.classList.add(language === 'ar' ? 'font-arabic' : 'font-english');
+    document.body.classList.add((language === 'ar' || language === 'he') ? 'font-arabic' : 'font-english');
   }, [language]);
 
   return (

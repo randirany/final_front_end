@@ -173,7 +173,10 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
   };
 
   const handleLanguageToggle = () => {
-    const newLang = language === 'en' ? 'ar' : 'en';
+    const languages = ['en', 'ar', 'he'];
+    const currentIndex = languages.indexOf(language);
+    const nextIndex = (currentIndex + 1) % languages.length;
+    const newLang = languages[nextIndex];
     i18n.changeLanguage(newLang);
   };
 
@@ -288,7 +291,7 @@ useEffect(() => {
   return (
     <div className={` bg-[rgb(255,255,255)] border-b-2 dark:border-b-zinc-800 dark:bg-navbarBack dark:text-dark3  z-20 fixed top-0 ${language === "en" ? "right-0" : "left-0"} 2md:[width:calc(100%-259px)] w-full`}>
       <div className='navblayout'>
-        <div className={`flex justify-between  py-2  items-center`} dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className={`flex justify-between  py-2  items-center`} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
           <div className='flex justify-between grow items-center'>
             <div className='hidden 2md:block' >
               <p className='text-[24px]'>
@@ -310,7 +313,7 @@ useEffect(() => {
             <div className="customer-search-container relative hidden md:block mx-4 flex-1 max-w-md">
               <div className="relative">
                 <svg
-                  className={`absolute top-3 w-4 h-4 text-gray-400 dark:text-gray-500 ${language === 'ar' ? 'right-3' : 'left-3'}`}
+                  className={`absolute top-3 w-4 h-4 text-gray-400 dark:text-gray-500 ${(language === 'ar' || language === 'he') ? 'right-3' : 'left-3'}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -322,11 +325,11 @@ useEffect(() => {
                   value={searchQuery}
                   onChange={handleSearchChange}
                   placeholder={t('nav.search.placeholder', 'Search customers...')}
-                  className={`w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${language === 'ar' ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
+                  className={`w-full py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${(language === 'ar' || language === 'he') ? 'pr-10 pl-3' : 'pl-10 pr-3'}`}
                   onFocus={() => searchQuery && setSearchDropdownOpen(true)}
                 />
                 {searchLoading && (
-                  <div className={`absolute top-3 w-4 h-4 ${language === 'ar' ? 'left-3' : 'right-3'}`}>
+                  <div className={`absolute top-3 w-4 h-4 ${(language === 'ar' || language === 'he') ? 'left-3' : 'right-3'}`}>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
                   </div>
                 )}
@@ -371,7 +374,7 @@ useEffect(() => {
                             </div>
                             <div className="ml-2 flex-shrink-0">
                               <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={language === 'ar' ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={(language === 'ar' || language === 'he') ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
                               </svg>
                             </div>
                           </div>
@@ -394,7 +397,7 @@ useEffect(() => {
               <button onClick={handleThemeToggle} title={isDarkMode ? t('nav.switchToLight') : t('nav.switchToDark')} className="group rounded-full bg-gray-3 p-[5px] text-[#111928] outline-1 outline-primary focus-visible:outline bg-[#F3F4F6]  dark:bg-dark2">
                 <span className="sr-only">{isDarkMode ? t('nav.switchToLight') : t('nav.switchToDark')}</span>
                 <span aria-hidden="true" className="relative flex gap-2.5">
-                  <span className={`absolute size-[38px] rounded-full border dark:border-gray-200 bg-[rgb(255,255,255)] transition-all duration-300 ease-in-out dark:border dark:border-borderNav-none dark:bg-dark-2 dark:group-hover:bg-dark-3 ${isDarkMode && language === 'en' ? 'translate-x-[48px]' : ''} ${isDarkMode && language === 'ar' ? '-translate-x-[48px]' : ''}`}></span>
+                  <span className={`absolute size-[38px] rounded-full border dark:border-gray-200 bg-[rgb(255,255,255)] transition-all duration-300 ease-in-out dark:border dark:border-borderNav-none dark:bg-dark-2 dark:group-hover:bg-dark-3 ${isDarkMode && language === 'en' ? 'translate-x-[48px]' : ''} ${isDarkMode && (language === 'ar' || language === 'he') ? '-translate-x-[48px]' : ''}`}></span>
                   <span className="relative grid size-[38px] place-items-center rounded-full"><svg className='dark:text-dark3' width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.042c.345 0 .625.28.625.625V2.5a.625.625 0 11-1.25 0v-.833c0-.346.28-.625.625-.625zM3.666 3.665a.625.625 0 01.883 0l.328.328a.625.625 0 01-.884.884l-.327-.328a.625.625 0 010-.884zm12.668 0a.625.625 0 010 .884l-.327.328a.625.625 0 01-.884-.884l.327-.327a.625.625 0 01.884 0zM10 5.626a4.375 4.375 0 100 8.75 4.375 4.375 0 000-8.75zM4.375 10a5.625 5.625 0 1111.25 0 5.625 5.625 0 01-11.25 0zm-3.333 0c0-.345.28-.625.625-.625H2.5a.625.625 0 110 1.25h-.833A.625.625 0 011.042 10zm15.833 0c0-.345.28-.625.625-.625h.833a.625.625 0 010 1.25H17.5a.625.625 0 01-.625-.625zm-1.752 5.123a.625.625 0 01.884 0l.327.327a.625.625 0 11-.884.884l-.327-.327a.625.625 0 010-.884zm-10.246 0a.625.625 0 010 .884l-.328.327a.625.625 0 11-.883-.884l.327-.327a.625.625 0 01.884 0zM10 16.875c.345 0 .625.28.625.625v.833a.625.625 0 01-1.25 0V17.5c0-.345.28-.625.625-.625z"></path></svg></span>
                   <span className="relative grid size-[38px] place-items-center rounded-full dark:text-[rgb(255,255,255)] dark:bg-dark3"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" clipRule="evenodd" d="M9.18 2.334a7.71 7.71 0 108.485 8.485A6.042 6.042 0 119.18 2.335zM1.042 10a8.958 8.958 0 018.958-8.958c.598 0 .896.476.948.855.049.364-.086.828-.505 1.082a4.792 4.792 0 106.579 6.579c.253-.42.717-.555 1.081-.506.38.052.856.35.856.948A8.958 8.958 0 011.04 10z"></path></svg></span>
                 </span>
@@ -407,7 +410,7 @@ useEffect(() => {
                 className="grid dark:bg-dark4 dark:border dark:border-borderNav size-12 w-12 h-12 place-items-center rounded-full border bg-gray-2 outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-[rgb(255,255,255)] dark:focus-visible:border-primary"
               >
                 <span className="font-semibold text-sm uppercase">
-                  {language === 'en' ? t('language.ar', 'AR') : t('language.en', 'EN')}
+                  {language === 'en' ? t('language.ar', 'AR') : (language === 'ar' || language === 'he') ? t('language.he', 'HE') : t('language.en', 'EN')}
                 </span>
               </button>
 
@@ -431,7 +434,7 @@ useEffect(() => {
                   <div
                     role="menu"
                     aria-orientation="vertical"
-                    className={`px-3.5 py-3 z-50 pointer-events-auto absolute mt-2 min-w-[8rem] origin-top-right rounded-lg border bg-[rgb(255,255,255)] shadow-lg dark:border-navbarBack dark:bg-dark2 min-[350px]:min-w-[17rem] 2md:w-[21rem] ${language === 'ar' ? 'left-0 2md:left-auto 2md:right-[-110px]' : 'right-[-20px] 2md:right-auto 2md:left-[-111px]'}  ${notificationOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}
+                    className={`px-3.5 py-3 z-50 pointer-events-auto absolute mt-2 min-w-[8rem] origin-top-right rounded-lg border bg-[rgb(255,255,255)] shadow-lg dark:border-navbarBack dark:bg-dark2 min-[350px]:min-w-[17rem] 2md:w-[21rem] ${(language === 'ar' || language === 'he') ? 'left-0 2md:left-auto 2md:right-[-110px]' : 'right-[-20px] 2md:right-auto 2md:left-[-111px]'}  ${notificationOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}
                   >
                     <div className="mb-1 flex items-center justify-between px-2 py-1.5">
                       <span className="text-lg font-medium dark:text-[rgb(255,255,255)]">{t("nav.dropdown.title")}</span>
@@ -514,7 +517,7 @@ useEffect(() => {
                   </figure>
                 </button>
                 {profileOpen && (
-                  <div className={`z-50 pointer-events-auto absolute mt-2 min-w-[8rem] origin-top-right rounded-lg border bg-[rgb(255,255,255)] shadow-md dark:border-navbarBack dark:bg-dark2 min-[230px]:min-w-[17.5rem] ${language === "ar" ? "left-0" : "right-0"} ${profileOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}>
+                  <div className={`z-50 pointer-events-auto absolute mt-2 min-w-[8rem] origin-top-right rounded-lg border bg-[rgb(255,255,255)] shadow-md dark:border-navbarBack dark:bg-dark2 min-[230px]:min-w-[17.5rem] ${(language === "ar" || language === "he") ? "left-0" : "right-0"} ${profileOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}>
                     <h2 className="sr-only">User information</h2>
                     <figure className="flex items-center gap-2.5 px-[1.25rem] py-[.875rem]">
                       <img alt="Avatar" width="48" height="48" className="size-12 object-cover rounded-full" src={UserData?.avatar || avater} />

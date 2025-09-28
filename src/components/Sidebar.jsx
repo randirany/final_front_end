@@ -35,7 +35,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     setSidebarOpen(false);
   }, [location.pathname]);
 
-  const isRTL = language === 'ar';
+  const isRTL = (language === 'ar' || language === 'he');
   return (
     <>
       <div

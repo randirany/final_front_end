@@ -1,0 +1,417 @@
+{
+    "language": {
+        "ar": "AR",
+        "en": "EN",
+        "he": "HE"
+    },
+    "errors": {
+        "unknown": "אירעה שגיאה. אנא נסה שוב.",
+        "network": "שגיאת רשת. אנא בדוק את החיבור ונסה שוב.",
+        "notFound": "המשאב המבוקש לא נמצא.",
+        "networkError": "שגיאת רשת"
+    },
+    "time": {
+        "now": "עכשיו",
+        "minutesAgo": "לפני {{count}} דקות",
+        "hoursAgo": "לפני {{count}} שעות",
+        "daysAgo": "לפני {{count}} ימים"
+    },
+    "nav": {
+        "fisrtTitle": "לוח בקרה",
+        "secondTitle": "לוח בקרה AB",
+        "toggleLanguage": "שנה שפה",
+        "Search": "חיפוש",
+        "search": {
+            "placeholder": "חפש לקוחות...",
+            "searching": "מחפש...",
+            "results": "תוצאות חיפוש",
+            "noResults": "לא נמצאו לקוחות",
+            "plateNumbers": "כלי רכב"
+        },
+        "dropdown": {
+            "title": "התראות",
+            "number": "חדש",
+            "showAll": "ראה את כל התראות",
+            "fetchError": "נכשל בטעינת התראות.",
+            "markReadError": "נכשל בסימון כנקרא.",
+            "markAllReadError": "נכשל בסימון כל התראות כנקראו.",
+            "viewAll": "צפה בכל התראות",
+            "noNotifications": "אין התראות חדשות.",
+            "newCount": "{{count}} חדש",
+            "markAllRead": "סמן הכל כנקרא",
+            "seeAll": "ראה הכל"
+        },
+        "profileInf": {
+            "view": "צפה בפרופיל",
+            "setting": "הגדרות חשבון",
+            "logout": "התנתק"
+        },
+        "switchToLight": "עבור למצב בהיר",
+        "switchToDark": "עבור למצב כהה",
+        "home": "בית"
+    },
+    "sideBar": {
+        "mainMenu": {
+            "title": "תפריט ראשי",
+            "categore": {
+                "dash": "לוח בקרה",
+                "custom": "לקוחות",
+                "sms": "שלח SMS",
+                "audits": "ביקורות",
+                "insucresComp": {
+                    "titleInsucresComp": "חברת ביטוח",
+                    "categore": {
+                        "Mandatory": "ביטוח חובה",
+                        "Third": "ביטוח צד שלישי",
+                        "Full": "ביטוח מקיף"
+                    }
+                },
+                "user": "משתמש",
+                "departments": "מחלקות ומשתמשים",
+                "Dealer": "סוכנים",
+                "payment": "תשלומים וקבלות",
+                "onlinePayment": "תשלום מקוון",
+                "emailManagement": "ניהול דואר אלקטרוני",
+                "report": {
+                    "titleReport": "דוחות",
+                    "categore": {
+                        "insuranceAhliaRep": "דוח תאונות אהליה",
+                        "AlMashreqRep": "דוח תאונות המשרק",
+                        "TakafulRep": "דוח תאונות תכאפול",
+                        "PalestineRep": "דוח תאונות פלסטין",
+                        "TrustReport": "דוח תאונות טראסט",
+                        "HoliReport": "דוח תאונות הארץ הקדושה"
+                    }
+                },
+                "chec": "שיקים"
+            }
+        },
+        "support": {
+            "title": "תמיכה",
+            "categore": {
+                "msg": "הודעות לקוחות",
+                "inbo": "תיבת נכנסים"
+            }
+        },
+        "settings": {
+            "title": "הגדרות",
+            "categore": {
+                "chart": {
+                    "title": "תרשימים",
+                    "categore": {
+                        "basic": "תרשים בסיסי",
+                        "advance": "תרשים מתקדם"
+                    }
+                }
+            },
+            "auth": {
+                "title": "אימות",
+                "categore": {
+                    "signIn": "כניסה",
+                    "signUp": "הרשמה",
+                    "Reset": "איפוס סיסמה"
+                }
+            }
+        }
+    },
+    "home": {
+        "totalCu": "סך הכל לקוחות",
+        "TotalIncome": "סך הכל הכנסות",
+        "TotalExpenses": "סך הכל הוצאות",
+        "DueAmount": "סכום לתשלום",
+        "TotalVisa": "סך הכל תשלומי ויזה",
+        "TotalCash": "סך הכל תשלומי מזומן",
+        "TotalBank": "סך הכל העברות בנק",
+        "TotalProfit": "סך הכל רווח",
+        "checkPayments": "סך הכל שיקים",
+        "totalCar": "סך הכל רכבים",
+        "ActiveInsurancesCount": "סך הכל ביטוחים פעילים",
+        "ExpiredInsurancesCount": "סך הכל ביטוחים שפגו",
+        "accident": "סך הכל תאונות",
+        "Agents": "סך הכל סוכנים",
+        "returnedChecksTotal": "סך הכל שיקים שהוחזרו",
+        "chart": {
+            "title": "סקירת תשלומים",
+            "short": "מיין לפי:",
+            "ReceivedAmount": "סכום שהתקבל",
+            "DueAmount": "סכום לתשלום",
+            "customersGrowth": "סקירת לקוחות"
+        },
+        "loading": "טוען נתוני לוח בקרה...",
+        "error": "שגיאה",
+        "dataLoadError": "נכשל בטעינת חלק מנתוני לוח הבקרה. האם תרצה לנסות שוב?",
+        "retry": "נסה שוב",
+        "continue": "המשך",
+        "partialDataWarning": "חלק מהנתונים לא ניתן לטעון.",
+        "refresh": "רענן דף"
+    },
+    "login": {
+        "title": "כניסה למערכת",
+        "subtitle": "באמצעות דואר אלקטרוני",
+        "email": "דואר אלקטרוני",
+        "emailPlaceholder": "הכנס את הדואר האלקטרוני שלך",
+        "password": "סיסמה",
+        "passwordPlaceholder": "הכנס את הסיסמה שלך",
+        "loginButton": "כניסה",
+        "forgotPassword": "שכחת סיסמה?",
+        "noAccount": "אין לך חשבון?",
+        "signUp": "הרשמה",
+        "invalidCredentials": "פרטי כניסה לא תקינים",
+        "loginError": "שגיאה בכניסה למערכת"
+    },
+    "accountSettings": {
+        "breadcrumbTitle": "הגדרות חשבון",
+        "updateDetailsTitle": "עדכן פרטים אישיים",
+        "nameLabel": "שם מלא",
+        "emailLabel": "כתובת דואר אלקטרוני",
+        "saveDetailsButton": "שמור שינויים",
+        "savingButton": "שומר...",
+        "detailsUpdatedSuccess": "הפרטים עודכנו בהצלחה!",
+        "detailsUpdateError": "נכשל בעדכון הפרטים.",
+        "changePasswordTitle": "שנה סיסמה",
+        "currentPasswordLabel": "סיסמה נוכחית",
+        "newPasswordLabel": "סיסמה חדשה",
+        "confirmPasswordLabel": "אשר סיסמה חדשה",
+        "changePasswordButton": "שנה סיסמה",
+        "changingPasswordButton": "משנה...",
+        "passwordChangedSuccess": "הסיסמה שונתה בהצלחה!",
+        "passwordChangeError": "נכשל בשינוי הסיסמה.",
+        "validation": {
+            "nameRequired": "שם נדרש",
+            "emailRequired": "דואר אלקטרוני נדרש",
+            "emailInvalid": "כתובת דואר אלקטרוני לא תקינה",
+            "currentPasswordRequired": "סיסמה נוכחית נדרשת",
+            "newPasswordRequired": "סיסמה חדשה נדרשת",
+            "passwordMinLength": "הסיסמה חייבת להכיל לפחות 8 תווים",
+            "confirmPasswordRequired": "אנא אשר את הסיסמה החדשה",
+            "newPasswordTooShort": "הסיסמה החדשה חייבת להכיל לפחות 6 תווים.",
+            "passwordsDoNotMatch": "הסיסמאות החדשות אינן תואמות."
+        }
+    },
+    "customers": {
+        "firstTitle": "לוח בקרה",
+        "secondeTitle": "לקוחות",
+        "editCustomerTitle": "ערוך פרטי לקוח",
+        "add_vehicle": "הוסף רכב",
+        "add_button": "הוסף לקוח",
+        "profile": "פרופיל לקוח",
+        "search_placeholder": "חפש ...",
+        "delete_confirm": "האם אתה בטוח?",
+        "delete_confirm_text": "לא תוכל לבטל את הפעולה!",
+        "yes_delete": "כן, מחק!",
+        "successDlete": "נמחק בהצלחה!",
+        "addModal": {
+            "title": "הוסף לקוח חדש",
+            "formTitle": "טופס לקוח חדש"
+        },
+        "labels": {
+            "firstName": "שם פרטי",
+            "lastName": "שם משפחה",
+            "email": "דואר אלקטרוני",
+            "idNumber": "מספר זהות",
+            "mobile": "נייד",
+            "city": "עיר",
+            "chooseCity": "בחר עיר",
+            "agentName": "שם סוכן",
+            "birthDate": "תאריך לידה",
+            "notes": "הערות",
+            "joiningDate": "תאריך הצטרפות",
+            "customerImageOptional": "תמונת לקוח (אופציונלי)",
+            "currentImage": "תמונה נוכחית:",
+            "newSelectedFile": "קובץ חדש:",
+            "selectedFile": "קובץ נבחר:",
+            "selectAgent": "בחר סוכן"
+        },
+        "altText": {
+            "currentCustomerImage": "תמונת לקוח נוכחית"
+        },
+        "dropArea": {
+            "addNewImage": "לחץ או גרור תמונה חדשה כאן",
+            "addImage": "לחץ או גרור תמונה כאן"
+        },
+        "buttons": {
+            "removeFile": "הסר",
+            "submitAdd": "שלח",
+            "submittingAdd": "שולח...",
+            "add": "הוסף"
+        },
+        "messages": {
+            "addSuccess": "לקוח נוסף בהצלחה!",
+            "addError": "נכשל בהוספת לקוח.",
+            "editSuccess": "לקוח עודכן בהצלחה!",
+            "editError": "נכשל בעדכון לקוח.",
+            "editErrorNoId": "מספר זהות הלקוח חסר. לא ניתן לעדכן.",
+            "deleteSuccess": "נמחק בהצלחה",
+            "updateSuccess": "עודכן בהצלחה"
+        },
+        "table": {
+            "name": "שם",
+            "mobile": "נייד",
+            "id": "זהות",
+            "email": "דואר אלקטרוני",
+            "address": "כתובת",
+            "agent": "סוכן",
+            "actions": "פעולות"
+        },
+        "vehicles": {
+            "validation": {
+                "plateRequired": "מספר לוחית רכב נדרש.",
+                "modelRequired": "דגם רכב נדרש.",
+                "typeRequired": "סוג רכב נדרש.",
+                "ownershipRequired": "בעלות נדרשת.",
+                "chassisRequired": "מספר שלדה (VIN) נדרש.",
+                "licenseExpiryRequired": "תאריך תפוגת רישיון נדרש.",
+                "lastTestRequired": "תאריך בדיקה אחרונה נדרש.",
+                "colorRequired": "צבע רכב נדרש.",
+                "priceRequired": "מחיר רכב נדרש."
+            },
+            "success": {
+                "vehicleAdded": "רכב נוסף בהצלחה!"
+            },
+            "errors": {
+                "insured": {
+                    "notFound": "אדם מבוטח לא נמצא."
+                }
+            },
+            "messages": {
+                "insuredIdMissing": "מספר זהות מבוטח חסר"
+            },
+            "addModal": {
+                "title": "כותרת"
+            },
+            "labels": {
+                "modelName": "שם דגם",
+                "plateNumber": "מספר לוחית",
+                "chassisNumber": "מספר שלדה",
+                "type": "סוג",
+                "ownership": "בעלות",
+                "licenseExpiry": "תפוגת רישיון",
+                "lastTestDate": "תאריך בדיקה אחרונה",
+                "color": "צבע",
+                "price": "מחיר",
+                "imageOptional": "תמונה אופציונלית"
+            },
+            "placeholders": {
+                "modelName": "שם דגם",
+                "plateNumber": "מספר לוחית",
+                "chassisNumber": "מספר שלדה",
+                "type": "סוג",
+                "ownership": "בעלות",
+                "color": "צבע",
+                "price": "מחיר"
+            },
+            "buttons": {
+                "submittingAdd": "שולח הוספה",
+                "submitAdd": "שלח הוספה"
+            }
+        },
+        "addVehicle": {
+            "title": "הוסף רכב?",
+            "text": "האם תרצה להוסיף רכב חדש עבור לקוח זה?"
+        },
+        "addInsurance": {
+            "title": "הוסף ביטוח?",
+            "text": "האם תרצה להוסיף ביטוח עבור רכב זה?"
+        },
+        "placeholders": {
+            "firstName": "הכנס שם פרטי",
+            "lastName": "הכנס שם משפחה",
+            "email": "הכנס כתובת דואר אלקטרוני",
+            "idNumber": "הכנס מספר זהות",
+            "mobile": "הכנס מספר טלפון",
+            "city": "הכנס עיר",
+            "notesPlaceholder": "הוסף הערות נוספות..."
+        },
+        "validation": {
+            "firstName": "שם פרטי נדרש",
+            "lastName": "שם משפחה נדרש",
+            "email": "דואר אלקטרוני נדרש",
+            "invalidEmail": "כתובת דואר אלקטרוני לא תקינה",
+            "id_Number": "מספר זהות נדרש",
+            "phone_number": "מספר טלפון נדרש",
+            "city": "עיר נדרשת",
+            "Agent": "אנא ודא שם סוכן",
+            "AgentReq": "שם סוכן נדרש",
+            "birth_date": "תאריך לידה נדרש",
+            "alreadyExists": "מספר זהות כבר קיים",
+            "invalidIdNumber": "מספר זהות לא תקין",
+            "minimumAge": "גיל מינימלי"
+        },
+        "showing_results": "מציג {{count}} מתוך {{total}} לקוחות",
+        "no_name": "אין שם",
+        "no_customers": "לא נמצאו לקוחות",
+        "no_search_results": "נסה לשנות את קריטריוני החיפוש או הוסף לקוח חדש.",
+        "add_first_customer": "הוסף את הלקוח הראשון שלך כדי להתחיל.",
+        "end_of_results": "הגעת לסוף התוצאות.",
+        "edit_title": "ערוך לקוח",
+        "exportSheetName": "לקוחות",
+        "exportExcelFileName": "דוח_לקוחות.xlsx",
+        "report_title": "דוח לקוחות",
+        "exportPdfFileName": "דוח_לקוחות.pdf",
+        "delete_error": "שגיאה במחיקת לקוח.",
+        "update_error": "שגיאה בעדכון לקוח.",
+        "form": {
+            "firstName": "שם פרטי",
+            "lastName": "שם משפחה",
+            "idNumber": "מספר זהות",
+            "phone": "מספר טלפון",
+            "email": "דואר אלקטרוני",
+            "city": "עיר",
+            "birthDate": "תאריך לידה",
+            "joiningDate": "תאריך הצטרפות",
+            "notes": "הערות"
+        },
+        "no_results": "אין תוצאות",
+        "exportCsvFileName": "שם קובץ ייצוא CSV"
+    },
+    "insuranceCompany.addTitle": "הוסף חברת ביטוח",
+    "insuranceCompany": {
+        "addTitle": "הוסף חברת ביטוח",
+        "fields": {
+            "name": "שם חברה",
+            "insuranceTypes": "סוגי ביטוח",
+            "roadServices": "שירותי דרך",
+            "price": "מחיר",
+            "serviceName": "שם שירות"
+        },
+        "type": {
+            "compulsory": "חובה",
+            "comprehensive": "מקיף"
+        },
+        "success": {
+            "added": "חברה נוספה בהצלחה"
+        },
+        "errors": {
+            "nameRequired": "שם חברה נדרש",
+            "atLeastOneType": "הוסף לפחות סוג ביטוח אחד",
+            "addFailed": "נכשל בהוספת חברה"
+        },
+        "labels": {
+            "insuranceCompany": "חברת ביטוח"
+        },
+        "options": {
+            "chooseinsuranceCompany": "בחר חברת ביטוח"
+        },
+        "table": {
+            "name": "שם חברה",
+            "contact": "פרטי יצירת קשר",
+            "address": "כתובת",
+            "insuranceType": "סוג ביטוח",
+            "actions": "פעולות"
+        },
+        "tabs": {
+            "privateCar": "רכב פרטי",
+            "commercialCar": "רכב מסחרי",
+            "motorcycle": "אופנוע"
+        },
+        "editErrorNoId": "לא סופק מזהה חברה לעריכה",
+        "editSuccess": "חברה עודכנה בהצלחה",
+        "editErrorGeneric": "נכשל בעדכון חברה",
+        "rates": {
+            "under24": "מתחת לגיל 24",
+            "over24": "מעל גיל 24",
+            "offerAmount": "סכום הצעה",
+            "minFor60k": "מינימום עבור 60 אלף"
+        }
+    }
+}

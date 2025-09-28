@@ -112,7 +112,7 @@ const ViewCheque = () => {
 
   if (loading) {
     return (
-      <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+      <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
         <div className="mx-auto max-w-7xl">
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
@@ -124,7 +124,7 @@ const ViewCheque = () => {
 
   if (!cheque) {
     return (
-      <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+      <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -147,7 +147,7 @@ const ViewCheque = () => {
   }
 
   return (
-    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">
@@ -238,7 +238,7 @@ const ViewCheque = () => {
                       {t('cheques.cheque_date')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.cheque_date).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
+                      {new Date(cheque.cheque_date).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
                     </dd>
                   </div>
 
@@ -383,7 +383,7 @@ const ViewCheque = () => {
                       {t('cheques.createdAt')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.createdAt).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
+                      {new Date(cheque.createdAt).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
                     </dd>
                   </div>
 
@@ -392,7 +392,7 @@ const ViewCheque = () => {
                       {t('cheques.lastUpdated')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.updatedAt).toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US')}
+                      {new Date(cheque.updatedAt).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
                     </dd>
                   </div>
                 </dl>

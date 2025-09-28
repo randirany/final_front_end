@@ -13,7 +13,10 @@ function Login() {
     const { language } = i18n
 
     const handleLanguageToggle = () => {
-        const newLang = language === 'en' ? 'ar' : 'en';
+        const languages = ['en', 'ar', 'he'];
+        const currentIndex = languages.indexOf(language);
+        const nextIndex = (currentIndex + 1) % languages.length;
+        const newLang = languages[nextIndex];
         i18n.changeLanguage(newLang);
     }
     const RegisterUser = async () => {
@@ -40,17 +43,17 @@ function Login() {
 
 
     return (
-        <div className="login bg-[url('https://basheer-ab.com/wp-content/themes/ab_theme/CRM/assets/img/bg/37.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-4" dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className="login bg-[url('https://basheer-ab.com/wp-content/themes/ab_theme/CRM/assets/img/bg/37.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-4" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className="wrapper w-full max-w-md mx-auto border border-gray-200 dark:border-borderNav rounded-lg p-6 md:p-8 bg-white dark:bg-navbarBack shadow-lg relative">
                 {/* Language Switcher */}
                 <button
                     onClick={handleLanguageToggle}
                     title={t('nav.toggleLanguage', 'Change Language')}
                     aria-label={t('nav.toggleLanguage', 'Change Language')}
-                    className={`absolute top-4 ${language === 'ar' ? 'left-4' : 'right-4'} grid size-10 w-10 h-10 place-items-center rounded-full border bg-gray-100 outline-none hover:text-blue-500 focus-visible:border-blue-500 focus-visible:text-blue-500 hover:bg-gray-200 transition-colors`}
+                    className={`absolute top-4 ${(language === 'ar' || language === 'he') ? 'left-4' : 'right-4'} grid size-10 w-10 h-10 place-items-center rounded-full border bg-gray-100 outline-none hover:text-blue-500 focus-visible:border-blue-500 focus-visible:text-blue-500 hover:bg-gray-200 transition-colors`}
                 >
                     <span className="font-semibold text-sm uppercase">
-                        {language === 'en' ? t('language.ar', 'AR') : t('language.en', 'EN')}
+                        {language === 'en' ? t('language.ar', 'AR') : (language === 'ar' || language === 'he') ? t('language.he', 'HE') : t('language.en', 'EN')}
                     </span>
                 </button>
 
@@ -70,7 +73,7 @@ function Login() {
                     </span>
                 </h1>
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
-                    <div className={`${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <div className={`${(language === 'ar' || language === 'he') ? 'text-right' : 'text-left'}`}>
                         <label htmlFor="email" className="block text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {t('login.email', 'البريد الإلكتروني')}
                         </label>
@@ -85,7 +88,7 @@ function Login() {
                         />
                     </div>
 
-                    <div className={`${language === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <div className={`${(language === 'ar' || language === 'he') ? 'text-right' : 'text-left'}`}>
                         <label htmlFor="password" className="block text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {t('login.password', 'كلمة المرور')}
                         </label>
@@ -108,7 +111,7 @@ function Login() {
                                 id="remember"
                                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
-                            <label htmlFor="remember" className={`${language === 'ar' ? 'mr-2' : 'ml-2'} text-sm font-medium text-gray-700 dark:text-gray-300`}>
+                            <label htmlFor="remember" className={`${(language === 'ar' || language === 'he') ? 'mr-2' : 'ml-2'} text-sm font-medium text-gray-700 dark:text-gray-300`}>
                                 {t('login.rememberMe', 'تذكرني')}
                             </label>
                         </div>

@@ -83,7 +83,7 @@ function AllInsurances() {
         { key: 'insuranceEndDate', label: t('insuranceList.table.endDate', 'End Date') },
         { key: 'remainingDebt', label: t('insuranceList.table.remainingDebt', 'Remaining Debt') },
         { key: 'agent', label: t('customers.table.agent', 'Agent') },
-        { key: 'actions', label: t('insuranceList.table.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right' },
+        { key: 'actions', label: t('insuranceList.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
     ];
 
     const fetchInsurances = async () => {
@@ -190,7 +190,7 @@ function AllInsurances() {
         printWindow.document.write('<html><head><title>Print Report</title>');
         printWindow.document.write(`
             <style>
-                body { font-family: ${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
+                body { font-family: ${(language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
                 table { width: 100%; border-collapse: collapse; }
                 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 th { background-color: #f2f2f2; }
@@ -214,7 +214,7 @@ function AllInsurances() {
         return null;
     };
     return (
-        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-4 rounded-md justify-between items-center mb-4 shadow-sm">
                 <div className={`flex gap-2 items-center text-sm md:text-base`}>
                     <NavLink className="hover:underline text-blue-600" to="/home">{t('breadcrumbs.home', 'Dashboard')}</NavLink>

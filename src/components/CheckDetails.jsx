@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const formatDate = (dateString, language) => { 
     if (!dateString) return "N/A";
     try {
-        const locale = language === 'ar' ? 'ar-SA' : 'en-GB';
+        const locale = (language === 'ar' || language === 'he') ? 'ar-SA' : 'en-GB';
         return new Date(dateString).toLocaleDateString(locale, {
             day: '2-digit',
             month: '2-digit',
@@ -75,12 +75,12 @@ function CheckDetails() {
 
 
     return (
-        <div className="navblayout" style={{ padding: '20px', minHeight: '100vh' }} dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className="navblayout" style={{ padding: '20px', minHeight: '100vh' }} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className='mb-2 pb-2 '>
                 <div className="bg-[rgb(255,255,255)] flex p-[20px] rounded-md justify-between items-center mt-5  dark:bg-navbarBack dark:text-dark3">
                     <div className="flex gap-[14px] items-center"> 
                         <NavLink to="/home" className="hover:underline text-blue-600 dark:text-blue-400">{t('breadcrumbs.home', 'Home')}</NavLink>
-                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transform ${language === 'ar' ? 'rotate-180' : ''}`}>
+                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transform ${(language === 'ar' || language === 'he') ? 'rotate-180' : ''}`}>
                             <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
@@ -92,7 +92,7 @@ function CheckDetails() {
                         <NavLink to={`/insured/${insuredId}/${vehicleId}`} className="hover:underline text-blue-600 dark:text-blue-400">
                             {t('breadcrumbs.insuranceList', 'Insurance List')}
                         </NavLink>
-                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transform ${language === 'ar' ? 'rotate-180' : ''}`}>
+                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transform ${(language === 'ar' || language === 'he') ? 'rotate-180' : ''}`}>
                             <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
@@ -128,8 +128,8 @@ function CheckDetails() {
                     <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg p-2 min-h-[50vh]">
                         {checks.map((check, index) => (
                             <div key={check._id || index}>
-                                <div className={`flex items-start py-4 px-2 my-2 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg shadow-sm dark:bg-darkSec ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
-                                    <div className={`${language === 'ar' ? 'ml-4' : 'mr-4'} mt-1`}>
+                                <div className={`flex items-start py-4 px-2 my-2 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg shadow-sm dark:bg-darkSec ${(language === 'ar' || language === 'he') ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`${(language === 'ar' || language === 'he') ? 'ml-4' : 'mr-4'} mt-1`}>
                                         {check.checkImage ? (
                                             <div
                                                 className="relative w-24 h-24 cursor-pointer bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden"
@@ -171,7 +171,7 @@ function CheckDetails() {
                                         </div>
                                     </div>
                                     {check.checkImage && (
-                                        <div className={`${language === 'ar' ? 'mr-auto' : 'ml-auto'} ${language === 'ar' ? 'pl-2' : 'pr-2'}`}> {/* Adjusted for RTL */}
+                                        <div className={`${(language === 'ar' || language === 'he') ? 'mr-auto' : 'ml-auto'} ${(language === 'ar' || language === 'he') ? 'pl-2' : 'pr-2'}`}> {/* Adjusted for RTL */}
                                             <button
                                                 onClick={() => window.open(check.checkImage, '_blank')}
                                                 className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-full"

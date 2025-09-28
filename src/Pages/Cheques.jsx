@@ -235,7 +235,7 @@ const Cheques = () => {
       th { background-color: #f2f2f2; }
       tr:nth-child(even) { background-color: #f9f9f9; }
       @media print {
-        body { font-family: ${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
+        body { font-family: ${(language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
         .no-print { display: none; }
       }
     `);
@@ -280,7 +280,7 @@ const Cheques = () => {
     { key: 'customerName', label: t('cheques.customer', 'Customer') },
     { key: 'cheque_date', label: t('cheques.cheque_date', 'Cheque Date') },
     { key: 'status', label: t('cheques.status', 'Status') },
-    { key: 'actions', label: t('cheques.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right' },
+    { key: 'actions', label: t('cheques.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
   ];
 
   const getSortIcon = (columnKey) => {
@@ -308,9 +308,9 @@ const Cheques = () => {
   };
 
   return (
-    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+    <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
       <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-4 md:p-[22px] rounded-md justify-between items-center mb-4 flex-wrap shadow-sm">
-        <div className={`flex gap-2 md:gap-[14px] items-center mb-2 md:mb-0 text-sm md:text-base ${language === "ar" ? "text-right" : "text-left"}`}>
+        <div className={`flex gap-2 md:gap-[14px] items-center mb-2 md:mb-0 text-sm md:text-base ${(language === "ar" || language === "he") ? "text-right" : "text-left"}`}>
           <NavLink className="hover:underline text-blue-600 dark:text-blue-400" to="/home">{t('cheques.firstTitle', 'Dashboard')}</NavLink>
           <span className="text-gray-400">/</span>
           <span className="text-gray-500 dark:text-gray-400">{t('cheques.secondeTitle', 'Cheques')}</span>

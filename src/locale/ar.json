@@ -6,14 +6,15 @@
     "errors": {
         "unknown": "حدث خطأ. يرجى المحاولة مرة أخرى.",
         "network": "خطأ في الشبكة. يرجى التحقق من الاتصال والمحاولة مرة أخرى.",
-        "notFound": "المورد المطلوب غير موجود."
+        "notFound": "المورد المطلوب غير موجود.",
+        "networkError": "خطأ في الشبكة"
     },
-      "time": {
-    "now": "الآن",
-    "minutesAgo": "منذ {{count}} دقيقة",
-    "hoursAgo": "منذ {{count}} ساعة",
-    "daysAgo": "منذ {{count}} يوم"
-  },
+    "time": {
+        "now": "الآن",
+        "minutesAgo": "منذ {{count}} دقيقة",
+        "hoursAgo": "منذ {{count}} ساعة",
+        "daysAgo": "منذ {{count}} يوم"
+    },
     "nav": {
         "fisrtTitle": "لوحة التحكم",
         "secondTitle": "لوحة تحكم AB",
@@ -36,13 +37,17 @@
             "viewAll": "عرض جميع الإشعارات",
             "noNotifications": "لا توجد إشعارات جديدة.",
             "newCount": "{{count}} جديد",
-            "markAllRead": "تمييز الكل كمقروء"
+            "markAllRead": "تمييز الكل كمقروء",
+            "seeAll": "عرض الكل"
         },
         "profileInf": {
             "view": "عرض الملف الشخصي",
             "setting": "إعدادات الحساب",
             "logout": "تسجيل الخروج"
-        }
+        },
+        "switchToLight": "التبديل إلى الوضع الفاتح",
+        "switchToDark": "التبديل إلى الوضع الداكن",
+        "home": "الرئيسية"
     },
     "sideBar": {
         "mainMenu": {
@@ -117,20 +122,19 @@
         "TotalCash": "إجمالي المدفوعات النقدية",
         "TotalBank": "إجمالي التحويلات البنكية",
         "TotalProfit": "إجمالي المدفوعات عن طريق الشيكات",
-         "totalCar":"إجمالي المركبات",
-         "ActiveInsurancesCount":"عدد التأمينات النشطة ",
-         "ExpiredInsurancesCount":"عدد التأمينات المنتهية",
-            "accident":"إجمالي الحوادث",
-            "Agents":"اجمالي الوكلاء",
-            "returnedChecksTotal":"اجمالي الشيكات المرتجعة",
-
-          "checkPayments":"",
+        "totalCar": "إجمالي المركبات",
+        "ActiveInsurancesCount": "عدد التأمينات النشطة ",
+        "ExpiredInsurancesCount": "عدد التأمينات المنتهية",
+        "accident": "إجمالي الحوادث",
+        "Agents": "اجمالي الوكلاء",
+        "returnedChecksTotal": "اجمالي الشيكات المرتجعة",
+        "checkPayments": "",
         "chart": {
             "title": "نظرة عامة على المدفوعات",
             "short": "فرز حسب:",
             "ReceivedAmount": "المبلغ المستلم",
             "DueAmount": "المبلغ المستحق",
-            "customersGrowth":"نظرة عامة عن الزبائن"
+            "customersGrowth": "نظرة عامة عن الزبائن"
         },
         "loading": "جاري تحميل بيانات لوحة التحكم...",
         "error": "خطأ",
@@ -165,7 +169,8 @@
             "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
             "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
             "confirmPasswordRequired": "يرجى تأكيد كلمة المرور الجديدة",
-            "passwordsDoNotMatch": "كلمات المرور غير متطابقة"
+            "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+            "newPasswordTooShort": "كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل."
         }
     },
     "customers": {
@@ -233,7 +238,9 @@
             "addError": "فشل في إضافة العميل.",
             "editSuccess": "تم تحديث العميل بنجاح!",
             "editError": "فشل في تحديث العميل.",
-            "editErrorNoId": "معرّف العميل مفقود. لا يمكن التحديث."
+            "editErrorNoId": "معرّف العميل مفقود. لا يمكن التحديث.",
+            "deleteSuccess": "تم الحذف بنجاح",
+            "updateSuccess": "تم التحديث بنجاح"
         },
         "table": {
             "name": "الاسم",
@@ -256,69 +263,6 @@
             "notes": "ملاحظات"
         },
         "vehicles": {
-            "addModal": {
-                "title": "إضافة مركبة جديدة"
-            },
-            "labels": {
-                "modelName": "اسم/موديل المركبة",
-                "plateNumber": "رقم لوحة المركبة",
-                "chassisNumber": "رقم الشاصي (VIN)",
-                "type": "نوع المركبة",
-                "ownership": "الملكية",
-                "licenseExpiry": "تاريخ انتهاء الرخصة",
-                "lastTestDate": "تاريخ آخر فحص",
-                "color": "لون المركبة",
-                "price": "سعر المركبة",
-                "imageOptional": "صورة المركبة",
-                "selectedFiles": "الملفات المختارة:"
-            },
-            "placeholders": {
-                "modelName": "مثال: تويوتا كامري",
-                "plateNumber": "أدخل رقم اللوحة",
-                "chassisNumber": "أدخل رقم الشاصي",
-                "type": "مثال: سيدان، SUV",
-                "ownership": "مثال: خاص، شركة",
-                "color": "مثال: أحمر، أزرق",
-                "price": "أدخل سعر المركبة"
-            },
-            "dropArea": {
-                "text": "اسحب الملفات هنا أو انقر للتحميل"
-            },
-            "buttons": {
-                "submitAdd": "اضافة المركبة",
-                "submittingAdd": "جارٍ الإرسال..."
-            },
-            "messages": {
-                "fetchingData": "جارٍ جلب بيانات المركبة...",
-                "notFound": "لم يتم العثور على بيانات لهذه المركبة.",
-                "correctErrors": "يرجى تصحيح الأخطاء في النموذج.",
-                "apiError": "خطأ في جلب بيانات المركبة من الواجهة الخارجية.",
-                "insuredIdMissing": "معرّف المؤمن عليه مفقود. لا يمكن إضافة مركبة.",
-                "tokenMissing": "رمز المصادقة غير موجود. يرجى تسجيل الدخول مرة أخرى.",
-                "addSuccess": "تمت إضافة المركبة بنجاح!",
-                "addError": "فشل في إضافة المركبة."
-            },
-            "validation": {
-                "Agent": "الرجاء التاكد من اسم الوكيل",
-                "alreadyExists": "رقم الهوية مسجل مسبقا",
-                "firstName": "الاسم الأول مطلوب",
-                "lastName": "اسم العائلة مطلوب",
-                "email": "البريد الإلكتروني مطلوب",
-                "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
-                "id_Number": "رقم الهوية مطلوب",
-                "invalidIdNumber": "تنسيق رقم الهوية الإسرائيلي غير صالح (يجب أن يكون 9 أرقام ويجتاز فحص Luhn)",
-                "phone_number": "رقم الهاتف مطلوب",
-                "city": "المدينة مطلوبة",
-                "birth_date": "تاريخ الميلاد مطلوب",
-                "minimumAge": "يجب أن يكون عمر العميل 16 سنة على الأقل."
-            },
-            "messages": {
-                "editErrorNoId": "معرف العميل مفقود. لا يمكن تعديل العميل.",
-                "addSuccess": "تم إضافة العميل بنجاح!",
-                "updateSuccess": "تم تحديث العميل بنجاح!"
-            }
-        },
-        "vehicles": {
             "validation": {
                 "plateRequired": "رقم لوحة المركبة مطلوب.",
                 "modelRequired": "موديل المركبة مطلوب.",
@@ -337,6 +281,37 @@
                 "insured": {
                     "notFound": "المؤمن عليه غير موجود."
                 }
+            },
+            "messages": {
+                "insuredIdMissing": "معرف المؤمن عليه مفقود"
+            },
+            "addModal": {
+                "title": "إضافة مركبة جديدة"
+            },
+            "labels": {
+                "modelName": "اسم الموديل",
+                "plateNumber": "رقم اللوحة",
+                "chassisNumber": "رقم الشاسيه",
+                "type": "النوع",
+                "ownership": "الملكية",
+                "licenseExpiry": "انتهاء الرخصة",
+                "lastTestDate": "تاريخ آخر فحص",
+                "color": "اللون",
+                "price": "السعر",
+                "imageOptional": "الصورة (اختيارية)"
+            },
+            "placeholders": {
+                "modelName": "أدخل اسم الموديل",
+                "plateNumber": "أدخل رقم اللوحة",
+                "chassisNumber": "أدخل رقم الشاسيه",
+                "type": "أدخل النوع",
+                "ownership": "أدخل نوع الملكية",
+                "color": "أدخل اللون",
+                "price": "أدخل السعر"
+            },
+            "buttons": {
+                "submittingAdd": "جارٍ الإضافة",
+                "submitAdd": "إضافة المركبة"
             }
         },
         "addVehicle": {
@@ -367,13 +342,40 @@
             "Agent": "يرجى التأكد من اسم الوكيل",
             "AgentReq": "اسم الوكيل مطلوب",
             "birth_date": "تاريخ الميلاد مطلوب",
-            "alreadyExists": "رقم الهوية مسجل مسبقًا"
-        }
+            "alreadyExists": "رقم الهوية مسجل مسبقًا",
+            "invalidIdNumber": "رقم الهوية غير صالح",
+            "minimumAge": "الحد الأدنى للعمر"
+        },
+        "no_results": "لا توجد نتائج",
+        "exportCsvFileName": "تصدير_العملاء.csv"
     },
     "insuranceCompany": {
-        "addTitle":"اضافة شركة تامين",
-        "addSuccess": "تمت اضافة شركة التامين بنجاح!",
-        "addErrorGeneric":"فشلت عملية الاضافة!",
+        "addTitle": "إضافة شركة تأمين",
+        "fields": {
+            "name": "اسم الشركة",
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "الخدمات على الطريق",
+            "price": "السعر",
+            "serviceName": "اسم الخدمة"
+        },
+        "type": {
+            "compulsory": "إلزامي",
+            "comprehensive": "شامل"
+        },
+        "success": {
+            "added": "تمت إضافة الشركة بنجاح"
+        },
+        "errors": {
+            "nameRequired": "اسم الشركة مطلوب",
+            "atLeastOneType": "أضف نوع تأمين واحد على الأقل",
+            "addFailed": "فشل في إضافة الشركة"
+        },
+        "labels": {
+            "insuranceCompany": "شركة التأمين"
+        },
+        "options": {
+            "chooseinsuranceCompany": "اختر شركة التأمين"
+        },
         "table": {
             "name": "اسم الشركة",
             "contact": "معلومات الاتصال",
@@ -381,52 +383,49 @@
             "insuranceType": "نوع التأمين",
             "actions": "الإجراءات"
         },
-        "exportSheetName": "شركات التأمين",
-        "exportExcelFileName": "شركات_التأمين.xlsx",
-        "exportPdfTitle": "تقرير شركات التأمين",
-        "exportPdfFileName": "شركات_التأمين.pdf",
-        "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه الشركة؟",
-        "deleteError": "خطأ في حذف الشركة.",
-        "updateError": "خطأ في تحديث الشركة.",
-        "addButton": "إضافة شركة",
-        "searchPlaceholder": "بحث عن شركات...",
-        "noCompanies": "لم يتم العثور على شركات تأمين.",
+        "tabs": {
+            "privateCar": "سيارة خاصة",
+            "commercialCar": "سيارة تجارية",
+            "motorcycle": "دراجة نارية"
+        },
+        "editErrorNoId": "لم يتم توفير معرف الشركة للتعديل",
+        "editSuccess": "تم تحديث الشركة بنجاح",
+        "editErrorGeneric": "فشل في تحديث الشركة",
+        "rates": {
+            "under24": "تحت 24",
+            "over24": "فوق 24",
+            "offerAmount": "مبلغ العرض",
+            "minFor60k": "الحد الأدنى لـ 60 ألف"
+        },
         "editTitle": "تعديل شركة التأمين",
-        "saveChangesButton": "حفظ",
-        "editSuccess": "تم تحديث شركة التأمين بنجاح.",
-        "editErrorNoId": "معرّف الشركة مفقود. لا يمكن التحديث.",
-        "editErrorGeneric": "فشل تحديث الشركة.",
         "form": {
             "companyName": "اسم الشركة",
-            "companyNamePlaceholder": "أدخل اسم الشركة",
             "insuranceType": "نوع التأمين",
-            "contact": "رقم الاتصال",
-            "contactPlaceholder": "أدخل رقم الاتصال",
-            "address": "العنوان",
-            "addressPlaceholder": "أدخل العنوان",
-            "ratePlaceholder": "أدخل "
+            "contact": "جهة الاتصال",
+            "address": "العنوان"
         },
         "types": {
             "mandatory": "إلزامي",
-            "comprehensive": "طرف ثالث شامل"
+            "comprehensive": "شامل"
         },
-        "ratesTitle": "أسعار المركبات",
-        "tabs": {
-            "privateCar": "سيارة خاصة",
-            "motorcycle": "دراجة نارية",
-            "commercialCar":"سيارة تجارية"
-        },
-        "rates": {
-            "under24": "السعر للسائقين تحت 24",
-            "over24": "السعر للسائقين فوق 24",
-            "offerAmount": "مبلغ العرض",
-            "minFor60k": "الحد الأدنى لـ 60 ألف"
-        }
+        "ratesTitle": "أسعار التأمين",
+        "saveChangesButton": "حفظ التغييرات",
+        "fetchError": "فشل في جلب الشركات",
+        "deleteError": "خطأ في حذف الشركة",
+        "exportSheetName": "شركات التأمين",
+        "exportExcelFileName": "شركات_التأمين.xlsx",
+        "exportCsvFileName": "شركات_التأمين.csv",
+        "exportPdfTitle": "تقرير شركات التأمين",
+        "exportPdfFileName": "شركات_التأمين.pdf",
+        "printReportTitle": "تقرير شركات التأمين",
+        "addButton": "إضافة شركة",
+        "searchPlaceholder": "البحث في الشركات...",
+        "noCompanies": "لم يتم العثور على شركات تأمين"
     },
     "breadcrumbs": {
         "auditLogs": "سجلات التدقيق",
         "allInsurances": "جميع التامينات",
-        "home": "لوحة التحكم",
+        "home": "الرئيسية",
         "insuranceCompanies": "شركات التأمين",
         "departmentsAndUsers": "المستخدمون والإدارات",
         "customers": "العملاء",
@@ -453,41 +452,38 @@
         "loginButton": "تسجيل الدخول"
     },
     "common": {
-        "saveChanges": "حفظ",
-        "exportExcel": "Excel",
-        "exportPdf": "PDF",
-        "exportCsv": "CSV",
-        "loading": "جارٍ التحميل...",
-        "loadingMore": "جارٍ تحميل المزيد...",
-        "edit": "تعديل",
-        "delete": "حذف",
-        "view": "عرض",
-        "errorOccurred": "حدث خطأ ما",
-        "errorDescription": "حدث خطأ غير متوقع. يرجى تحديث الصفحة.",
-        "refreshPage": "تحديث الصفحة",
-        "goBack": "العودة",
-        "persistentError": "إذا استمر هذا الخطأ، يرجى الاتصال بالدعم الفني.",
-        "download": "تحميل",
-        "print": "طباعة",
-        "remove": "إزالة",
-        "actions": "الإجراءات",
-        "searchPlaceholder": "ابحث",
-        "endOfResults": "لقد وصلت إلى نهاية النتائج",
-        "noSearchResults": "لم يتم العثور على نتائج لبحثك.",
-        "noDataToExport": "لا توجد بيانات متاحة للتصدير.",
-        "notAssigned": "غير معين",
-        "saving": "جارٍ الحفظ...",
-        "save": "حفظ",
-        "cancel": "إلغاء",
         "add": "إضافة",
-        "viewDetails": "عرض التفاصيل",
-        "name": "الاسم",
-        "email": "البريد الإلكتروني",
-        "password": "كلمة المرور",
+        "cancel": "إلغاء",
+        "saving": "جارٍ الحفظ...",
+        "yes": "نعم",
+        "no": "لا",
+        "noDataToExport": "لا توجد بيانات للتصدير",
+        "exportCsv": "تصدير CSV",
+        "exportExcel": "تصدير Excel",
+        "exportPdf": "تصدير PDF",
+        "print": "طباعة",
+        "loading": "جارٍ التحميل",
+        "delete": "حذف",
+        "noSearchResults": "لا توجد نتائج بحث",
+        "loadingMore": "تحميل المزيد",
+        "endOfResults": "نهاية النتائج",
+        "actions": "الإجراءات",
+        "searchPlaceholder": "البحث...",
+        "no_results": "لا توجد نتائج",
+        "details": "التفاصيل",
+        "noData": "لا توجد بيانات",
+        "errorOccurred": "حدث خطأ",
         "notAvailable": "غير متوفر",
-        "errorOccurred": "حدث خطأ:",
-        "tableView": "عرض الجدول",
-        "cardView": "عرض البطاقات"
+        "edit": "تعديل",
+        "tableView": "عرض جدولي",
+        "cardView": "عرض البطاقات",
+        "noDataToPrint": "لا توجد بيانات للطباعة",
+        "viewDetails": "عرض التفاصيل",
+        "remove": "إزالة",
+        "saveChanges": "حفظ التغييرات",
+        "save": "حفظ",
+        "view": "عرض",
+        "download": "تحميل"
     },
     "validation": {
         "rateRequiredStrictlyPositive": "هذا السعر مطلوب ويجب أن يكون رقمًا موجبًا (أكبر من صفر).",
@@ -505,7 +501,8 @@
         "emailInvalid": "عنوان بريد إلكتروني غير صالح",
         "idNumberRequired": "رقم الهوية مطلوب ويجب أن يكون رقمًا",
         "phoneNumberRequired": "رقم الهاتف مطلوب",
-        "cityRequired": "المدينة مطلوبة"
+        "cityRequired": "المدينة مطلوبة",
+        "nameRequired": "nameRequired"
     },
     "departments": {
         "detailsTitle": "تفاصيل القسم",
@@ -557,7 +554,9 @@
             "head": "رئيس القسم",
             "employeeCount": "عدد الموظفين",
             "permissions": "الصلاحيات",
-            "noPermissions": "لا توجد صلاحيات محددة"
+            "noPermissions": "لا توجد صلاحيات محددة",
+            "employees": "employees",
+            "noEmployees": "noEmployees"
         },
         "form": {
             "name": "اسم القسم",
@@ -566,7 +565,9 @@
         },
         "validation": {
             "nameRequired": "اسم القسم مطلوب."
-        }
+        },
+        "exportCsvFileName": "exportCsvFileName",
+        "printTitle": "printTitle"
     },
     "employees": {
         "name": "رئيس القسم",
@@ -590,7 +591,10 @@
             "status": "الحالة",
             "department": "القسم",
             "actions": "الإجراءات"
-        }
+        },
+        "exportCsvFileName": "exportCsvFileName",
+        "printTitle": "printTitle",
+        "noEmployees": "noEmployees"
     },
     "permissions": {
         "addAccedent": "إضافة حادث",
@@ -747,7 +751,10 @@
             "carLicense": "رخصة المركبة",
             "carLicenseAlt": "صورة رخصة المركبة",
             "carImage": "صورة المركبة",
-            "carImageAlt": "صورة المركبة"
+            "carImageAlt": "صورة المركبة",
+            "none": "none",
+            "uploadSuccess": "uploadSuccess",
+            "uploadError": "uploadError"
         },
         "vehicles": {
             "title": "المركبات",
@@ -833,7 +840,8 @@
             "submitting": "جارٍ الإرسال..."
         },
         "alerts": {
-            "submitSuccess": "تم إرسال التأمين (محاكاة)!"
+            "submitSuccess": "تم إرسال التأمين (محاكاة)!",
+            "missingIds": "معرف المؤمن له أو معرف المركبة مفقود."
         }
     },
     "companies": {
@@ -882,13 +890,15 @@
             "chooseType": "اختر النوع",
             "yes": "نعم",
             "no": "لا",
-            "choosePaymentMethod": "اختر طريقة الدفع"
+            "choosePaymentMethod": "اختر طريقة الدفع",
+            "chooseAgent": "chooseAgent"
         },
         "placeholders": {
             "insuranceCompany": "أدخل اسم الشركة",
             "agent": "أدخل اسم الوكيل",
             "insuranceAmount": "أدخل مبلغ التأمين",
-            "paidAmount": "أدخل المبلغ المدفوع"
+            "paidAmount": "أدخل المبلغ المدفوع",
+            "insuranceType": "insuranceType"
         },
         "insuranceTypes": {
             "mandatory": "إلزامي",
@@ -921,7 +931,8 @@
         "errors": {
             "insuredNotFound": "لم يتم العثور على المؤمَّن عليه. يُرجى المحاولة مرة أخرى.",
             "vehicleNotFound": "لم يتم العثور على السيارة المحددة لهذا العميل. يُرجى المحاولة مرة أخرى.",
-            "companyNotFoundGeneric": "لم يتم العثور على شركة التأمين المحددة."
+            "companyNotFoundGeneric": "لم يتم العثور على شركة التأمين المحددة.",
+            "networkError": "networkError"
         }
     },
     "insuranceList": {
@@ -971,7 +982,10 @@
         "exportSheetName": "تأمينات_المركبة",
         "exportExcelFileName": "تأمينات_المركبة.xlsx",
         "exportPdfTitle": "تقرير تأمينات المركبة",
-        "exportPdfFileName": "تأمينات_المركبة.pdf"
+        "exportPdfFileName": "تأمينات_المركبة.pdf",
+        "exportCsvFileName": "exportCsvFileName",
+        "pdfReportTitle": "pdfReportTitle",
+        "printReportTitle": "printReportTitle"
     },
     "addCheckModal": {
         "title": "إضافة تفاصيل الشيك",
@@ -1152,7 +1166,8 @@
         "deleteError": "فشل حذف البلاغ. راجع وحدة التحكم للحصول على التفاصيل.",
         "showing_results": "عرض {{count}} من أصل {{total}} بلاغ",
         "noReportsFound": "لم يتم العثور على بلاغات للأهلية.",
-        "show": "عرض {{count}} من أصل {{total}} تامين"
+        "show": "عرض {{count}} من أصل {{total}} تامين",
+        "printReportTitle": "printReportTitle"
     },
     "navigation": {
         "home": "الرئيسية",
@@ -1266,7 +1281,106 @@
             "tpi_addressLabel": "العنوان",
             "tpi_professionLabel": "المهنة",
             "tpi_injuryTypeLabel": "نوع الإصابة",
-            "submitting": "جاري الإرسال..."
+            "submitting": "جاري الإرسال...",
+            "mashreq": {
+                "accidentDateLabel": "تاريخ الحادث",
+                "accidentTimeLabel": "وقت الحادث",
+                "agentNumberLabel": "رقم الوكيل",
+                "policyNumberLabel": "رقم الوثيقة",
+                "policyTypeLabel": "نوع الوثيقة",
+                "weatherConditionLabel": "حالة الطقس",
+                "accidentLocationLabel": "مكان الحادث",
+                "accidentTypeLabel": "نوع الحادث",
+                "insuredPhoneLabel": "الهاتف",
+                "insuredFullAddressLabel": "العنوان",
+                "insuredPersonalNumberLabel": "الرقم الشخصي",
+                "modalTitle": "نموذج بلاغ حادث المشرق",
+                "editModalTitle": "تعديل بلاغ المشرق",
+                "officePolicyTitle": "معلومات المكتب والوثيقة",
+                "insuredVehicleTitle": "معلومات المؤمن له والمركبة",
+                "driverInfoTitle": "معلومات السائق",
+                "accidentDetailsTitle": "تفاصيل الحادث",
+                "otherPartiesDamagesTitle": "الأطراف الأخرى والأضرار",
+                "signaturesNotesTitle": "التواقيع والملاحظات",
+                "step1Indicator": "المكتب/الوثيقة",
+                "step2Indicator": "المؤمن له/المركبة",
+                "step3Indicator": "السائق",
+                "step4Indicator": "الحادث",
+                "step5Indicator": "الأطراف الأخرى",
+                "step6Indicator": "التواقيع",
+                "policyDurationLabel": "مدة الوثيقة (أيام/أشهر)",
+                "policyFromLabel": "الوثيقة من",
+                "policyToLabel": "الوثيقة إلى",
+                "vehicleRegNoLabel": "رقم تسجيل المركبة",
+                "vehicleUsageLabel": "استخدام المركبة",
+                "vehicleMakeYearLabel": "سنة صنع المركبة",
+                "driverJobLabel": "وظيفة السائق",
+                "driverAddressLabel": "عنوان السائق بالكامل",
+                "driverPhoneLabel": "هاتف السائق",
+                "driverLicenseNoLabel": "رقم رخصة السائق",
+                "driverLicenseTypeLabel": "نوع الرخصة",
+                "driverLicenseIssueDateLabel": "تاريخ إصدار الرخصة",
+                "driverLicenseExpiryDateLabel": "تاريخ انتهاء الرخصة",
+                "driverAgeLabel": "عمر السائق",
+                "driverIdNumberLabel": "رقم هوية السائق",
+                "roadConditionLabel": "حالة الطريق",
+                "damageToVehicleLabel": "وصف الأضرار لمركبتك",
+                "vehicleSpeedLabel": "سرعة المركبة عند الحادث",
+                "timeOfAccidentLabel": "وقت الحادث (حسب التفاصيل)",
+                "passengersCountLabel": "عدد الركاب في مركبتك",
+                "vehicleUsedPermissionLabel": "هل تم استخدام المركبة بإذن المالك؟",
+                "accidentNotifierNameLabel": "اسم مُبلغ الحادث",
+                "accidentNotifierPhoneLabel": "هاتف مُبلغ الحادث",
+                "otherVehiclesTitle": "المركبات الأخرى المشتركة في الحادث",
+                "otherVehicleItem": "مركبة أخرى ",
+                "addOtherVehicleButton": "+ إضافة مركبة أخرى",
+                "otherVehicleNumberLabel": "رقم المركبة",
+                "otherVehicleTypeLabel": "النوع/الموديل",
+                "otherVehicleMakeYearLabel": "سنة الصنع",
+                "otherVehicleColorLabel": "اللون",
+                "otherVehicleOwnerNameLabel": "اسم المالك",
+                "otherVehicleOwnerAddressLabel": "عنوان المالك",
+                "otherVehicleDriverNameLabel": "اسم السائق",
+                "otherVehicleDriverAddressLabel": "عنوان السائق",
+                "otherVehicleInsuranceCoLabel": "شركة التأمين",
+                "otherVehiclePolicyNoLabel": "رقم الوثيقة",
+                "otherVehicleWasParkedLabel": "هل كانت متوقفة؟",
+                "otherVehicleDamageDescLabel": "وصف الأضرار",
+                "vehicleDamagesOverallLabel": "وصف الأضرار لمركبتك",
+                "personalInjuriesTitle": "الإصابات الشخصية (مركبتك)",
+                "personalInjuryItem": "الشخص المصاب ",
+                "addPersonalInjuryButton": "+ إضافة شخص مصاب",
+                "injuryNameLabel": "الاسم",
+                "injuryAgeLabel": "العمر",
+                "injuryJobLabel": "الوظيفة",
+                "injuryAddressLabel": "العنوان",
+                "injuryTypeLabel": "نوع الإصابة",
+                "thirdPartyInjuredNamesTitle": "أسماء المصابين من الطرف الثالث",
+                "addThirdPartyInjuredNameButton": "+ إضافة اسم مصاب من طرف ثالث",
+                "thirdPartyInjuredNameItem": "الاسم ",
+                "thirdPartyInjuredNamePlaceholder": "أدخل اسم المصاب",
+                "vehiclePassengersTitle": "ركاب مركبتك (الأسماء)",
+                "addVehiclePassengerButton": "+ إضافة اسم راكب",
+                "vehiclePassengerItem": "الراكب ",
+                "passengerNamePlaceholder": "أدخل اسم الراكب",
+                "externalWitnessesTitle": "الشهود الخارجيون (الأسماء والعناوين)",
+                "addExternalWitnessButton": "+ إضافة شاهد",
+                "externalWitnessItem": "الشاهد ",
+                "witnessNamePlaceholder": "أدخل اسم الشاهد وعنوانه",
+                "driverSignatureNameLabel": "اسم السائق وتوقيعه",
+                "driverSignatureDateLabel": "التاريخ",
+                "claimantNameLabel": "اسم المطالب",
+                "claimantSignatureLabel": "توقيع المطالب",
+                "receiverNameLabel": "اسم المستلم (مندوب الشركة)",
+                "receiverNotesLabel": "ملاحظات المستلم",
+                "generalNotesLabel": "ملاحظات عامة",
+                "plateNumberRequiredError": "رقم تسجيل المركبة مطلوب لإرسال بلاغ المشرق.",
+                "formSubmissionSuccess": "تم إرسال بلاغ المشرق بنجاح!",
+                "formSubmissionError": "خطأ في إرسال بلاغ المشرق: "
+            },
+            "accidentTypeOptionDefault": "اختر نوع الحادث",
+            "branchOfficeLabel": "الفرع/المكتب",
+            "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ جديد للمشرق."
         },
         "exportSheetName": "بلاغات_المشرق",
         "exportExcelFileName": "بلاغات_المشرق.xlsx",
@@ -1281,7 +1395,9 @@
         "formSubmissionSuccess": "تم إرسال بلاغ المشرق بنجاح!",
         "formSubmissionUpdateSuccess": "تم تحديث بلاغ المشرق بنجاح!",
         "formSubmissionError": "خطأ في إرسال بلاغ المشرق: ",
-        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ جديد للمشرق."
+        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ جديد للمشرق.",
+        "driverNameLabel": "driverNameLabel",
+        "printReportTitle": "printReportTitle"
     },
     "mashreq.accidentDateLabel": "تاريخ الحادث",
     "mashreq.accidentTimeLabel": "وقت الحادث",
@@ -1512,7 +1628,10 @@
             "nextButton": "التالي",
             "submitButton": "إرسال",
             "saveChangesButton": "حفظ ",
-            "deleteButton": "حذف"
+            "deleteButton": "حذف",
+            "takaful": {
+                "insuredVehicleDetailsTitle": "تفاصيل المركبة المؤمنة"
+            }
         },
         "exportSheetName": "بلاغات_تكافل",
         "exportExcelFileName": "بلاغات_تكافل.xlsx",
@@ -1527,7 +1646,8 @@
         "formSubmissionSuccess": "تم إرسال بلاغ تكافل بنجاح!",
         "formSubmissionUpdateSuccess": "تم تحديث بلاغ تكافل بنجاح!",
         "formSubmissionError": "خطأ في إرسال بلاغ تكافل: ",
-        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ تكافل جديد."
+        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ تكافل جديد.",
+        "printReportTitle": "printReportTitle"
     },
     "palestine": {
         "table": {
@@ -1537,7 +1657,8 @@
             "documentNumber": "رقم الوثيقة/المستند",
             "ownerName": "اسم المالك",
             "driverName": "اسم السائق",
-            "vehicleNumber": "رقم المركبة"
+            "vehicleNumber": "رقم المركبة",
+            "actions": "actions"
         },
         "report": {
             "reportInfoTitle": "معلومات البلاغ",
@@ -1643,7 +1764,10 @@
             "nextButton": "التالي",
             "submitButton": "إرسال",
             "saveChangesButton": "حفظ ",
-            "deleteButton": "حذف"
+            "deleteButton": "حذف",
+            "palestine": {
+                "driverInfoTitle": "معلومات السائق"
+            }
         },
         "exportSheetName": "تقرير فلسطين",
         "exportExcelFileName": "بلاغات_تكافل.xlsx",
@@ -1658,7 +1782,10 @@
         "formSubmissionSuccess": "تم إرسال بلاغ تكافل بنجاح!",
         "formSubmissionUpdateSuccess": "تم تحديث بلاغ تكافل بنجاح!",
         "formSubmissionError": "خطأ في إرسال بلاغ تكافل: ",
-        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ تكافل جديد."
+        "vehicleIdParamRequiredError": "معرف المركبة مطلوب لإنشاء بلاغ تكافل جديد.",
+        "deleteConfirm": "deleteConfirm",
+        "deleteFailed": "deleteFailed",
+        "printReportTitle": "printReportTitle"
     },
     "trust": {
         "table": {
@@ -1776,7 +1903,9 @@
         "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا البلاغ؟",
         "deleteError": "فشل حذف البلاغ. راجع وحدة التحكم للحصول على التفاصيل.",
         "showing_results": "عرض {{count}} من أصل {{total}} بلاغ",
-        "noReportsFound": "لم يتم العثور على بلاغات للثقة."
+        "noReportsFound": "لم يتم العثور على بلاغات للثقة.",
+        "fieldRequiredError": "fieldRequiredError",
+        "printReportTitle": "printReportTitle"
     },
     "holyLand": {
         "reportsTitle": "ابلاغات حوادث الارض المقدسة",
@@ -1903,7 +2032,8 @@
         "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا البلاغ؟",
         "deleteError": "فشل حذف البلاغ. راجع وحدة التحكم للحصول على التفاصيل.",
         "showing_results": "عرض {{count}} من أصل {{total}} بلاغ",
-        "noReportsFound": "لم يتم العثور على بلاغات للأرض المقدسة."
+        "noReportsFound": "لم يتم العثور على بلاغات للأرض المقدسة.",
+        "printReportTitle": "printReportTitle"
     },
     "profile": {
         "error": "لا يمكن تحميل ملف تعريف المستخدم.",
@@ -1997,7 +2127,15 @@
         "actions": {
             "delete": "حذف",
             "edit": "تعديل"
-        }
+        },
+        "messages": {
+            "addSuccess": "addSuccess",
+            "addError": "addError"
+        },
+        "exportSheetagent": "exportSheetagent",
+        "exportExcelFileagents": "exportExcelFileagents",
+        "printReportTitle": "printReportTitle",
+        "noAgents": "noAgents"
     },
     "audit": {
         "pageTitle": "سجلات تدقيق النظام",
@@ -2023,7 +2161,11 @@
         },
         "error": {
             "fetchFailed": "فشل في جلب سجلات التدقيق."
-        }
+        },
+        "exportSheet": "exportSheet",
+        "exportExcelFile": "exportExcelFile",
+        "printReportTitle": "printReportTitle",
+        "detailsTitle": "detailsTitle"
     },
     "sms": {
         "breadcrumb": {
@@ -2121,287 +2263,377 @@
             "processingFailed": "فشل في معالجة الدفعة. يرجى المحاولة مرة أخرى."
         }
     },
+    "email": "email",
+    "notifications": {
+        "title": "الإشعارات",
+        "subtitle": "ابق على اطلاع بأحدث الإشعارات",
+        "markAllRead": "تمييز الكل كمقروء",
+        "refresh": "تحديث",
+        "retry": "إعادة المحاولة",
+        "noToken": "المصادقة مطلوبة",
+        "fetchError": "فشل في تحميل الإشعارات",
+        "markRead": "تمييز كمقروء",
+        "from": "من",
+        "filter": {
+            "all": "الكل",
+            "unread": "غير مقروء",
+            "read": "مقروء"
+        },
+        "search": {
+            "placeholder": "البحث في الإشعارات..."
+        },
+        "noResults": "لا توجد إشعارات تطابق البحث",
+        "noUnread": "لا توجد إشعارات غير مقروءة",
+        "noRead": "لا توجد إشعارات مقروءة",
+        "empty": "لا توجد إشعارات بعد"
+    },
+    "cheques": {
+        "title": "إدارة الشيكات",
+        "subtitle": "إدارة وتتبع جميع الشيكات في النظام",
+        "firstTitle": "لوحة التحكم",
+        "secondeTitle": "الشيكات",
+        "add_button": "إضافة شيك",
+        "search_placeholder": "البحث برقم الشيك أو العميل...",
+        "showing_results": "عرض {{count}} من {{total}} شيك",
+        "no_results": "لم يتم العثور على شيكات",
+        "addCheque": "إضافة شيك",
+        "addChequeSubtitle": "إنشاء سجل شيك جديد مع جميع التفاصيل الضرورية",
+        "editCheque": "تعديل الشيك",
+        "editChequeSubtitle": "تحديث تفاصيل الشيك",
+        "viewCheque": "عرض الشيك",
+        "viewChequeSubtitle": "عرض تفاصيل الشيك الكاملة",
+        "deleteCheque": "حذف الشيك",
+        "updateCheque": "تحديث الشيك",
+        "chequeNumber": "رقم الشيك",
+        "customer": "العميل",
+        "amount": "المبلغ",
+        "issueDate": "تاريخ الإصدار",
+        "dueDate": "تاريخ الاستحقاق",
+        "cheque_date": "تاريخ الشيك",
+        "bank": "البنك",
+        "bankName": "اسم البنك",
+        "status": "status",
+        "actions": "الإجراءات",
+        "searchPlaceholder": "البحث برقم الشيك أو اسم العميل أو البنك...",
+        "selectCustomer": "اختر عميل",
+        "chequeNumberPlaceholder": "أدخل رقم الشيك",
+        "bankNamePlaceholder": "أدخل اسم البنك",
+        "chequeImage": "صورة الشيك",
+        "uploadChequeImage": "اضغط للرفع أو اسحب وأفلت",
+        "dropImageHere": "أفلت الصورة هنا",
+        "imageUploadHint": "PNG, JPG, GIF حتى 5 ميجابايت",
+        "replaceImage": "استبدال الصورة",
+        "revertToOriginal": "العودة للأصلية",
+        "noImageAvailable": "لا توجد صورة متاحة",
+        "notes": "ملاحظات",
+        "notesPlaceholder": "أضف أي ملاحظات إضافية حول هذا الشيك...",
+        "cancel": "إلغاء",
+        "saveCheque": "حفظ الشيك",
+        "saving": "جاري الحفظ...",
+        "updating": "جاري التحديث...",
+        "noCheques": "لا توجد شيكات",
+        "noResultsFound": "لا توجد شيكات تطابق معايير البحث",
+        "showingResults": "عرض {{from}} إلى {{to}} من {{total}} النتائج",
+        "previous": "السابق",
+        "next": "التالي",
+        "chequeDetails": "تفاصيل الشيك",
+        "customerDetails": "تفاصيل العميل",
+        "metadata": "معلومات إضافية",
+        "createdAt": "تاريخ الإنشاء",
+        "lastUpdated": "آخر تحديث",
+        "notFound": "الشيك غير موجود",
+        "chequeNotFoundDescription": "الشيك المطلوب غير موجود أو تم حذفه",
+        "backToList": "العودة للقائمة",
+        "error": "خطأ",
+        "errorFetchingDetails": "فشل في تحميل تفاصيل الشيك",
+        "errorUpdatingCheque": "فشل في تحديث الشيك",
+        "updateSuccess": "تم التحديث بنجاح",
+        "chequeUpdatedSuccessfully": "تم تحديث الشيك بنجاح",
+        "delete_confirm": "هل أنت متأكد من حذف الشيك رقم {{chequeNumber}}؟",
+        "delete_confirm_text": "لا يمكن التراجع عن هذا الإجراء!",
+        "yes_delete": "نعم، احذف",
+        "successDelete": "تم الحذف بنجاح",
+        "exportSheetName": "الشيكات",
+        "exportExcelFileName": "تقرير_الشيكات.xlsx",
+        "exportPdfFileName": "تقرير_الشيكات.pdf",
+        "exportCsvFileName": "تقرير_الشيكات.csv",
+        "report_title": "تقرير الشيكات",
+        "validation": {
+            "chequeNumberRequired": "رقم الشيك مطلوب",
+            "customerRequired": "يرجى اختيار عميل",
+            "amountRequired": "المبلغ يجب أن يكون أكبر من 0",
+            "issueDateRequired": "تاريخ الإصدار مطلوب",
+            "dueDateRequired": "تاريخ الاستحقاق مطلوب",
+            "chequeDateRequired": "تاريخ الشيك مطلوب",
+            "bankNameRequired": "اسم البنك مطلوب",
+            "statusRequired": "الحالة مطلوبة",
+            "imageRequired": "صورة الشيك مطلوبة"
+        },
+        "customersFetchError": "تعذر تحميل العملاء. سيتم استخدام بيانات تجريبية بدلاً من ذلك.",
+        "saveError": "فشل في حفظ الشيك. يرجى المحاولة مرة أخرى.",
+        "continue": "المتابعة بالبيانات التجريبية",
+        "retry": "إعادة المحاولة",
+        "tryAgain": "حاول مرة أخرى",
+        "status": {
+            "pending": "قيد الانتظار",
+            "cleared": "تم الصرف",
+            "bounced": "مرتد",
+            "cancelled": "ملغي"
+        }
+    },
+    "documentSettings": {
+        "title": "إعدادات المستندات",
+        "subtitle": "إدارة قوالب المستندات وإعدادات التنسيق",
+        "firstTitle": "لوحة التحكم",
+        "secondTitle": "إعدادات المستندات",
+        "add_button": "إضافة إعدادات مستند",
+        "search_placeholder": "البحث باسم الشركة...",
+        "showing_results": "عرض {{count}} من {{total}} إعدادات المستندات",
+        "no_results": "لم يتم العثور على إعدادات المستندات",
+        "addDocumentSettings": "إضافة إعدادات المستندات",
+        "editDocumentSettings": "تعديل إعدادات المستندات",
+        "viewDocumentSettings": "عرض إعدادات المستندات",
+        "deleteDocumentSettings": "حذف إعدادات المستندات",
+        "updateDocumentSettings": "تحديث إعدادات المستندات",
+        "companyInformation": "معلومات الشركة",
+        "companyName": "اسم الشركة",
+        "companyAddress": "عنوان الشركة",
+        "phoneNumber": "رقم الهاتف",
+        "email": "البريد الإلكتروني",
+        "companyLogo": "شعار الشركة",
+        "uploadLogo": "رفع الشعار",
+        "logoUploadHint": "PNG، JPG حتى 2 ميجابايت",
+        "headerSettings": "إعدادات الرأس",
+        "headerText": "نص الرأس",
+        "headerFontSize": "حجم خط الرأس",
+        "headerBackgroundColor": "لون خلفية الرأس",
+        "headerTextColor": "لون نص الرأس",
+        "footerSettings": "إعدادات التذييل",
+        "footerText": "نص التذييل",
+        "footerFontSize": "حجم خط التذييل",
+        "footerBackgroundColor": "لون خلفية التذييل",
+        "footerTextColor": "لون نص التذييل",
+        "documentMargins": "هوامش المستند",
+        "topMargin": "الهامش العلوي",
+        "bottomMargin": "الهامش السفلي",
+        "leftMargin": "الهامش الأيسر",
+        "rightMargin": "الهامش الأيمن",
+        "marginUnit": "مم",
+        "isActive": "نشط",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "actions": "الإجراءات",
+        "cancel": "إلغاء",
+        "save": "حفظ",
+        "saving": "جاري الحفظ...",
+        "updating": "جاري التحديث...",
+        "createdAt": "تاريخ الإنشاء",
+        "updatedAt": "تاريخ التحديث",
+        "createdBy": "تم الإنشاء بواسطة",
+        "updatedBy": "تم التحديث بواسطة",
+        "metadata": "معلومات إضافية",
+        "notSpecified": "غير محدد",
+        "notAvailable": "غير متاح",
+        "documentSettingsNotFound": "إعدادات المستندات غير موجودة",
+        "error": "خطأ",
+        "errorFetchingDocumentSettings": "فشل في تحميل إعدادات المستندات",
+        "errorCreatingDocumentSettings": "فشل في إنشاء إعدادات المستندات",
+        "errorUpdatingDocumentSettings": "فشل في تحديث إعدادات المستندات",
+        "errorDeletingDocumentSettings": "فشل في حذف إعدادات المستندات",
+        "createSuccess": "تم إنشاء إعدادات المستندات بنجاح",
+        "updateSuccess": "تم تحديث إعدادات المستندات بنجاح",
+        "deleteSuccess": "تم حذف إعدادات المستندات بنجاح",
+        "activateSuccess": "تم تفعيل إعدادات المستندات بنجاح",
+        "delete_confirm": "هل أنت متأكد من حذف هذه الإعدادات؟",
+        "delete_confirm_text": "لا يمكن التراجع عن هذا الإجراء!",
+        "yes_delete": "نعم، احذف",
+        "cannot_delete_active": "لا يمكن حذف إعدادات المستندات النشطة",
+        "activate_confirm": "هل أنت متأكد من تفعيل هذه الإعدادات؟",
+        "activate_confirm_text": "سيتم إلغاء تفعيل الإعدادات النشطة الحالية.",
+        "yes_activate": "نعم، فعل",
+        "replaceImage": "استبدال الصورة",
+        "revertToOriginal": "العودة للأصلية",
+        "dropImageHere": "أفلت الصورة هنا",
+        "clickToUpload": "اضغط للرفع أو اسحب وأفلت",
+        "validation": {
+            "companyNameRequired": "اسم الشركة مطلوب",
+            "companyNameMinLength": "اسم الشركة يجب أن يكون على الأقل حرفين",
+            "companyNameMaxLength": "اسم الشركة يجب ألا يتجاوز 100 حرف",
+            "companyAddressMaxLength": "عنوان الشركة يجب ألا يتجاوز 255 حرف",
+            "phoneNumberPattern": "يرجى إدخال رقم هاتف صحيح",
+            "emailPattern": "يرجى إدخال بريد إلكتروني صحيح",
+            "headerTextMaxLength": "نص الرأس يجب ألا يتجاوز 255 حرف",
+            "headerFontSizeRange": "حجم خط الرأس يجب أن يكون بين 8 و 72 بكسل",
+            "footerTextMaxLength": "نص التذييل يجب ألا يتجاوز 255 حرف",
+            "footerFontSizeRange": "حجم خط التذييل يجب أن يكون بين 8 و 72 بكسل",
+            "marginRange": "الهوامش يجب أن تكون بين 0 و 50 مم",
+            "logoRequired": "الشعار مطلوب",
+            "logoFileSize": "حجم ملف الشعار يجب ألا يتجاوز 2 ميجابايت",
+            "logoFileType": "الشعار يجب أن يكون صورة PNG أو JPG",
+            "headerTextRequired": "headerTextRequired",
+            "footerTextRequired": "footerTextRequired"
+        },
+        "settingsCreatedSuccessfully": "settingsCreatedSuccessfully",
+        "errorCreatingSettings": "errorCreatingSettings",
+        "addSettings": "addSettings",
+        "addSettingsSubtitle": "addSettingsSubtitle",
+        "companyNamePlaceholder": "companyNamePlaceholder",
+        "headerTextPlaceholder": "headerTextPlaceholder",
+        "headerBgColor": "headerBgColor",
+        "footerTextPlaceholder": "footerTextPlaceholder",
+        "footerBgColor": "footerBgColor",
+        "marginsSettings": "marginsSettings",
+        "marginTop": "marginTop",
+        "marginBottom": "marginBottom",
+        "marginLeft": "marginLeft",
+        "marginRight": "marginRight",
+        "logoUpload": "logoUpload",
+        "dropLogoHere": "dropLogoHere",
+        "creating": "creating",
+        "createSettings": "createSettings",
+        "activateError": "activateError",
+        "cannotDeleteActive": "cannotDeleteActive",
+        "successDelete": "successDelete",
+        "deleteError": "deleteError",
+        "exportSheetName": "exportSheetName",
+        "exportExcelFileName": "exportExcelFileName",
+        "report_title": "report_title",
+        "exportPdfFileName": "exportPdfFileName",
+        "exportCsvFileName": "exportCsvFileName",
+        "secondeTitle": "secondeTitle",
+        "errorFetchingSettings": "errorFetchingSettings",
+        "settingsUpdatedSuccessfully": "settingsUpdatedSuccessfully",
+        "errorUpdatingSettings": "errorUpdatingSettings",
+        "editSettings": "editSettings",
+        "editSettingsSubtitle": "editSettingsSubtitle",
+        "replaceLogo": "replaceLogo",
+        "updateSettings": "updateSettings"
+    },
+    "insurances": {
+        "table": {
+            "insuredName": "insuredName",
+            "plateNumber": "plateNumber",
+            "insuranceCompany": "insuranceCompany",
+            "insuranceType": "insuranceType",
+            "insuranceEndDate": "insuranceEndDate",
+            "remainingDebt": "remainingDebt",
+            "agent": "agent"
+        },
+        "exportSheetName": "exportSheetName",
+        "exportExcelFileName": "exportExcelFileName",
+        "exportCsvFileName": "exportCsvFileName",
+        "report_title": "report_title",
+        "exportPdfFileName": "exportPdfFileName"
+    },
+    "confirmModal": {
+        "defaultTitle": "defaultTitle",
+        "defaultMessage": "defaultMessage",
+        "confirmDelete": "confirmDelete"
+    },
+    "vehicles": {
+        "messages": {
+            "fetchError": "fetchError",
+            "deleteSuccess": "deleteSuccess",
+            "deleteError": "deleteError"
+        },
+        "deleteModal": {
+            "title": "title",
+            "message": "message"
+        }
+    },
+    "policeNumberLabel": "policeNumberLabel",
+    "selectDefault": "selectDefault",
+    "select": "select",
+    "registerUser": "registerUser",
+    "sidebar": {
+        "closeMenu": "closeMenu",
+        "openMenu": "openMenu"
+    },
+    "user": "user",
+    "logoAlt": "logoAlt",
+    "error": "error",
+    "errorFetchingDocumentSettings": "errorFetchingDocumentSettings",
+    "ok": "ok",
+    "documentSettingsNotFound": "documentSettingsNotFound",
+    "back": "back",
+    "viewDocumentSettings": "viewDocumentSettings",
+    "edit": "edit",
+    "print": "print",
+    "download": "download",
+    "companyInformation": "companyInformation",
+    "active": "active",
+    "companyName": "companyName",
+    "notSpecified": "notSpecified",
+    "companyAddress": "companyAddress",
+    "phoneNumber": "phoneNumber",
+    "companyLogo": "companyLogo",
+    "headerSettings": "headerSettings",
+    "headerText": "headerText",
+    "headerFontSize": "headerFontSize",
+    "headerBackgroundColor": "headerBackgroundColor",
+    "headerTextColor": "headerTextColor",
+    "footerSettings": "footerSettings",
+    "footerText": "footerText",
+    "footerFontSize": "footerFontSize",
+    "footerBackgroundColor": "footerBackgroundColor",
+    "footerTextColor": "footerTextColor",
+    "documentMargins": "documentMargins",
+    "topMargin": "topMargin",
+    "bottomMargin": "bottomMargin",
+    "leftMargin": "leftMargin",
+    "rightMargin": "rightMargin",
+    "metadata": "metadata",
+    "createdAt": "createdAt",
+    "notAvailable": "notAvailable",
+    "updatedAt": "updatedAt",
+    "createdBy": "createdBy",
+    "updatedBy": "تم التحديث بواسطة",
     "email": {
+        "errors": {
+            "fetchCustomers": "فشل في تحميل العملاء",
+            "sendFailed": "فشل في إرسال البريد الإلكتروني",
+            "noRecipients": "يرجى اختيار مستلم واحد على الأقل",
+            "bulkSendFailed": "فشل في إرسال البريد الإلكتروني المجمع"
+        },
+        "success": {
+            "sent": "تم إرسال البريد الإلكتروني بنجاح!",
+            "bulkSent": "تم إرسال البريد الإلكتروني المجمع إلى {{count}} مستلم",
+            "deleted": "تم حذف رسائل البريد الإلكتروني المحددة"
+        },
         "breadcrumb": {
             "dashboard": "لوحة التحكم",
             "emails": "إدارة البريد الإلكتروني"
         },
         "tabs": {
             "inbox": "صندوق الوارد",
-            "compose": "إنشاء رسالة",
-            "bulk": "رسائل جماعية"
+            "compose": "إنشاء",
+            "bulk": "البريد الإلكتروني المجمع"
         },
         "inbox": {
-            "searchPlaceholder": "البحث في الرسائل...",
-            "noEmails": "لا توجد رسائل"
+            "searchPlaceholder": "البحث في رسائل البريد الإلكتروني...",
+            "noEmails": "لم يتم العثور على رسائل بريد إلكتروني"
         },
         "compose": {
-            "title": "إنشاء رسالة إلكترونية",
+            "title": "إنشاء بريد إلكتروني",
             "to": "إلى",
             "subject": "الموضوع",
             "message": "الرسالة",
-            "send": "إرسال الرسالة",
-            "sending": "جارٍ الإرسال..."
+            "sending": "جارٍ الإرسال...",
+            "send": "إرسال البريد الإلكتروني"
         },
         "bulk": {
-            "selectCustomers": "اختيار المستقبلين",
-            "searchPlaceholder": "البحث عن العملاء...",
-            "selectAll": "اختيار الكل",
+            "selectCustomers": "اختيار المستلمين",
+            "searchPlaceholder": "البحث في العملاء...",
+            "selectAll": "تحديد الكل",
             "noCustomers": "لم يتم العثور على عملاء لديهم عناوين بريد إلكتروني",
-            "compose": "إنشاء رسالة جماعية",
+            "compose": "إنشاء بريد إلكتروني مجمع",
             "subject": "الموضوع",
             "message": "الرسالة",
-            "info": "سيتم إرسال هذه الرسالة إلى {{count}} مستقبل",
-            "send": "إرسال رسالة جماعية",
-            "sending": "جارٍ الإرسال..."
-        },
-        "success": {
-            "sent": "تم إرسال الرسالة بنجاح!",
-            "bulkSent": "تم إرسال الرسالة الجماعية إلى {{count}} مستقبل",
-            "deleted": "تم حذف الرسائل المحددة"
-        },
-        "errors": {
-            "fetchCustomers": "فشل في تحميل العملاء",
-            "sendFailed": "فشل في إرسال الرسالة",
-            "bulkSendFailed": "فشل في إرسال الرسالة الجماعية",
-            "noRecipients": "يرجى اختيار مستقبل واحد على الأقل"
+            "info": "سيتم إرسال هذا البريد الإلكتروني إلى {{count}} مستلم",
+            "sending": "جارٍ الإرسال...",
+            "send": "إرسال البريد الإلكتروني المجمع"
         }
-    },
-    "insuranceCompany": {
-    "addTitle": "إضافة شركة تأمين",
-    "fields": {
-      "name": "اسم الشركة",
-      "insuranceTypes": "أنواع التأمين",
-      "roadServices": "الخدمات على الطريق",
-      "price": "السعر",
-      "serviceName": "اسم الخدمة"
-    },
-    "type": {
-      "compulsory": "إلزامي",
-      "comprehensive": "شامل"
-    },
-    "success": {
-      "added": "تمت إضافة الشركة بنجاح"
-    },
-    "errors": {
-      "nameRequired": "اسم الشركة مطلوب",
-      "atLeastOneType": "أضف نوع تأمين واحد على الأقل",
-      "addFailed": "فشل في إضافة الشركة"
     }
-  },
-  "common": {
-    "add": "إضافة",
-    "cancel": "إلغاء",
-    "saving": "جارٍ الحفظ..."
-  },
-  "notifications": {
-    "title": "الإشعارات",
-    "subtitle": "ابق على اطلاع بأحدث الإشعارات",
-    "markAllRead": "تمييز الكل كمقروء",
-    "refresh": "تحديث",
-    "retry": "إعادة المحاولة",
-    "noToken": "المصادقة مطلوبة",
-    "fetchError": "فشل في تحميل الإشعارات",
-    "markRead": "تمييز كمقروء",
-    "from": "من",
-    "filter": {
-      "all": "الكل",
-      "unread": "غير مقروء",
-      "read": "مقروء"
-    },
-    "search": {
-      "placeholder": "البحث في الإشعارات..."
-    },
-    "noResults": "لا توجد إشعارات تطابق البحث",
-    "noUnread": "لا توجد إشعارات غير مقروءة",
-    "noRead": "لا توجد إشعارات مقروءة",
-    "empty": "لا توجد إشعارات بعد"
-  },
-  "cheques": {
-    "title": "إدارة الشيكات",
-    "subtitle": "إدارة وتتبع جميع الشيكات في النظام",
-    "firstTitle": "لوحة التحكم",
-    "secondeTitle": "الشيكات",
-    "add_button": "إضافة شيك",
-    "search_placeholder": "البحث برقم الشيك أو العميل...",
-    "showing_results": "عرض {{count}} من {{total}} شيك",
-    "no_results": "لم يتم العثور على شيكات",
-    "addCheque": "إضافة شيك",
-    "addChequeSubtitle": "إنشاء سجل شيك جديد مع جميع التفاصيل الضرورية",
-    "editCheque": "تعديل الشيك",
-    "editChequeSubtitle": "تحديث تفاصيل الشيك",
-    "viewCheque": "عرض الشيك",
-    "viewChequeSubtitle": "عرض تفاصيل الشيك الكاملة",
-    "deleteCheque": "حذف الشيك",
-    "updateCheque": "تحديث الشيك",
-    "chequeNumber": "رقم الشيك",
-    "customer": "العميل",
-    "amount": "المبلغ",
-    "issueDate": "تاريخ الإصدار",
-    "dueDate": "تاريخ الاستحقاق",
-    "cheque_date": "تاريخ الشيك",
-    "bank": "البنك",
-    "bankName": "اسم البنك",
-    "status": {
-      "pending": "معلق",
-      "cleared": "مقبوض",
-      "bounced": "مرتد",
-      "cancelled": "ملغي"
-    },
-    "actions": "الإجراءات",
-    "searchPlaceholder": "البحث برقم الشيك أو اسم العميل أو البنك...",
-    "selectCustomer": "اختر عميل",
-    "chequeNumberPlaceholder": "أدخل رقم الشيك",
-    "bankNamePlaceholder": "أدخل اسم البنك",
-    "chequeImage": "صورة الشيك",
-    "uploadChequeImage": "اضغط للرفع أو اسحب وأفلت",
-    "dropImageHere": "أفلت الصورة هنا",
-    "imageUploadHint": "PNG, JPG, GIF حتى 5 ميجابايت",
-    "replaceImage": "استبدال الصورة",
-    "revertToOriginal": "العودة للأصلية",
-    "noImageAvailable": "لا توجد صورة متاحة",
-    "notes": "ملاحظات",
-    "notesPlaceholder": "أضف أي ملاحظات إضافية حول هذا الشيك...",
-    "cancel": "إلغاء",
-    "saveCheque": "حفظ الشيك",
-    "saving": "جاري الحفظ...",
-    "updating": "جاري التحديث...",
-    "noCheques": "لا توجد شيكات",
-    "noResultsFound": "لا توجد شيكات تطابق معايير البحث",
-    "showingResults": "عرض {{from}} إلى {{to}} من {{total}} النتائج",
-    "previous": "السابق",
-    "next": "التالي",
-    "chequeDetails": "تفاصيل الشيك",
-    "customerDetails": "تفاصيل العميل",
-    "metadata": "معلومات إضافية",
-    "createdAt": "تاريخ الإنشاء",
-    "lastUpdated": "آخر تحديث",
-    "notFound": "الشيك غير موجود",
-    "chequeNotFoundDescription": "الشيك المطلوب غير موجود أو تم حذفه",
-    "backToList": "العودة للقائمة",
-    "error": "خطأ",
-    "errorFetchingDetails": "فشل في تحميل تفاصيل الشيك",
-    "errorUpdatingCheque": "فشل في تحديث الشيك",
-    "updateSuccess": "تم التحديث بنجاح",
-    "chequeUpdatedSuccessfully": "تم تحديث الشيك بنجاح",
-    "delete_confirm": "هل أنت متأكد من حذف الشيك رقم {{chequeNumber}}؟",
-    "delete_confirm_text": "لا يمكن التراجع عن هذا الإجراء!",
-    "yes_delete": "نعم، احذف",
-    "successDelete": "تم الحذف بنجاح",
-    "exportSheetName": "الشيكات",
-    "exportExcelFileName": "تقرير_الشيكات.xlsx",
-    "exportPdfFileName": "تقرير_الشيكات.pdf",
-    "exportCsvFileName": "تقرير_الشيكات.csv",
-    "report_title": "تقرير الشيكات",
-    "validation": {
-      "chequeNumberRequired": "رقم الشيك مطلوب",
-      "customerRequired": "يرجى اختيار عميل",
-      "amountRequired": "المبلغ يجب أن يكون أكبر من 0",
-      "issueDateRequired": "تاريخ الإصدار مطلوب",
-      "dueDateRequired": "تاريخ الاستحقاق مطلوب",
-      "chequeDateRequired": "تاريخ الشيك مطلوب",
-      "bankNameRequired": "اسم البنك مطلوب",
-      "statusRequired": "الحالة مطلوبة",
-      "imageRequired": "صورة الشيك مطلوبة"
-    },
-    "customersFetchError": "تعذر تحميل العملاء. سيتم استخدام بيانات تجريبية بدلاً من ذلك.",
-    "saveError": "فشل في حفظ الشيك. يرجى المحاولة مرة أخرى.",
-    "continue": "المتابعة بالبيانات التجريبية",
-    "retry": "إعادة المحاولة",
-    "tryAgain": "حاول مرة أخرى"
-  },
-  "documentSettings": {
-    "title": "إعدادات المستندات",
-    "subtitle": "إدارة قوالب المستندات وإعدادات التنسيق",
-    "firstTitle": "لوحة التحكم",
-    "secondTitle": "إعدادات المستندات",
-    "add_button": "إضافة إعدادات مستند",
-    "search_placeholder": "البحث باسم الشركة...",
-    "showing_results": "عرض {{count}} من {{total}} إعدادات المستندات",
-    "no_results": "لم يتم العثور على إعدادات المستندات",
-    "addDocumentSettings": "إضافة إعدادات المستندات",
-    "editDocumentSettings": "تعديل إعدادات المستندات",
-    "viewDocumentSettings": "عرض إعدادات المستندات",
-    "deleteDocumentSettings": "حذف إعدادات المستندات",
-    "updateDocumentSettings": "تحديث إعدادات المستندات",
-    "companyInformation": "معلومات الشركة",
-    "companyName": "اسم الشركة",
-    "companyAddress": "عنوان الشركة",
-    "phoneNumber": "رقم الهاتف",
-    "email": "البريد الإلكتروني",
-    "companyLogo": "شعار الشركة",
-    "uploadLogo": "رفع الشعار",
-    "logoUploadHint": "PNG، JPG حتى 2 ميجابايت",
-    "headerSettings": "إعدادات الرأس",
-    "headerText": "نص الرأس",
-    "headerFontSize": "حجم خط الرأس",
-    "headerBackgroundColor": "لون خلفية الرأس",
-    "headerTextColor": "لون نص الرأس",
-    "footerSettings": "إعدادات التذييل",
-    "footerText": "نص التذييل",
-    "footerFontSize": "حجم خط التذييل",
-    "footerBackgroundColor": "لون خلفية التذييل",
-    "footerTextColor": "لون نص التذييل",
-    "documentMargins": "هوامش المستند",
-    "topMargin": "الهامش العلوي",
-    "bottomMargin": "الهامش السفلي",
-    "leftMargin": "الهامش الأيسر",
-    "rightMargin": "الهامش الأيمن",
-    "marginUnit": "مم",
-    "isActive": "نشط",
-    "active": "نشط",
-    "inactive": "غير نشط",
-    "activate": "تفعيل",
-    "deactivate": "إلغاء التفعيل",
-    "actions": "الإجراءات",
-    "cancel": "إلغاء",
-    "save": "حفظ",
-    "saving": "جاري الحفظ...",
-    "updating": "جاري التحديث...",
-    "createdAt": "تاريخ الإنشاء",
-    "updatedAt": "تاريخ التحديث",
-    "createdBy": "تم الإنشاء بواسطة",
-    "updatedBy": "تم التحديث بواسطة",
-    "metadata": "معلومات إضافية",
-    "notSpecified": "غير محدد",
-    "notAvailable": "غير متاح",
-    "documentSettingsNotFound": "إعدادات المستندات غير موجودة",
-    "error": "خطأ",
-    "errorFetchingDocumentSettings": "فشل في تحميل إعدادات المستندات",
-    "errorCreatingDocumentSettings": "فشل في إنشاء إعدادات المستندات",
-    "errorUpdatingDocumentSettings": "فشل في تحديث إعدادات المستندات",
-    "errorDeletingDocumentSettings": "فشل في حذف إعدادات المستندات",
-    "createSuccess": "تم إنشاء إعدادات المستندات بنجاح",
-    "updateSuccess": "تم تحديث إعدادات المستندات بنجاح",
-    "deleteSuccess": "تم حذف إعدادات المستندات بنجاح",
-    "activateSuccess": "تم تفعيل إعدادات المستندات بنجاح",
-    "delete_confirm": "هل أنت متأكد من حذف هذه الإعدادات؟",
-    "delete_confirm_text": "لا يمكن التراجع عن هذا الإجراء!",
-    "yes_delete": "نعم، احذف",
-    "cannot_delete_active": "لا يمكن حذف إعدادات المستندات النشطة",
-    "activate_confirm": "هل أنت متأكد من تفعيل هذه الإعدادات؟",
-    "activate_confirm_text": "سيتم إلغاء تفعيل الإعدادات النشطة الحالية.",
-    "yes_activate": "نعم، فعل",
-    "replaceImage": "استبدال الصورة",
-    "revertToOriginal": "العودة للأصلية",
-    "dropImageHere": "أفلت الصورة هنا",
-    "clickToUpload": "اضغط للرفع أو اسحب وأفلت",
-    "validation": {
-      "companyNameRequired": "اسم الشركة مطلوب",
-      "companyNameMinLength": "اسم الشركة يجب أن يكون على الأقل حرفين",
-      "companyNameMaxLength": "اسم الشركة يجب ألا يتجاوز 100 حرف",
-      "companyAddressMaxLength": "عنوان الشركة يجب ألا يتجاوز 255 حرف",
-      "phoneNumberPattern": "يرجى إدخال رقم هاتف صحيح",
-      "emailPattern": "يرجى إدخال بريد إلكتروني صحيح",
-      "headerTextMaxLength": "نص الرأس يجب ألا يتجاوز 255 حرف",
-      "headerFontSizeRange": "حجم خط الرأس يجب أن يكون بين 8 و 72 بكسل",
-      "footerTextMaxLength": "نص التذييل يجب ألا يتجاوز 255 حرف",
-      "footerFontSizeRange": "حجم خط التذييل يجب أن يكون بين 8 و 72 بكسل",
-      "marginRange": "الهوامش يجب أن تكون بين 0 و 50 مم",
-      "logoRequired": "الشعار مطلوب",
-      "logoFileSize": "حجم ملف الشعار يجب ألا يتجاوز 2 ميجابايت",
-      "logoFileType": "الشعار يجب أن يكون صورة PNG أو JPG"
-    }
-  }
-
 }

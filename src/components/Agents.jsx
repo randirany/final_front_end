@@ -34,7 +34,7 @@ export default function Agents() {
         { key: 'name', label: t('agents.table.name', 'Agents name') },
         { key: 'email', label: t('agents.table.email', 'Agents email') },
         { key: 'role', label: t('agents.table.role', 'Agents role') },
-        { key: 'actions', label: t('agents.table.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right' },
+        { key: 'actions', label: t('agents.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
     ], [t, language]);
 
     const requestSort = (key) => {
@@ -163,7 +163,7 @@ export default function Agents() {
         }
         const printWindow = window.open('', '_blank');
         const title = t('agents.printReportTitle', 'Agents Report');
-        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'};direction:${language === 'ar' ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${language === 'ar' ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
+        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:${(language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif'};direction:${(language === 'ar' || language === 'he') ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${(language === 'ar' || language === 'he') ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
         tableHeaders.filter(c => c.key !== 'actions').forEach(col => printWindow.document.write(`<th>${col.label}</th>`));
         printWindow.document.write('</tr></thead><tbody>');
 
@@ -238,7 +238,7 @@ export default function Agents() {
     }, [searchText]);
 
     return (
-        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-4 md:p-[22px] rounded-md justify-between items-center mb-4 flex-wrap shadow-sm">
                 <div className="flex gap-2 md:gap-[14px] items-center text-sm md:text-base">
                     <NavLink to="/home" className="hover:underline text-blue-600 dark:text-blue-400">{t('breadcrumbs.home', 'Home')}</NavLink>
@@ -276,7 +276,7 @@ export default function Agents() {
                     <thead className="text-xs bg-gray-50 dark:bg-gray-700 dark:text-gray-300 uppercase">
                         <tr>
                             {tableHeaders.map(col => (
-                                <th key={col.key} className={`px-6 py-3 ${col.align === 'right' ? 'text-right' : (language === 'ar' ? 'text-right' : 'text-left')} ${col.key !== 'actions' ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`} onClick={() => col.key !== 'actions' && requestSort(col.key)}>
+                                <th key={col.key} className={`px-6 py-3 ${col.align === 'right' ? 'text-right' : ((language === 'ar' || language === 'he') ? 'text-right' : 'text-left')} ${col.key !== 'actions' ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`} onClick={() => col.key !== 'actions' && requestSort(col.key)}>
                                     <div className="flex items-center">
                                         <span>{col.label}</span>
                                         {col.key !== 'actions' && getSortIcon(col.key)}
@@ -294,11 +294,11 @@ export default function Agents() {
                                     <td className="px-6 py-4 whitespace-nowrap font-medium ">{agent.name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{agent.email}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{agent.role}</td>
-                                    <td className={`px-6 py-4 ${language === 'ar' ? 'text-left' : 'text-right'}`}>
+                                    <td className={`px-6 py-4 ${(language === 'ar' || language === 'he') ? 'text-left' : 'text-right'}`}>
                                         <IconButton aria-label="actions" size="small" onClick={(event) => handleMenuOpen(event, agent.id)} className="dark:text-gray-400">
                                             <MoreVertIcon fontSize="small" />
                                         </IconButton>
-                                        <Menu anchorEl={anchorEls[agent.id]} open={Boolean(anchorEls[agent.id])} onClose={() => handleMenuClose(agent.id)} anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }} >
+                                        <Menu anchorEl={anchorEls[agent.id]} open={Boolean(anchorEls[agent.id])} onClose={() => handleMenuClose(agent.id)} anchorOrigin={{ vertical: 'bottom', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }} >
                                             <MenuItem onClick={() => handleDelete(agent.id)} className="dark:hover:bg-gray-700 text-red-600 dark:text-red-400">
                                                 <DeleteIcon fontSize="small" className="mr-2 rtl:ml-2 rtl:mr-0" /> {t('common.delete', 'Delete')}
                                             </MenuItem>

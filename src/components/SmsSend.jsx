@@ -18,7 +18,7 @@ export default function SmsSend() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
 
-  const isRTL = language === 'ar';
+  const isRTL = (language === 'ar' || language === 'he');
 
   // Fetch customers from API
   const fetchCustomers = async () => {

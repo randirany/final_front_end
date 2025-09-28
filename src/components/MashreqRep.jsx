@@ -38,7 +38,7 @@ function MashreqRep() {
         { key: 'driverName', label: t('mashreq.table.driverName', 'Driver Name') },
         { key: 'vehicleRegNo', label: t('mashreq.table.vehicleRegNo', 'Vehicle Reg. No.') },
         { key: 'branchOffice', label: t('mashreq.table.branchOffice', 'Branch Office') },
-        { key: 'actions', label: t('mashreq.table.actions', 'Actions'), align: language === 'ar' ? 'left' : 'right' },
+        { key: 'actions', label: t('mashreq.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
     ], [t, language]);
 
     const requestSort = (key) => {
@@ -190,7 +190,7 @@ function MashreqRep() {
         if (filteredMashreqReports.length === 0) { toast.info(t('common.noDataToExport')); return; }
         const printWindow = window.open('', '_blank');
         const title = t('mashreq.printReportTitle', 'Al-Mashreq Accident Reports');
-        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:${language === 'ar' ? 'Cairo, sans-serif' : 'Arial, sans-serif'};direction:${language === 'ar' ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${language === 'ar' ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
+        printWindow.document.write(`<html><head><title>${title}</title><style>body{font-family:${(language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif'};direction:${(language === 'ar' || language === 'he') ? 'rtl' : 'ltr'};}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ddd;padding:8px;text-align:${(language === 'ar' || language === 'he') ? 'right' : 'left'};}th{background-color:#f2f2f2;}</style></head><body><h1>${title}</h1><table><thead><tr>`);
         tableHeaders.filter(c => c.key !== 'actions').forEach(col => printWindow.document.write(`<th>${col.label}</th>`));
         printWindow.document.write('</tr></thead><tbody>');
         filteredMashreqReports.forEach(report => {
@@ -245,7 +245,7 @@ function MashreqRep() {
 
     return (
         <div className="px-4 py-5 dark:bg-dark2 dark:text-dark3 min-h-screen">
-            <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-[22px] rounded-md justify-between items-center mb-3" dir={language === "ar" ? "rtl" : "ltr"}>
+            <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-[22px] rounded-md justify-between items-center mb-3" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
                 <div className="flex gap-[14px] items-center text-gray-700 dark:text-gray-300">
                     <Link className='hover:underline text-blue-600 dark:text-blue-400' to="/home">{t('navigation.home', 'Home')}</Link>
                     <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-gray-500"><path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -262,19 +262,19 @@ function MashreqRep() {
                     <Button onClick={exportToPDF} variant="outlined" sx={{ background: '#6C5FFC', color: '#fff' }} size="small" disabled={filteredMashreqReports.length === 0}>{t('buttons.exportPdf', 'PDF')}</Button>
                     <Button onClick={handlePrint} variant="outlined" sx={{ background: '#6C5FFC', color: '#fff' }} size="small" disabled={filteredMashreqReports.length === 0}>{t('buttons.print', 'Print')}</Button>
                 </div><div className="">
-                    <input type="text" placeholder={t('common.searchPlaceholder', "Search in Report ...")} className={`p-2 border rounded-md w-[300px] mb-4 dark:bg-gray-700 dark:text-[rgb(255,255,255)] dark:!border-none ${language === 'ar' ? 'text-right' : 'text-left'}`} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+                    <input type="text" placeholder={t('common.searchPlaceholder', "Search in Report ...")} className={`p-2 border rounded-md w-[300px] mb-4 dark:bg-gray-700 dark:text-[rgb(255,255,255)] dark:!border-none ${(language === 'ar' || language === 'he') ? 'text-right' : 'text-left'}`} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
                 </div>
 
             </div>
-            <div className={`mb-4 text-sm text-gray-600 dark:text-gray-400 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+            <div className={`mb-4 text-sm text-gray-600 dark:text-gray-400 ${(language === 'ar' || language === 'he') ? 'text-right' : 'text-left'}`}>
                 {t('mashreq.showing_results', 'Showing {{count}} of {{total}} reports', { count: visibleReports.length, total: filteredMashreqReports.length })}
             </div>
-            <div className={`overflow-x-auto bg-[rgb(255,255,255)] dark:bg-navbarBack shadow-md rounded-lg`} dir={language === "ar" ? "rtl" : "ltr"}>
+            <div className={`overflow-x-auto bg-[rgb(255,255,255)] dark:bg-navbarBack shadow-md rounded-lg`} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
                         <tr>
                             {tableHeaders.map(col => (
-                                <th key={col.key} scope="col" className={`px-6 py-3 ${col.align === 'right' ? 'text-right' : (col.align === 'left' ? 'text-left' : (language === 'ar' ? 'text-right' : 'text-left'))} ${col.key !== 'actions' ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`} onClick={() => col.key !== 'actions' && requestSort(col.key)}>
+                                <th key={col.key} scope="col" className={`px-6 py-3 ${col.align === 'right' ? 'text-right' : (col.align === 'left' ? 'text-left' : ((language === 'ar' || language === 'he') ? 'text-right' : 'text-left'))} ${col.key !== 'actions' ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`} onClick={() => col.key !== 'actions' && requestSort(col.key)}>
                                     <div className="flex items-center">
                                         <span>{col.label}</span>
                                         {col.key !== 'actions' && getSortIcon(col.key)}
@@ -296,10 +296,10 @@ function MashreqRep() {
                                     <td className="px-6 py-4 whitespace-nowrap max-w-xs truncate">{report.driverName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{report.vehicleRegNo}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{report.branchOffice}</td>
-                                    <td className={`px-6 py-4 ${language === 'ar' ? 'text-left' : 'text-right'}`}>
+                                    <td className={`px-6 py-4 ${(language === 'ar' || language === 'he') ? 'text-left' : 'text-right'}`}>
                                         <IconButton aria-label={t('common.actions')} size="small" onClick={(event) => handleMenuOpen(event, report.id)} className="dark:text-gray-400"><MoreVertIcon fontSize="small" /></IconButton>
-                                        <Menu anchorEl={anchorEls[report.id]} open={Boolean(anchorEls[report.id])} onClose={() => handleMenuClose(report.id)} anchorOrigin={{ vertical: 'bottom', horizontal: language === 'ar' ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: language === 'ar' ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }}>
-                                            <MenuItem onClick={() => handleDelete(report.id)} className="dark:hover:bg-gray-700 text-red-600 dark:text-red-400"><DeleteIcon fontSize="small" className={`${language === 'ar' ? 'ml-2' : 'mr-2'}`} />{t("buttons.delete", "Delete")}</MenuItem>
+                                        <Menu anchorEl={anchorEls[report.id]} open={Boolean(anchorEls[report.id])} onClose={() => handleMenuClose(report.id)} anchorOrigin={{ vertical: 'bottom', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} transformOrigin={{ vertical: 'top', horizontal: (language === 'ar' || language === 'he') ? 'left' : 'right' }} MenuListProps={{ className: 'dark:bg-gray-800 dark:text-gray-200' }}>
+                                            <MenuItem onClick={() => handleDelete(report.id)} className="dark:hover:bg-gray-700 text-red-600 dark:text-red-400"><DeleteIcon fontSize="small" className={`${(language === 'ar' || language === 'he') ? 'ml-2' : 'mr-2'}`} />{t("buttons.delete", "Delete")}</MenuItem>
                                         </Menu>
                                     </td>
                                 </tr>

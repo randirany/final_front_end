@@ -5,7 +5,7 @@ const CustomerMessage = () => {
         const { t, i18n: { language } } = useTranslation();
     
     return (
-        <div className="py-4 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={language === "ar" ? "rtl" : "ltr"}>
+        <div className="py-4 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className="bg-[rgb(255,255,255)] flex p-[20px] rounded-md justify-between items-center mt-2 dark:bg-navbarBack">
                 <div className="flex gap-[14px]">
                     <NavLink to="/home">Home</NavLink>

@@ -2,13 +2,15 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import ar from "./locale/ar.json";
 import en from "./locale/en.json";
+import he from "./locale/he.json";
 
 i18n
   .use(initReactI18next)
   .init({
     resources: {
       en: { translation: en }, // تأكد أن `translation` مرفقة هنا
-      ar: { translation: ar }
+      ar: { translation: ar },
+      he: { translation: he }
     },
     lng: "ar", // اللغة الافتراضية
 
