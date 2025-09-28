@@ -205,7 +205,8 @@
             "currentImage": "Current Image:",
             "newSelectedFile": "New file:",
             "selectedFile": "Selected file:",
-            "selectAgent": "Select Agent"
+            "selectAgent": "Select Agent",
+              "priceisOnTheCustomer":"priceis On The Customer"
         },
         "altText": {
             "currentCustomerImage": "Current customer image"
@@ -933,7 +934,8 @@
             "paymentMethodRequired": "Payment Method is required.",
             "insuranceAmountRequired": "Insurance Amount is required.",
             "paidAmountRequired": "Paid Amount is required.",
-            "paymentDateRequired": "Payment Date is required."
+            "paymentDateRequired": "Payment Date is required.",
+            "priceisOnTheCustomer":"price is on the customer is required"
         }
     },
     "insuranceList": {
@@ -2628,5 +2630,33 @@
             "sending": "Sending...",
             "send": "Send Bulk Email"
         }
-    }
+    },
+      "insuranceCompany": {
+    "editTitle": "Edit Insurance Company",
+    "form": {
+      "companyName": "Company Name",
+      "insuranceTypes": "Insurance Types",
+      "roadServices": "Road Services",
+      "serviceName": "Service Name"
+    },
+    "types": {
+      "mandatory": "Compulsory",
+      "comprehensive": "Comprehensive"
+    },
+    "addInsuranceType": "Add Insurance Type",
+    "addRoadService": "Add Road Service",
+    "saveChangesButton": "Save Changes",
+    "editSuccess": "Company updated successfully",
+    "editErrorGeneric": "Failed to update company"
+  },
+  "validation": {
+    "companyNameRequired": "Company name is required",
+    "typeRequired": "Type is required",
+    "pricePositive": "Price must be a positive number",
+    "nameRequired": "Name is required",
+    "formErrors": "Please fix the form errors"
+  },
+  "common": {
+    "cancel": "Cancel"
+  }
 }

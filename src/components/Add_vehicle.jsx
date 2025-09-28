@@ -2,11 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 
-const MySwal = withReactContent(Swal);
 const AlertMessage = ({ message, type }) => {
     if (!message) return null;
     const baseClasses = 'p-4 mb-4 text-sm rounded-lg text-center';
@@ -22,7 +19,7 @@ const AlertMessage = ({ message, type }) => {
 };
 
 function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
-      const navigate = useNavigate(); // ✅ هنا
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
@@ -43,9 +40,7 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
     const [apiMessage, setApiMessage] = useState({ text: '', type: '' });
 
     useEffect(() => {
-        const handleEscape = (e) => {
-            if (e.key === 'Escape' && isOpen) onClose();
-        };
+        const handleEscape = (e) => { if (e.key === 'Escape' && isOpen) onClose(); };
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
     }, [onClose, isOpen]);
@@ -66,61 +61,43 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleFileInputChange = (e) => {
-        if (e.target.files?.length > 0) {
-            setFiles(Array.from(e.target.files));
-        }
+        if (e.target.files?.length > 0) setFiles(Array.from(e.target.files));
     };
 
-
-
-
-    
+    const handleDragOver = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); };
+    const handleDragLeave = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); };
+    const handleDrop = (e) => {
+        e.preventDefault(); e.stopPropagation(); setIsDragging(false);
+        if (e.dataTransfer.files?.length > 0) setFiles(Array.from(e.dataTransfer.files));
+    };
+    const handleBrowseClick = () => fileInputRef.current?.click();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setApiMessage({ text: '', type: '' });
 
-        // Client-Side Validation
-        if (!formData.plateNumber.trim()) {
-            setApiMessage({ text: t("customers.vehicles.validation.plateRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.model.trim()) {
-            setApiMessage({ text: t("customers.vehicles.validation.modelRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.type.trim()) {
-            setApiMessage({ text: t("customers.vehicles.validation.typeRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.ownership.trim()) {
-            setApiMessage({ text: t("customers.vehicles.validation.ownershipRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.modelNumber.trim()) {
-            setApiMessage({ text: t("customers.vehicles.validation.chassisRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.licenseExpiry) {
-            setApiMessage({ text: t("customers.vehicles.validation.licenseExpiryRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.lastTest) {
-            setApiMessage({ text: t("customers.vehicles.validation.lastTestRequired"), type: 'error' });
-            return;
-        }
-        if (!formData.color.trim()) {
-            setApiMessage({ text: t('customers.vehicles.validation.colorRequired'), type: 'error' });
-            return;
-        }
+        // Client-side validation
+        const requiredFields = [
+            { key: 'plateNumber', msg: t("customers.vehicles.validation.plateRequired") },
+            { key: 'model', msg: t("customers.vehicles.validation.modelRequired") },
+            { key: 'type', msg: t("customers.vehicles.validation.typeRequired") },
+            { key: 'ownership', msg: t("customers.vehicles.validation.ownershipRequired") },
+            { key: 'modelNumber', msg: t("customers.vehicles.validation.chassisRequired") },
+            { key: 'licenseExpiry', msg: t("customers.vehicles.validation.licenseExpiryRequired") },
+            { key: 'lastTest', msg: t("customers.vehicles.validation.lastTestRequired") },
+            { key: 'color', msg: t('customers.vehicles.validation.colorRequired') },
+            { key: 'price', msg: t('customers.vehicles.validation.priceRequired') },
+        ];
 
-        if (!formData.price.toString().trim()) {
-            setApiMessage({ text: t('customers.vehicles.validation.priceRequired'), type: 'error' });
-            return;
+        for (let field of requiredFields) {
+            if (!formData[field.key] || formData[field.key].toString().trim() === "") {
+                setApiMessage({ text: field.msg, type: 'error' });
+                return;
+            }
         }
 
         if (!insuredId) {
@@ -131,13 +108,8 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
         setIsSubmitting(true);
         const token = `islam__${localStorage.getItem("token")}`;
         const data = new FormData();
-
-        Object.keys(formData).forEach((key) => {
-            data.append(key, formData[key]);
-        });
-        if (files.length > 0) {
-            data.append('image', files[0]);
-        }
+        Object.keys(formData).forEach(key => data.append(key, formData[key]));
+        if (files.length > 0) data.append('image', files[0]);
 
         try {
             const response = await axios.post(
@@ -146,27 +118,11 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
                 { headers: { token, 'Content-Type': 'multipart/form-data' } }
             );
 
-       setIsSubmitting(false);
-            const vehicleId = response.data.savedVehicle?._id; // تأكد API يرجع vehicleId
+            setIsSubmitting(false);
             setApiMessage({ text: t(response.data.messageKey, 'Vehicle added successfully!'), type: 'success' });
 
-            // 🔹 بعد الحفظ، نسأل هل يريد إضافة تأمين
-            const addInsurance = await MySwal.fire({
-                title: t("customers.addInsurance.title", "Add Insurance?"),
-                text: t("customers.addInsurance.text", "Do you want to add insurance for this vehicle?"),
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: t("common.yes", "Yes"),
-                cancelButtonText: t("common.no", "No"),
-                reverseButtons: true,
-            });
-
-            if (addInsurance.isConfirmed) {
-                // إذا ضغط نعم، ينقل لفورم إضافة التأمين
-                navigate(`/insured/${insuredId}/${vehicleId}`);
-            }
-
-            // سواء ضغط نعم أو لا، يمكننا إغلاق الفورم
+            // 🔹 مباشرة للبروفايل بعد الإضافة
+            navigate(`/profile/${insuredId}`);
             if (onVehicleAdded) onVehicleAdded();
             onClose();
 
@@ -183,32 +139,6 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const handleDragOver = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); };
-    const handleDragLeave = (e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); };
-    const handleDrop = (e) => {
-        e.preventDefault(); e.stopPropagation(); setIsDragging(false);
-        if (e.dataTransfer.files?.length > 0) {
-            setFiles(Array.from(e.dataTransfer.files));
-        }
-    };
-    const handleBrowseClick = () => fileInputRef.current?.click();
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3" onClick={onClose}>
@@ -282,29 +212,6 @@ function Add_vehicle({ onClose, isOpen, onVehicleAdded, insuredId }) {
                                 className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 placeholder={t("customers.vehicles.placeholders.price", "Enter Vehicle Price")}
                                 value={formData.price} onChange={handleInputChange} step="any" />
-                        </div>
-                    </div>
-
-                    <div className="px-4">
-                        <label className="block text-sm font-medium dark:text-gray-300">{t("customers.vehicles.labels.imageOptional", "Vehicle Image (Optional)")}</label>
-                        <div
-                            onClick={handleBrowseClick} ref={dropAreaRef}
-                            className={`relative flex cursor-pointer flex-col items-center justify-center h-48 border-2 border-dashed rounded-md transition-colors ${isDragging ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30" : "border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500 bg-gray-50 dark:bg-gray-700/30"}`}
-                            onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}
-                        >
-                            <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileInputChange} accept="image/*" />
-                            {files.length > 0 ? (
-                                <div className="w-full h-full flex items-center justify-center p-2">
-                                    <img src={URL.createObjectURL(files[0])} alt={files[0].name} className="max-h-full max-w-full object-contain rounded" />
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center space-y-3 text-center p-4">
-                                    <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        <span className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">{t("fileUploadModal.dropArea.clickToUpload", "Click to upload")}</span> {t("fileUploadModal.dropArea.orDragAndDrop", "or drag and drop")}
-                                    </p>
-                                </div>
-                            )}
                         </div>
                     </div>
 

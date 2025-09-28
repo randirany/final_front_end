@@ -218,7 +218,8 @@
             "currentImage": "الصورة الحالية:",
             "newSelectedFile": "ملف جديد:",
             "selectedFile": "الملف المختار:",
-            "selectAgent": "اختر الوكيل"
+            "selectAgent": "اختر الوكيل",
+            "priceisOnTheCustomer":"سعر التأمين على الزبون "
         },
         "altText": {
             "currentCustomerImage": "صورة العميل الحالية"
@@ -2635,5 +2636,35 @@
             "sending": "جارٍ الإرسال...",
             "send": "إرسال البريد الإلكتروني المجمع"
         }
-    }
+        
+    },
+      "insuranceCompany": {
+    "editTitle": "تعديل شركة التأمين",
+    "form": {
+      "companyName": "اسم الشركة",
+      "insuranceTypes": "أنواع التأمين",
+      "roadServices": "خدمات الطريق",
+      "serviceName": "اسم الخدمة"
+    },
+    "types": {
+      "mandatory": "إلزامي",
+      "comprehensive": "شامل"
+    },
+    "addInsuranceType": "إضافة نوع تأمين",
+    "addRoadService": "إضافة خدمة طريق",
+    "saveChangesButton": "حفظ التغييرات",
+    "editSuccess": "تم تعديل الشركة بنجاح",
+    "editErrorGeneric": "فشل تعديل الشركة"
+  },
+  "validation": {
+    "companyNameRequired": "اسم الشركة مطلوب",
+    "typeRequired": "نوع التأمين مطلوب",
+    "pricePositive": "يجب أن يكون السعر رقمًا إيجابيًا",
+    "nameRequired": "الاسم مطلوب",
+    "formErrors": "يرجى تصحيح الأخطاء في النموذج"
+  },
+  "common": {
+    "cancel": "إلغاء"
+  }
+    
 }

@@ -413,5 +413,33 @@
             "offerAmount": "סכום הצעה",
             "minFor60k": "מינימום עבור 60 אלף"
         }
-    }
+    },
+      "insuranceCompany": {
+    "editTitle": "עריכת חברת ביטוח",
+    "form": {
+      "companyName": "שם החברה",
+      "insuranceTypes": "סוגי ביטוח",
+      "roadServices": "שירותי דרך",
+      "serviceName": "שם השירות"
+    },
+    "types": {
+      "mandatory": "חובה",
+      "comprehensive": "כולל"
+    },
+    "addInsuranceType": "הוסף סוג ביטוח",
+    "addRoadService": "הוסף שירות דרך",
+    "saveChangesButton": "שמור שינויים",
+    "editSuccess": "החברה עודכנה בהצלחה",
+    "editErrorGeneric": "כשל בעדכון החברה"
+  },
+  "validation": {
+    "companyNameRequired": "שם החברה נדרש",
+    "typeRequired": "סוג הביטוח נדרש",
+    "pricePositive": "המחיר חייב להיות מספר חיובי",
+    "nameRequired": "שם נדרש",
+    "formErrors": "אנא תקן את השגיאות בטופס"
+  },
+  "common": {
+    "cancel": "ביטול"
+  }
 }
