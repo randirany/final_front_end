@@ -127,7 +127,7 @@ function AddInsuranceMandatory({ onClose, isOpen, vehicleId, insuredId, onInsura
         // --- Validation ---
         if (!formData.insuranceType) return setApiMessage({ text: "Insurance Type required", type: "error" });
         if (!formData.insuranceCompany) return setApiMessage({ text: "Insurance Company required", type: "error" });
-        if (!formData.agent) return setApiMessage({ text: "Agent required", type: "error" });
+     
         if (!formData.paymentMethod) return setApiMessage({ text: "Payment Method required", type: "error" });
         if (!formData.priceisOnTheCustomer) return setApiMessage({ text: "Price on customer required", type: "error" });
         if (!formData.paidAmount) return setApiMessage({ text: "Paid Amount required", type: "error" });
@@ -205,7 +205,7 @@ function AddInsuranceMandatory({ onClose, isOpen, vehicleId, insuredId, onInsura
 
                             {/* Agent */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Agent <span className="text-red-500">*</span></label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Agent </label>
                                 <select name="agent" value={formData.agent} onChange={handleInputChange} className="mt-1 w-full p-2.5 border rounded-md dark:bg-gray-700 dark:text-white">
                                     <option value="">Choose Agent</option>
                                     {agents.map(a => <option key={a._id} value={a._id}>{a.name}</option>)}
