@@ -342,7 +342,7 @@ const EditCheque = () => {
               {/* Status */}
               <div>
                 <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-white">
-                  {t('cheques.status')} *
+                  {t('cheques.statusHeader')} *
                 </label>
                 <select
                   id="status"

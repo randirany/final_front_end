@@ -154,7 +154,7 @@ const Cheques = () => {
       [t('cheques.chequeNumber')]: c.chequeNumber,
       [t('cheques.customer')]: c.customerName,
       [t('cheques.cheque_date')]: c.cheque_date,
-      [t('cheques.status')]: c.status,
+      [t('cheques.statusHeader')]: c.status,
     }));
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
@@ -279,7 +279,7 @@ const Cheques = () => {
     { key: 'chequeNumber', label: t('cheques.chequeNumber', 'Cheque Number') },
     { key: 'customerName', label: t('cheques.customer', 'Customer') },
     { key: 'cheque_date', label: t('cheques.cheque_date', 'Cheque Date') },
-    { key: 'status', label: t('cheques.status', 'Status') },
+    { key: 'status', label: t('cheques.statusHeader', 'Status') },
     { key: 'actions', label: t('cheques.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
   ];
 

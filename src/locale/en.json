@@ -209,7 +209,7 @@
             "newSelectedFile": "New file:",
             "selectedFile": "Selected file:",
             "selectAgent": "Select Agent",
-              "priceisOnTheCustomer":"priceis On The Customer"
+            "priceisOnTheCustomer": "priceis On The Customer"
         },
         "altText": {
             "currentCustomerImage": "Current customer image"
@@ -949,7 +949,7 @@
             "insuranceAmountRequired": "Insurance Amount is required.",
             "paidAmountRequired": "Paid Amount is required.",
             "paymentDateRequired": "Payment Date is required.",
-            "priceisOnTheCustomer":"price is on the customer is required"
+            "priceisOnTheCustomer": "price is on the customer is required"
         }
     },
     "insuranceList": {
@@ -2321,7 +2321,7 @@
         "cheque_date": "Cheque Date",
         "bank": "Bank",
         "bankName": "Bank Name",
-        "status": "Status",
+        "statusHeader": "Status",
         "actions": "Actions",
         "searchPlaceholder": "Search by cheque number, customer name, or bank...",
         "selectCustomer": "Select a customer",
@@ -2655,5 +2655,93 @@
             "sending": "Sending...",
             "send": "Send Bulk Email"
         }
+    },
+    "insuranceCompany": {
+        "editTitle": "Edit Insurance Company",
+        "form": {
+            "companyName": "Company Name",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services",
+            "serviceName": "Service Name"
+        },
+        "types": {
+            "mandatory": "Compulsory",
+            "comprehensive": "Comprehensive"
+        },
+        "addInsuranceType": "Add Insurance Type",
+        "addRoadService": "Add Road Service",
+        "saveChangesButton": "Save Changes",
+        "editSuccess": "Company updated successfully",
+        "editErrorGeneric": "Failed to update company"
+    },
+    "validation": {
+        "companyNameRequired": "Company name is required",
+        "typeRequired": "Type is required",
+        "pricePositive": "Price must be a positive number",
+        "nameRequired": "Name is required",
+        "formErrors": "Please fix the form errors"
+    },
+    "common": {
+        "cancel": "Cancel"
+    },
+    "breadcrumbs": {
+        "home": "Home",
+        "customers": "Customers",
+        "customerInfo": "Customer Info"
+    },
+    "common": {
+        "loading": "Loading...",
+        "delete": "Delete",
+        "notAvailable": "Not available"
+    },
+    "customerInfo": {
+        "title": "Customer Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "mobile": "Mobile",
+        "identity": "ID Number",
+        "birthDate": "Birth Date",
+        "joinDate": "Join Date",
+        "city": "City",
+        "notes": "Notes",
+        "attachments": {
+            "title": "Attachments",
+            "upload": "Upload Files",
+            "none": "No attachments"
+        },
+        "vehicles": {
+            "title": "Vehicles",
+            "add": "Add Vehicle",
+            "none": "No vehicles found",
+            "vehicleAlt": "Vehicle",
+            "licenseAlt": "Car License",
+            "addInsurance": "Add Insurance"
+        },
+        "insurances": {
+            "title": "Insurances",
+            "none": "No insurances found",
+            "fetchError": "Failed to fetch insurances.",
+            "category": "Category",
+            "type": "Type",
+            "company": "Company",
+            "agent": "Agent",
+            "paymentMethod": "Payment",
+            "status": "Status",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "paidAmount": "Paid Amount",
+            "remainingDebt": "Remaining Debt"
+        }
+    },
+    "vehicles": {
+        "messages": {
+            "fetchError": "Failed to fetch vehicles.",
+            "deleteSuccess": "Vehicle deleted successfully!",
+            "deleteError": "Failed to delete vehicle."
+        }
+    },
+    "customerInfo.attachments": {
+        "uploadSuccess": "Files uploaded successfully!",
+        "uploadError": "Failed to upload files."
     }
 }
