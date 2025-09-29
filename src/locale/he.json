@@ -544,84 +544,6 @@
         "nameRequired": "שם נדרש",
         "formErrors": "אנא תקן את השגיאות בטופס"
     },
-<<<<<<< HEAD
-    "addInsuranceType": "הוסף סוג ביטוח",
-    "addRoadService": "הוסף שירות דרך",
-    "saveChangesButton": "שמור שינויים",
-    "editSuccess": "החברה עודכנה בהצלחה",
-    "editErrorGeneric": "כשל בעדכון החברה"
-  },
-  "validation": {
-    "companyNameRequired": "שם החברה נדרש",
-    "typeRequired": "סוג הביטוח נדרש",
-    "pricePositive": "המחיר חייב להיות מספר חיובי",
-    "nameRequired": "שם נדרש",
-    "formErrors": "אנא תקן את השגיאות בטופס"
-  },
-  "common": {
-    "cancel": "ביטול"
-  },
-  "breadcrumbs": {
-    "home": "בית",
-    "customers": "לקוחות",
-    "customerInfo": "פרטי לקוח"
-  },
-  "common": {
-    "loading": "טוען...",
-    "delete": "מחק",
-    "notAvailable": "לא זמין"
-  },
-  "customerInfo": {
-    "title": "פרטי הלקוח",
-    "firstName": "שם פרטי",
-    "lastName": "שם משפחה",
-    "mobile": "טלפון",
-    "identity": "מספר זהות",
-    "birthDate": "תאריך לידה",
-    "joinDate": "תאריך הצטרפות",
-    "city": "עיר",
-    "notes": "הערות",
-    "attachments": {
-      "title": "קבצים מצורפים",
-      "upload": "העלה קבצים",
-      "none": "אין קבצים מצורפים"
-    },
-    "vehicles": {
-      "title": "רכבים",
-      "add": "הוסף רכב",
-      "none": "לא נמצאו רכבים",
-      "vehicleAlt": "רכב",
-      "licenseAlt": "לוחית רישוי",
-      "addInsurance": "הוסף ביטוח"
-    },
-    "insurances": {
-      "title": "ביטוחים",
-      "none": "לא נמצאו ביטוחים",
-      "fetchError": "לא הצלחנו להביא את הביטוחים.",
-      "category": "קטגוריה",
-      "type": "סוג",
-      "company": "חברה",
-      "agent": "סוכן",
-      "paymentMethod": "תשלום",
-      "status": "סטטוס",
-      "startDate": "תאריך התחלה",
-      "endDate": "תאריך סיום",
-      "paidAmount": "סכום ששולם",
-      "remainingDebt": "חוב נותר"
-    }
-  },
-  "vehicles": {
-    "messages": {
-      "fetchError": "לא הצלחנו להביא את הרכבים.",
-      "deleteSuccess": "הרכב נמחק בהצלחה!",
-      "deleteError": "לא ניתן למחוק את הרכב."
-    }
-  },
-  "customerInfo.attachments": {
-    "uploadSuccess": "הקבצים הועלו בהצלחה!",
-    "uploadError": "העלאת הקבצים נכשלה."
-  }
-=======
     "exportSheetName": "חברות_ביטוח",
     "exportExcelFileName": "דוח_חברות_ביטוח.xlsx",
     "exportPdfFileName": "דוח_חברות_ביטוח.pdf",
@@ -1504,5 +1426,4 @@
     "createdBy": "נוצר על ידי",
     "updatedBy": "עודכן על ידי",
     "email": "דואר אלקטרוני"
->>>>>>> e6345ce163822f4a2046327e4f61b164dffeae4f
 }

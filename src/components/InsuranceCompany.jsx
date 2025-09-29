@@ -159,6 +159,16 @@ roadServices: item.roadServices?.map(rs => `${rs.name} (₪${rs.price})`).join('
             {/* Header + Breadcrumb + Add Button */}
             {/* Search + Export Buttons */}
             <div className="overflow-x-auto shadow-md rounded-lg">
+                <div className="flex justify-between items-center mb-4">
+  <h1 className="text-xl font-semibold dark:text-white">{t('insuranceCompany.title', 'Insurance Companies')}</h1>
+  <Button 
+    variant="contained" 
+    color="primary" 
+    onClick={() => setShowAddForm(true)}
+  >
+    {t('insuranceCompany.addCompany', 'Add Company')}
+  </Button>
+</div>
                 <table className="w-full text-sm text-left rtl:text-right dark:bg-navbarBack text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
                         <tr>

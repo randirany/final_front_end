@@ -2648,97 +2648,6 @@
             "send": "إرسال البريد الإلكتروني المجمع"
         }
     },
-<<<<<<< HEAD
-      "insuranceCompany": {
-    "editTitle": "تعديل شركة التأمين",
-    "form": {
-      "companyName": "اسم الشركة",
-      "insuranceTypes": "أنواع التأمين",
-      "roadServices": "خدمات الطريق",
-      "serviceName": "اسم الخدمة"
-    },
-    "types": {
-      "mandatory": "إلزامي",
-      "comprehensive": "شامل"
-    },
-    "addInsuranceType": "إضافة نوع تأمين",
-    "addRoadService": "إضافة خدمة طريق",
-    "saveChangesButton": "حفظ التغييرات",
-    "editSuccess": "تم تعديل الشركة بنجاح",
-    "editErrorGeneric": "فشل تعديل الشركة"
-  },
-  "validation": {
-    "companyNameRequired": "اسم الشركة مطلوب",
-    "typeRequired": "نوع التأمين مطلوب",
-    "pricePositive": "يجب أن يكون السعر رقمًا إيجابيًا",
-    "nameRequired": "الاسم مطلوب",
-    "formErrors": "يرجى تصحيح الأخطاء في النموذج"
-  },
-  "common": {
-    "cancel": "إلغاء"
-  },
-    "breadcrumbs": {
-    "home": "الرئيسية",
-    "customers": "العملاء",
-    "customerInfo": "معلومات العميل"
-  },
-  "common": {
-    "loading": "جاري التحميل...",
-    "delete": "حذف",
-    "notAvailable": "غير متوفر"
-  },
-  "customerInfo": {
-    "title": "معلومات العميل",
-    "firstName": "الاسم الأول",
-    "lastName": "اسم العائلة",
-    "mobile": "الهاتف",
-    "identity": "رقم الهوية",
-    "birthDate": "تاريخ الميلاد",
-    "joinDate": "تاريخ الانضمام",
-    "city": "المدينة",
-    "notes": "ملاحظات",
-    "attachments": {
-      "title": "المرفقات",
-      "upload": "رفع الملفات",
-      "none": "لا يوجد مرفقات"
-    },
-    "vehicles": {
-      "title": "المركبات",
-      "add": "إضافة مركبة",
-      "none": "لا توجد مركبات",
-      "vehicleAlt": "مركبة",
-      "licenseAlt": "لوحة المركبة",
-      "addInsurance": "إضافة تأمين"
-    },
-    "insurances": {
-      "title": "التأمينات",
-      "none": "لا توجد تأمينات",
-      "fetchError": "فشل في جلب التأمينات.",
-      "category": "الفئة",
-      "type": "النوع",
-      "company": "شركة التأمين",
-      "agent": "الوكيل",
-      "paymentMethod": "طريقة الدفع",
-      "status": "الحالة",
-      "startDate": "تاريخ البداية",
-      "endDate": "تاريخ الانتهاء",
-      "paidAmount": "المبلغ المدفوع",
-      "remainingDebt": "المتبقي من الدين"
-    }
-  },
-  "vehicles": {
-    "messages": {
-      "fetchError": "فشل في جلب المركبات.",
-      "deleteSuccess": "تم حذف المركبة بنجاح!",
-      "deleteError": "فشل في حذف المركبة."
-    }
-  },
-  "customerInfo.attachments": {
-    "uploadSuccess": "تم رفع الملفات بنجاح!",
-    "uploadError": "فشل رفع الملفات."
-  }
-    
-=======
     "insuranceCompany": {
         "editTitle": "تعديل شركة التأمين",
         "form": {
@@ -2757,5 +2666,4 @@
         "editSuccess": "تم تعديل الشركة بنجاح",
         "editErrorGeneric": "فشل تعديل الشركة"
     }
->>>>>>> e6345ce163822f4a2046327e4f61b164dffeae4f
 }
