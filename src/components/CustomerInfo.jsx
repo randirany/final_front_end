@@ -668,7 +668,13 @@ function CustomerInfo() {
 
   
       {isAddVehicleOpen && <Add_vehicle isOpen={isAddVehicleOpen} close={() => setAddVehicleOpen(false)} insuredId={insuredId} fetchVehicles={fetchVehicles} />}
-      {isOpenMandatory && <AddInsuranceMandatory isOpen={isOpenMandatory} close={() => setIsOpenMandatory(false)} vehicleId={vehicleId} fetchVehicles={fetchVehicles} />}
+    {isOpenMandatory && <AddInsuranceMandatory 
+    isOpen={isOpenMandatory} 
+    onClose={() => setIsOpenMandatory(false)} 
+    vehicleId={vehicleId} 
+    insuredId={insuredId}   // ✅ أضف هذا
+    onInsuranceAdded={fetchVehicles} 
+/>}
       {isCancelModalOpen && selectedInsurance && <CancelInsuranceModal isOpen={isCancelModalOpen} close={() => setCancelModalOpen(false)} onConfirm={handleConfirmCancel} insurance={selectedInsurance} />}
       {isConfirmOpen && <ConfirmModal isOpen={isConfirmOpen} close={closeDeleteModal} onConfirm={handleConfirmDelete} loading={isDeleting} />}
       {isTransferModalOpen && selectedInsurance && itemToDelete && (

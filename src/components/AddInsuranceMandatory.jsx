@@ -131,7 +131,7 @@ function AddInsuranceMandatory({ onClose, isOpen, vehicleId, insuredId, onInsura
         if (!formData.paymentMethod) return setApiMessage({ text: "Payment Method required", type: "error" });
         if (!formData.priceisOnTheCustomer) return setApiMessage({ text: "Price on customer required", type: "error" });
         if (!formData.paidAmount) return setApiMessage({ text: "Paid Amount required", type: "error" });
-        if (!insuredId || !vehicleId) return setApiMessage({ text: "Missing insured or vehicle ID", type: "error" });
+       // if (!insuredId || !vehicleId) return setApiMessage({ text: "Missing insured or vehicle ID", type: "error" });
 
         setLoading(true);
         try {
