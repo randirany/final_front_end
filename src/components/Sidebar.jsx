@@ -185,6 +185,28 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <span>{t("sideBar.mainMenu.categore.emailManagement")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to='/cheques' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2 6C2 4.34315 3.34315 3 5 3H19C20.6569 3 22 4.34315 22 6V18C22 19.6569 20.6569 21 19 21H5C3.34315 21 2 19.6569 2 18V6ZM5 5C4.44772 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H19C19.5523 19 20 18.5523 20 18V6C20 5.44772 19.5523 5 19 5H5Z" fill="currentColor"/>
+                      <path d="M4 9H20V11H4V9Z" fill="currentColor"/>
+                      <path d="M6 13H14V15H6V13Z" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.cheques")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/document-settings' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <polyline points="14 2 14 8 20 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <circle cx="12" cy="13" r="1" fill="currentColor"/>
+                      <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                      <circle cx="12" cy="10" r="1" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.documentSettings")}</span>
+                  </Link>
+                </li>
 
               </ul>
             </nav>

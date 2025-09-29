@@ -1,7 +1,8 @@
 {
     "language": {
         "ar": "AR",
-        "en": "EN"
+        "en": "EN",
+        "he": "HE"
     },
     "errors": {
         "unknown": "An error occurred. Please try again.",
@@ -71,6 +72,8 @@
                 "payment": "Payments and Receipts",
                 "onlinePayment": "Online Payment",
                 "emailManagement": "Email Management",
+                "cheques": "Cheques",
+                "documentSettings": "Document Settings",
                 "report": {
                     "titleReport": "Reports",
                     "categore": {
@@ -412,8 +415,8 @@
         },
         "ratesTitle": "Insurance Rates",
         "saveChangesButton": "Save Changes",
-        "fetchError": "Failed to fetch companies",
-        "deleteError": "Error deleting company",
+        "fetchError": "Error fetching insurance companies",
+        "deleteError": "Error deleting insurance company",
         "exportSheetName": "Insurance Companies",
         "exportExcelFileName": "insurance_companies.xlsx",
         "exportCsvFileName": "insurance_companies.csv",
@@ -422,7 +425,14 @@
         "printReportTitle": "Insurance Companies Report",
         "addButton": "Add Company",
         "searchPlaceholder": "Search companies...",
-        "noCompanies": "No insurance companies found"
+        "noCompanies": "No insurance companies found",
+        "table": {
+            "actions": "Actions",
+            "insuranceType": "Insurance Type",
+            "insuranceTypes": "Insurance Types",
+            "name": "Company Name",
+            "roadServices": "Road Services"
+        }
     },
     "Email": "Email",
     "Name": "Name",
@@ -485,7 +495,11 @@
         "saveChanges": "Save Changes",
         "save": "Save",
         "view": "View",
-        "download": "Download"
+        "download": "Download",
+        "active": "Active",
+        "inactive": "Inactive",
+        "back": "Back",
+        "unknown": "Unknown"
     },
     "validation": {
         "rateRequiredStrictlyPositive": "This rate is required and must be a positive number (greater than 0).",
@@ -2504,7 +2518,18 @@
         "editSettings": "Edit Settings",
         "editSettingsSubtitle": "Edit Settings Subtitle",
         "replaceLogo": "Replace Logo",
-        "updateSettings": "Update Settings"
+        "updateSettings": "Update Settings",
+        "additionalFooterText": "Additional Footer Text",
+        "companyWebsite": "Company Website",
+        "contentAreaDescription": "Content Area Description",
+        "documentContentArea": "Document Content Area",
+        "documentPreview": "Document Preview",
+        "documentType": "Document Type",
+        "headerCompanyName": "Header Company Name",
+        "previewSubtitle": "Preview Subtitle",
+        "settings": "Settings",
+        "status": "Status",
+        "termsAndConditions": "Terms and Conditions"
     },
     "insurances": {
         "table": {
@@ -2630,33 +2655,5 @@
             "sending": "Sending...",
             "send": "Send Bulk Email"
         }
-    },
-      "insuranceCompany": {
-    "editTitle": "Edit Insurance Company",
-    "form": {
-      "companyName": "Company Name",
-      "insuranceTypes": "Insurance Types",
-      "roadServices": "Road Services",
-      "serviceName": "Service Name"
-    },
-    "types": {
-      "mandatory": "Compulsory",
-      "comprehensive": "Comprehensive"
-    },
-    "addInsuranceType": "Add Insurance Type",
-    "addRoadService": "Add Road Service",
-    "saveChangesButton": "Save Changes",
-    "editSuccess": "Company updated successfully",
-    "editErrorGeneric": "Failed to update company"
-  },
-  "validation": {
-    "companyNameRequired": "Company name is required",
-    "typeRequired": "Type is required",
-    "pricePositive": "Price must be a positive number",
-    "nameRequired": "Name is required",
-    "formErrors": "Please fix the form errors"
-  },
-  "common": {
-    "cancel": "Cancel"
-  }
+    }
 }

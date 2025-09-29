@@ -14,23 +14,37 @@ const EditDocumentSettings = () => {
 
   const [formData, setFormData] = useState({
     companyName: '',
+    documentType: '',
     headerText: '',
-    headerBgColor: '#2563eb',
-    headerTextColor: '#ffffff',
-    headerFontSize: 24,
+    headerBgColor: '#ffffff',
+    headerTextColor: '#000000',
+    headerFontSize: 16,
+    headerCompanyName: '',
+    headerCompanyAddress: '',
+    headerCompanyEmail: '',
+    headerCompanyPhone: '',
+    headerCompanyWebsite: '',
     footerText: '',
-    footerBgColor: '#374151',
-    footerTextColor: '#ffffff',
+    footerBgColor: '#ffffff',
+    footerTextColor: '#000000',
     footerFontSize: 12,
+    footerFooterText: '',
+    footerTermsAndConditions: '',
     marginTop: 20,
     marginBottom: 20,
-    marginLeft: 15,
-    marginRight: 15
+    marginLeft: 20,
+    marginRight: 20
   });
 
   const [uploadedLogo, setUploadedLogo] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [currentLogo, setCurrentLogo] = useState(null);
+  const [uploadedHeaderLogo, setUploadedHeaderLogo] = useState(null);
+  const [headerLogoPreview, setHeaderLogoPreview] = useState(null);
+  const [currentHeaderLogo, setCurrentHeaderLogo] = useState(null);
+  const [uploadedFooterLogo, setUploadedFooterLogo] = useState(null);
+  const [footerLogoPreview, setFooterLogoPreview] = useState(null);
+  const [currentFooterLogo, setCurrentFooterLogo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [errors, setErrors] = useState({});
@@ -56,23 +70,44 @@ const EditDocumentSettings = () => {
       const settings = response.data.documentSettings;
       setFormData({
         companyName: settings.companyName || '',
-        headerText: settings.headerText || '',
-        headerBgColor: settings.headerBgColor || '#2563eb',
-        headerTextColor: settings.headerTextColor || '#ffffff',
-        headerFontSize: settings.headerFontSize || 24,
-        footerText: settings.footerText || '',
-        footerBgColor: settings.footerBgColor || '#374151',
-        footerTextColor: settings.footerTextColor || '#ffffff',
-        footerFontSize: settings.footerFontSize || 12,
-        marginTop: settings.marginTop || 20,
-        marginBottom: settings.marginBottom || 20,
-        marginLeft: settings.marginLeft || 15,
-        marginRight: settings.marginRight || 15
+        documentType: settings.documentType || '',
+        headerText: settings.header?.text || '',
+        headerBgColor: settings.header?.backgroundColor || '#ffffff',
+        headerTextColor: settings.header?.textColor || '#000000',
+        headerFontSize: settings.header?.fontSize || 16,
+        headerCompanyName: settings.header?.companyName || '',
+        headerCompanyAddress: settings.header?.companyAddress || '',
+        headerCompanyEmail: settings.header?.companyEmail || '',
+        headerCompanyPhone: settings.header?.companyPhone || '',
+        headerCompanyWebsite: settings.header?.companyWebsite || '',
+        footerText: settings.footer?.text || '',
+        footerBgColor: settings.footer?.backgroundColor || '#ffffff',
+        footerTextColor: settings.footer?.textColor || '#000000',
+        footerFontSize: settings.footer?.fontSize || 12,
+        footerFooterText: settings.footer?.footerText || '',
+        footerTermsAndConditions: settings.footer?.termsAndConditions || '',
+        marginTop: settings.documentTemplate?.marginTop || 20,
+        marginBottom: settings.documentTemplate?.marginBottom || 20,
+        marginLeft: settings.documentTemplate?.marginLeft || 20,
+        marginRight: settings.documentTemplate?.marginRight || 20
       });
 
-      if (settings.logoUrl) {
-        setCurrentLogo(settings.logoUrl);
-        setLogoPreview(settings.logoUrl);
+      // Handle main logo
+      if (settings.logo) {
+        setCurrentLogo(settings.logo);
+        setLogoPreview(settings.logo);
+      }
+
+      // Handle header logo
+      if (settings.header?.logo?.url) {
+        setCurrentHeaderLogo(settings.header.logo.url);
+        setHeaderLogoPreview(settings.header.logo.url);
+      }
+
+      // Handle footer logo
+      if (settings.footer?.logo?.url) {
+        setCurrentFooterLogo(settings.footer.logo.url);
+        setFooterLogoPreview(settings.footer.logo.url);
       }
     } catch (error) {
       console.error('Error fetching document settings:', error);
@@ -110,8 +145,54 @@ const EditDocumentSettings = () => {
     }
   }, [errors.logo]);
 
+  const onHeaderLogoDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setUploadedHeaderLogo(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setHeaderLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, []);
+
+  const onFooterLogoDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setUploadedFooterLogo(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFooterLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png']
+    },
+    maxFiles: 1,
+    maxSize: 5 * 1024 * 1024 // 5MB
+  });
+
+  const { getRootProps: getHeaderRootProps, getInputProps: getHeaderInputProps, isDragActive: isHeaderDragActive } = useDropzone({
+    onDrop: onHeaderLogoDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png']
+    },
+    maxFiles: 1,
+    maxSize: 5 * 1024 * 1024 // 5MB
+  });
+
+  const { getRootProps: getFooterRootProps, getInputProps: getFooterInputProps, isDragActive: isFooterDragActive } = useDropzone({
+    onDrop: onFooterLogoDrop,
     accept: {
       'image/*': ['.jpeg', '.jpg', '.png']
     },
@@ -154,14 +235,6 @@ const EditDocumentSettings = () => {
 
     if (!formData.companyName.trim()) {
       newErrors.companyName = t('documentSettings.validation.companyNameRequired');
-    }
-
-    if (!formData.headerText.trim()) {
-      newErrors.headerText = t('documentSettings.validation.headerTextRequired');
-    }
-
-    if (!formData.footerText.trim()) {
-      newErrors.footerText = t('documentSettings.validation.footerTextRequired');
     }
 
     if (formData.headerFontSize < 8 || formData.headerFontSize > 72) {
@@ -207,14 +280,57 @@ const EditDocumentSettings = () => {
       // Create FormData for file upload
       const formDataToSend = new FormData();
 
-      // Append all form fields
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
-      });
+      // Append basic fields
+      if (formData.companyName) {
+        formDataToSend.append('companyName', formData.companyName);
+      }
+      if (formData.documentType) {
+        formDataToSend.append('documentType', formData.documentType);
+      }
 
-      // Append logo file if selected
+      // Append header data as JSON string
+      const headerData = {
+        text: formData.headerText,
+        backgroundColor: formData.headerBgColor,
+        textColor: formData.headerTextColor,
+        fontSize: formData.headerFontSize,
+        companyName: formData.headerCompanyName,
+        companyAddress: formData.headerCompanyAddress,
+        companyEmail: formData.headerCompanyEmail,
+        companyPhone: formData.headerCompanyPhone,
+        companyWebsite: formData.headerCompanyWebsite
+      };
+      formDataToSend.append('header', JSON.stringify(headerData));
+
+      // Append footer data as JSON string
+      const footerData = {
+        text: formData.footerText,
+        backgroundColor: formData.footerBgColor,
+        textColor: formData.footerTextColor,
+        fontSize: formData.footerFontSize,
+        footerText: formData.footerFooterText,
+        termsAndConditions: formData.footerTermsAndConditions
+      };
+      formDataToSend.append('footer', JSON.stringify(footerData));
+
+      // Append document template data as JSON string
+      const documentTemplateData = {
+        marginTop: formData.marginTop,
+        marginBottom: formData.marginBottom,
+        marginLeft: formData.marginLeft,
+        marginRight: formData.marginRight
+      };
+      formDataToSend.append('documentTemplate', JSON.stringify(documentTemplateData));
+
+      // Append logo files if selected
       if (uploadedLogo) {
         formDataToSend.append('logo', uploadedLogo);
+      }
+      if (uploadedHeaderLogo) {
+        formDataToSend.append('headerLogo', uploadedHeaderLogo);
+      }
+      if (uploadedFooterLogo) {
+        formDataToSend.append('footerLogo', uploadedFooterLogo);
       }
 
       const response = await axios.put(`http://localhost:3002/api/v1/documentSettings/update/${id}`, formDataToSend, {
@@ -260,6 +376,28 @@ const EditDocumentSettings = () => {
     setCurrentLogo(null);
     setLogoPreview(null);
     setUploadedLogo(null);
+  };
+
+  const removeHeaderLogo = () => {
+    setUploadedHeaderLogo(null);
+    setHeaderLogoPreview(currentHeaderLogo);
+  };
+
+  const removeCurrentHeaderLogo = () => {
+    setCurrentHeaderLogo(null);
+    setHeaderLogoPreview(null);
+    setUploadedHeaderLogo(null);
+  };
+
+  const removeFooterLogo = () => {
+    setUploadedFooterLogo(null);
+    setFooterLogoPreview(currentFooterLogo);
+  };
+
+  const removeCurrentFooterLogo = () => {
+    setCurrentFooterLogo(null);
+    setFooterLogoPreview(null);
+    setUploadedFooterLogo(null);
   };
 
   if (pageLoading) {
@@ -333,6 +471,29 @@ const EditDocumentSettings = () => {
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.companyName}</p>
                   )}
                 </div>
+
+                {/* Document Type */}
+                <div className="sm:col-span-2">
+                  <label htmlFor="documentType" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Document Type
+                  </label>
+                  <input
+                    type="text"
+                    id="documentType"
+                    name="documentType"
+                    value={formData.documentType}
+                    onChange={handleInputChange}
+                    className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm dark:bg-dark2 dark:text-white ${
+                      errors.documentType
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                        : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:focus:border-blue-400'
+                    }`}
+                    placeholder="Enter document type (e.g., invoice, receipt)"
+                  />
+                  {errors.documentType && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.documentType}</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -349,7 +510,7 @@ const EditDocumentSettings = () => {
                 {/* Header Text */}
                 <div className="sm:col-span-2">
                   <label htmlFor="headerText" className="block text-sm font-medium text-gray-700 dark:text-white">
-                    {t('documentSettings.headerText')} *
+                    {t('documentSettings.headerText')}
                   </label>
                   <input
                     type="text"
@@ -367,6 +528,82 @@ const EditDocumentSettings = () => {
                   {errors.headerText && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.headerText}</p>
                   )}
+                </div>
+
+                {/* Header Company Information */}
+                <div>
+                  <label htmlFor="headerCompanyName" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Header Company Name
+                  </label>
+                  <input
+                    type="text"
+                    id="headerCompanyName"
+                    name="headerCompanyName"
+                    value={formData.headerCompanyName}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Company name for header"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="headerCompanyAddress" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Header Company Address
+                  </label>
+                  <input
+                    type="text"
+                    id="headerCompanyAddress"
+                    name="headerCompanyAddress"
+                    value={formData.headerCompanyAddress}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Company address"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="headerCompanyEmail" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Header Company Email
+                  </label>
+                  <input
+                    type="email"
+                    id="headerCompanyEmail"
+                    name="headerCompanyEmail"
+                    value={formData.headerCompanyEmail}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Company email"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="headerCompanyPhone" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Header Company Phone
+                  </label>
+                  <input
+                    type="tel"
+                    id="headerCompanyPhone"
+                    name="headerCompanyPhone"
+                    value={formData.headerCompanyPhone}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Company phone"
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label htmlFor="headerCompanyWebsite" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Header Company Website
+                  </label>
+                  <input
+                    type="url"
+                    id="headerCompanyWebsite"
+                    name="headerCompanyWebsite"
+                    value={formData.headerCompanyWebsite}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Company website URL"
+                  />
                 </div>
 
                 {/* Header Background Color */}
@@ -456,6 +693,76 @@ const EditDocumentSettings = () => {
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.headerFontSize}</p>
                   )}
                 </div>
+
+                {/* Header Logo Upload */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+                    Header Logo
+                  </label>
+                  {!headerLogoPreview ? (
+                    <div
+                      {...getHeaderRootProps()}
+                      className={`flex justify-center rounded-md border-2 border-dashed px-6 py-6 transition-colors ${
+                        isHeaderDragActive
+                          ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                          : 'border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <CloudUpload className="mx-auto h-8 w-8 text-gray-400" />
+                        <div className="mt-2">
+                          <label className="cursor-pointer">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">
+                              {isHeaderDragActive ? 'Drop header logo here' : 'Upload header logo'}
+                            </span>
+                            <input {...getHeaderInputProps()} />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="relative">
+                        <img
+                          src={headerLogoPreview}
+                          alt="Header logo preview"
+                          className="max-h-20 w-auto mx-auto rounded-md border border-gray-300 dark:border-gray-600"
+                        />
+                        <div className="absolute top-1 right-1 flex gap-1">
+                          {uploadedHeaderLogo && (
+                            <button
+                              type="button"
+                              onClick={removeHeaderLogo}
+                              className="rounded-full bg-yellow-500 p-1 text-white hover:bg-yellow-600 focus:outline-none"
+                              title="Revert to original"
+                            >
+                              <ArrowBack className="h-3 w-3" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={uploadedHeaderLogo ? removeHeaderLogo : removeCurrentHeaderLogo}
+                            className="rounded-full bg-red-500 p-1 text-white hover:bg-red-600 focus:outline-none"
+                            title="Remove"
+                          >
+                            <Delete className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        {...getHeaderRootProps()}
+                        className="flex justify-center rounded-md border-2 border-dashed border-gray-300 px-4 py-2 transition-colors hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500"
+                      >
+                        <div className="text-center">
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            Replace header logo
+                          </span>
+                          <input {...getHeaderInputProps()} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -472,7 +779,7 @@ const EditDocumentSettings = () => {
                 {/* Footer Text */}
                 <div className="sm:col-span-2">
                   <label htmlFor="footerText" className="block text-sm font-medium text-gray-700 dark:text-white">
-                    {t('documentSettings.footerText')} *
+                    {t('documentSettings.footerText')}
                   </label>
                   <input
                     type="text"
@@ -490,6 +797,37 @@ const EditDocumentSettings = () => {
                   {errors.footerText && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.footerText}</p>
                   )}
+                </div>
+
+                {/* Footer Additional Text */}
+                <div>
+                  <label htmlFor="footerFooterText" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Footer Additional Text
+                  </label>
+                  <input
+                    type="text"
+                    id="footerFooterText"
+                    name="footerFooterText"
+                    value={formData.footerFooterText}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Additional footer text"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="footerTermsAndConditions" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    Terms and Conditions
+                  </label>
+                  <textarea
+                    id="footerTermsAndConditions"
+                    name="footerTermsAndConditions"
+                    value={formData.footerTermsAndConditions}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-dark2 dark:text-white dark:border-gray-600 dark:focus:border-blue-400"
+                    placeholder="Terms and conditions text"
+                  />
                 </div>
 
                 {/* Footer Background Color */}
@@ -577,6 +915,76 @@ const EditDocumentSettings = () => {
                   />
                   {errors.footerFontSize && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.footerFontSize}</p>
+                  )}
+                </div>
+
+                {/* Footer Logo Upload */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+                    Footer Logo
+                  </label>
+                  {!footerLogoPreview ? (
+                    <div
+                      {...getFooterRootProps()}
+                      className={`flex justify-center rounded-md border-2 border-dashed px-6 py-6 transition-colors ${
+                        isFooterDragActive
+                          ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                          : 'border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <CloudUpload className="mx-auto h-8 w-8 text-gray-400" />
+                        <div className="mt-2">
+                          <label className="cursor-pointer">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">
+                              {isFooterDragActive ? 'Drop footer logo here' : 'Upload footer logo'}
+                            </span>
+                            <input {...getFooterInputProps()} />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="relative">
+                        <img
+                          src={footerLogoPreview}
+                          alt="Footer logo preview"
+                          className="max-h-20 w-auto mx-auto rounded-md border border-gray-300 dark:border-gray-600"
+                        />
+                        <div className="absolute top-1 right-1 flex gap-1">
+                          {uploadedFooterLogo && (
+                            <button
+                              type="button"
+                              onClick={removeFooterLogo}
+                              className="rounded-full bg-yellow-500 p-1 text-white hover:bg-yellow-600 focus:outline-none"
+                              title="Revert to original"
+                            >
+                              <ArrowBack className="h-3 w-3" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={uploadedFooterLogo ? removeFooterLogo : removeCurrentFooterLogo}
+                            className="rounded-full bg-red-500 p-1 text-white hover:bg-red-600 focus:outline-none"
+                            title="Remove"
+                          >
+                            <Delete className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        {...getFooterRootProps()}
+                        className="flex justify-center rounded-md border-2 border-dashed border-gray-300 px-4 py-2 transition-colors hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500"
+                      >
+                        <div className="text-center">
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            Replace footer logo
+                          </span>
+                          <input {...getFooterInputProps()} />
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>

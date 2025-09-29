@@ -50,12 +50,11 @@ export const documentSettingsApi = {
     try {
       const formData = new FormData();
 
-      // Append all non-file fields
-      Object.keys(documentSettingsData).forEach(key => {
-        if (key !== 'logo' && documentSettingsData[key] !== null && documentSettingsData[key] !== undefined) {
-          formData.append(key, documentSettingsData[key]);
-        }
-      });
+      // Only append fields that are allowed by the backend validation schema
+      // Based on the API validation error, only companyName is allowed
+      if (documentSettingsData.companyName) {
+        formData.append('companyName', documentSettingsData.companyName);
+      }
 
       // Append logo file if present
       if (documentSettingsData.logo) {
@@ -79,12 +78,11 @@ export const documentSettingsApi = {
     try {
       const formData = new FormData();
 
-      // Append all non-file fields
-      Object.keys(documentSettingsData).forEach(key => {
-        if (key !== 'logo' && documentSettingsData[key] !== null && documentSettingsData[key] !== undefined) {
-          formData.append(key, documentSettingsData[key]);
-        }
-      });
+      // Only append fields that are allowed by the backend validation schema
+      // Based on the API validation error, only companyName is allowed
+      if (documentSettingsData.companyName) {
+        formData.append('companyName', documentSettingsData.companyName);
+      }
 
       // Append logo file if present (for replacement)
       if (documentSettingsData.logo) {

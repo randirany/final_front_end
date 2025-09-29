@@ -1,7 +1,8 @@
 {
     "language": {
         "ar": "AR",
-        "en": "EN"
+        "en": "EN",
+        "he": "HE"
     },
     "errors": {
         "unknown": "حدث خطأ. يرجى المحاولة مرة أخرى.",
@@ -71,6 +72,8 @@
                 "payment": "المدفوعات والمقبوضات",
                 "onlinePayment": "الدفع الإلكتروني",
                 "emailManagement": "إدارة البريد الإلكتروني",
+                "cheques": "الشيكات",
+                "documentSettings": "إعدادات المستندات",
                 "report": {
                     "titleReport": "التقارير",
                     "categore": {
@@ -219,7 +222,7 @@
             "newSelectedFile": "ملف جديد:",
             "selectedFile": "الملف المختار:",
             "selectAgent": "اختر الوكيل",
-            "priceisOnTheCustomer":"سعر التأمين على الزبون "
+            "priceisOnTheCustomer": "سعر التأمين على الزبون "
         },
         "altText": {
             "currentCustomerImage": "صورة العميل الحالية"
@@ -484,7 +487,11 @@
         "saveChanges": "حفظ التغييرات",
         "save": "حفظ",
         "view": "عرض",
-        "download": "تحميل"
+        "download": "تحميل",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "back": "رجوع",
+        "unknown": "غير معروف"
     },
     "validation": {
         "rateRequiredStrictlyPositive": "هذا السعر مطلوب ويجب أن يكون رقمًا موجبًا (أكبر من صفر).",
@@ -2384,8 +2391,12 @@
     },
     "documentSettings": {
         "title": "إعدادات المستندات",
-        "subtitle": "إدارة قوالب المستندات وإعدادات التنسيق",
+        "settings": "إعدادات المستندات",
+        "previewSubtitle": "إدارة قوالب المستندات وإعدادات التنسيق",
         "firstTitle": "لوحة التحكم",
+        "documentPreview": "معاينة المستند",
+        "documentContentArea": "منطقة محتوى المستند",
+        "contentAreaDescription": "وصف منطقة المحتوى",
         "secondTitle": "إعدادات المستندات",
         "add_button": "إضافة إعدادات مستند",
         "search_placeholder": "البحث باسم الشركة...",
@@ -2473,44 +2484,44 @@
             "logoRequired": "الشعار مطلوب",
             "logoFileSize": "حجم ملف الشعار يجب ألا يتجاوز 2 ميجابايت",
             "logoFileType": "الشعار يجب أن يكون صورة PNG أو JPG",
-            "headerTextRequired": "headerTextRequired",
-            "footerTextRequired": "footerTextRequired"
+            "headerTextRequired": "نص الرأس مطلوب",
+            "footerTextRequired": "نص التذييل مطلوب"
         },
-        "settingsCreatedSuccessfully": "settingsCreatedSuccessfully",
-        "errorCreatingSettings": "errorCreatingSettings",
-        "addSettings": "addSettings",
-        "addSettingsSubtitle": "addSettingsSubtitle",
-        "companyNamePlaceholder": "companyNamePlaceholder",
-        "headerTextPlaceholder": "headerTextPlaceholder",
-        "headerBgColor": "headerBgColor",
-        "footerTextPlaceholder": "footerTextPlaceholder",
-        "footerBgColor": "footerBgColor",
-        "marginsSettings": "marginsSettings",
-        "marginTop": "marginTop",
-        "marginBottom": "marginBottom",
-        "marginLeft": "marginLeft",
-        "marginRight": "marginRight",
-        "logoUpload": "logoUpload",
-        "dropLogoHere": "dropLogoHere",
-        "creating": "creating",
-        "createSettings": "createSettings",
-        "activateError": "activateError",
-        "cannotDeleteActive": "cannotDeleteActive",
-        "successDelete": "successDelete",
-        "deleteError": "deleteError",
-        "exportSheetName": "exportSheetName",
-        "exportExcelFileName": "exportExcelFileName",
-        "report_title": "report_title",
-        "exportPdfFileName": "exportPdfFileName",
-        "exportCsvFileName": "exportCsvFileName",
-        "secondeTitle": "secondeTitle",
-        "errorFetchingSettings": "errorFetchingSettings",
-        "settingsUpdatedSuccessfully": "settingsUpdatedSuccessfully",
-        "errorUpdatingSettings": "errorUpdatingSettings",
-        "editSettings": "editSettings",
-        "editSettingsSubtitle": "editSettingsSubtitle",
-        "replaceLogo": "replaceLogo",
-        "updateSettings": "updateSettings"
+        "settingsCreatedSuccessfully": "تم إنشاء الإعدادات بنجاح",
+        "errorCreatingSettings": "خطأ في إنشاء الإعدادات",
+        "addSettings": "إضافة إعدادات",
+        "addSettingsSubtitle": "إضافة إعدادات مستند جديد",
+        "companyNamePlaceholder": "أدخل اسم الشركة...",
+        "headerTextPlaceholder": "أدخل نص الرأس...",
+        "headerBgColor": "لون خلفية الرأس",
+        "footerTextPlaceholder": "أدخل نص التذييل...",
+        "footerBgColor": "لون خلفية التذييل",
+        "marginsSettings": "إعدادات الهوامش",
+        "marginTop": "الهامش العلوي",
+        "marginBottom": "الهامش السفلي",
+        "marginLeft": "الهامش الأيسر",
+        "marginRight": "الهامش الأيمن",
+        "logoUpload": "رفع الشعار",
+        "dropLogoHere": "أفلت الشعار هنا",
+        "creating": "جاري الإنشاء...",
+        "createSettings": "إنشاء الإعدادات",
+        "activateError": "خطأ في التفعيل",
+        "cannotDeleteActive": "لا يمكن حذف النشط",
+        "successDelete": "تم الحذف بنجاح",
+        "deleteError": "خطأ في الحذف",
+        "exportSheetName": "إعدادات المستندات",
+        "exportExcelFileName": "تقرير_إعدادات_المستندات.xlsx",
+        "report_title": "تقرير إعدادات المستندات",
+        "exportPdfFileName": "تقرير_إعدادات_المستندات.pdf",
+        "exportCsvFileName": "تقرير_إعدادات_المستندات.csv",
+        "secondeTitle": "العنوان الثاني",
+        "errorFetchingSettings": "خطأ في جلب الإعدادات",
+        "settingsUpdatedSuccessfully": "تم تحديث الإعدادات بنجاح",
+        "errorUpdatingSettings": "خطأ في تحديث الإعدادات",
+        "editSettings": "تعديل الإعدادات",
+        "editSettingsSubtitle": "تعديل إعدادات المستند",
+        "replaceLogo": "استبدال الشعار",
+        "updateSettings": "تحديث الإعدادات"
     },
     "insurances": {
         "table": {
@@ -2636,35 +2647,23 @@
             "sending": "جارٍ الإرسال...",
             "send": "إرسال البريد الإلكتروني المجمع"
         }
-        
     },
-      "insuranceCompany": {
-    "editTitle": "تعديل شركة التأمين",
-    "form": {
-      "companyName": "اسم الشركة",
-      "insuranceTypes": "أنواع التأمين",
-      "roadServices": "خدمات الطريق",
-      "serviceName": "اسم الخدمة"
-    },
-    "types": {
-      "mandatory": "إلزامي",
-      "comprehensive": "شامل"
-    },
-    "addInsuranceType": "إضافة نوع تأمين",
-    "addRoadService": "إضافة خدمة طريق",
-    "saveChangesButton": "حفظ التغييرات",
-    "editSuccess": "تم تعديل الشركة بنجاح",
-    "editErrorGeneric": "فشل تعديل الشركة"
-  },
-  "validation": {
-    "companyNameRequired": "اسم الشركة مطلوب",
-    "typeRequired": "نوع التأمين مطلوب",
-    "pricePositive": "يجب أن يكون السعر رقمًا إيجابيًا",
-    "nameRequired": "الاسم مطلوب",
-    "formErrors": "يرجى تصحيح الأخطاء في النموذج"
-  },
-  "common": {
-    "cancel": "إلغاء"
-  }
-    
+    "insuranceCompany": {
+        "editTitle": "تعديل شركة التأمين",
+        "form": {
+            "companyName": "اسم الشركة",
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "خدمات الطريق",
+            "serviceName": "اسم الخدمة"
+        },
+        "types": {
+            "mandatory": "إلزامي",
+            "comprehensive": "شامل"
+        },
+        "addInsuranceType": "إضافة نوع تأمين",
+        "addRoadService": "إضافة خدمة طريق",
+        "saveChangesButton": "حفظ التغييرات",
+        "editSuccess": "تم تعديل الشركة بنجاح",
+        "editErrorGeneric": "فشل تعديل الشركة"
+    }
 }
