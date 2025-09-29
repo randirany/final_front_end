@@ -8,6 +8,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
 import Swal from 'sweetalert2';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -366,7 +367,7 @@ const Cheques = () => {
                 <tr key={cheque.id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-[rgb(255,255,255)]">{cheque.chequeNumber}</td>
                   <td className="px-6 py-4">{cheque.customerName}</td>
-                  <td className="px-6 py-4">{new Date(cheque.cheque_date).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">{toLocaleDateStringEN(cheque.cheque_date)}</td>
                   <td className="px-6 py-4">{getStatusBadge(cheque.status)}</td>
                   <td className="px-6 py-4 text-right">
                     <IconButton aria-label="Actions" size="small" onClick={(event) => handleMenuOpen(event, cheque.id)}><MoreVert /></IconButton>

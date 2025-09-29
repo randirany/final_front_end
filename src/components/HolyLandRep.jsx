@@ -15,6 +15,7 @@ import 'jspdf-autotable';
 import InsuranceHoliRep from './InsuranceHoliRep';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -82,7 +83,7 @@ function HolyLandRep() {
                     id: report._id,
                     reportIdDisplay: report._id.slice(-6).toUpperCase(),
                     policyNumber: report.insuranceDetails?.policyNumber || 'N/A',
-                    accidentDate: report.accidentDetails?.accidentDate ? new Date(report.accidentDetails.accidentDate).toLocaleDateString(language) : 'N/A',
+                    accidentDate: report.accidentDetails?.accidentDate ? toLocaleDateStringEN(report.accidentDetails.accidentDate) : 'N/A',
                     accidentDateObj: report.accidentDetails?.accidentDate ? new Date(report.accidentDetails.accidentDate) : null,
                     accidentLocation: report.accidentDetails?.accidentLocation || 'N/A',
                     insuredName: insuredName,

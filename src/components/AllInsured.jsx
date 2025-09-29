@@ -11,6 +11,7 @@ import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { User } from 'lucide-react';
+import { formatDateISO } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 15;
 
@@ -103,8 +104,8 @@ function AllInsurances() {
                 vehicleModel: item.vehicleModel,
                 insuranceCompany: item.insuranceCompany,
                 insuranceType: item.insuranceType,
-                insuranceStartDate: item.insuranceStartDate ? item.insuranceStartDate.slice(0, 10) : '-',
-                insuranceEndDate: item.insuranceEndDate ? item.insuranceEndDate.slice(0, 10) : '-',
+                insuranceStartDate: item.insuranceStartDate ? formatDateISO(item.insuranceStartDate) : '-',
+                insuranceEndDate: item.insuranceEndDate ? formatDateISO(item.insuranceEndDate) : '-',
                 insuranceAmount: item.insuranceAmount,
                 paidAmount: item.paidAmount,
                 remainingDebt: item.remainingDebt,

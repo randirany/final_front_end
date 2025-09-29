@@ -27,7 +27,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [isOpenInsuranceCompany, setIsOpenInsuranceCompany] = useState(false);
   const [isOpenSetting, setIsOpenSetting] = useState(false);
   const [isOpenAddInsurance, setIsOpenAddInsurance] = useState(false)
-  // const [isOpenReport, setIsOpenReport] = useState(false)
+  const [isOpenReport, setIsOpenReport] = useState(false)
   const { t, i18n: { language } } = useTranslation();
 
   const location = useLocation();
@@ -155,6 +155,108 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 </li>
 
+                <li>
+                  <div>
+                    <button
+                      onClick={() => setIsOpenReport(!isOpenReport)}
+                      aria-expanded={isOpenReport}
+                      className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                        <path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="m19 9-5 5-4-4-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.reports.title")}</span>
+                      <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenReport ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    {isOpenReport && (
+                      <div className={`ml-8 mt-2 space-y-1 ${isRTL ? 'mr-8 ml-0' : ''}`}>
+                        <Link
+                          to='/reports/customers'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M12.0001 1.25C9.37678 1.25 7.25013 3.37665 7.25013 6C7.25013 8.62335 9.37678 10.75 12.0001 10.75C14.6235 10.75 16.7501 8.62335 16.7501 6C16.7501 3.37665 14.6235 1.25 12.0001 1.25ZM8.75013 6C8.75013 4.20507 10.2052 2.75 12.0001 2.75C13.7951 2.75 15.2501 4.20507 15.2501 6C15.2501 7.79493 13.7951 9.25 12.0001 9.25C10.2052 9.25 8.75013 7.79493 8.75013 6Z" fill="currentColor" />
+                              <path fillRule="evenodd" clipRule="evenodd" d="M12.0001 12.25C9.68658 12.25 7.55506 12.7759 5.97558 13.6643C4.41962 14.5396 3.25013 15.8661 3.25013 17.5L3.25007 17.602C3.24894 18.7638 3.24752 20.222 4.52655 21.2635C5.15602 21.7761 6.03661 22.1406 7.22634 22.3815C8.4194 22.6229 9.97436 22.75 12.0001 22.75C14.0259 22.75 15.5809 22.6229 16.7739 22.3815C17.9637 22.1406 18.8443 21.7761 19.4737 21.2635C20.7527 20.222 20.7513 18.7638 20.7502 17.602L20.7501 17.5C20.7501 15.8661 19.5807 14.5396 18.0247 13.6643C16.4452 12.7759 14.3137 12.25 12.0001 12.25ZM4.75013 17.5C4.75013 16.6487 5.37151 15.7251 6.71098 14.9717C8.02693 14.2315 9.89541 13.75 12.0001 13.75C14.1049 13.75 15.9733 14.2315 17.2893 14.9717C18.6288 15.7251 19.2501 16.6487 19.2501 17.5C19.2501 18.8078 19.2098 19.544 18.5265 20.1004C18.156 20.4022 17.5366 20.6967 16.4763 20.9113C15.4194 21.1252 13.9744 21.25 12.0001 21.25C10.0259 21.25 8.58087 21.1252 7.52393 20.9113C6.46366 20.6967 5.84425 20.4022 5.47372 20.1004C4.79045 19.544 4.75013 18.8078 4.75013 17.5Z" fill="currentColor" />
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.customers")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/vehicle-insurance'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M14 16H9m10 0a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2h2m8 0V2a1 1 0 00-1-1H8a1 1 0 00-1 1v2m8 0a2 2 0 012 2v10M9 7h6m-6 4h6m-6 4h2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.vehicleInsurance")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/other-insurance'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.otherInsurance")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/accidents'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.accidents")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/revenues'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M12 2v20m8-18H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="m15 9-3 3-3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.revenues")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/payments'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.payments")}</span>
+                          </div>
+                        </Link>
+                        <Link
+                          to='/reports/receivables-debts'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.reports.receivablesDebts")}</span>
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </li>
+
               </ul>
             </nav>
           </div>
@@ -182,6 +284,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <path d="M14 13H16V15H14V13Z" fill="currentColor"/>
                     </svg>
                     <span>{t("sideBar.mainMenu.categore.onlinePayment")}</span>
+                  </Link>
+                </li>
+                 <li>
+                  <Link to='/sms' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.3596 22 8.77516 21.6036 7.35656 20.8645L2.35656 21.8645C2.15678 21.9127 1.94678 21.8472 1.79289 21.6933C1.639 21.5394 1.57354 21.3294 1.62178 21.1296L2.62178 16.1296C1.88265 14.7110 1.48622 13.1266 1.48622 11.4862C1.48622 11.3265 1.49622 11.1638 1.51622 11C1.73622 5.75715 6.25715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 12.7478 4.13622 13.4627 4.38356 14.1205L4.61644 14.6795L3.61644 19.3205L8.32356 18.3205L8.88356 18.5534C9.5413 18.8007 10.2562 18.9369 11 18.9622C16.2428 18.7622 20 15.2428 20 12C20 7.58172 16.4183 4 12 4Z" fill="currentColor"/>
+                      <path d="M8 10C8 9.44772 8.44772 9 9 9H15C15.5523 9 16 9.44772 16 10C16 10.5523 15.5523 11 15 11H9C8.44772 11 8 10.5523 8 10Z" fill="currentColor"/>
+                      <path d="M8 14C8 13.4477 8.44772 13 9 13H13C13.5523 13 14 13.4477 14 14C14 14.5523 13.5523 15 13 15H9C8.44772 15 8 14.5523 8 14Z" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.sms")}</span>
                   </Link>
                 </li>
                  <li>

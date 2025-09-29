@@ -74,6 +74,16 @@
                 "emailManagement": "ניהול דואר אלקטרוני",
                 "cheques": "צ'קים",
                 "documentSettings": "הגדרות מסמכים",
+                "reports": {
+                    "title": "דוחות",
+                    "customers": "דוח לקוחות",
+                    "vehicleInsurance": "דוח ביטוח רכבים",
+                    "otherInsurance": "דוח ביטוחים אחרים",
+                    "accidents": "דוח תאונות",
+                    "revenues": "דוח הכנסות",
+                    "payments": "דוח תשלומים",
+                    "receivablesDebts": "דוח חייבים וחובות"
+                },
                 "report": {
                     "titleReport": "דוחות",
                     "categore": {
@@ -149,17 +159,14 @@
     },
     "login": {
         "title": "כניסה למערכת",
-        "subtitle": "באמצעות דואר אלקטרוני",
+        "subtitle": "באמצעות כתובת דואר אלקטרוני",
         "email": "דואר אלקטרוני",
-        "emailPlaceholder": "הכנס את הדואר האלקטרוני שלך",
         "password": "סיסמה",
-        "passwordPlaceholder": "הכנס את הסיסמה שלך",
+        "emailPlaceholder": "הזן את כתובת הדואר האלקטרוני שלך",
         "loginButton": "כניסה",
         "forgotPassword": "שכחת סיסמה?",
-        "noAccount": "אין לך חשבון?",
-        "signUp": "הרשמה",
-        "invalidCredentials": "פרטי כניסה לא תקינים",
-        "loginError": "שגיאה בכניסה למערכת"
+        "loginError": "שגיאה בכניסה למערכת",
+        "invalidCredentials": "פרטי כניסה לא תקינים"
     },
     "accountSettings": {
         "breadcrumbTitle": "הגדרות חשבון",
@@ -366,159 +373,96 @@
         "no_results": "אין תוצאות",
         "exportCsvFileName": "שם קובץ ייצוא CSV"
     },
-    "login": {
-        "title": "כניסה למערכת",
-        "subtitle": "באמצעות כתובת דואר אלקטרוני",
-        "email": "דואר אלקטרוני",
-        "password": "סיסמה",
-        "emailPlaceholder": "הזן את כתובת הדואר האלקטרוני שלך",
-        "loginButton": "כניסה",
-        "forgotPassword": "שכחת סיסמה?",
-        "loginError": "שגיאה בכניסה למערכת",
-        "invalidCredentials": "פרטי כניסה לא תקינים"
-    },
     "breadcrumbs": {
-        "allInsurances": "כל הביטוחים",
         "home": "בית",
-        "agents": "סוכנים",
-        "auditLogs": "יומני ביקורת",
-        "insuranceCompanies": "חברות ביטוח",
-        "departmentsAndUsers": "משתמשים ומחלקות",
         "customers": "לקוחות",
-        "customerInfo": "מידע לקוח",
-        "insuranceList": "רשימת ביטוחים",
-        "checkDetails": "פרטי השיק"
+        "customerInfo": "פרטי לקוח",
+        "agents": "סוכנים",
+        "allInsurances": "כל הביטוחים",
+        "auditLogs": "יומני ביקורת",
+        "checkDetails": "פרטי צ'ק",
+        "departmentsAndUsers": "מחלקות ומשתמשים",
+        "insuranceList": "רשימת ביטוחים"
     },
     "common": {
+        "loading": "טוען...",
+        "delete": "מחק",
+        "notAvailable": "לא זמין",
+        "actions": "פעולות",
         "add": "הוסף",
         "cancel": "ביטול",
-        "saving": "שומר...",
-        "yes": "כן",
-        "no": "לא",
-        "noDataToExport": "אין נתונים לייצוא",
+        "cardView": "תצוגת כרטיסים",
+        "deleting": "מוחק...",
+        "details": "פרטים",
+        "edit": "עריכה",
+        "endOfResults": "סוף התוצאות",
+        "errorOccurred": "אירעה שגיאה",
         "exportCsv": "ייצוא CSV",
         "exportExcel": "ייצוא Excel",
         "exportPdf": "ייצוא PDF",
-        "print": "הדפס",
-        "loading": "טוען",
-        "delete": "מחק",
+        "loadingMore": "טוען עוד...",
+        "no_results": "לא נמצאו תוצאות",
+        "noData": "אין נתונים זמינים",
+        "noDataToExport": "אין נתונים לייצוא",
+        "noDataToPrint": "אין נתונים להדפסה",
         "noSearchResults": "אין תוצאות חיפוש",
-        "loadingMore": "טוען עוד",
-        "endOfResults": "סוף התוצאות",
-        "actions": "פעולות",
-        "edit": "ערוך",
-        "view": "צפה",
-        "save": "שמור",
-        "update": "עדכן",
-        "close": "סגור",
-        "confirm": "אשר",
-        "back": "חזור",
-        "next": "הבא",
-        "previous": "הקודם",
-        "search": "חפש",
-        "filter": "סנן",
-        "clear": "נקה",
-        "refresh": "רענן",
-        "submit": "שלח",
-        "reset": "איפוס",
-        "unknown": "לא ידוע"
+        "print": "הדפסה",
+        "remove": "הסר",
+        "saveChanges": "שמור שינויים",
+        "searchPlaceholder": "חיפוש...",
+        "tableView": "תצוגת טבלה",
+        "viewDetails": "הצג פרטים",
+        "yes": "כן",
+        "no": "לא",
+        "saving": "שומר..."
     },
     "email": {
-        "errors": {
-            "fetchCustomers": "נכשל בטעינת לקוחות",
-            "sendFailed": "נכשל בשליחת דואר אלקטרוני",
-            "noRecipients": "אנא בחר לפחות נמען אחד",
-            "bulkSendFailed": "נכשל בשליחת דואר אלקטרוני בצובר"
-        },
-        "success": {
-            "sent": "דואר אלקטרוני נשלח בהצלחה!",
-            "bulkSent": "דואר אלקטרוני בצובר נשלח ל-{{count}} נמענים",
-            "deleted": "דואר אלקטרוני נבחר נמחק"
-        },
         "breadcrumb": {
             "dashboard": "לוח בקרה",
-            "emails": "ניהול דואר אלקטרוני"
-        },
-        "tabs": {
-            "inbox": "תיבת דואר נכנס",
-            "compose": "כתיבה",
-            "bulk": "דואר אלקטרוני בצובר"
-        },
-        "inbox": {
-            "searchPlaceholder": "חפש דואר אלקטרוני...",
-            "noEmails": "לא נמצא דואר אלקטרוני"
-        },
-        "compose": {
-            "title": "כתוב דואר אלקטרוני",
-            "to": "אל",
-            "subject": "נושא",
-            "message": "הודעה",
-            "sending": "שולח...",
-            "send": "שלח דואר אלקטרוני"
+            "emails": "דואר אלקטרוני"
         },
         "bulk": {
-            "selectCustomers": "בחר נמענים",
+            "compose": "כתיבת הודעה קבוצתית",
+            "info": "מידע על שליחה קבוצתית",
+            "message": "הודעה",
+            "noCustomers": "לא נמצאו לקוחות",
             "searchPlaceholder": "חפש לקוחות...",
             "selectAll": "בחר הכל",
-            "noCustomers": "לא נמצאו לקוחות עם כתובות דואר אלקטרוני",
-            "compose": "כתוב דואר אלקטרוני בצובר",
-            "subject": "נושא",
-            "message": "הודעה",
-            "info": "דואר אלקטרוני זה יישלח ל-{{count}} נמענים",
+            "selectCustomers": "בחר לקוחות",
+            "send": "שלח",
             "sending": "שולח...",
-            "send": "שלח דואר אלקטרוני בצובר"
+            "subject": "נושא"
+        },
+        "compose": {
+            "message": "הודעה",
+            "send": "שלח",
+            "sending": "שולח...",
+            "subject": "נושא",
+            "title": "כתיבת מייל",
+            "to": "אל"
+        },
+        "errors": {
+            "bulkSendFailed": "שליחה קבוצתית נכשלה",
+            "fetchCustomers": "נכשל בטעינת לקוחות",
+            "noRecipients": "לא נבחרו נמענים",
+            "sendFailed": "שליחת המייל נכשלה"
+        },
+        "inbox": {
+            "noEmails": "אין הודעות דואר",
+            "searchPlaceholder": "חפש במייל..."
+        },
+        "success": {
+            "bulkSent": "שליחה קבוצתית הצליחה",
+            "deleted": "נמחק בהצלחה",
+            "sent": "נשלח בהצלחה"
+        },
+        "tabs": {
+            "bulk": "שליחה קבוצתית",
+            "compose": "כתיבה",
+            "inbox": "תיבת דואר נכנס"
         }
     },
     "insuranceCompany.addTitle": "הוסף חברת ביטוח",
-    "insuranceCompany": {
-        "addTitle": "הוסף חברת ביטוח",
-        "fields": {
-            "name": "שם חברה",
-            "insuranceTypes": "סוגי ביטוח",
-            "roadServices": "שירותי דרך",
-            "price": "מחיר",
-            "serviceName": "שם שירות"
-        },
-        "type": {
-            "compulsory": "חובה",
-            "comprehensive": "מקיף"
-        },
-        "success": {
-            "added": "חברה נוספה בהצלחה"
-        },
-        "errors": {
-            "nameRequired": "שם חברה נדרש",
-            "atLeastOneType": "הוסף לפחות סוג ביטוח אחד",
-            "addFailed": "נכשל בהוספת חברה"
-        },
-        "labels": {
-            "insuranceCompany": "חברת ביטוח"
-        },
-        "options": {
-            "chooseinsuranceCompany": "בחר חברת ביטוח"
-        },
-        "table": {
-            "name": "שם חברה",
-            "contact": "פרטי יצירת קשר",
-            "address": "כתובת",
-            "insuranceType": "סוג ביטוח",
-            "actions": "פעולות"
-        },
-        "tabs": {
-            "privateCar": "רכב פרטי",
-            "commercialCar": "רכב מסחרי",
-            "motorcycle": "אופנוע"
-        },
-        "editErrorNoId": "לא סופק מזהה חברה לעריכה",
-        "editSuccess": "חברה עודכנה בהצלחה",
-        "editErrorGeneric": "נכשל בעדכון חברה",
-        "rates": {
-            "under24": "מתחת לגיל 24",
-            "over24": "מעל גיל 24",
-            "offerAmount": "סכום הצעה",
-            "minFor60k": "מינימום עבור 60 אלף"
-        }
-    },
     "insuranceCompany": {
         "editTitle": "עריכת חברת ביטוח",
         "form": {
@@ -535,45 +479,65 @@
         "addRoadService": "הוסף שירות דרך",
         "saveChangesButton": "שמור שינויים",
         "editSuccess": "החברה עודכנה בהצלחה",
-        "editErrorGeneric": "כשל בעדכון החברה"
+        "editErrorGeneric": "כשל בעדכון החברה",
+        "addCompany": "הוסף חברה",
+        "confirmDelete": "אישור מחיקה",
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק את החברה הזו?",
+        "deleteConfirmText": "פעולה זו לא ניתנת לביטול.",
+        "deleteError": "נכשל במחיקת החברה",
+        "fetchError": "נכשל בטעינת החברות",
+        "noCompanies": "לא נמצאו חברות",
+        "noResults": "לא נמצאו תוצאות",
+        "searchPlaceholder": "חפש חברות...",
+        "table": {
+            "actions": "פעולות",
+            "address": "כתובת",
+            "contact": "צור קשר",
+            "insuranceType": "סוג ביטוח",
+            "insuranceTypes": "סוגי ביטוח",
+            "name": "שם",
+            "roadServices": "שירותי כביש"
+        },
+        "title": "חברות ביטוח",
+        "addTitle": "הוסף חברת ביטוח",
+        "errors": {
+            "nameRequired": "שם החברה נדרש",
+            "atLeastOneType": "נדרש לפחות סוג ביטוח אחד",
+            "addFailed": "נכשל בהוספת חברת הביטוח"
+        },
+        "success": {
+            "added": "חברת הביטוח נוספה בהצלחה"
+        },
+        "fields": {
+            "name": "שם החברה",
+            "insuranceTypes": "סוגי ביטוח",
+            "price": "מחיר",
+            "roadServices": "שירותי כביש",
+            "serviceName": "שם השירות"
+        },
+        "type": {
+            "compulsory": "חובה",
+            "comprehensive": "מקיף"
+        }
     },
     "validation": {
         "companyNameRequired": "שם החברה נדרש",
         "typeRequired": "סוג הביטוח נדרש",
         "pricePositive": "המחיר חייב להיות מספר חיובי",
         "nameRequired": "שם נדרש",
-        "formErrors": "אנא תקן את השגיאות בטופס"
+        "formErrors": "אנא תקן את השגיאות בטופס",
+        "allFieldsRequired": "כל השדות נדרשים"
     },
     "addInsuranceType": "הוסף סוג ביטוח",
     "addRoadService": "הוסף שירות דרך",
     "saveChangesButton": "שמור שינויים",
     "editSuccess": "החברה עודכנה בהצלחה",
     "editErrorGeneric": "כשל בעדכון החברה",
-    "validation": {
-        "companyNameRequired": "שם החברה נדרש",
-        "typeRequired": "סוג הביטוח נדרש",
-        "pricePositive": "המחיר חייב להיות מספר חיובי",
-        "nameRequired": "שם נדרש",
-        "formErrors": "אנא תקן את השגיאות בטופס"
-    },
-    "common": {
-        "cancel": "ביטול"
-    },
-    "breadcrumbs": {
-        "home": "בית",
-        "customers": "לקוחות",
-        "customerInfo": "פרטי לקוח"
-    },
-    "common": {
-        "loading": "טוען...",
-        "delete": "מחק",
-        "notAvailable": "לא זמין"
-    },
     "customerInfo": {
-        "title": "פרטי הלקוח",
+        "title": "מידע לקוח",
         "firstName": "שם פרטי",
         "lastName": "שם משפחה",
-        "mobile": "טלפון",
+        "mobile": "נייד",
         "identity": "מספר זהות",
         "birthDate": "תאריך לידה",
         "joinDate": "תאריך הצטרפות",
@@ -582,37 +546,64 @@
         "attachments": {
             "title": "קבצים מצורפים",
             "upload": "העלה קבצים",
-            "none": "אין קבצים מצורפים"
+            "carLicense": "רישיון רכב",
+            "carLicenseAlt": "תמונת רישיון רכב",
+            "carImage": "תמונת רכב",
+            "carImageAlt": "תמונת רכב",
+            "none": "אין",
+            "uploadSuccess": "הועלה בהצלחה",
+            "uploadError": "שגיאה בהעלאה"
         },
         "vehicles": {
             "title": "רכבים",
             "add": "הוסף רכב",
-            "none": "לא נמצאו רכבים",
             "vehicleAlt": "רכב",
-            "licenseAlt": "לוחית רישוי",
-            "addInsurance": "הוסף ביטוח"
+            "licenseAlt": "לוחית רישוי רכב",
+            "addInsurance": "הוסף ביטוח",
+            "none": "לא נמצאו רכבים עבור לקוח זה."
+        },
+        "allInsured": {
+            "title": "לקוחות מבוטחים אחרים",
+            "name": "שם",
+            "phone": "מספר טלפון",
+            "id": "מספר זהות",
+            "city": "עיר",
+            "joinDate": "תאריך הצטרפות",
+            "noneFound": "לא נמצאו לקוחות מבוטחים אחרים.",
+            "onlyCurrent": "אין לקוחות מבוטחים אחרים להצגה."
+        },
+        "paymentHistory": {
+            "title": "היסטוריית תשלומים",
+            "method": "אמצעי תשלום",
+            "amount": "סכום ששולם",
+            "date": "תאריך תשלום"
         },
         "insurances": {
-            "title": "ביטוחים",
-            "none": "לא נמצאו ביטוחים",
-            "fetchError": "לא הצלחנו להביא את הביטוחים.",
-            "category": "קטגוריה",
-            "type": "סוג",
-            "company": "חברה",
+            "plate": "מספר לוחית",
             "agent": "סוכן",
-            "paymentMethod": "תשלום",
-            "status": "סטטוס",
-            "startDate": "תאריך התחלה",
+            "category": "קטגוריה",
+            "company": "חברה",
             "endDate": "תאריך סיום",
+            "fetchError": "נכשל בטעינת הביטוחים",
+            "none": "לא נמצאו ביטוחים",
             "paidAmount": "סכום ששולם",
-            "remainingDebt": "חוב נותר"
+            "paymentMethod": "אמצעי תשלום",
+            "remainingDebt": "חוב נותר",
+            "startDate": "תאריך התחלה",
+            "status": "סטטוס",
+            "title": "ביטוחים",
+            "type": "סוג"
         }
     },
     "vehicles": {
         "messages": {
-            "fetchError": "לא הצלחנו להביא את הרכבים.",
-            "deleteSuccess": "הרכב נמחק בהצלחה!",
-            "deleteError": "לא ניתן למחוק את הרכב."
+            "fetchError": "שגיאת טעינה",
+            "deleteSuccess": "מחיקה הצליחה",
+            "deleteError": "שגיאת מחיקה"
+        },
+        "deleteModal": {
+            "title": "כותרת",
+            "message": "הודעה"
         }
     },
     "customerInfo.attachments": {
@@ -790,52 +781,6 @@
         "insuranceAddedSuccessfully": "ביטוח נוסף בהצלחה!",
         "errorAddingInsurance": "שגיאה בהוספת ביטוח. אנא נסה שוב."
     },
-    "customerInfo": {
-        "title": "מידע לקוח",
-        "firstName": "שם פרטי",
-        "lastName": "שם משפחה",
-        "mobile": "נייד",
-        "identity": "מספר זהות",
-        "birthDate": "תאריך לידה",
-        "joinDate": "תאריך הצטרפות",
-        "city": "עיר",
-        "notes": "הערות",
-        "attachments": {
-            "title": "קבצים מצורפים",
-            "upload": "העלה קבצים",
-            "carLicense": "רישיון רכב",
-            "carLicenseAlt": "תמונת רישיון רכב",
-            "carImage": "תמונת רכב",
-            "carImageAlt": "תמונת רכב",
-            "none": "אין",
-            "uploadSuccess": "הועלה בהצלחה",
-            "uploadError": "שגיאה בהעלאה"
-        },
-        "vehicles": {
-            "title": "רכבים",
-            "add": "הוסף רכב",
-            "vehicleAlt": "רכב",
-            "licenseAlt": "לוחית רישוי רכב",
-            "addInsurance": "הוסף ביטוח",
-            "none": "לא נמצאו רכבים עבור לקוח זה."
-        },
-        "allInsured": {
-            "title": "לקוחות מבוטחים אחרים",
-            "name": "שם",
-            "phone": "מספר טלפון",
-            "id": "מספר זהות",
-            "city": "עיר",
-            "joinDate": "תאריך הצטרפות",
-            "noneFound": "לא נמצאו לקוחות מבוטחים אחרים.",
-            "onlyCurrent": "אין לקוחות מבוטחים אחרים להצגה."
-        },
-        "paymentHistory": {
-            "title": "היסטוריית תשלומים",
-            "method": "אמצעי תשלום",
-            "amount": "סכום ששולם",
-            "date": "תאריך תשלום"
-        }
-    },
     "fileUploadModal": {
         "title": "צרף קובץ ללקוח",
         "labels": {
@@ -875,7 +820,9 @@
             "checkImage": "תמונת שיק",
             "currentImage": "תמונה נוכחית:",
             "newSelectedFile": "קובץ חדש:",
-            "selectedFile": "קובץ נבחר:"
+            "selectedFile": "קובץ נבחר:",
+            "checkDueDate": "תאריך פרעון",
+            "isReturned": "הוחזר"
         },
         "placeholders": {
             "checkNumber": "הזן מספר שיק",
@@ -913,7 +860,8 @@
             "insuranceNotFound": "רשומת הביטוח לא נמצאה עבור רכב זה.",
             "invalidRequest": "בקשה לא תקינה. אנא בדוק את הנתונים.",
             "networkError": "שגיאת רשת. אנא בדוק את החיבור."
-        }
+        },
+        "successAdd": "הצ'ק נוסף בהצלחה"
     },
     "checkDetails": {
         "alerts": {
@@ -1070,97 +1018,97 @@
     "sms": {
         "breadcrumb": {
             "dashboard": "לוח בקרה",
-            "sms": "שלח SMS"
+            "sms": "SMS"
         },
         "customerList": {
-            "title": "בחר נמענים",
+            "title": "רשימת לקוחות",
             "searchPlaceholder": "חפש לקוחות...",
             "selectAll": "בחר הכל",
             "noResults": "לא נמצאו לקוחות"
         },
         "compose": {
-            "title": "כתוב הודעה",
-            "placeholder": "הקלד את ההודעה כאן...",
+            "title": "כתוב הודעת SMS",
+            "placeholder": "כתוב את ההודעה שלך כאן...",
             "characters": "תווים",
-            "parts": "חלק/ים",
-            "send": "שלח SMS",
+            "parts": "חלקים",
+            "send": "שלח",
             "sending": "שולח...",
             "recipients": "נמענים",
-            "longMessage": "הודעה תישלח כמספר חלקים"
+            "longMessage": "הודעה ארוכה"
         },
         "recipients": {
-            "title": "נמענים נבחרים",
-            "empty": "לא נבחרו נמענים",
+            "title": "נמענים",
+            "empty": "אין נמענים",
             "clearAll": "נקה הכל"
         },
         "confirmSend": {
-            "title": "שלח SMS",
-            "text": "האם אתה בטוח שברצונך לשלוח הודעה זו ל-{{count}} נמענים?",
-            "confirm": "כן, שלח"
+            "title": "אשר שליחה",
+            "text": "האם אתה בטוח שברצונך לשלוח את ההודעה?",
+            "confirm": "אשר"
         },
         "success": {
-            "sent": "SMS נשלח בהצלחה ל-{{count}} נמענים"
+            "sent": "SMS נשלח בהצלחה"
         },
         "errors": {
             "fetchCustomers": "נכשל בטעינת לקוחות",
-            "emptyMessage": "אנא הזן הודעה",
-            "noRecipients": "אנא בחר לפחות נמען אחד",
-            "sendFailed": "נכשל בשליחת SMS"
+            "emptyMessage": "הודעה ריקה",
+            "noRecipients": "לא נבחרו נמענים",
+            "sendFailed": "שליחת SMS נכשלה"
         }
     },
     "payment": {
         "breadcrumb": {
             "dashboard": "לוח בקרה",
-            "payment": "תשלום מקוון"
+            "payment": "תשלום"
         },
         "form": {
-            "title": "פרטי תשלום",
-            "subtitle": "הזן את פרטי הכרטיס שלך בצורה מאובטחת",
-            "amount": "סכום תשלום",
+            "title": "טופס תשלום",
+            "subtitle": "כותרת משנה",
+            "amount": "סכום",
             "cardNumber": "מספר כרטיס",
-            "cardName": "שם בעל הכרטיס",
-            "expiryMonth": "חודש",
-            "expiryYear": "שנה",
+            "cardName": "שם על הכרטיס",
+            "expiryMonth": "חודש תפוגה",
+            "expiryYear": "שנת תפוגה",
             "cvv": "CVV",
-            "submit": "שלם בבטחה",
-            "processing": "מעבד תשלום..."
+            "submit": "שלח תשלום",
+            "processing": "מעבד..."
         },
         "validation": {
             "cardNumberRequired": "מספר כרטיס נדרש",
-            "cardNumberInvalid": "מספר כרטיס חייב להיות 16 ספרות",
-            "cardNameRequired": "שם בעל הכרטיס נדרש",
-            "cardNameMin": "שם חייב להיות לפחות 3 תווים",
+            "cardNumberInvalid": "מספר כרטיס לא תקין",
+            "cardNameRequired": "שם על הכרטיס נדרש",
+            "cardNameMin": "שם על הכרטיס קצר מדי",
             "expiryMonthRequired": "חודש תפוגה נדרש",
             "expiryYearRequired": "שנת תפוגה נדרשת",
             "cvvRequired": "CVV נדרש",
-            "cvvInvalid": "CVV חייב להיות 3 או 4 ספרות",
+            "cvvInvalid": "CVV לא תקין",
             "amountRequired": "סכום נדרש",
             "amountPositive": "סכום חייב להיות חיובי",
-            "amountMin": "סכום מינימלי הוא 1"
+            "amountMin": "סכום מינימלי נדרש"
         },
         "company": {
-            "description": "עיבוד תשלומים מקוון מאובטח"
+            "description": "תיאור חברה"
         },
         "security": {
-            "title": "תשלום מאובטח",
-            "ssl": "הצפנת SSL 256-bit",
-            "pci": "תואם PCI DSS",
-            "data": "הנתונים שלך לא נשמרים אף פעם"
+            "title": "אבטחה",
+            "ssl": "הצפנת SSL",
+            "pci": "תקן PCI",
+            "data": "נתוני אבטחה"
         },
         "cards": {
-            "title": "כרטיסים מקובלים"
+            "title": "כרטיסי אשראי"
         },
         "help": {
-            "text": "זקוק לעזרה? צור קשר עם צוות התמיכה שלנו לקבלת סיוע בתשלום."
+            "text": "טקסט עזרה"
         },
         "success": {
-            "title": "תשלום הושלם בהצלחה!",
-            "message": "תשלום עובד בהצלחה!",
-            "description": "התשלום שלך עובד בהצלחה.",
-            "newPayment": "בצע תשלום נוסף"
+            "title": "תשלום הצליח",
+            "message": "הודעת הצלחה",
+            "description": "תיאור הצלחה",
+            "newPayment": "תשלום חדש"
         },
         "error": {
-            "processingFailed": "עיבוד תשלום נכשל. אנא נסה שוב."
+            "processingFailed": "עיבוד התשלום נכשל"
         }
     },
     "notifications": {
@@ -1211,7 +1159,12 @@
         "cheque_date": "תאריך שיק",
         "bank": "בנק",
         "bankName": "שם בנק",
-        "status": "סטטוס",
+        "status": {
+            "pending": "ממתין",
+            "cleared": "נפרע",
+            "bounced": "הוחזר",
+            "cancelled": "בוטל"
+        },
         "actions": "פעולות",
         "searchPlaceholder": "חפש לפי מספר שיק, שם לקוח או בנק...",
         "selectCustomer": "בחר לקוח",
@@ -1272,13 +1225,7 @@
         "saveError": "נכשל בשמירת שיק. אנא נסה שוב.",
         "continue": "המשך עם נתוני דוגמה",
         "retry": "נסה לטעון שוב",
-        "tryAgain": "נסה שוב",
-        "status": {
-            "pending": "ממתין",
-            "cleared": "נפרע",
-            "bounced": "הוחזר",
-            "cancelled": "בוטל"
-        }
+        "tryAgain": "נסה שוב"
     },
     "documentSettings": {
         "title": "הגדרות מסמך",
@@ -1442,17 +1389,6 @@
         "defaultMessage": "הודעת ברירת מחדל",
         "confirmDelete": "אשר מחיקה"
     },
-    "vehicles": {
-        "messages": {
-            "fetchError": "שגיאת טעינה",
-            "deleteSuccess": "מחיקה הצליחה",
-            "deleteError": "שגיאת מחיקה"
-        },
-        "deleteModal": {
-            "title": "כותרת",
-            "message": "הודעה"
-        }
-    },
     "policeNumberLabel": "תווית מספר משטרה",
     "selectDefault": "בחירת ברירת מחדל",
     "select": "בחר",
@@ -1500,5 +1436,294 @@
     "updatedAt": "עודכן ב",
     "createdBy": "נוצר על ידי",
     "updatedBy": "עודכן על ידי",
-    "email": "דואר אלקטרוני"
+    "accidentDetailsTitle": "פרטי התאונה",
+    "addDamagedVehicleButton": "הוסף רכב פגוע",
+    "addInjuryButton": "הוסף פציעה",
+    "addInsuranceThird": {
+        "labels": {
+            "insuranceCompany": "חברת ביטוח",
+            "startDate": "תאריך התחלה",
+            "endDate": "תאריך סיום",
+            "insuranceType": "סוג ביטוח",
+            "customerUnder24": "האם הלקוח מתחת לגיל 24?",
+            "paymentMethod": "אמצעי תשלום",
+            "dealer": "סוחר",
+            "insuranceAmount": "סכום ביטוח"
+        },
+        "title": "הוסף ביטוח צד שלישי",
+        "formTitle": "טופס ביטוח חדש",
+        "options": {
+            "chooseType": "בחר סוג",
+            "thirdParty": "צד שלישי",
+            "yes": "כן",
+            "no": "לא",
+            "chooseCompany": "בחר חברת ביטוח",
+            "choosePayment": "בחר אמצעי תשלום",
+            "chooseDealer": "בחר סוחר"
+        },
+        "alerts": {
+            "submitSuccess": "ביטוח נשלח (סימולציה)!"
+        }
+    },
+    "backButton": "חזור",
+    "declarationTitle": "הצהרה",
+    "deleteButton": "מחק",
+    "driverInfoTitle": "פרטי הנהג",
+    "formSubmissionError": "שליחת הטופס נכשלה",
+    "formSubmissionSuccess": "הטופס נשלח בהצלחה",
+    "modalTitle": "כותרת חלונית",
+    "newLabel": "חדש",
+    "nextButton": "הבא",
+    "policyInfoTitle": "פרטי הפוליסה",
+    "reportInfoTitle": "פרטי הדוח",
+    "step1Indicator": "שלב 1",
+    "step2Indicator": "שלב 2",
+    "step3Indicator": "שלב 3",
+    "step4Indicator": "שלב 4",
+    "step5Indicator": "שלב 5",
+    "step6Indicator": "שלב 6",
+    "submitButton": "שלח",
+    "submitting": "שולח...",
+    "thirdPartyDamagedVehiclesTitle": "רכבי צד שלישי פגועים",
+    "thirdPartyInjuriesTitle": "פציעות צד שלישי",
+    "thirdPartyInjuryItem": "פציעת צד שלישי",
+    "thirdPartyVehicleItem": "רכב צד שלישי",
+    "vehicleIdParamRequiredError": "נדרש פרמטר מזהה רכב",
+    "vehicleInfoTitle": "פרטי הרכב",
+    "buttons": {
+        "addReport": "הוסף דוח",
+        "delete": "מחק",
+        "exportCsv": "ייצוא CSV",
+        "exportExcel": "ייצוא Excel",
+        "exportPdf": "ייצוא PDF",
+        "print": "הדפסה"
+    },
+    "companies": {
+        "companyA": "חברה א",
+        "companyB": "חברה ב"
+    },
+    "dealers": {
+        "dealerX": "סוכן X",
+        "dealerY": "סוכן Y"
+    },
+    "paymentMethods": {
+        "cash": "מזומן",
+        "visa": "ויזה",
+        "bankTransfer": "העברה בנקאית"
+    },
+    "ahliaReport": {
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק את הדוח הזה?",
+        "deleteError": "נכשל במחיקת הדוח",
+        "exportExcelFileName": "דוח_אהליה.xlsx",
+        "exportPdfFileName": "דוח_אהליה.pdf",
+        "exportPdfTitle": "דוח תאונות אהליה",
+        "exportSheetName": "דוח_אהליה",
+        "noReportsFound": "לא נמצאו דוחות",
+        "printReportTitle": "דוח תאונות אהליה",
+        "show": "הצג",
+        "showing_results": "מציג תוצאות",
+        "table": {
+            "actions": "פעולות",
+            "date": "תאריך",
+            "driver": "נהג",
+            "insured": "מבוטח",
+            "location": "מיקום",
+            "policyNo": "מספר פוליסה",
+            "reportNo": "מספר דוח",
+            "vehicle": "רכב"
+        }
+    },
+    "reports": {
+        "customer": {
+            "title": "דוח לקוחות",
+            "description": "דוח מקיף של מידע לקוחות וסטטיסטיקות",
+            "name": "שם",
+            "idNumber": "מספר זהות",
+            "phone": "טלפון",
+            "email": "דואר אלקטרוני",
+            "joiningDate": "תאריך הצטרפות",
+            "joiningDateFrom": "תאריך הצטרפות מ",
+            "joiningDateTo": "תאריך הצטרפות עד",
+            "agent": "סוכן",
+            "vehicleCount": "מספר רכבים",
+            "totalInsurances": "סה״כ ביטוחים",
+            "status": "סטטוס"
+        },
+        "vehicleInsurance": {
+            "title": "דוח ביטוח רכבים",
+            "description": "דוח מפורט של כל פוליסות ביטוח הרכב",
+            "customerName": "שם לקוח",
+            "plateNumber": "מספר לוחית",
+            "vehicleModel": "דגם רכב",
+            "insuranceCompany": "חברת ביטוח",
+            "policyNumber": "מספר פוליסה",
+            "startDate": "תאריך התחלה",
+            "endDate": "תאריך סיום",
+            "premium": "פרמיה",
+            "agent": "סוכן",
+            "insuranceType": "סוג ביטוח",
+            "status": "סטטוס",
+            "periodFrom": "תקופה מ",
+            "periodTo": "תקופה עד",
+            "company": "חברה",
+            "totalPolicies": "סה״כ פוליסות",
+            "activePolicies": "פוליסות פעילות",
+            "expiredPolicies": "פוליסות שפגו",
+            "totalPremium": "סה״כ פרמיות",
+            "type": {
+                "comprehensive": "מקיף",
+                "third_party": "צד שלישי"
+            }
+        },
+        "otherInsurance": {
+            "title": "דוח ביטוחים אחרים",
+            "description": "דוח של פוליסות ביטוח שאינן לרכב",
+            "customerName": "שם לקוח",
+            "insuranceType": "סוג ביטוח",
+            "policyNumber": "מספר פוליסה",
+            "startDate": "תאריך התחלה",
+            "endDate": "תאריך סיום",
+            "premium": "פרמיה",
+            "coverageAmount": "סכום כיסוי",
+            "beneficiary": "מוטב",
+            "status": "סטטוס",
+            "periodFrom": "תקופה מ",
+            "periodTo": "תקופה עד",
+            "totalPolicies": "סה״כ פוליסות",
+            "activePolicies": "פוליסות פעילות",
+            "totalPremium": "סה״כ פרמיות",
+            "totalCoverage": "סה״כ כיסוי",
+            "types": {
+                "life": "ביטוח חיים",
+                "health": "ביטוח בריאות",
+                "property": "ביטוח רכוש",
+                "travel": "ביטוח נסיעות",
+                "business": "ביטוח עסק"
+            }
+        },
+        "accidents": {
+            "title": "דוח תאונות",
+            "description": "דוח מקיף של תביעות תאונות וסטטיסטיקות",
+            "reportNumber": "מספר דוח",
+            "customerName": "שם לקוח",
+            "plateNumber": "מספר לוחית",
+            "accidentDate": "תאריך תאונה",
+            "location": "מיקום",
+            "severity": "חומרה",
+            "damageAmount": "סכום נזק",
+            "insuranceCompany": "חברת ביטוח",
+            "status": "סטטוס",
+            "periodFrom": "תקופה מ",
+            "periodTo": "תקופה עד",
+            "totalAccidents": "סה״כ תאונות",
+            "totalDamage": "סה״כ נזק",
+            "averageDamage": "נזק ממוצע",
+            "severityTypes": {
+                "minor": "קל",
+                "moderate": "בינוני",
+                "major": "חמור"
+            }
+        },
+        "revenues": {
+            "title": "דוח הכנסות",
+            "description": "דוח של כל ההכנסות שנגבו מלקוחות",
+            "customerName": "שם לקוח",
+            "policyNumber": "מספר פוליסה",
+            "paymentDate": "תאריך תשלום",
+            "amount": "סכום",
+            "paymentMethod": "אמצעי תשלום",
+            "agent": "סוכן",
+            "insuranceType": "סוג ביטוח",
+            "description": "תיאור",
+            "periodFrom": "תקופה מ",
+            "periodTo": "תקופה עד",
+            "totalRevenue": "סה״כ הכנסות",
+            "totalPayments": "סה״כ תשלומים",
+            "averagePayment": "תשלום ממוצע",
+            "insuranceTypes": {
+                "vehicle": "ביטוח רכב",
+                "life": "ביטוח חיים",
+                "health": "ביטוח בריאות",
+                "property": "ביטוח רכוש"
+            }
+        },
+        "payments": {
+            "title": "דוח תשלומים",
+            "description": "דוח של כל התשלומים ששילמה החברה",
+            "paymentDate": "תאריך תשלום",
+            "insuranceCompany": "חברת ביטוח",
+            "paymentType": "סוג תשלום",
+            "amount": "סכום",
+            "referenceNumber": "מספר אסמכתא",
+            "description": "תיאור",
+            "status": "סטטוס",
+            "periodFrom": "תקופה מ",
+            "periodTo": "תקופה עד",
+            "company": "חברה",
+            "totalPayments": "סה״כ תשלומים",
+            "paidAmount": "סכום ששולם",
+            "pendingAmount": "סכום בהמתנה",
+            "totalTransactions": "סה״כ עסקאות",
+            "paymentTypes": {
+                "commission": "עמלה",
+                "claim_settlement": "יישוב תביעה",
+                "premium": "פרמיה"
+            }
+        },
+        "receivablesDebts": {
+            "title": "דוח חייבים וחובות",
+            "description": "דוח של חובות וחייבים מחכים",
+            "customerName": "שם לקוח",
+            "type": "סוג",
+            "reference": "אסמכתא",
+            "amount": "סכום",
+            "dueDate": "תאריך פירעון",
+            "status": "סטטוס",
+            "daysPastDue": "ימים באיחור",
+            "description": "תיאור",
+            "dueDateFrom": "תאריך פירעון מ",
+            "dueDateTo": "תאריך פירעון עד",
+            "totalAmount": "סה״כ סכום",
+            "overdueAmount": "סכום באיחור",
+            "totalItems": "סה״כ פריטים",
+            "overdueItems": "פריטים באיחור",
+            "types": {
+                "due_check": "צ׳ק לפירעון",
+                "unpaid_insurance": "ביטוח לא שולם"
+            },
+            "statusTypes": {
+                "due": "לפירעון",
+                "overdue": "באיחור",
+                "bounced": "חזר",
+                "pending": "בהמתנה"
+            }
+        }
+    },
+    "common": {
+        "showing": "מציג",
+        "results": "תוצאות",
+        "refresh": "רענן",
+        "print": "הדפס",
+        "search": "חפש",
+        "clear": "נקה",
+        "all": "הכל",
+        "filters": "מסננים",
+        "active": "פעיל",
+        "inactive": "לא פעיל",
+        "expired": "פג תוקף",
+        "pending": "בהמתנה",
+        "completed": "הושלם",
+        "in_progress": "בתהליך",
+        "currency": "ש״ח",
+        "days": "ימים",
+        "of": "מתוך",
+        "itemsPerPage": "פריטים לעמוד",
+        "noDataFound": "לא נמצאו נתונים",
+        "paid": "שולם",
+        "paymentMethods": {
+            "cash": "מזומן",
+            "card": "כרטיס",
+            "bank_transfer": "העברה בנקאית"
+        }
+    }
 }

@@ -5,6 +5,7 @@ import { Add, Edit, Delete, Visibility, MoreVert, CheckCircle } from '@mui/icons
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -395,7 +396,7 @@ const DocumentSettings = () => {
                     <p><span className="font-medium">Created by:</span> {setting.createdBy?.name || setting.createdBy || 'Unknown'}</p>
                   </div>
                   <div>
-                    <p>{new Date(setting.createdAt).toLocaleDateString()}</p>
+                    <p>{toLocaleDateStringEN(setting.createdAt)}</p>
                   </div>
                 </div>
               </div>

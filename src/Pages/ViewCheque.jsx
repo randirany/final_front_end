@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowBack, Edit, Delete, Print, Download } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ViewCheque = () => {
   const { t, i18n: { language } } = useTranslation();
@@ -238,7 +239,7 @@ const ViewCheque = () => {
                       {t('cheques.cheque_date')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.cheque_date).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
+                      {toLocaleDateStringEN(cheque.cheque_date)}
                     </dd>
                   </div>
 
@@ -383,7 +384,7 @@ const ViewCheque = () => {
                       {t('cheques.createdAt')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.createdAt).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
+                      {toLocaleDateStringEN(cheque.createdAt)}
                     </dd>
                   </div>
 
@@ -392,7 +393,7 @@ const ViewCheque = () => {
                       {t('cheques.lastUpdated')}
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {new Date(cheque.updatedAt).toLocaleDateString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US')}
+                      {toLocaleDateStringEN(cheque.updatedAt)}
                     </dd>
                   </div>
                 </dl>

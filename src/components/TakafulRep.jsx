@@ -15,6 +15,7 @@ import InsuranceTakafulRep from './InsuranceTakafulRep';
 import { Link } from 'react-router-dom';
 import { useTranslation as useReactI18nextTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -75,7 +76,7 @@ function TakafulRep() {
             const formattedData = reportsArray.map(report => ({
                 id: report._id,
                 reportIdentifier: report.policyInfo?.policyNumber || report._id.slice(-6) || 'N/A',
-                accidentDate: report.accidentInfo?.accidentDate ? new Date(report.accidentInfo.accidentDate).toLocaleDateString(language) : 'N/A',
+                accidentDate: report.accidentInfo?.accidentDate ? toLocaleDateStringEN(report.accidentInfo.accidentDate) : 'N/A',
                 accidentDateObj: report.accidentInfo?.accidentDate ? new Date(report.accidentInfo.accidentDate) : null,
                 accidentLocation: report.accidentInfo?.accidentLocation || 'N/A',
                 insuredName: report.insuredPerson?.name || (report.insuredId?.first_name ? `${report.insuredId.first_name} ${report.insuredId.last_name}` : 'N/A'),

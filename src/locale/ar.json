@@ -74,6 +74,16 @@
                 "emailManagement": "إدارة البريد الإلكتروني",
                 "cheques": "الشيكات",
                 "documentSettings": "إعدادات المستندات",
+                "reports": {
+                    "title": "التقارير",
+                    "customers": "تقرير العملاء",
+                    "vehicleInsurance": "تقرير تأمين المركبات",
+                    "otherInsurance": "تقرير التأمينات الأخرى",
+                    "accidents": "تقرير الحوادث",
+                    "revenues": "تقرير الإيرادات",
+                    "payments": "تقرير المدفوعات",
+                    "receivablesDebts": "تقرير المستحقات والديون"
+                },
                 "report": {
                     "titleReport": "التقارير",
                     "categore": {
@@ -124,7 +134,7 @@
         "TotalVisa": "إجمالي مدفوعات الفيزا",
         "TotalCash": "إجمالي المدفوعات النقدية",
         "TotalBank": "إجمالي التحويلات البنكية",
-        "TotalProfit": "إجمالي المدفوعات عن طريق الشيكات",
+        "TotalProfit": "إجمالي الربح",
         "totalCar": "إجمالي المركبات",
         "ActiveInsurancesCount": "عدد التأمينات النشطة ",
         "ExpiredInsurancesCount": "عدد التأمينات المنتهية",
@@ -354,89 +364,72 @@
         "exportCsvFileName": "تصدير_العملاء.csv"
     },
     "insuranceCompany": {
-        "addTitle": "إضافة شركة تأمين",
-        "fields": {
-            "name": "اسم الشركة",
-            "insuranceTypes": "أنواع التأمين",
-            "roadServices": "الخدمات على الطريق",
-            "price": "السعر",
-            "serviceName": "اسم الخدمة"
-        },
-        "type": {
-            "compulsory": "إلزامي",
-            "comprehensive": "شامل"
-        },
-        "success": {
-            "added": "تمت إضافة الشركة بنجاح"
-        },
-        "errors": {
-            "nameRequired": "اسم الشركة مطلوب",
-            "atLeastOneType": "أضف نوع تأمين واحد على الأقل",
-            "addFailed": "فشل في إضافة الشركة"
-        },
-        "labels": {
-            "insuranceCompany": "شركة التأمين"
-        },
-        "options": {
-            "chooseinsuranceCompany": "اختر شركة التأمين"
-        },
-        "table": {
-            "name": "اسم الشركة",
-            "contact": "معلومات الاتصال",
-            "address": "العنوان",
-            "insuranceType": "نوع التأمين",
-            "actions": "الإجراءات"
-        },
-        "tabs": {
-            "privateCar": "سيارة خاصة",
-            "commercialCar": "سيارة تجارية",
-            "motorcycle": "دراجة نارية"
-        },
-        "editErrorNoId": "لم يتم توفير معرف الشركة للتعديل",
-        "editSuccess": "تم تحديث الشركة بنجاح",
-        "editErrorGeneric": "فشل في تحديث الشركة",
-        "rates": {
-            "under24": "تحت 24",
-            "over24": "فوق 24",
-            "offerAmount": "مبلغ العرض",
-            "minFor60k": "الحد الأدنى لـ 60 ألف"
-        },
         "editTitle": "تعديل شركة التأمين",
         "form": {
             "companyName": "اسم الشركة",
-            "insuranceType": "نوع التأمين",
-            "contact": "جهة الاتصال",
-            "address": "العنوان"
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "خدمات الطريق",
+            "serviceName": "اسم الخدمة"
         },
         "types": {
             "mandatory": "إلزامي",
             "comprehensive": "شامل"
         },
-        "ratesTitle": "أسعار التأمين",
+        "addInsuranceType": "إضافة نوع تأمين",
+        "addRoadService": "إضافة خدمة طريق",
         "saveChangesButton": "حفظ التغييرات",
+        "editSuccess": "تم تعديل الشركة بنجاح",
+        "editErrorGeneric": "فشل تعديل الشركة",
+        "addCompany": "إضافة شركة",
+        "confirmDelete": "تأكيد الحذف",
+        "deleteConfirm": "هل أنت متأكد من حذف هذه الشركة؟",
+        "deleteConfirmText": "لا يمكن التراجع عن هذا الإجراء.",
+        "deleteError": "فشل في حذف الشركة",
         "fetchError": "فشل في جلب الشركات",
-        "deleteError": "خطأ في حذف الشركة",
-        "exportSheetName": "شركات التأمين",
-        "exportExcelFileName": "شركات_التأمين.xlsx",
-        "exportCsvFileName": "شركات_التأمين.csv",
-        "exportPdfTitle": "تقرير شركات التأمين",
-        "exportPdfFileName": "شركات_التأمين.pdf",
-        "printReportTitle": "تقرير شركات التأمين",
-        "addButton": "إضافة شركة",
+        "noCompanies": "لم يتم العثور على شركات",
+        "noResults": "لا توجد نتائج",
         "searchPlaceholder": "البحث في الشركات...",
-        "noCompanies": "لم يتم العثور على شركات تأمين"
+        "table": {
+            "actions": "الإجراءات",
+            "address": "العنوان",
+            "contact": "الاتصال",
+            "insuranceType": "نوع التأمين",
+            "insuranceTypes": "أنواع التأمين",
+            "name": "الاسم",
+            "roadServices": "خدمات الطريق"
+        },
+        "title": "شركات التأمين",
+        "addTitle": "إضافة شركة تأمين",
+        "errors": {
+            "nameRequired": "اسم الشركة مطلوب",
+            "atLeastOneType": "مطلوب نوع تأمين واحد على الأقل",
+            "addFailed": "فشل في إضافة شركة التأمين"
+        },
+        "success": {
+            "added": "تم إضافة شركة التأمين بنجاح"
+        },
+        "fields": {
+            "name": "اسم الشركة",
+            "insuranceTypes": "أنواع التأמين",
+            "price": "السعر",
+            "roadServices": "خدمات الطريق",
+            "serviceName": "اسم الخدمة"
+        },
+        "type": {
+            "compulsory": "إجباري",
+            "comprehensive": "شامل"
+        }
     },
     "breadcrumbs": {
-        "auditLogs": "سجلات التدقيق",
-        "allInsurances": "جميع التامينات",
         "home": "الرئيسية",
-        "insuranceCompanies": "شركات التأمين",
-        "departmentsAndUsers": "المستخدمون والإدارات",
         "customers": "العملاء",
         "customerInfo": "معلومات العميل",
-        "insuranceList": "قائمة التأمينات",
+        "agents": "الوكلاء",
+        "allInsurances": "جميع التأمينات",
+        "auditLogs": "سجلات التدقيق",
         "checkDetails": "تفاصيل الشيك",
-        "agents": "الوكلاء"
+        "departmentsAndUsers": "الأقسام والمستخدمين",
+        "insuranceList": "قائمة التأمينات"
     },
     "Email": "البريد الالكتروني",
     "Name": "الاسم",
@@ -455,62 +448,13 @@
         "forgotPassword": "نسيت كلمة المرور؟",
         "loginButton": "تسجيل الدخول"
     },
-    "common": {
-        "add": "إضافة",
-        "cancel": "إلغاء",
-        "saving": "جارٍ الحفظ...",
-        "yes": "نعم",
-        "no": "لا",
-        "noDataToExport": "لا توجد بيانات للتصدير",
-        "exportCsv": "تصدير CSV",
-        "exportExcel": "تصدير Excel",
-        "exportPdf": "تصدير PDF",
-        "print": "طباعة",
-        "loading": "جارٍ التحميل",
-        "delete": "حذف",
-        "noSearchResults": "لا توجد نتائج بحث",
-        "loadingMore": "تحميل المزيد",
-        "endOfResults": "نهاية النتائج",
-        "actions": "الإجراءات",
-        "searchPlaceholder": "البحث...",
-        "no_results": "لا توجد نتائج",
-        "details": "التفاصيل",
-        "noData": "لا توجد بيانات",
-        "errorOccurred": "حدث خطأ",
-        "notAvailable": "غير متوفر",
-        "edit": "تعديل",
-        "tableView": "عرض جدولي",
-        "cardView": "عرض البطاقات",
-        "noDataToPrint": "لا توجد بيانات للطباعة",
-        "viewDetails": "عرض التفاصيل",
-        "remove": "إزالة",
-        "saveChanges": "حفظ التغييرات",
-        "save": "حفظ",
-        "view": "عرض",
-        "download": "تحميل",
-        "active": "نشط",
-        "inactive": "غير نشط",
-        "back": "رجوع",
-        "unknown": "غير معروف"
-    },
     "validation": {
-        "rateRequiredStrictlyPositive": "هذا السعر مطلوب ويجب أن يكون رقمًا موجبًا (أكبر من صفر).",
-        "paidExceedsInsurance": "المبلغ المدفوع لا يمكن أن يتجاوز مبلغ التأمين.",
         "companyNameRequired": "اسم الشركة مطلوب",
-        "contactRequired": "رقم الاتصال مطلوب",
-        "addressRequired": "العنوان مطلوب",
-        "insuranceTypeRequired": "نوع التأمين مطلوب",
-        "rateRequiredPositive": "السعر مطلوب ويجب أن يكون رقمًا غير سالب",
-        "formErrors": "يرجى تصحيح الأخطاء في النموذج.",
-        "allFieldsRequired": "جميع الحقول مطلوبة.",
-        "firstNameRequired": "الاسم الأول مطلوب",
-        "lastNameRequired": "الاسم الأخير مطلوب",
-        "emailRequired": "البريد الإلكتروني مطلوب",
-        "emailInvalid": "عنوان بريد إلكتروني غير صالح",
-        "idNumberRequired": "رقم الهوية مطلوب ويجب أن يكون رقمًا",
-        "phoneNumberRequired": "رقم الهاتف مطلوب",
-        "cityRequired": "المدينة مطلوبة",
-        "nameRequired": "nameRequired"
+        "typeRequired": "نوع التأمين مطلوب",
+        "pricePositive": "يجب أن يكون السعر رقمًا إيجابيًا",
+        "nameRequired": "الاسم مطلوب",
+        "formErrors": "يرجى تصحيح الأخطاء في النموذج",
+        "allFieldsRequired": "جميع الحقول مطلوبة"
     },
     "departments": {
         "detailsTitle": "تفاصيل القسم",
@@ -747,7 +691,7 @@
         "title": "معلومات العميل",
         "firstName": "الاسم الأول",
         "lastName": "اسم العائلة",
-        "mobile": "رقم الجوال",
+        "mobile": "الهاتف",
         "identity": "رقم الهوية",
         "birthDate": "تاريخ الميلاد",
         "joinDate": "تاريخ الانضمام",
@@ -755,38 +699,32 @@
         "notes": "ملاحظات",
         "attachments": {
             "title": "المرفقات",
-            "upload": "رفع ملفات",
-            "carLicense": "رخصة المركبة",
-            "carLicenseAlt": "صورة رخصة المركبة",
-            "carImage": "صورة المركبة",
-            "carImageAlt": "صورة المركبة",
-            "none": "none",
-            "uploadSuccess": "uploadSuccess",
-            "uploadError": "uploadError"
+            "upload": "رفع الملفات",
+            "none": "لا يوجد مرفقات"
         },
         "vehicles": {
             "title": "المركبات",
             "add": "إضافة مركبة",
+            "none": "لا توجد مركبات",
             "vehicleAlt": "مركبة",
-            "licenseAlt": "لوحة رخصة المركبة",
-            "addInsurance": "إضافة تأمين",
-            "none": "لم يتم العثور على مركبات لهذا العميل."
+            "licenseAlt": "لوحة المركبة",
+            "addInsurance": "إضافة تأمين"
         },
-        "allInsured": {
-            "title": "عملاء مؤمن عليهم آخرون",
-            "name": "الاسم",
-            "phone": "رقم الهاتف",
-            "id": "رقم الهوية",
-            "city": "المدينة",
-            "joinDate": "تاريخ الانضمام",
-            "noneFound": "لم يتم العثور على عملاء مؤمن عليهم آخرين.",
-            "onlyCurrent": "لا يوجد عملاء مؤمن عليهم آخرون لعرضهم."
-        },
-        "paymentHistory": {
-            "title": "سجل المدفوعات",
-            "method": "طريقة الدفع",
-            "amount": "المبلغ المدفوع",
-            "date": "تاريخ الدفع"
+        "insurances": {
+            "title": "التأمينات",
+            "none": "لا توجد تأمينات",
+            "fetchError": "فشل في جلب التأمينات.",
+            "category": "الفئة",
+            "type": "النوع",
+            "company": "شركة التأمين",
+            "agent": "الوكيل",
+            "paymentMethod": "طريقة الدفع",
+            "status": "الحالة",
+            "startDate": "تاريخ البداية",
+            "endDate": "تاريخ الانتهاء",
+            "paidAmount": "المبلغ المدفوع",
+            "remainingDebt": "المتبقي من الدين",
+            "plate": "رقم اللوحة"
         }
     },
     "fileUploadModal": {
@@ -2271,7 +2209,52 @@
             "processingFailed": "فشل في معالجة الدفعة. يرجى المحاولة مرة أخرى."
         }
     },
-    "email": "email",
+    "email": {
+        "errors": {
+            "fetchCustomers": "فشل في تحميل العملاء",
+            "sendFailed": "فشل في إرسال البريد الإلكتروني",
+            "noRecipients": "يرجى اختيار مستلم واحد على الأقل",
+            "bulkSendFailed": "فشل في إرسال البريد الإلكتروني المجمع"
+        },
+        "success": {
+            "sent": "تم إرسال البريد الإلكتروني بنجاح!",
+            "bulkSent": "تم إرسال البريد الإلكتروني المجمع إلى {{count}} مستلم",
+            "deleted": "تم حذف رسائل البريد الإلكتروني المحددة"
+        },
+        "breadcrumb": {
+            "dashboard": "لوحة التحكم",
+            "emails": "إدارة البريد الإلكتروني"
+        },
+        "tabs": {
+            "inbox": "صندوق الوارد",
+            "compose": "إنشاء",
+            "bulk": "البريد الإلكتروني المجمع"
+        },
+        "inbox": {
+            "searchPlaceholder": "البحث في رسائل البريد الإلكتروني...",
+            "noEmails": "لم يتم العثور على رسائل بريد إلكتروني"
+        },
+        "compose": {
+            "title": "إنشاء بريد إلكتروني",
+            "to": "إلى",
+            "subject": "الموضوع",
+            "message": "الرسالة",
+            "sending": "جارٍ الإرسال...",
+            "send": "إرسال البريد الإلكتروني"
+        },
+        "bulk": {
+            "selectCustomers": "اختيار المستلمين",
+            "searchPlaceholder": "البحث في العملاء...",
+            "selectAll": "تحديد الكل",
+            "noCustomers": "لم يتم العثور على عملاء لديهم عناوين بريد إلكتروني",
+            "compose": "إنشاء بريد إلكتروني مجمع",
+            "subject": "الموضوع",
+            "message": "الرسالة",
+            "info": "سيتم إرسال هذا البريد الإلكتروني إلى {{count}} مستلم",
+            "sending": "جارٍ الإرسال...",
+            "send": "إرسال البريد الإلكتروني المجمع"
+        }
+    },
     "notifications": {
         "title": "الإشعارات",
         "subtitle": "ابق على اطلاع بأحدث الإشعارات",
@@ -2546,13 +2529,9 @@
     },
     "vehicles": {
         "messages": {
-            "fetchError": "fetchError",
-            "deleteSuccess": "deleteSuccess",
-            "deleteError": "deleteError"
-        },
-        "deleteModal": {
-            "title": "title",
-            "message": "message"
+            "fetchError": "فشل في جلب المركبات.",
+            "deleteSuccess": "تم حذف المركبة بنجاح!",
+            "deleteError": "فشل في حذف المركبة."
         }
     },
     "policeNumberLabel": "policeNumberLabel",
@@ -2602,156 +2581,230 @@
     "updatedAt": "updatedAt",
     "createdBy": "createdBy",
     "updatedBy": "تم التحديث بواسطة",
-    "email": {
-        "errors": {
-            "fetchCustomers": "فشل في تحميل العملاء",
-            "sendFailed": "فشل في إرسال البريد الإلكتروني",
-            "noRecipients": "يرجى اختيار مستلم واحد على الأقل",
-            "bulkSendFailed": "فشل في إرسال البريد الإلكتروني المجمع"
-        },
-        "success": {
-            "sent": "تم إرسال البريد الإلكتروني بنجاح!",
-            "bulkSent": "تم إرسال البريد الإلكتروني المجمع إلى {{count}} مستلم",
-            "deleted": "تم حذف رسائل البريد الإلكتروني المحددة"
-        },
-        "breadcrumb": {
-            "dashboard": "لوحة التحكم",
-            "emails": "إدارة البريد الإلكتروني"
-        },
-        "tabs": {
-            "inbox": "صندوق الوارد",
-            "compose": "إنشاء",
-            "bulk": "البريد الإلكتروني المجمع"
-        },
-        "inbox": {
-            "searchPlaceholder": "البحث في رسائل البريد الإلكتروني...",
-            "noEmails": "لم يتم العثور على رسائل بريد إلكتروني"
-        },
-        "compose": {
-            "title": "إنشاء بريد إلكتروني",
-            "to": "إلى",
-            "subject": "الموضوع",
-            "message": "الرسالة",
-            "sending": "جارٍ الإرسال...",
-            "send": "إرسال البريد الإلكتروني"
-        },
-        "bulk": {
-            "selectCustomers": "اختيار المستلمين",
-            "searchPlaceholder": "البحث في العملاء...",
-            "selectAll": "تحديد الكل",
-            "noCustomers": "لم يتم العثور على عملاء لديهم عناوين بريد إلكتروني",
-            "compose": "إنشاء بريد إلكتروني مجمع",
-            "subject": "الموضوع",
-            "message": "الرسالة",
-            "info": "سيتم إرسال هذا البريد الإلكتروني إلى {{count}} مستلم",
-            "sending": "جارٍ الإرسال...",
-            "send": "إرسال البريد الإلكتروني المجمع"
-        }
-    },
-    "insuranceCompany": {
-        "editTitle": "تعديل شركة التأمين",
-        "form": {
-            "companyName": "اسم الشركة",
-            "insuranceTypes": "أنواع التأمين",
-            "roadServices": "خدمات الطريق",
-            "serviceName": "اسم الخدمة"
-        },
-        "types": {
-            "mandatory": "إلزامي",
-            "comprehensive": "شامل"
-        },
-        "addInsuranceType": "إضافة نوع تأمين",
-        "addRoadService": "إضافة خدمة طريق",
-        "saveChangesButton": "حفظ التغييرات",
-        "editSuccess": "تم تعديل الشركة بنجاح",
-        "editErrorGeneric": "فشل تعديل الشركة"
-    },
-    "validation": {
-        "companyNameRequired": "اسم الشركة مطلوب",
-        "typeRequired": "نوع التأمين مطلوب",
-        "pricePositive": "يجب أن يكون السعر رقمًا إيجابيًا",
-        "nameRequired": "الاسم مطلوب",
-        "formErrors": "يرجى تصحيح الأخطاء في النموذج"
-    },
-    "common": {
-        "cancel": "إلغاء"
-    },
-    "breadcrumbs": {
-        "home": "الرئيسية",
-        "customers": "العملاء",
-        "customerInfo": "معلومات العميل"
-    },
-    "common": {
-        "loading": "جاري التحميل...",
-        "delete": "حذف",
-        "notAvailable": "غير متوفر"
-    },
-    "customerInfo": {
-        "title": "معلومات العميل",
-        "firstName": "الاسم الأول",
-        "lastName": "اسم العائلة",
-        "mobile": "الهاتف",
-        "identity": "رقم الهوية",
-        "birthDate": "تاريخ الميلاد",
-        "joinDate": "تاريخ الانضمام",
-        "city": "المدينة",
-        "notes": "ملاحظات",
-        "attachments": {
-            "title": "المرفقات",
-            "upload": "رفع الملفات",
-            "none": "لا يوجد مرفقات"
-        },
-        "vehicles": {
-            "title": "المركبات",
-            "add": "إضافة مركبة",
-            "none": "لا توجد مركبات",
-            "vehicleAlt": "مركبة",
-            "licenseAlt": "لوحة المركبة",
-            "addInsurance": "إضافة تأمين"
-        },
-        "insurances": {
-            "title": "التأمينات",
-            "none": "لا توجد تأمينات",
-            "fetchError": "فشل في جلب التأمينات.",
-            "category": "الفئة",
-            "type": "النوع",
-            "company": "شركة التأمين",
-            "agent": "الوكيل",
-            "paymentMethod": "طريقة الدفع",
-            "status": "الحالة",
-            "startDate": "تاريخ البداية",
-            "endDate": "تاريخ الانتهاء",
-            "paidAmount": "المبلغ المدفوع",
-            "remainingDebt": "المتبقي من الدين"
-        }
-    },
-    "vehicles": {
-        "messages": {
-            "fetchError": "فشل في جلب المركبات.",
-            "deleteSuccess": "تم حذف المركبة بنجاح!",
-            "deleteError": "فشل في حذف المركبة."
-        }
-    },
     "customerInfo.attachments": {
         "uploadSuccess": "تم رفع الملفات بنجاح!",
         "uploadError": "فشل رفع الملفات."
     },
-    "insuranceCompany": {
-        "editTitle": "تعديل شركة التأمين",
-        "form": {
-            "companyName": "اسم الشركة",
-            "insuranceTypes": "أنواع التأمين",
-            "roadServices": "خدمات الطريق",
-            "serviceName": "اسم الخدمة"
+    "reports": {
+        "customer": {
+            "title": "تقرير العملاء",
+            "description": "تقرير شامل لمعلومات العملاء والإحصائيات",
+            "name": "الاسم",
+            "idNumber": "رقم الهوية",
+            "phone": "الهاتف",
+            "email": "البريد الإلكتروني",
+            "joiningDate": "تاريخ الانضمام",
+            "joiningDateFrom": "تاريخ الانضمام من",
+            "joiningDateTo": "تاريخ الانضمام إلى",
+            "agent": "الوكيل",
+            "vehicleCount": "عدد المركبات",
+            "totalInsurances": "إجمالي التأمينات",
+            "status": "الحالة"
         },
-        "types": {
-            "mandatory": "إلزامي",
-            "comprehensive": "شامل"
+        "vehicleInsurance": {
+            "title": "تقرير تأمين المركبات",
+            "description": "تقرير مفصل لجميع بوالص تأمين المركبات",
+            "customerName": "اسم العميل",
+            "plateNumber": "رقم اللوحة",
+            "vehicleModel": "طراز المركبة",
+            "insuranceCompany": "شركة التأمين",
+            "policyNumber": "رقم البوليصة",
+            "startDate": "تاريخ البداية",
+            "endDate": "تاريخ النهاية",
+            "premium": "القسط",
+            "agent": "الوكيل",
+            "insuranceType": "نوع التأمين",
+            "status": "الحالة",
+            "periodFrom": "الفترة من",
+            "periodTo": "الفترة إلى",
+            "company": "الشركة",
+            "totalPolicies": "إجمالي البوالص",
+            "activePolicies": "البوالص النشطة",
+            "expiredPolicies": "البوالص المنتهية",
+            "totalPremium": "إجمالي الأقساط",
+            "type": {
+                "comprehensive": "شامل",
+                "third_party": "ضد الغير"
+            }
         },
-        "addInsuranceType": "إضافة نوع تأمين",
-        "addRoadService": "إضافة خدمة طريق",
-        "saveChangesButton": "حفظ التغييرات",
-        "editSuccess": "تم تعديل الشركة بنجاح",
-        "editErrorGeneric": "فشل تعديل الشركة"
+        "otherInsurance": {
+            "title": "تقرير التأمينات الأخرى",
+            "description": "تقرير التأمينات غير المتعلقة بالمركبات",
+            "customerName": "اسم العميل",
+            "insuranceType": "نوع التأمين",
+            "policyNumber": "رقم البوليصة",
+            "startDate": "تاريخ البداية",
+            "endDate": "تاريخ النهاية",
+            "premium": "القسط",
+            "coverageAmount": "مبلغ التغطية",
+            "beneficiary": "المستفيد",
+            "status": "الحالة",
+            "periodFrom": "الفترة من",
+            "periodTo": "الفترة إلى",
+            "totalPolicies": "إجمالي البوالص",
+            "activePolicies": "البوالص النشطة",
+            "totalPremium": "إجمالي الأقساط",
+            "totalCoverage": "إجمالي التغطية",
+            "types": {
+                "life": "تأمين الحياة",
+                "health": "التأمين الصحي",
+                "property": "تأمين الممتلكات",
+                "travel": "تأمين السفر",
+                "business": "التأمين التجاري"
+            }
+        },
+        "accidents": {
+            "title": "تقرير الحوادث",
+            "description": "تقرير شامل لمطالبات الحوادث والإحصائيات",
+            "reportNumber": "رقم التقرير",
+            "customerName": "اسم العميل",
+            "plateNumber": "رقم اللوحة",
+            "accidentDate": "تاريخ الحادث",
+            "location": "الموقع",
+            "severity": "درجة الخطورة",
+            "damageAmount": "مبلغ الضرر",
+            "insuranceCompany": "شركة التأمين",
+            "status": "الحالة",
+            "periodFrom": "الفترة من",
+            "periodTo": "الفترة إلى",
+            "totalAccidents": "إجمالي الحوادث",
+            "totalDamage": "إجمالي الأضرار",
+            "averageDamage": "متوسط الضرر",
+            "severityTypes": {
+                "minor": "طفيف",
+                "moderate": "متوسط",
+                "major": "شديد"
+            }
+        },
+        "revenues": {
+            "title": "تقرير الإيرادات",
+            "description": "تقرير جميع الإيرادات المحصلة من العملاء",
+            "customerName": "اسم العميل",
+            "policyNumber": "رقم البوليصة",
+            "paymentDate": "تاريخ الدفع",
+            "amount": "المبلغ",
+            "paymentMethod": "طريقة الدفع",
+            "agent": "الوكيل",
+            "insuranceType": "نوع التأمين",
+            "description": "الوصف",
+            "periodFrom": "الفترة من",
+            "periodTo": "الفترة إلى",
+            "totalRevenue": "إجمالي الإيرادات",
+            "totalPayments": "إجمالي المدفوعات",
+            "averagePayment": "متوسط الدفعة",
+            "insuranceTypes": {
+                "vehicle": "تأمين المركبات",
+                "life": "تأمين الحياة",
+                "health": "التأمين الصحي",
+                "property": "تأمين الممتلكات"
+            }
+        },
+        "payments": {
+            "title": "تقرير المدفوعات",
+            "description": "تقرير جميع المدفوعات التي دفعتها الشركة",
+            "paymentDate": "تاريخ الدفع",
+            "insuranceCompany": "شركة التأمين",
+            "paymentType": "نوع الدفع",
+            "amount": "المبلغ",
+            "referenceNumber": "الرقم المرجعي",
+            "description": "الوصف",
+            "status": "الحالة",
+            "periodFrom": "الفترة من",
+            "periodTo": "الفترة إلى",
+            "company": "الشركة",
+            "totalPayments": "إجمالي المدفوعات",
+            "paidAmount": "المبلغ المدفوع",
+            "pendingAmount": "المبلغ المعلق",
+            "totalTransactions": "إجمالي المعاملات",
+            "paymentTypes": {
+                "commission": "عمولة",
+                "claim_settlement": "تسوية مطالبة",
+                "premium": "قسط"
+            }
+        },
+        "receivablesDebts": {
+            "title": "تقرير المستحقات والديون",
+            "description": "تقرير المستحقات والديون المعلقة",
+            "customerName": "اسم العميل",
+            "type": "النوع",
+            "reference": "المرجع",
+            "amount": "المبلغ",
+            "dueDate": "تاريخ الاستحقاق",
+            "status": "الحالة",
+            "daysPastDue": "أيام التأخير",
+            "description": "الوصف",
+            "dueDateFrom": "تاريخ الاستحقاق من",
+            "dueDateTo": "تاريخ الاستحقاق إلى",
+            "totalAmount": "إجمالي المبلغ",
+            "overdueAmount": "المبلغ المتأخر",
+            "totalItems": "إجمالي البنود",
+            "overdueItems": "البنود المتأخرة",
+            "types": {
+                "due_check": "شيك مستحق",
+                "unpaid_insurance": "تأمين غير مدفوع"
+            },
+            "statusTypes": {
+                "due": "مستحق",
+                "overdue": "متأخر",
+                "bounced": "مرتد",
+                "pending": "معلق"
+            }
+        }
+    },
+    "common": {
+        "showing": "عرض",
+        "results": "نتائج",
+        "refresh": "تحديث",
+        "print": "طباعة",
+        "search": "بحث",
+        "clear": "مسح",
+        "all": "الكل",
+        "filters": "المرشحات",
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "expired": "منتهي",
+        "pending": "معلق",
+        "completed": "مكتمل",
+        "in_progress": "قيد التنفيذ",
+        "currency": "شيكل",
+        "days": "أيام",
+        "of": "من",
+        "itemsPerPage": "عناصر لكل صفحة",
+        "noDataFound": "لا توجد بيانات",
+        "paid": "مدفوع",
+        "paymentMethods": {
+            "cash": "نقدي",
+            "card": "بطاقة",
+            "bank_transfer": "حوالة بنكية"
+        },
+        "loading": "جاري التحميل...",
+        "delete": "حذف",
+        "notAvailable": "غير متوفر",
+        "actions": "الإجراءات",
+        "add": "إضافة",
+        "cancel": "إلغاء",
+        "cardView": "عرض البطاقات",
+        "deleting": "جاري الحذف...",
+        "details": "التفاصيل",
+        "edit": "تعديل",
+        "endOfResults": "نهاية النتائج",
+        "errorOccurred": "حدث خطأ",
+        "exportCsv": "تصدير CSV",
+        "exportExcel": "تصدير Excel",
+        "exportPdf": "تصدير PDF",
+        "loadingMore": "تحميل المزيد...",
+        "no_results": "لم يتم العثور على نتائج",
+        "noData": "لا توجد بيانات متاحة",
+        "noDataToExport": "لا توجد بيانات للتصدير",
+        "noDataToPrint": "لا توجد بيانات للطباعة",
+        "noSearchResults": "لا توجد نتائج بحث",
+        "remove": "إزالة",
+        "saveChanges": "حفظ التغييرات",
+        "searchPlaceholder": "بحث...",
+        "tableView": "عرض الجدول",
+        "viewDetails": "عرض التفاصيل",
+        "yes": "نعم",
+        "no": "لا",
+        "saving": "جاري الحفظ..."
     }
 }

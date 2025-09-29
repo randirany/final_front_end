@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowBack, Edit, Image, Palette, FormatSize } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ViewDocumentSettings = () => {
   const { id } = useParams();
@@ -564,7 +565,7 @@ const ViewDocumentSettings = () => {
                     {t('documentSettings.createdAt')}
                   </label>
                   <div className="mt-1 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600">
-                    {new Date(documentSettings.createdAt).toLocaleDateString()}
+                    {toLocaleDateStringEN(documentSettings.createdAt)}
                   </div>
                 </div>
 
@@ -584,7 +585,7 @@ const ViewDocumentSettings = () => {
                     {t('documentSettings.updatedAt')}
                   </label>
                   <div className="mt-1 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600">
-                    {new Date(documentSettings.updatedAt).toLocaleDateString()}
+                    {toLocaleDateStringEN(documentSettings.updatedAt)}
                   </div>
                 </div>
               </div>

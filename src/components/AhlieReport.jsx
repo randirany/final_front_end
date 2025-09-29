@@ -15,6 +15,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -77,7 +78,7 @@ function AhlieReport() {
             const formattedData = reports.map(report => ({
                 id: report._id,
                 reportNumber: report.reportNumber || 'N/A',
-                accidentDate: report.accidentDate ? new Date(report.accidentDate).toLocaleDateString(language) : 'N/A',
+                accidentDate: report.accidentDate ? toLocaleDateStringEN(report.accidentDate) : 'N/A',
                 accidentDateObj: report.accidentDate ? new Date(report.accidentDate) : null, // For sorting
                 accidentLocation: report.accidentDetails?.location || 'N/A',
                 policyNumber: report.policyInfo?.policyNumber || 'N/A',

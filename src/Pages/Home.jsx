@@ -114,6 +114,9 @@ function Home() {
   }); 
   const { t } = useTranslation();
 
+  // Debug: Check if translation is working
+  console.log('TotalProfit translation:', t("home.TotalProfit"));
+
   useEffect(() => {
     const fetchTotalInsured = async () => {
       try {
@@ -439,8 +442,8 @@ ActiveInsurancesCount();
 return (
     <div className='py-6 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen'>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {stats.map((item) => (
-              <div key={item.name} className="rounded-lg bg-white dark:bg-navbarBack p-4 lg:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            {stats.map((item, index) => (
+              <div key={`${item.name}-${index}`} className="rounded-lg bg-white dark:bg-navbarBack p-4 lg:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center justify-center mb-4">
                   {item.icon}
                 </div>
@@ -449,7 +452,9 @@ return (
                     <dt className="text-lg lg:text-xl xl:text-2xl font-bold dark:text-white text-gray-900 mb-2">
                       <AnimatedStatValue value={item.value} originalValue={item.displayValue} />
                     </dt>
-                    <dd className="text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-300 leading-tight">{item.name}</dd>
+                    <dd className="text-xs lg:text-sm font-medium text-gray-600 dark:text-gray-300 leading-tight" style={{minHeight: '1rem', color: 'inherit'}}>
+                      {item.name}
+                    </dd>
                   </dl>
                 </div>
               </div>

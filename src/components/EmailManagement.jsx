@@ -18,6 +18,7 @@ import {
   InputLabel,
   Alert
 } from '@mui/material';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 import {
   Inbox,
   Send,
@@ -416,7 +417,7 @@ export default function EmailManagement() {
                           )}
                         </div>
                         <span className="text-xs text-gray-500 ml-2">
-                          {new Date(email.date).toLocaleDateString()}
+                          {toLocaleDateStringEN(email.date)}
                         </span>
                       </div>
                       <div className="mt-1">

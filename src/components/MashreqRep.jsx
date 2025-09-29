@@ -15,6 +15,7 @@ import InsuranceMashreqRep from './insuranceMashreqRep';
 import { Link } from 'react-router-dom';
 import { useTranslation as useReactI18nextTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -75,7 +76,7 @@ function MashreqRep() {
             const formattedData = reportsArray.map(report => ({
                 id: report._id,
                 reportIdentifier: report.insurancePolicy?.number || report._id.slice(-6) || 'N/A',
-                accidentDate: report.accident?.date ? new Date(report.accident.date).toLocaleDateString(language) : 'N/A',
+                accidentDate: report.accident?.date ? toLocaleDateStringEN(report.accident.date) : 'N/A',
                 accidentDateObj: report.accident?.date ? new Date(report.accident.date) : null, // for sorting
                 accidentLocation: report.accident?.accidentLocation || 'N/A',
                 insuredName: report.insuredPerson?.name || (report.insuredId?.first_name ? `${report.insuredId.first_name} ${report.insuredId.last_name}` : 'N/A'),

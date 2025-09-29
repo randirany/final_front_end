@@ -2,18 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
-const formatDate = (dateString, language) => { 
+const formatDate = (dateString, language) => {
     if (!dateString) return "N/A";
     try {
-        const locale = (language === 'ar' || language === 'he') ? 'ar-SA' : 'en-GB';
-        return new Date(dateString).toLocaleDateString(locale, {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            calendar: 'gregory' 
-        });
+        return toLocaleDateStringEN(dateString);
     } catch (error) {
         return "Invalid Date";
     }
@@ -25,7 +20,7 @@ const formatCurrency = (amount, currencySymbol = "₪") => {
 };
 
 function CheckDetails() {
-    const { t, i18n: { language } } = useTranslation(); 
+    const { t, i18n: { language } } = useTranslation();
     const { insuredId, vehicleId, insuranceId } = useParams();
     const [checks, setChecks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -61,7 +56,7 @@ function CheckDetails() {
             toast.error(missingIdError);
             setLoading(false);
         }
-    }, [insuredId, vehicleId, insuranceId, t]); 
+    }, [insuredId, vehicleId, insuranceId, t]);
 
     if (loading) {
         return (
@@ -78,14 +73,14 @@ function CheckDetails() {
         <div className="navblayout" style={{ padding: '20px', minHeight: '100vh' }} dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
             <div className='mb-2 pb-2 '>
                 <div className="bg-[rgb(255,255,255)] flex p-[20px] rounded-md justify-between items-center mt-5  dark:bg-navbarBack dark:text-dark3">
-                    <div className="flex gap-[14px] items-center"> 
+                    <div className="flex gap-[14px] items-center">
                         <NavLink to="/home" className="hover:underline text-blue-600 dark:text-blue-400">{t('breadcrumbs.home', 'Home')}</NavLink>
                         <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transform ${(language === 'ar' || language === 'he') ? 'rotate-180' : ''}`}>
                             <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
                                 d="M11.9392 4.55806C12.1833 4.31398 12.579 4.31398 12.8231 4.55806L17.8231 9.55806C18.0672 9.80214 18.0672 10.1979 17.8231 10.4419L12.8231 15.4419C12.579 15.686 12.1833 15.686 11.9392 15.4419C11.6952 15.1979 11.6952 14.8021 11.9392 14.5581L15.8723 10.625H4.04785C3.70267 10.625 3.42285 10.3452 3.42285 10C3.42285 9.65482 3.70267 9.375 4.04785 9.375H15.8723L11.9392 5.44194C11.6952 5.19786 11.6952 4.80214 11.9392 4.55806Z"
-                                fill="currentColor" 
+                                fill="currentColor"
                                 className="text-gray-500 dark:text-gray-400"
                             />
                         </svg>

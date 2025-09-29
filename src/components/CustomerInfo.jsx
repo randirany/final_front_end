@@ -13,6 +13,7 @@ import carLisence from "../assets/car_lisence.png";
 import FileUploadModal from "./FileUploadModel";
 import Add_vehicle from "./Add_vehicle";
 import AddInsuranceMandatory from "./AddInsuranceMandatory";
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -186,8 +187,8 @@ if (!selectedInsurance || !itemToDelete || !insuredId) {
                 { labelKey: 'customerInfo.lastName', value: customerData.last_name },
                 { labelKey: 'customerInfo.mobile', value: customerData.phone_number },
                 { labelKey: 'customerInfo.identity', value: customerData.id_Number },
-                { labelKey: 'customerInfo.birthDate', value: customerData.birth_date ? new Date(customerData.birth_date).toLocaleDateString(language) : null },
-                { labelKey: 'customerInfo.joinDate', value: customerData.joining_date ? new Date(customerData.joining_date).toLocaleDateString(language) : null },
+                { labelKey: 'customerInfo.birthDate', value: customerData.birth_date ? toLocaleDateStringEN(customerData.birth_date) : null },
+                { labelKey: 'customerInfo.joinDate', value: customerData.joining_date ? toLocaleDateStringEN(customerData.joining_date) : null },
                 { labelKey: 'customerInfo.city', value: customerData.city },
                 { labelKey: 'customerInfo.notes', value: customerData.notes },
               ].map(item => (
@@ -298,8 +299,8 @@ if (!selectedInsurance || !itemToDelete || !insuredId) {
         <td className="px-2 py-1">{ins.agent || '-'}</td>
         <td className="px-2 py-1">{ins.paymentMethod || '-'}</td>
         <td className="px-2 py-1">{ins.insuranceStatus || '-'}</td>
-        <td className="px-2 py-1">{ins.insuranceStartDate ? new Date(ins.insuranceStartDate).toLocaleDateString(language) : '-'}</td>
-        <td className="px-2 py-1">{ins.insuranceEndDate ? new Date(ins.insuranceEndDate).toLocaleDateString(language) : '-'}</td>
+        <td className="px-2 py-1">{ins.insuranceStartDate ? toLocaleDateStringEN(ins.insuranceStartDate) : '-'}</td>
+        <td className="px-2 py-1">{ins.insuranceEndDate ? toLocaleDateStringEN(ins.insuranceEndDate) : '-'}</td>
         <td className="px-2 py-1">{ins.paidAmount ?? '-'}</td>
         <td className="px-2 py-1">{ins.remainingDebt ?? 0}</td>
            <td className="px-2 py-1">
@@ -338,12 +339,13 @@ import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import CancelInsuranceModal from './CancelInsuranceModal';
 import ConfirmModal from './ConfirmModal'; 
-import carLogo from '../assets/carr.jpg';
+import carLogo from '../assets/car.png';
 import carLisence from "../assets/car_lisence.png";
 import FileUploadModal from "./FileUploadModel";
 import TransferInsuranceModal from './TransferInsuranceModal';
 import Add_vehicle from "./Add_vehicle";
 import AddInsuranceMandatory from "./AddInsuranceMandatory";
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 import { MoreVertical } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -498,8 +500,8 @@ function CustomerInfo() {
                 { labelKey: 'customerInfo.lastName', value: customerData.last_name },
                 { labelKey: 'customerInfo.mobile', value: customerData.phone_number },
                 { labelKey: 'customerInfo.identity', value: customerData.id_Number },
-                { labelKey: 'customerInfo.birthDate', value: customerData.birth_date ? new Date(customerData.birth_date).toLocaleDateString(language) : null },
-                { labelKey: 'customerInfo.joinDate', value: customerData.joining_date ? new Date(customerData.joining_date).toLocaleDateString(language) : null },
+                { labelKey: 'customerInfo.birthDate', value: customerData.birth_date ? toLocaleDateStringEN(customerData.birth_date) : null },
+                { labelKey: 'customerInfo.joinDate', value: customerData.joining_date ? toLocaleDateStringEN(customerData.joining_date) : null },
                 { labelKey: 'customerInfo.city', value: customerData.city },
                 { labelKey: 'customerInfo.notes', value: customerData.notes },
               ].map(item => (
@@ -613,8 +615,8 @@ function CustomerInfo() {
                         <td className="px-2 py-1">{ins.agent || '-'}</td>
                         <td className="px-2 py-1">{ins.paymentMethod || '-'}</td>
                         <td className="px-2 py-1">{ins.insuranceStatus || '-'}</td>
-                        <td className="px-2 py-1">{ins.insuranceStartDate ? new Date(ins.insuranceStartDate).toLocaleDateString(language) : '-'}</td>
-                        <td className="px-2 py-1">{ins.insuranceEndDate ? new Date(ins.insuranceEndDate).toLocaleDateString(language) : '-'}</td>
+                        <td className="px-2 py-1">{ins.insuranceStartDate ? toLocaleDateStringEN(ins.insuranceStartDate) : '-'}</td>
+                        <td className="px-2 py-1">{ins.insuranceEndDate ? toLocaleDateStringEN(ins.insuranceEndDate) : '-'}</td>
                         <td className="px-2 py-1">{ins.paidAmount ?? '-'}</td>
                         <td className="px-2 py-1">{ins.remainingDebt ?? 0}</td>
            <td className="px-2 py-1 relative">

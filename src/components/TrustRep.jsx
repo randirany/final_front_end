@@ -14,6 +14,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { useTranslation as useReactI18nextTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -73,7 +74,7 @@ function TrustRep() {
             const formattedData = reports.map(report => ({
                 id: report._id,
                 reportIdDisplay: report._id.slice(-6).toUpperCase(),
-                accidentDate: report.accidentDetails?.date ? new Date(report.accidentDetails.date).toLocaleDateString(language) : 'N/A',
+                accidentDate: report.accidentDetails?.date ? toLocaleDateStringEN(report.accidentDetails.date) : 'N/A',
                 accidentDateObj: report.accidentDetails?.date ? new Date(report.accidentDetails.date) : null,
                 accidentLocation: report.accidentDetails?.location || 'N/A',
                 policyNumber: report.insuredVehicle?.policyNumber || 'N/A',

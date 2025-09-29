@@ -15,6 +15,7 @@ import InsurancePalestineRep from './InsurancePalestinelRep';
 import { Link } from 'react-router-dom';
 import { useTranslation as useReactI18nextTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -74,7 +75,7 @@ function PalestineRep() {
             const formattedData = reports.map(report => ({
                 id: report._id,
                 time: report.accidentDetails?.time || 'N/A',
-                accidentDate: report.accidentDetails?.accidentDate ? new Date(report.accidentDetails.accidentDate).toLocaleDateString(language) : 'N/A',
+                accidentDate: report.accidentDetails?.accidentDate ? toLocaleDateStringEN(report.accidentDetails.accidentDate) : 'N/A',
                 accidentDateObj: report.accidentDetails?.accidentDate ? new Date(report.accidentDetails.accidentDate) : null,
                 accidentLocation: report.accidentDetails?.location || 'N/A',
                 documentNumber: report.agentInfo?.documentNumber || 'N/A',

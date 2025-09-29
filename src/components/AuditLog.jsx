@@ -11,6 +11,7 @@ import 'jspdf-autotable';
 import { toast } from 'react-toastify';
 import { NavLink } from 'react-router-dom';
 import { X, User, GitCommit, Database, Calendar, Code } from 'lucide-react';
+import { toLocaleStringEN, toLocaleDateStringEN } from '../utils/dateFormatter';
 
 const ROWS_PER_PAGE = 10;
 
@@ -47,7 +48,7 @@ export default function AuditLogs() {
         userName: log.userName,
         action: log.action,
         entity: log.entity,
-        createdAt: new Date(log.createdAt).toLocaleString((language === 'ar' || language === 'he') ? 'ar-EG' : 'en-US'),
+        createdAt: toLocaleStringEN(log.createdAt),
         createdAtDate: new Date(log.createdAt), // For sorting
         fullLog: log,
       }));
@@ -335,7 +336,7 @@ export default function AuditLogs() {
                       <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
                         <Calendar size={16} /> {t('audit.table.date')}
                       </p>
-                      <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{new Date(selectedLog.createdAt).toLocaleString(language)}</p>
+                      <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{toLocaleStringEN(selectedLog.createdAt)}</p>
                     </div>
                   </div>
 

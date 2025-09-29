@@ -74,6 +74,16 @@
                 "emailManagement": "Email Management",
                 "cheques": "Cheques",
                 "documentSettings": "Document Settings",
+                "reports": {
+                    "title": "Reports",
+                    "customers": "Customer Report",
+                    "vehicleInsurance": "Vehicle Insurance Report",
+                    "otherInsurance": "Other Insurance Report",
+                    "accidents": "Accidents Report",
+                    "revenues": "Revenues Report",
+                    "payments": "Payments Report",
+                    "receivablesDebts": "Receivables & Debts Report"
+                },
                 "report": {
                     "titleReport": "Reports",
                     "categore": {
@@ -355,83 +365,60 @@
     },
     "insuranceCompany.addTitle": "Add Insurance Company",
     "insuranceCompany": {
+        "editTitle": "Edit Insurance Company",
+        "form": {
+            "companyName": "Company Name",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services",
+            "serviceName": "Service Name"
+        },
+        "types": {
+            "mandatory": "Compulsory",
+            "comprehensive": "Comprehensive"
+        },
+        "addInsuranceType": "Add Insurance Type",
+        "addRoadService": "Add Road Service",
+        "saveChangesButton": "Save Changes",
+        "editSuccess": "Company updated successfully",
+        "editErrorGeneric": "Failed to update company",
+        "addCompany": "Add Company",
+        "confirmDelete": "Confirm Delete",
+        "deleteConfirm": "Are you sure you want to delete this company?",
+        "deleteConfirmText": "This action cannot be undone.",
+        "deleteError": "Failed to delete company",
+        "fetchError": "Failed to fetch companies",
+        "noCompanies": "No companies found",
+        "noResults": "No results found",
+        "searchPlaceholder": "Search companies...",
+        "table": {
+            "actions": "Actions",
+            "address": "Address",
+            "contact": "Contact",
+            "insuranceType": "Insurance Type",
+            "insuranceTypes": "Insurance Types",
+            "name": "Name",
+            "roadServices": "Road Services"
+        },
+        "title": "Insurance Companies",
         "addTitle": "Add Insurance Company",
+        "errors": {
+            "nameRequired": "Company name is required",
+            "atLeastOneType": "At least one insurance type is required",
+            "addFailed": "Failed to add insurance company"
+        },
+        "success": {
+            "added": "Insurance company added successfully"
+        },
         "fields": {
             "name": "Company Name",
             "insuranceTypes": "Insurance Types",
-            "roadServices": "Road Services",
             "price": "Price",
+            "roadServices": "Road Services",
             "serviceName": "Service Name"
         },
         "type": {
             "compulsory": "Compulsory",
             "comprehensive": "Comprehensive"
-        },
-        "success": {
-            "added": "Company added successfully"
-        },
-        "errors": {
-            "nameRequired": "Company name is required",
-            "atLeastOneType": "Add at least one insurance type",
-            "addFailed": "Failed to add company"
-        },
-        "labels": {
-            "insuranceCompany": "Insurance Company"
-        },
-        "options": {
-            "chooseinsuranceCompany": "Chooseinsurance Company"
-        },
-        "table": {
-            "name": "Company Name",
-            "contact": "Contact Info",
-            "address": "Address",
-            "insuranceType": "Insurance Type",
-            "actions": "Actions"
-        },
-        "tabs": {
-            "privateCar": "Private Car",
-            "commercialCar": "Commercial Car",
-            "motorcycle": "Motorcycle"
-        },
-        "editErrorNoId": "No company ID provided for editing",
-        "editSuccess": "Company updated successfully",
-        "editErrorGeneric": "Failed to update company",
-        "rates": {
-            "under24": "Under 24",
-            "over24": "Over 24",
-            "offerAmount": "Offer Amount",
-            "minFor60k": "Minimum for 60k"
-        },
-        "editTitle": "Edit Insurance Company",
-        "form": {
-            "companyName": "Company Name",
-            "insuranceType": "Insurance Type",
-            "contact": "Contact",
-            "address": "Address"
-        },
-        "types": {
-            "mandatory": "Mandatory",
-            "comprehensive": "Comprehensive"
-        },
-        "ratesTitle": "Insurance Rates",
-        "saveChangesButton": "Save Changes",
-        "fetchError": "Error fetching insurance companies",
-        "deleteError": "Error deleting insurance company",
-        "exportSheetName": "Insurance Companies",
-        "exportExcelFileName": "insurance_companies.xlsx",
-        "exportCsvFileName": "insurance_companies.csv",
-        "exportPdfTitle": "Insurance Companies Report",
-        "exportPdfFileName": "insurance_companies.pdf",
-        "printReportTitle": "Insurance Companies Report",
-        "addButton": "Add Company",
-        "searchPlaceholder": "Search companies...",
-        "noCompanies": "No insurance companies found",
-        "table": {
-            "actions": "Actions",
-            "insuranceType": "Insurance Type",
-            "insuranceTypes": "Insurance Types",
-            "name": "Company Name",
-            "roadServices": "Road Services"
         }
     },
     "Email": "Email",
@@ -441,16 +428,15 @@
     "Saving...": "Saving...",
     "Add Agent": "Add Agent",
     "breadcrumbs": {
-        "allInsurances": "All Insurances",
         "home": "Home",
-        "agents": "Agents",
-        "auditLogs": "Audit Logs",
-        "insuranceCompanies": "Insurance Companies",
-        "departmentsAndUsers": "Users & Departments",
         "customers": "Customers",
         "customerInfo": "Customer Info",
-        "insuranceList": "Insurance List",
-        "checkDetails": "Check Details"
+        "agents": "Agents",
+        "allInsurances": "All Insurances",
+        "auditLogs": "Audit Logs",
+        "checkDetails": "Check Details",
+        "departmentsAndUsers": "Departments & Users",
+        "insuranceList": "Insurance List"
     },
     "login": {
         "title": "Login",
@@ -464,61 +450,44 @@
         "loginButton": "Login"
     },
     "common": {
+        "loading": "Loading...",
+        "delete": "Delete",
+        "notAvailable": "Not available",
+        "actions": "Actions",
         "add": "Add",
         "cancel": "Cancel",
-        "saving": "Saving...",
-        "yes": "Yes",
-        "no": "No",
-        "noDataToExport": "No Data To Export",
-        "exportCsv": "Export Csv",
-        "exportExcel": "Export Excel",
-        "exportPdf": "Export Pdf",
-        "print": "Print",
-        "loading": "Loading",
-        "delete": "Delete",
-        "noSearchResults": "No Search Results",
-        "loadingMore": "Loading More",
-        "endOfResults": "End Of Results",
-        "actions": "Actions",
-        "searchPlaceholder": "Search Placeholder",
-        "no_results": "No_results",
-        "details": "Details",
-        "noData": "No Data",
-        "errorOccurred": "Error Occurred",
-        "notAvailable": "Not Available",
-        "edit": "Edit",
-        "tableView": "Table View",
         "cardView": "Card View",
-        "noDataToPrint": "No Data To Print",
-        "viewDetails": "View Details",
+        "deleting": "Deleting...",
+        "details": "Details",
+        "edit": "Edit",
+        "endOfResults": "End of Results",
+        "errorOccurred": "An error occurred",
+        "exportCsv": "Export CSV",
+        "exportExcel": "Export Excel",
+        "exportPdf": "Export PDF",
+        "loadingMore": "Loading more...",
+        "no_results": "No results found",
+        "noData": "No data available",
+        "noDataToExport": "No data to export",
+        "noDataToPrint": "No data to print",
+        "noSearchResults": "No search results",
+        "print": "Print",
         "remove": "Remove",
         "saveChanges": "Save Changes",
-        "save": "Save",
-        "view": "View",
-        "download": "Download",
-        "active": "Active",
-        "inactive": "Inactive",
-        "back": "Back",
-        "unknown": "Unknown"
+        "searchPlaceholder": "Search...",
+        "tableView": "Table View",
+        "viewDetails": "View Details",
+        "yes": "Yes",
+        "no": "No",
+        "saving": "Saving..."
     },
     "validation": {
-        "rateRequiredStrictlyPositive": "This rate is required and must be a positive number (greater than 0).",
-        "companyNameRequired": "Company Name is required",
-        "paidExceedsInsurance": "Paid amount cannot exceed the insurance amount.",
-        "contactRequired": "Contact Number is required",
-        "addressRequired": "Address is required",
-        "insuranceTypeRequired": "Insurance Type is required",
-        "rateRequiredPositive": "Rate is required and must be a non-negative number",
-        "formErrors": "Please fix the errors in the form.",
-        "allFieldsRequired": "All fields are required.",
-        "firstNameRequired": "First name is required",
-        "lastNameRequired": "Last name is required",
-        "emailRequired": "Email is required",
-        "emailInvalid": "Invalid email address",
-        "idNumberRequired": "Identity Number is required and must be a number",
-        "phoneNumberRequired": "Phone number is required",
-        "cityRequired": "City is required",
-        "nameRequired": "Name Required"
+        "companyNameRequired": "Company name is required",
+        "typeRequired": "Type is required",
+        "pricePositive": "Price must be a positive number",
+        "nameRequired": "Name is required",
+        "formErrors": "Please fix the form errors",
+        "allFieldsRequired": "All fields are required"
     },
     "departments": {
         "detailsTitle": "Department Details",
@@ -752,11 +721,11 @@
         "errorAddingInsurance": "Error adding insurance. Please try again."
     },
     "customerInfo": {
-        "title": "Customer Info",
+        "title": "Customer Information",
         "firstName": "First Name",
         "lastName": "Last Name",
         "mobile": "Mobile",
-        "identity": "Identity Number",
+        "identity": "ID Number",
         "birthDate": "Birth Date",
         "joinDate": "Join Date",
         "city": "City",
@@ -764,37 +733,31 @@
         "attachments": {
             "title": "Attachments",
             "upload": "Upload Files",
-            "carLicense": "Car License",
-            "carLicenseAlt": "Car License Image",
-            "carImage": "Car Image",
-            "carImageAlt": "Car Image",
-            "none": "None",
-            "uploadSuccess": "Upload Success",
-            "uploadError": "Upload Error"
+            "none": "No attachments"
         },
         "vehicles": {
             "title": "Vehicles",
             "add": "Add Vehicle",
+            "none": "No vehicles found",
             "vehicleAlt": "Vehicle",
-            "licenseAlt": "Car License Plate",
-            "addInsurance": "Add Insurance",
-            "none": "No vehicles found for this customer."
+            "licenseAlt": "Car License",
+            "addInsurance": "Add Insurance"
         },
-        "allInsured": {
-            "title": "Other Insured Customers",
-            "name": "Name",
-            "phone": "Phone Number",
-            "id": "ID Number",
-            "city": "City",
-            "joinDate": "Join Date",
-            "noneFound": "No other insured customers found.",
-            "onlyCurrent": "No other insured customers to display."
-        },
-        "paymentHistory": {
-            "title": "Payment History",
-            "method": "Payment Method",
-            "amount": "Paid Amount",
-            "date": "Payment Date"
+        "insurances": {
+            "title": "Insurances",
+            "none": "No insurances found",
+            "fetchError": "Failed to fetch insurances.",
+            "category": "Category",
+            "type": "Type",
+            "company": "Company",
+            "agent": "Agent",
+            "paymentMethod": "Payment",
+            "status": "Status",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "paidAmount": "Paid Amount",
+            "remainingDebt": "Remaining Debt",
+            "plate": "Plate Number"
         }
     },
     "fileUploadModal": {
@@ -2272,7 +2235,52 @@
             "processingFailed": "Payment processing failed. Please try again."
         }
     },
-    "email": "Email",
+    "email": {
+        "errors": {
+            "fetchCustomers": "Failed to load customers",
+            "sendFailed": "Failed to send email",
+            "noRecipients": "Please select at least one recipient",
+            "bulkSendFailed": "Failed to send bulk email"
+        },
+        "success": {
+            "sent": "Email sent successfully!",
+            "bulkSent": "Bulk email sent to {{count}} recipients",
+            "deleted": "Selected emails deleted"
+        },
+        "breadcrumb": {
+            "dashboard": "Dashboard",
+            "emails": "Email Management"
+        },
+        "tabs": {
+            "inbox": "Inbox",
+            "compose": "Compose",
+            "bulk": "Bulk Email"
+        },
+        "inbox": {
+            "searchPlaceholder": "Search emails...",
+            "noEmails": "No emails found"
+        },
+        "compose": {
+            "title": "Compose Email",
+            "to": "To",
+            "subject": "Subject",
+            "message": "Message",
+            "sending": "Sending...",
+            "send": "Send Email"
+        },
+        "bulk": {
+            "selectCustomers": "Select Recipients",
+            "searchPlaceholder": "Search customers...",
+            "selectAll": "Select All",
+            "noCustomers": "No customers with email addresses found",
+            "compose": "Compose Bulk Email",
+            "subject": "Subject",
+            "message": "Message",
+            "info": "This email will be sent to {{count}} recipients",
+            "sending": "Sending...",
+            "send": "Send Bulk Email"
+        }
+    },
     "notifications": {
         "title": "Notifications",
         "subtitle": "Stay updated with your latest notifications",
@@ -2554,13 +2562,9 @@
     },
     "vehicles": {
         "messages": {
-            "fetchError": "Fetch Error",
-            "deleteSuccess": "Delete Success",
-            "deleteError": "Delete Error"
-        },
-        "deleteModal": {
-            "title": "Title",
-            "message": "Message"
+            "fetchError": "Failed to fetch vehicles.",
+            "deleteSuccess": "Vehicle deleted successfully!",
+            "deleteError": "Failed to delete vehicle."
         }
     },
     "policeNumberLabel": "Police Number Label",
@@ -2610,138 +2614,201 @@
     "updatedAt": "Updated At",
     "createdBy": "Created By",
     "updatedBy": "Updated By",
-    "email": {
-        "errors": {
-            "fetchCustomers": "Failed to load customers",
-            "sendFailed": "Failed to send email",
-            "noRecipients": "Please select at least one recipient",
-            "bulkSendFailed": "Failed to send bulk email"
-        },
-        "success": {
-            "sent": "Email sent successfully!",
-            "bulkSent": "Bulk email sent to {{count}} recipients",
-            "deleted": "Selected emails deleted"
-        },
-        "breadcrumb": {
-            "dashboard": "Dashboard",
-            "emails": "Email Management"
-        },
-        "tabs": {
-            "inbox": "Inbox",
-            "compose": "Compose",
-            "bulk": "Bulk Email"
-        },
-        "inbox": {
-            "searchPlaceholder": "Search emails...",
-            "noEmails": "No emails found"
-        },
-        "compose": {
-            "title": "Compose Email",
-            "to": "To",
-            "subject": "Subject",
-            "message": "Message",
-            "sending": "Sending...",
-            "send": "Send Email"
-        },
-        "bulk": {
-            "selectCustomers": "Select Recipients",
-            "searchPlaceholder": "Search customers...",
-            "selectAll": "Select All",
-            "noCustomers": "No customers with email addresses found",
-            "compose": "Compose Bulk Email",
-            "subject": "Subject",
-            "message": "Message",
-            "info": "This email will be sent to {{count}} recipients",
-            "sending": "Sending...",
-            "send": "Send Bulk Email"
-        }
-    },
-    "insuranceCompany": {
-        "editTitle": "Edit Insurance Company",
-        "form": {
-            "companyName": "Company Name",
-            "insuranceTypes": "Insurance Types",
-            "roadServices": "Road Services",
-            "serviceName": "Service Name"
-        },
-        "types": {
-            "mandatory": "Compulsory",
-            "comprehensive": "Comprehensive"
-        },
-        "addInsuranceType": "Add Insurance Type",
-        "addRoadService": "Add Road Service",
-        "saveChangesButton": "Save Changes",
-        "editSuccess": "Company updated successfully",
-        "editErrorGeneric": "Failed to update company"
-    },
-    "validation": {
-        "companyNameRequired": "Company name is required",
-        "typeRequired": "Type is required",
-        "pricePositive": "Price must be a positive number",
-        "nameRequired": "Name is required",
-        "formErrors": "Please fix the form errors"
-    },
-    "common": {
-        "cancel": "Cancel"
-    },
-    "breadcrumbs": {
-        "home": "Home",
-        "customers": "Customers",
-        "customerInfo": "Customer Info"
-    },
-    "common": {
-        "loading": "Loading...",
-        "delete": "Delete",
-        "notAvailable": "Not available"
-    },
-    "customerInfo": {
-        "title": "Customer Information",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "mobile": "Mobile",
-        "identity": "ID Number",
-        "birthDate": "Birth Date",
-        "joinDate": "Join Date",
-        "city": "City",
-        "notes": "Notes",
-        "attachments": {
-            "title": "Attachments",
-            "upload": "Upload Files",
-            "none": "No attachments"
-        },
-        "vehicles": {
-            "title": "Vehicles",
-            "add": "Add Vehicle",
-            "none": "No vehicles found",
-            "vehicleAlt": "Vehicle",
-            "licenseAlt": "Car License",
-            "addInsurance": "Add Insurance"
-        },
-        "insurances": {
-            "title": "Insurances",
-            "none": "No insurances found",
-            "fetchError": "Failed to fetch insurances.",
-            "category": "Category",
-            "type": "Type",
-            "company": "Company",
-            "agent": "Agent",
-            "paymentMethod": "Payment",
-            "status": "Status",
-            "startDate": "Start Date",
-            "endDate": "End Date",
-            "paidAmount": "Paid Amount",
-            "remainingDebt": "Remaining Debt"
-        }
-    },
-    "vehicles": {
-        "messages": {
-            "fetchError": "Failed to fetch vehicles.",
-            "deleteSuccess": "Vehicle deleted successfully!",
-            "deleteError": "Failed to delete vehicle."
-        }
-    },
     "customerInfo.attachments": {
         "uploadSuccess": "Files uploaded successfully!",
         "uploadError": "Failed to upload files."
+    },
+    "reports": {
+        "customer": {
+            "title": "Customer Report",
+            "description": "Comprehensive report of customer information and statistics",
+            "name": "Name",
+            "idNumber": "ID Number",
+            "phone": "Phone",
+            "email": "Email",
+            "joiningDate": "Joining Date",
+            "joiningDateFrom": "Joining Date From",
+            "joiningDateTo": "Joining Date To",
+            "agent": "Agent",
+            "vehicleCount": "Vehicle Count",
+            "totalInsurances": "Total Insurances",
+            "status": "Status"
+        },
+        "vehicleInsurance": {
+            "title": "Vehicle Insurance Report",
+            "description": "Detailed report of all vehicle insurance policies",
+            "customerName": "Customer Name",
+            "plateNumber": "Plate Number",
+            "vehicleModel": "Vehicle Model",
+            "insuranceCompany": "Insurance Company",
+            "policyNumber": "Policy Number",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "premium": "Premium",
+            "agent": "Agent",
+            "insuranceType": "Insurance Type",
+            "status": "Status",
+            "periodFrom": "Period From",
+            "periodTo": "Period To",
+            "company": "Company",
+            "totalPolicies": "Total Policies",
+            "activePolicies": "Active Policies",
+            "expiredPolicies": "Expired Policies",
+            "totalPremium": "Total Premium",
+            "type": {
+                "comprehensive": "Comprehensive",
+                "third_party": "Third Party"
+            }
+        },
+        "otherInsurance": {
+            "title": "Other Insurance Report",
+            "description": "Report of non-vehicle insurance policies",
+            "customerName": "Customer Name",
+            "insuranceType": "Insurance Type",
+            "policyNumber": "Policy Number",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "premium": "Premium",
+            "coverageAmount": "Coverage Amount",
+            "beneficiary": "Beneficiary",
+            "status": "Status",
+            "periodFrom": "Period From",
+            "periodTo": "Period To",
+            "totalPolicies": "Total Policies",
+            "activePolicies": "Active Policies",
+            "totalPremium": "Total Premium",
+            "totalCoverage": "Total Coverage",
+            "types": {
+                "life": "Life Insurance",
+                "health": "Health Insurance",
+                "property": "Property Insurance",
+                "travel": "Travel Insurance",
+                "business": "Business Insurance"
+            }
+        },
+        "accidents": {
+            "title": "Accidents Report",
+            "description": "Comprehensive report of accident claims and statistics",
+            "reportNumber": "Report Number",
+            "customerName": "Customer Name",
+            "plateNumber": "Plate Number",
+            "accidentDate": "Accident Date",
+            "location": "Location",
+            "severity": "Severity",
+            "damageAmount": "Damage Amount",
+            "insuranceCompany": "Insurance Company",
+            "status": "Status",
+            "periodFrom": "Period From",
+            "periodTo": "Period To",
+            "totalAccidents": "Total Accidents",
+            "totalDamage": "Total Damage",
+            "averageDamage": "Average Damage",
+            "severityTypes": {
+                "minor": "Minor",
+                "moderate": "Moderate",
+                "major": "Major"
+            }
+        },
+        "revenues": {
+            "title": "Revenues Report",
+            "description": "Report of all revenue collected from customers",
+            "customerName": "Customer Name",
+            "policyNumber": "Policy Number",
+            "paymentDate": "Payment Date",
+            "amount": "Amount",
+            "paymentMethod": "Payment Method",
+            "agent": "Agent",
+            "insuranceType": "Insurance Type",
+            "description": "Description",
+            "periodFrom": "Period From",
+            "periodTo": "Period To",
+            "totalRevenue": "Total Revenue",
+            "totalPayments": "Total Payments",
+            "averagePayment": "Average Payment",
+            "insuranceTypes": {
+                "vehicle": "Vehicle Insurance",
+                "life": "Life Insurance",
+                "health": "Health Insurance",
+                "property": "Property Insurance"
+            }
+        },
+        "payments": {
+            "title": "Payments Report",
+            "description": "Report of all payments made by the company",
+            "paymentDate": "Payment Date",
+            "insuranceCompany": "Insurance Company",
+            "paymentType": "Payment Type",
+            "amount": "Amount",
+            "referenceNumber": "Reference Number",
+            "description": "Description",
+            "status": "Status",
+            "periodFrom": "Period From",
+            "periodTo": "Period To",
+            "company": "Company",
+            "totalPayments": "Total Payments",
+            "paidAmount": "Paid Amount",
+            "pendingAmount": "Pending Amount",
+            "totalTransactions": "Total Transactions",
+            "paymentTypes": {
+                "commission": "Commission",
+                "claim_settlement": "Claim Settlement",
+                "premium": "Premium"
+            }
+        },
+        "receivablesDebts": {
+            "title": "Receivables & Debts Report",
+            "description": "Report of outstanding receivables and debts",
+            "customerName": "Customer Name",
+            "type": "Type",
+            "reference": "Reference",
+            "amount": "Amount",
+            "dueDate": "Due Date",
+            "status": "Status",
+            "daysPastDue": "Days Past Due",
+            "description": "Description",
+            "dueDateFrom": "Due Date From",
+            "dueDateTo": "Due Date To",
+            "totalAmount": "Total Amount",
+            "overdueAmount": "Overdue Amount",
+            "totalItems": "Total Items",
+            "overdueItems": "Overdue Items",
+            "types": {
+                "due_check": "Due Check",
+                "unpaid_insurance": "Unpaid Insurance"
+            },
+            "statusTypes": {
+                "due": "Due",
+                "overdue": "Overdue",
+                "bounced": "Bounced",
+                "pending": "Pending"
+            }
+        }
+    },
+    "common": {
+        "showing": "Showing",
+        "results": "results",
+        "refresh": "Refresh",
+        "print": "Print",
+        "search": "Search",
+        "clear": "Clear",
+        "all": "All",
+        "filters": "Filters",
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired",
+        "pending": "Pending",
+        "completed": "Completed",
+        "in_progress": "In Progress",
+        "currency": "NIS",
+        "days": "days",
+        "of": "of",
+        "itemsPerPage": "Items per page",
+        "noDataFound": "No data found",
+        "paid": "Paid",
+        "paymentMethods": {
+            "cash": "Cash",
+            "card": "Card",
+            "bank_transfer": "Bank Transfer"
+        }
     }
 }

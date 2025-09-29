@@ -40,6 +40,13 @@ import DocumentSettings from "../Pages/DocumentSettings.jsx";
 import AddDocumentSettings from "../Pages/AddDocumentSettings.jsx";
 import ViewDocumentSettings from "../Pages/ViewDocumentSettings.jsx";
 import EditDocumentSettings from "../Pages/EditDocumentSettings.jsx";
+import CustomerReport from "../components/reports/CustomerReport.jsx";
+import VehicleInsuranceReport from "../components/reports/VehicleInsuranceReport.jsx";
+import OtherInsuranceReport from "../components/reports/OtherInsuranceReport.jsx";
+import AccidentsReport from "../components/reports/AccidentsReport.jsx";
+import RevenuesReport from "../components/reports/RevenuesReport.jsx";
+import PaymentsReport from "../components/reports/PaymentsReport.jsx";
+import ReceivablesDebtsReport from "../components/reports/ReceivablesDebtsReport.jsx";
 
 const router = createBrowserRouter([
     {
@@ -171,6 +178,27 @@ const router = createBrowserRouter([
             }, {
                 path: '/allInsurance',
                 element: <AllInsured />
+            }, {
+                path: '/reports/customers',
+                element: <ProtectedRouter><CustomerReport /></ProtectedRouter>
+            }, {
+                path: '/reports/vehicle-insurance',
+                element: <ProtectedRouter><VehicleInsuranceReport /></ProtectedRouter>
+            }, {
+                path: '/reports/other-insurance',
+                element: <ProtectedRouter><OtherInsuranceReport /></ProtectedRouter>
+            }, {
+                path: '/reports/accidents',
+                element: <ProtectedRouter><AccidentsReport /></ProtectedRouter>
+            }, {
+                path: '/reports/revenues',
+                element: <ProtectedRouter><RevenuesReport /></ProtectedRouter>
+            }, {
+                path: '/reports/payments',
+                element: <ProtectedRouter><PaymentsReport /></ProtectedRouter>
+            }, {
+                path: '/reports/receivables-debts',
+                element: <ProtectedRouter><ReceivablesDebtsReport /></ProtectedRouter>
             }
         ],
 

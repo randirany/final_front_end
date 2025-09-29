@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { Car, Edit, Trash2, Plus } from "lucide-react"
+import { Car, Edit, Trash2, Plus } from "lucide-react"\nimport { toLocaleDateStringEN } from '../utils/dateFormatter'
 
 function VehiclesList({ id }) {
   const [vehicles, setVehicles] = useState([])
@@ -119,7 +119,7 @@ function VehiclesList({ id }) {
                   <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.model}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.type}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.ownership}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{new Date(vehicle.licenseExpiry).toLocaleDateString("ar-EG")}</td>
+                  <td className="py-2 px-4 border dark:border-borderNav-b">{toLocaleDateStringEN(vehicle.licenseExpiry)}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.color}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.price}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">

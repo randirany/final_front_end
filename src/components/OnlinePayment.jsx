@@ -440,7 +440,7 @@ export default function OnlinePayment() {
             </Card>
 
             {/* Accepted Cards */}
-            <Card className="dark:bg-navbarBack shadow-lg">
+            {/* <Card className="dark:bg-navbarBack shadow-lg">
               <CardContent className="p-6">
                 <Typography variant="h6" className="dark:text-white font-semibold mb-4">
                   {t('payment.cards.title', 'Accepted Cards')}
@@ -458,14 +458,14 @@ export default function OnlinePayment() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Help */}
-            <Alert severity="info" className="dark:bg-blue-900 dark:text-blue-100">
+            {/* <Alert severity="info" className="dark:bg-blue-900 dark:text-blue-100">
               <Typography variant="body2">
                 {t('payment.help.text', 'Need help? Contact our support team for assistance with your payment.')}
               </Typography>
-            </Alert>
+            </Alert> */}
           </div>
         </div>
       </div>

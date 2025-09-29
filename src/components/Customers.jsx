@@ -17,7 +17,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Car, Edit, LayoutGrid, List, Trash2, User } from 'lucide-react';
 import CustomerCard from './CustomerCard'; 
 import { toast } from 'react-hot-toast'; 
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
+import { formatDateISO } from '../utils/dateFormatter'; 
 
 const ROWS_PER_PAGE = 10;
 
@@ -227,10 +228,10 @@ export default function Customers() {
                 last_name: item.last_name,
                 id_Number: item.id_Number,
                 phone_number: item.phone_number,
-                joining_date: item.joining_date ? item.joining_date.slice(0, 10) : '',
+                joining_date: item.joining_date ? formatDateISO(item.joining_date) : '',
                 notes: item.notes,
                 city: item.city,
-                birth_date: item.birth_date ? item.birth_date.slice(0, 10) : '',
+                birth_date: item.birth_date ? formatDateISO(item.birth_date) : '',
                 name: `${item.first_name || ''} ${item.last_name || ''}`.trim(),
                 Mobile: item.phone_number,
                 address: item.city,
