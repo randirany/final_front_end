@@ -157,10 +157,11 @@ const AddDocumentSettings = () => {
       // Create FormData for file upload
       const formDataToSend = new FormData();
 
-      // Append all form fields
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
-      });
+      // Only append fields that are allowed by the backend validation schema
+      // Based on the API validation error, only companyName is allowed from formData
+      if (formData.companyName) {
+        formDataToSend.append('companyName', formData.companyName);
+      }
 
       // Append logo file if selected
       if (uploadedLogo) {

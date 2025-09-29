@@ -72,6 +72,8 @@
                 "payment": "תשלומים וקבלות",
                 "onlinePayment": "תשלום מקוון",
                 "emailManagement": "ניהול דואר אלקטרוני",
+                "cheques": "צ'קים",
+                "documentSettings": "הגדרות מסמכים",
                 "report": {
                     "titleReport": "דוחות",
                     "categore": {
@@ -364,6 +366,109 @@
         "no_results": "אין תוצאות",
         "exportCsvFileName": "שם קובץ ייצוא CSV"
     },
+    "login": {
+        "title": "כניסה למערכת",
+        "subtitle": "באמצעות כתובת דואר אלקטרוני",
+        "email": "דואר אלקטרוני",
+        "password": "סיסמה",
+        "emailPlaceholder": "הזן את כתובת הדואר האלקטרוני שלך",
+        "loginButton": "כניסה",
+        "forgotPassword": "שכחת סיסמה?",
+        "loginError": "שגיאה בכניסה למערכת",
+        "invalidCredentials": "פרטי כניסה לא תקינים"
+    },
+    "breadcrumbs": {
+        "allInsurances": "כל הביטוחים",
+        "home": "בית",
+        "agents": "סוכנים",
+        "auditLogs": "יומני ביקורת",
+        "insuranceCompanies": "חברות ביטוח",
+        "departmentsAndUsers": "משתמשים ומחלקות",
+        "customers": "לקוחות",
+        "customerInfo": "מידע לקוח",
+        "insuranceList": "רשימת ביטוחים",
+        "checkDetails": "פרטי השיק"
+    },
+    "common": {
+        "add": "הוסף",
+        "cancel": "ביטול",
+        "saving": "שומר...",
+        "yes": "כן",
+        "no": "לא",
+        "noDataToExport": "אין נתונים לייצוא",
+        "exportCsv": "ייצוא CSV",
+        "exportExcel": "ייצוא Excel",
+        "exportPdf": "ייצוא PDF",
+        "print": "הדפס",
+        "loading": "טוען",
+        "delete": "מחק",
+        "noSearchResults": "אין תוצאות חיפוש",
+        "loadingMore": "טוען עוד",
+        "endOfResults": "סוף התוצאות",
+        "actions": "פעולות",
+        "edit": "ערוך",
+        "view": "צפה",
+        "save": "שמור",
+        "update": "עדכן",
+        "close": "סגור",
+        "confirm": "אשר",
+        "back": "חזור",
+        "next": "הבא",
+        "previous": "הקודם",
+        "search": "חפש",
+        "filter": "סנן",
+        "clear": "נקה",
+        "refresh": "רענן",
+        "submit": "שלח",
+        "reset": "איפוס",
+        "unknown": "לא ידוע"
+    },
+    "email": {
+        "errors": {
+            "fetchCustomers": "נכשל בטעינת לקוחות",
+            "sendFailed": "נכשל בשליחת דואר אלקטרוני",
+            "noRecipients": "אנא בחר לפחות נמען אחד",
+            "bulkSendFailed": "נכשל בשליחת דואר אלקטרוני בצובר"
+        },
+        "success": {
+            "sent": "דואר אלקטרוני נשלח בהצלחה!",
+            "bulkSent": "דואר אלקטרוני בצובר נשלח ל-{{count}} נמענים",
+            "deleted": "דואר אלקטרוני נבחר נמחק"
+        },
+        "breadcrumb": {
+            "dashboard": "לוח בקרה",
+            "emails": "ניהול דואר אלקטרוני"
+        },
+        "tabs": {
+            "inbox": "תיבת דואר נכנס",
+            "compose": "כתיבה",
+            "bulk": "דואר אלקטרוני בצובר"
+        },
+        "inbox": {
+            "searchPlaceholder": "חפש דואר אלקטרוני...",
+            "noEmails": "לא נמצא דואר אלקטרוני"
+        },
+        "compose": {
+            "title": "כתוב דואר אלקטרוני",
+            "to": "אל",
+            "subject": "נושא",
+            "message": "הודעה",
+            "sending": "שולח...",
+            "send": "שלח דואר אלקטרוני"
+        },
+        "bulk": {
+            "selectCustomers": "בחר נמענים",
+            "searchPlaceholder": "חפש לקוחות...",
+            "selectAll": "בחר הכל",
+            "noCustomers": "לא נמצאו לקוחות עם כתובות דואר אלקטרוני",
+            "compose": "כתוב דואר אלקטרוני בצובר",
+            "subject": "נושא",
+            "message": "הודעה",
+            "info": "דואר אלקטרוני זה יישלח ל-{{count}} נמענים",
+            "sending": "שולח...",
+            "send": "שלח דואר אלקטרוני בצובר"
+        }
+    },
     "insuranceCompany.addTitle": "הוסף חברת ביטוח",
     "insuranceCompany": {
         "addTitle": "הוסף חברת ביטוח",
@@ -414,18 +519,32 @@
             "minFor60k": "מינימום עבור 60 אלף"
         }
     },
-      "insuranceCompany": {
-    "editTitle": "עריכת חברת ביטוח",
-    "form": {
-      "companyName": "שם החברה",
-      "insuranceTypes": "סוגי ביטוח",
-      "roadServices": "שירותי דרך",
-      "serviceName": "שם השירות"
+    "insuranceCompany": {
+        "editTitle": "עריכת חברת ביטוח",
+        "form": {
+            "companyName": "שם החברה",
+            "insuranceTypes": "סוגי ביטוח",
+            "roadServices": "שירותי דרך",
+            "serviceName": "שם השירות"
+        },
+        "types": {
+            "mandatory": "חובה",
+            "comprehensive": "כולל"
+        },
+        "addInsuranceType": "הוסף סוג ביטוח",
+        "addRoadService": "הוסף שירות דרך",
+        "saveChangesButton": "שמור שינויים",
+        "editSuccess": "החברה עודכנה בהצלחה",
+        "editErrorGeneric": "כשל בעדכון החברה"
     },
-    "types": {
-      "mandatory": "חובה",
-      "comprehensive": "כולל"
+    "validation": {
+        "companyNameRequired": "שם החברה נדרש",
+        "typeRequired": "סוג הביטוח נדרש",
+        "pricePositive": "המחיר חייב להיות מספר חיובי",
+        "nameRequired": "שם נדרש",
+        "formErrors": "אנא תקן את השגיאות בטופס"
     },
+<<<<<<< HEAD
     "addInsuranceType": "הוסף סוג ביטוח",
     "addRoadService": "הוסף שירות דרך",
     "saveChangesButton": "שמור שינויים",
@@ -502,4 +621,888 @@
     "uploadSuccess": "הקבצים הועלו בהצלחה!",
     "uploadError": "העלאת הקבצים נכשלה."
   }
+=======
+    "exportSheetName": "חברות_ביטוח",
+    "exportExcelFileName": "דוח_חברות_ביטוח.xlsx",
+    "exportPdfFileName": "דוח_חברות_ביטוח.pdf",
+    "exportCsvFileName": "דוח_חברות_ביטוח.csv",
+    "report_title": "דוח חברות ביטוח",
+    "showing_results": "מציג {{count}} מתוך {{total}} חברות",
+    "no_results": "לא נמצאו חברות ביטוח",
+    "search_placeholder": "חפש לפי שם חברה...",
+    "deleteConfirm": "האם אתה בטוח שברצונך למחוק חברה זו?",
+    "deleteSuccess": "חברה נמחקה בהצלחה",
+    "deleteError": "נכשל במחיקת החברה",
+    "updateSuccess": "חברה עודכנה בהצלחה",
+    "updateError": "נכשל בעדכון החברה",
+    "addSuccess": "חברה נוספה בהצלחה",
+    "addError": "נכשל בהוספת החברה",
+    "departments": {
+        "detailsTitle": "פרטי מחלקה",
+        "editTitle": "ערוך מחלקה",
+        "addTitle": "הוסף מחלקה חדשה",
+        "addButton": "הוסף מחלקה",
+        "addModalTitle": "הוסף מחלקה חדשה",
+        "editModalTitle": "ערוך מחלקה",
+        "searchPlaceholder": "חפש מחלקות...",
+        "tabsAriaLabel": "לשוניות מחלקה ועובדים",
+        "tabDepartments": "מחלקות",
+        "tabEmployees": "עובדים",
+        "noDepartments": "אין מחלקות זמינות.",
+        "fetchError": "נכשל בטעינת מחלקות.",
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק מחלקה זו?",
+        "deleteSuccess": "מחלקה נמחקה בהצלחה.",
+        "deleteError": "שגיאה במחיקת מחלקה.",
+        "updateSuccess": "מחלקה עודכנה בהצלחה.",
+        "updateError": "שגיאה בעדכון מחלקה.",
+        "addSuccess": "מחלקה נוספה בהצלחה.",
+        "addError": "שגיאה בהוספת מחלקה.",
+        "addEmployeeSuccess": "עובד נוסף בהצלחה.",
+        "addEmployeeError": "שגיאה בהוספת עובד.",
+        "addHeadSuccess": "ראש מחלקה נוסף בהצלחה.",
+        "addHeadError": "שגיאה בהוספת ראש מחלקה.",
+        "removeUserSuccess": "משתמש הוסר בהצלחה.",
+        "removeUserError": "שגיאה בהסרת משתמש.",
+        "removeHeadConfirm": "האם אתה בטוח שברצונך להסיר ראש מחלקה זה?",
+        "removeEmployeeConfirm": "האם אתה בטוח שברצונך להסיר עובד זה מהמחלקה?",
+        "addHeadTo": "הוסף ראש ל-{{departmentName}}",
+        "addEmployeeTo": "הוסף עובד ל-{{departmentName}}",
+        "exportSheetName": "מחלקות",
+        "exportExcelFileName": "דוח_מחלקות.xlsx",
+        "exportPdfTitle": "דוח מחלקות",
+        "exportPdfFileName": "דוח_מחלקות.pdf",
+        "table": {
+            "name": "שם מחלקה",
+            "description": "תיאור",
+            "head": "ראש מחלקה",
+            "employeeCount": "מספר עובדים",
+            "actions": "פעולות"
+        },
+        "menu": {
+            "addHead": "הוסף ראש",
+            "addEmployee": "הוסף עובד"
+        },
+        "details": {
+            "description": "תיאור",
+            "head": "ראש מחלקה",
+            "employeeCount": "מספר עובדים",
+            "permissions": "הרשאות",
+            "noPermissions": "לא הוגדרו הרשאות",
+            "employees": "עובדים",
+            "noEmployees": "אין עובדים"
+        },
+        "form": {
+            "name": "שם מחלקה",
+            "description": "תיאור",
+            "permissions": "הרשאות"
+        },
+        "validation": {
+            "nameRequired": "שם מחלקה נדרש."
+        },
+        "exportCsvFileName": "ייצוא_קובץ_CSV",
+        "printTitle": "כותרת הדפסה"
+    },
+    "employees": {
+        "name": "שם ראש",
+        "email": "דואר אלקטרוני",
+        "password": "סיסמה",
+        "searchPlaceholder": "חפש עובדים...",
+        "filterByDepartment": "סנן לפי מחלקה",
+        "allEmployees": "כל העובדים",
+        "notAssigned": "לא שובץ",
+        "removeFromDepartment": "הסר מהמחלקה",
+        "noEmployeesInDepartment": "אין עובדים במחלקה זו או בבחירה.",
+        "fetchErrorSpecific": "נכשל בטעינת עובדים למחלקה זו.",
+        "exportSheetName": "עובדים",
+        "exportExcelFileName": "דוח_עובדים.xlsx",
+        "exportPdfTitle": "דוח עובדים",
+        "exportPdfFileName": "דוח_עובדים.pdf",
+        "table": {
+            "name": "שם",
+            "email": "דואר אלקטרוני",
+            "role": "תפקיד",
+            "status": "סטטוס",
+            "department": "מחלקה",
+            "actions": "פעולות"
+        },
+        "exportCsvFileName": "ייצוא_קובץ_CSV",
+        "printTitle": "כותרת הדפסה",
+        "noEmployees": "אין עובדים"
+    },
+    "permissions": {
+        "addAccedent": "הוסף תאונה",
+        "showAccedent": "הצג תאונות",
+        "deleteAccedent": "מחק תאונה",
+        "createNotification": "צור הודעה",
+        "getNotifications": "קבל הודעות",
+        "markAsRead": "סמן כנקרא",
+        "Deletenotification": "מחק הודעה",
+        "addInsured": "הוסף מבוטח",
+        "deleteInsured": "מחק מבוטח",
+        "allInsured": "צפה בכל המבוטחים",
+        "findbyidInsured": "מצא מבוטח לפי זהות",
+        "addcar": "הוסף רכב",
+        "removeCar": "הסר רכב",
+        "showVehicles": "הצג רכבים",
+        "addRoad": "הוסף דרך",
+        "deleteRoad": "מחק דרך",
+        "updateRoad": "עדכן דרך",
+        "allRoad": "צפה בכל הדרכים",
+        "addAgents": "הוסף סוכנים",
+        "deleteAgents": "מחק סוכנים",
+        "updateAgents": "עדכן סוכנים",
+        "allAgents": "צפה בכל הסוכנים",
+        "addCompany": "הוסף חברה",
+        "deleteCompany": "מחק חברה",
+        "upateCompany": "עדכן חברה",
+        "allCompany": "צפה בכל החברות"
+    },
+    "newInsurance": {
+        "addNewInsurance": "הוסף ביטוח חדש",
+        "newInsuranceForm": "טופס ביטוח חדש",
+        "startDate": "תאריך התחלה",
+        "endDate": "תאריך סיום",
+        "insuranceType": "סוג ביטוח",
+        "chooseType": "בחר סוג",
+        "mandatory": "חובה",
+        "comprehensive": "מקיף",
+        "thirdParty": "צד שלישי",
+        "isCustomerUnder24": "האם הלקוח מתחת לגיל 24?",
+        "yes": "כן",
+        "no": "לא",
+        "enterInsuranceCompany": "הזן חברת ביטוח",
+        "paymentMethod": "אמצעי תשלום",
+        "choosePaymentMethod": "בחר אמצעי תשלום",
+        "cash": "מזומן",
+        "creditCard": "כרטיס אשראי",
+        "bankTransfer": "העברה בנקאית",
+        "dealer": "סוכן",
+        "enterDealerName": "הזן שם סוכן",
+        "insuranceAmount": "סכום ביטוח",
+        "enterInsuranceAmount": "הזן סכום ביטוח",
+        "paidAmount": "סכום ששולם",
+        "enterPaidAmount": "הזן סכום ששולם",
+        "paymentDate": "תאריך תשלום",
+        "attachments": "קבצים מצורפים",
+        "uploadAFile": "העלה קובץ",
+        "orDragAndDrop": "או גרור ושחרר",
+        "pngJpgUpTo": "PNG, JPG, PDF עד 10MB",
+        "addMoreFiles": "הוסף קבצים נוספים",
+        "submit": "שלח",
+        "submitting": "שולח...",
+        "insuranceAddedSuccessfully": "ביטוח נוסף בהצלחה!",
+        "errorAddingInsurance": "שגיאה בהוספת ביטוח. אנא נסה שוב."
+    },
+    "customerInfo": {
+        "title": "מידע לקוח",
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "mobile": "נייד",
+        "identity": "מספר זהות",
+        "birthDate": "תאריך לידה",
+        "joinDate": "תאריך הצטרפות",
+        "city": "עיר",
+        "notes": "הערות",
+        "attachments": {
+            "title": "קבצים מצורפים",
+            "upload": "העלה קבצים",
+            "carLicense": "רישיון רכב",
+            "carLicenseAlt": "תמונת רישיון רכב",
+            "carImage": "תמונת רכב",
+            "carImageAlt": "תמונת רכב",
+            "none": "אין",
+            "uploadSuccess": "הועלה בהצלחה",
+            "uploadError": "שגיאה בהעלאה"
+        },
+        "vehicles": {
+            "title": "רכבים",
+            "add": "הוסף רכב",
+            "vehicleAlt": "רכב",
+            "licenseAlt": "לוחית רישוי רכב",
+            "addInsurance": "הוסף ביטוח",
+            "none": "לא נמצאו רכבים עבור לקוח זה."
+        },
+        "allInsured": {
+            "title": "לקוחות מבוטחים אחרים",
+            "name": "שם",
+            "phone": "מספר טלפון",
+            "id": "מספר זהות",
+            "city": "עיר",
+            "joinDate": "תאריך הצטרפות",
+            "noneFound": "לא נמצאו לקוחות מבוטחים אחרים.",
+            "onlyCurrent": "אין לקוחות מבוטחים אחרים להצגה."
+        },
+        "paymentHistory": {
+            "title": "היסטוריית תשלומים",
+            "method": "אמצעי תשלום",
+            "amount": "סכום ששולם",
+            "date": "תאריך תשלום"
+        }
+    },
+    "fileUploadModal": {
+        "title": "צרף קובץ ללקוח",
+        "labels": {
+            "description": "תיאור קובץ",
+            "uploadFiles": "העלה קובץ/ים",
+            "selectedFiles": "קובץ/ים נבחר/ו:"
+        },
+        "placeholders": {
+            "description": "הזן תיאור קובץ"
+        },
+        "dropArea": {
+            "clickToUpload": "לחץ להעלאה",
+            "orDragAndDrop": "או גרור ושחרר"
+        },
+        "buttons": {
+            "cancel": "ביטול",
+            "upload": "העלה",
+            "uploading": "מעלה..."
+        },
+        "validation": {
+            "descriptionRequired": "תיאור קובץ נדרש",
+            "filesRequired": "אנא בחר לפחות קובץ אחד"
+        },
+        "messages": {
+            "uploadSuccess": "קבצים הועלו בהצלחה!",
+            "uploadError": "שגיאה בהעלאת קבצים. אנא נסה שוב."
+        }
+    },
+    "addCheckModal": {
+        "title": "הוסף שיק",
+        "subtitle": "צור רשומת שיק חדשה עם כל הפרטים הנדרשים",
+        "labels": {
+            "checkNumber": "מספר שיק",
+            "dueDate": "תאריך פירעון",
+            "checkAmount": "סכום שיק",
+            "returned": "הוחזר?",
+            "checkImage": "תמונת שיק",
+            "currentImage": "תמונה נוכחית:",
+            "newSelectedFile": "קובץ חדש:",
+            "selectedFile": "קובץ נבחר:"
+        },
+        "placeholders": {
+            "checkNumber": "הזן מספר שיק",
+            "checkAmount": "הזן סכום שיק"
+        },
+        "options": {
+            "yes": "כן",
+            "no": "לא"
+        },
+        "dropArea": {
+            "clickToUpload": "לחץ להעלאה",
+            "orDragAndDrop": "או גרור ושחרר",
+            "imageTypes": "PNG, JPG עד 2MB"
+        },
+        "buttons": {
+            "remove": "הסר",
+            "cancel": "ביטול",
+            "add": "הוסף שיק",
+            "submitting": "שולח..."
+        },
+        "validation": {
+            "checkNumberRequired": "מספר שיק הוא שדה חובה.",
+            "dueDateRequired": "תאריך פירעון שיק הוא שדה חובה.",
+            "amountRequired": "סכום שיק הוא שדה חובה.",
+            "positiveAmount": "סכום שיק חייב להיות מספר חיובי."
+        },
+        "alerts": {
+            "missingIds": "שגיאת מערכת: מזהים נדרשים חסרים.",
+            "checkAddedSuccess": "שיק נוסף בהצלחה!",
+            "addCheckFailed": "נכשל בהוספת שיק. אנא נסה שוב."
+        },
+        "errors": {
+            "insuredNotFound": "הלקוח או הרכב לא נמצא.",
+            "vehicleNotFound": "הרכב הנבחר לא נמצא עבור לקוח זה.",
+            "insuranceNotFound": "רשומת הביטוח לא נמצאה עבור רכב זה.",
+            "invalidRequest": "בקשה לא תקינה. אנא בדוק את הנתונים.",
+            "networkError": "שגיאת רשת. אנא בדוק את החיבור."
+        }
+    },
+    "checkDetails": {
+        "alerts": {
+            "fetchErrorDefault": "נכשל בטעינת פרטי שיק.",
+            "missingIds": "חסרים מזהים נדרשים (מבוטח, רכב או ביטוח) בכתובת."
+        },
+        "noChecksFound": "לא נמצאו פרטי שיק עבור ביטוח זה.",
+        "viewImageTitle": "צפה בתמונה",
+        "checkImageAlt": "תמונת שיק",
+        "labels": {
+            "checkNumber": "מס' שיק:",
+            "dueDate": "תאריך פירעון:",
+            "amount": "סכום:",
+            "returned": "הוחזר:"
+        },
+        "options": {
+            "yes": "כן",
+            "no": "לא"
+        },
+        "openImageTitle": "פתח תמונה בכרטיסייה חדשה"
+    },
+    "profile": {
+        "error": "לא ניתן לטעון פרופיל משתמש.",
+        "errorNoData": "נתוני משתמש לא זמינים.",
+        "breadcrumbTitle": "פרופיל משתמש",
+        "noDepartment": "לא זמין",
+        "notSet": "לא הוגדר",
+        "labels": {
+            "username": "שם משתמש",
+            "email": "דואר אלקטרוני",
+            "role": "תפקיד",
+            "departmentId": "מזהה מחלקה",
+            "status": "סטטוס",
+            "address": "כתובת",
+            "debt": "חוב",
+            "financialStatus": "מצב פיננסי",
+            "installments": "תשלומים"
+        }
+    },
+    "status": {
+        "active": "פעיל",
+        "inactive": "לא פעיל",
+        "pending": "ממתין",
+        "blocked": "חסום"
+    },
+    "settings": {
+        "breadcrumbTitle": "הגדרות חשבון",
+        "updateDetailsTitle": "עדכן מידע אישי",
+        "nameLabel": "שם מלא",
+        "emailLabel": "כתובת דואר אלקטרוני",
+        "savingButton": "שומר...",
+        "saveDetailsButton": "שמור",
+        "changePasswordTitle": "שנה סיסמה",
+        "currentPasswordLabel": "סיסמה נוכחית",
+        "newPasswordLabel": "סיסמה חדשה",
+        "confirmPasswordLabel": "אשר סיסמה חדשה",
+        "changingPasswordButton": "משנה...",
+        "changePasswordButton": "שנה סיסמה",
+        "detailsUpdatedSuccess": "פרטים עודכנו בהצלחה!",
+        "detailsUpdateError": "נכשל בעדכון פרטים.",
+        "passwordChangedSuccess": "סיסמה שונתה בהצלחה!",
+        "passwordChangeError": "נכשל בשינוי סיסמה.",
+        "showPassword": "הצג סיסמה",
+        "hidePassword": "הסתר סיסמה",
+        "error": {
+            "loadUser": "נכשל בטעינת נתוני משתמש. אנא נסה שוב או התחבר מחדש.",
+            "loadUserUnexpected": "אירעה שגיאה בלתי צפויה בטעינת נתוני משתמש.",
+            "tokenMissing": "אסימון אימות חסר. אנא התחבר שוב.",
+            "errorPassword": "אנא וודא שהסיסמה שלך נכונה",
+            "Agent": "אנא וודא את שם הסוכן",
+            "sucessAdd": "נוסף בהצלחה!",
+            "updateSucces": "עודכן בהצלחה!"
+        },
+        "validation": {
+            "nameRequired": "שם נדרש.",
+            "emailRequired": "דואר אלקטרוני נדרש.",
+            "emailInvalid": "כתובת דואר אלקטרוני לא תקינה.",
+            "currentPasswordRequired": "סיסמה נוכחית נדרשת.",
+            "newPasswordRequired": "סיסמה חדשה נדרשת.",
+            "newPasswordTooShort": "סיסמה חדשה חייבת להכיל לפחות 6 תווים.",
+            "passwordsDoNotMatch": "סיסמאות חדשות אינן תואמות."
+        },
+        "tabs": {
+            "details": "פרטים אישיים",
+            "password": "שנה סיסמה"
+        }
+    },
+    "loading": "טוען...",
+    "loadingMore": "טוען עוד...",
+    "agents": {
+        "addTitle": "הוסף סוכן חדש",
+        "addButton": "הוסף סוכנים",
+        "table": {
+            "name": "שם סוכן",
+            "email": "דואר אלקטרוני סוכן",
+            "role": "תפקיד סוכן",
+            "actions": "פעולות"
+        },
+        "exportSheetAgent": "סוכנים",
+        "exportExcelFileAgents": "דוח_סוכנים.xlsx",
+        "exportPdfTitle": "דוח סוכנים",
+        "exportPdfFileName": "דוח_סוכנים.pdf",
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק סוכן זה?",
+        "exportExcel": "ייצוא Excel",
+        "exportPdf": "ייצוא PDF",
+        "addAgent": "הוסף סוכן",
+        "searchPlaceholder": "חפש סוכנים לפי שם, דואר אלקטרוני או תפקיד...",
+        "noAgentsYet": "לא נמצאו סוכנים. הוסף סוכן חדש כדי להתחיל!",
+        "noAgentsMatchSearch": "אין סוכנים התואמים לקריטריוני החיפוש.",
+        "noMoreAgentsToLoad": "כל הסוכנים נטענו.",
+        "actions": {
+            "delete": "מחק",
+            "edit": "ערוך"
+        },
+        "messages": {
+            "addSuccess": "הוספה בהצלחה",
+            "addError": "שגיאה בהוספה"
+        },
+        "exportSheetagent": "ייצוא גיליון סוכנים",
+        "exportExcelFileagents": "ייצוא קובץ Excel סוכנים",
+        "printReportTitle": "כותרת דוח הדפסה",
+        "noAgents": "אין סוכנים"
+    },
+    "audit": {
+        "pageTitle": "יומני ביקורת מערכת",
+        "table": {
+            "userName": "שם משתמש",
+            "action": "פעולה",
+            "entity": "ישות/משאב",
+            "date": "תאריך ושעה",
+            "actions": "פעולות"
+        },
+        "searchPlaceholder": "חפש יומנים לפי משתמש, פעולה, ישות...",
+        "exportSheetName": "יומני ביקורת",
+        "exportExcelFileName": "דוח_יומני_ביקורת.xlsx",
+        "exportPdfTitle": "דוח יומני ביקורת",
+        "exportPdfFileName": "דוח_יומני_ביקורת.pdf",
+        "noLogsFound": "לא נמצאו יומני ביקורת.",
+        "detailsDialogTitle": "פרטי יומן ביקורת",
+        "details": {
+            "ipAddress": "כתובת IP",
+            "userAgent": "סוכן משתמש",
+            "additionalData": "נתונים נוספים / מטען",
+            "extraData": "נתונים נוספים"
+        },
+        "error": {
+            "fetchFailed": "נכשל בטעינת יומני ביקורת."
+        },
+        "exportSheet": "ייצוא גיליון",
+        "exportExcelFile": "ייצוא קובץ Excel",
+        "printReportTitle": "כותרת דוח הדפסה",
+        "detailsTitle": "כותרת פרטים"
+    },
+    "sms": {
+        "breadcrumb": {
+            "dashboard": "לוח בקרה",
+            "sms": "שלח SMS"
+        },
+        "customerList": {
+            "title": "בחר נמענים",
+            "searchPlaceholder": "חפש לקוחות...",
+            "selectAll": "בחר הכל",
+            "noResults": "לא נמצאו לקוחות"
+        },
+        "compose": {
+            "title": "כתוב הודעה",
+            "placeholder": "הקלד את ההודעה כאן...",
+            "characters": "תווים",
+            "parts": "חלק/ים",
+            "send": "שלח SMS",
+            "sending": "שולח...",
+            "recipients": "נמענים",
+            "longMessage": "הודעה תישלח כמספר חלקים"
+        },
+        "recipients": {
+            "title": "נמענים נבחרים",
+            "empty": "לא נבחרו נמענים",
+            "clearAll": "נקה הכל"
+        },
+        "confirmSend": {
+            "title": "שלח SMS",
+            "text": "האם אתה בטוח שברצונך לשלוח הודעה זו ל-{{count}} נמענים?",
+            "confirm": "כן, שלח"
+        },
+        "success": {
+            "sent": "SMS נשלח בהצלחה ל-{{count}} נמענים"
+        },
+        "errors": {
+            "fetchCustomers": "נכשל בטעינת לקוחות",
+            "emptyMessage": "אנא הזן הודעה",
+            "noRecipients": "אנא בחר לפחות נמען אחד",
+            "sendFailed": "נכשל בשליחת SMS"
+        }
+    },
+    "payment": {
+        "breadcrumb": {
+            "dashboard": "לוח בקרה",
+            "payment": "תשלום מקוון"
+        },
+        "form": {
+            "title": "פרטי תשלום",
+            "subtitle": "הזן את פרטי הכרטיס שלך בצורה מאובטחת",
+            "amount": "סכום תשלום",
+            "cardNumber": "מספר כרטיס",
+            "cardName": "שם בעל הכרטיס",
+            "expiryMonth": "חודש",
+            "expiryYear": "שנה",
+            "cvv": "CVV",
+            "submit": "שלם בבטחה",
+            "processing": "מעבד תשלום..."
+        },
+        "validation": {
+            "cardNumberRequired": "מספר כרטיס נדרש",
+            "cardNumberInvalid": "מספר כרטיס חייב להיות 16 ספרות",
+            "cardNameRequired": "שם בעל הכרטיס נדרש",
+            "cardNameMin": "שם חייב להיות לפחות 3 תווים",
+            "expiryMonthRequired": "חודש תפוגה נדרש",
+            "expiryYearRequired": "שנת תפוגה נדרשת",
+            "cvvRequired": "CVV נדרש",
+            "cvvInvalid": "CVV חייב להיות 3 או 4 ספרות",
+            "amountRequired": "סכום נדרש",
+            "amountPositive": "סכום חייב להיות חיובי",
+            "amountMin": "סכום מינימלי הוא 1"
+        },
+        "company": {
+            "description": "עיבוד תשלומים מקוון מאובטח"
+        },
+        "security": {
+            "title": "תשלום מאובטח",
+            "ssl": "הצפנת SSL 256-bit",
+            "pci": "תואם PCI DSS",
+            "data": "הנתונים שלך לא נשמרים אף פעם"
+        },
+        "cards": {
+            "title": "כרטיסים מקובלים"
+        },
+        "help": {
+            "text": "זקוק לעזרה? צור קשר עם צוות התמיכה שלנו לקבלת סיוע בתשלום."
+        },
+        "success": {
+            "title": "תשלום הושלם בהצלחה!",
+            "message": "תשלום עובד בהצלחה!",
+            "description": "התשלום שלך עובד בהצלחה.",
+            "newPayment": "בצע תשלום נוסף"
+        },
+        "error": {
+            "processingFailed": "עיבוד תשלום נכשל. אנא נסה שוב."
+        }
+    },
+    "notifications": {
+        "title": "הודעות",
+        "subtitle": "הישאר מעודכן עם ההודעות האחרונות שלך",
+        "markAllRead": "סמן הכל כנקרא",
+        "refresh": "רענן",
+        "retry": "נסה שוב",
+        "noToken": "נדרש אימות",
+        "fetchError": "נכשל בטעינת הודעות",
+        "markRead": "סמן כנקרא",
+        "from": "מאת",
+        "filter": {
+            "all": "הכל",
+            "unread": "לא נקרא",
+            "read": "נקרא"
+        },
+        "search": {
+            "placeholder": "חפש הודעות..."
+        },
+        "noResults": "אין הודעות התואמות לחיפוש שלך",
+        "noUnread": "אין הודעות שלא נקראו",
+        "noRead": "אין הודעות שנקראו",
+        "empty": "אין הודעות עדיין"
+    },
+    "cheques": {
+        "title": "ניהול שיקים",
+        "subtitle": "נהל ועקוב אחר כל השיקים במערכת",
+        "firstTitle": "לוח בקרה",
+        "secondeTitle": "שיקים",
+        "add_button": "הוסף שיק",
+        "search_placeholder": "חפש לפי מספר שיק או לקוח...",
+        "showing_results": "מציג {{count}} מתוך {{total}} שיקים",
+        "no_results": "לא נמצאו שיקים",
+        "addCheque": "הוסף שיק",
+        "addChequeSubtitle": "צור רשומת שיק חדשה עם כל הפרטים הנדרשים",
+        "editCheque": "ערוך שיק",
+        "editChequeSubtitle": "עדכן פרטי שיק",
+        "viewCheque": "צפה בשיק",
+        "viewChequeSubtitle": "צפה בפרטי שיק מלאים",
+        "deleteCheque": "מחק שיק",
+        "updateCheque": "עדכן שיק",
+        "chequeNumber": "מספר שיק",
+        "customer": "לקוח",
+        "amount": "סכום",
+        "issueDate": "תאריך הנפקה",
+        "dueDate": "תאריך פירעון",
+        "cheque_date": "תאריך שיק",
+        "bank": "בנק",
+        "bankName": "שם בנק",
+        "status": "סטטוס",
+        "actions": "פעולות",
+        "searchPlaceholder": "חפש לפי מספר שיק, שם לקוח או בנק...",
+        "selectCustomer": "בחר לקוח",
+        "chequeNumberPlaceholder": "הזן מספר שיק",
+        "bankNamePlaceholder": "הזן שם בנק",
+        "chequeImage": "תמונת שיק",
+        "uploadChequeImage": "לחץ להעלאה או גרור ושחרר",
+        "dropImageHere": "שחרר את התמונה כאן",
+        "imageUploadHint": "PNG, JPG, GIF עד 5MB",
+        "replaceImage": "החלף תמונה",
+        "revertToOriginal": "חזור למקורי",
+        "noImageAvailable": "אין תמונה זמינה",
+        "notes": "הערות",
+        "notesPlaceholder": "הוסף הערות נוספות על שיק זה...",
+        "cancel": "ביטול",
+        "saveCheque": "שמור שיק",
+        "saving": "שומר...",
+        "updating": "מעדכן...",
+        "noCheques": "לא נמצאו שיקים",
+        "noResultsFound": "אין שיקים התואמים לקריטריוני החיפוש",
+        "showingResults": "מציג {{from}} עד {{to}} מתוך {{total}} תוצאות",
+        "previous": "הקודם",
+        "next": "הבא",
+        "chequeDetails": "פרטי שיק",
+        "customerDetails": "פרטי לקוח",
+        "metadata": "מטא-נתונים",
+        "createdAt": "נוצר ב",
+        "lastUpdated": "עודכן לאחרונה",
+        "notFound": "שיק לא נמצא",
+        "chequeNotFoundDescription": "השיק המבוקש לא נמצא או נמחק",
+        "backToList": "חזור לרשימה",
+        "error": "שגיאה",
+        "errorFetchingDetails": "נכשל בטעינת פרטי שיק",
+        "errorUpdatingCheque": "נכשל בעדכון שיק",
+        "updateSuccess": "עדכון הצליח",
+        "chequeUpdatedSuccessfully": "שיק עודכן בהצלחה",
+        "delete_confirm": "האם אתה בטוח שברצונך למחוק שיק מספר {{chequeNumber}}?",
+        "delete_confirm_text": "פעולה זו לא ניתנת לביטול!",
+        "yes_delete": "כן, מחק",
+        "successDelete": "נמחק בהצלחה",
+        "exportSheetName": "שיקים",
+        "exportExcelFileName": "דוח_שיקים.xlsx",
+        "exportPdfFileName": "דוח_שיקים.pdf",
+        "exportCsvFileName": "דוח_שיקים.csv",
+        "report_title": "דוח שיקים",
+        "validation": {
+            "chequeNumberRequired": "מספר שיק נדרש",
+            "customerRequired": "אנא בחר לקוח",
+            "amountRequired": "סכום חייב להיות גדול מ-0",
+            "issueDateRequired": "תאריך הנפקה נדרש",
+            "dueDateRequired": "תאריך פירעון נדרש",
+            "chequeDateRequired": "תאריך שיק נדרש",
+            "bankNameRequired": "שם בנק נדרש",
+            "statusRequired": "סטטוס נדרש",
+            "imageRequired": "תמונת שיק נדרשת"
+        },
+        "customersFetchError": "לא ניתן לטעון לקוחות. משתמש בנתוני דוגמה במקום.",
+        "saveError": "נכשל בשמירת שיק. אנא נסה שוב.",
+        "continue": "המשך עם נתוני דוגמה",
+        "retry": "נסה לטעון שוב",
+        "tryAgain": "נסה שוב",
+        "status": {
+            "pending": "ממתין",
+            "cleared": "נפרע",
+            "bounced": "הוחזר",
+            "cancelled": "בוטל"
+        }
+    },
+    "documentSettings": {
+        "title": "הגדרות מסמך",
+        "subtitle": "נהל תבניות מסמכים והגדרות עיצוב",
+        "firstTitle": "לוח בקרה",
+        "secondTitle": "הגדרות מסמך",
+        "add_button": "הוסף הגדרת מסמך",
+        "search_placeholder": "חפש לפי שם חברה...",
+        "showing_results": "מציג {{count}} מתוך {{total}} הגדרות מסמך",
+        "no_results": "לא נמצאו הגדרות מסמך",
+        "addDocumentSettings": "הוסף הגדרות מסמך",
+        "editDocumentSettings": "ערוך הגדרות מסמך",
+        "viewDocumentSettings": "צפה בהגדרות מסמך",
+        "deleteDocumentSettings": "מחק הגדרות מסמך",
+        "updateDocumentSettings": "עדכן הגדרות מסמך",
+        "companyInformation": "מידע חברה",
+        "companyName": "שם חברה",
+        "companyAddress": "כתובת חברה",
+        "phoneNumber": "מספר טלפון",
+        "email": "דואר אלקטרוני",
+        "companyLogo": "לוגו חברה",
+        "uploadLogo": "העלה לוגו",
+        "logoUploadHint": "PNG, JPG עד 2MB",
+        "headerSettings": "הגדרות כותרת",
+        "headerText": "טקסט כותרת",
+        "headerFontSize": "גודל גופן כותרת",
+        "headerBackgroundColor": "צבע רקע כותרת",
+        "headerTextColor": "צבע טקסט כותרת",
+        "footerSettings": "הגדרות כותרת תחתונה",
+        "footerText": "טקסט כותרת תחתונה",
+        "footerFontSize": "גודל גופן כותרת תחתונה",
+        "footerBackgroundColor": "צבע רקע כותרת תחתונה",
+        "footerTextColor": "צבע טקסט כותרת תחתונה",
+        "documentMargins": "שוליים של מסמך",
+        "topMargin": "שוליים עליונים",
+        "bottomMargin": "שוליים תחתונים",
+        "leftMargin": "שוליים שמאליים",
+        "rightMargin": "שוליים ימניים",
+        "marginUnit": "מ\"מ",
+        "isActive": "פעיל",
+        "active": "פעיל",
+        "inactive": "לא פעיל",
+        "activate": "הפעל",
+        "deactivate": "בטל הפעלה",
+        "actions": "פעולות",
+        "cancel": "ביטול",
+        "save": "שמור",
+        "saving": "שומר...",
+        "updating": "מעדכן...",
+        "createdAt": "נוצר ב",
+        "updatedAt": "עודכן ב",
+        "createdBy": "נוצר על ידי",
+        "updatedBy": "עודכן על ידי",
+        "metadata": "מטא-נתונים",
+        "notSpecified": "לא צוין",
+        "notAvailable": "לא זמין",
+        "documentSettingsNotFound": "הגדרות מסמך לא נמצאו",
+        "error": "שגיאה",
+        "errorFetchingDocumentSettings": "נכשל בטעינת הגדרות מסמך",
+        "errorCreatingDocumentSettings": "נכשל ביצירת הגדרות מסמך",
+        "errorUpdatingDocumentSettings": "נכשל בעדכון הגדרות מסמך",
+        "errorDeletingDocumentSettings": "נכשל במחיקת הגדרות מסמך",
+        "createSuccess": "הגדרות מסמך נוצרו בהצלחה",
+        "updateSuccess": "הגדרות מסמך עודכנו בהצלחה",
+        "deleteSuccess": "הגדרות מסמך נמחקו בהצלחה",
+        "activateSuccess": "הגדרות מסמך הופעלו בהצלחה",
+        "delete_confirm": "האם אתה בטוח שברצונך למחוק הגדרת מסמך זו?",
+        "delete_confirm_text": "פעולה זו לא ניתנת לביטול!",
+        "yes_delete": "כן, מחק",
+        "cannot_delete_active": "לא ניתן למחוק הגדרות מסמך פעילות",
+        "activate_confirm": "האם אתה בטוח שברצונך להפעיל הגדרת מסמך זו?",
+        "activate_confirm_text": "פעולה זו תבטל את ההגדרה הפעילה הנוכחית.",
+        "yes_activate": "כן, הפעל",
+        "replaceImage": "החלף תמונה",
+        "revertToOriginal": "חזור למקורי",
+        "dropImageHere": "שחרר את התמונה כאן",
+        "clickToUpload": "לחץ להעלאה או גרור ושחרר",
+        "validation": {
+            "companyNameRequired": "שם חברה נדרש",
+            "companyNameMinLength": "שם חברה חייב להיות לפחות 2 תווים",
+            "companyNameMaxLength": "שם חברה לא יכול לעלות על 100 תווים",
+            "companyAddressMaxLength": "כתובת חברה לא יכולה לעלות על 255 תווים",
+            "phoneNumberPattern": "אנא הזן מספר טלפון תקין",
+            "emailPattern": "אנא הזן כתובת דואר אלקטרוני תקינה",
+            "headerTextMaxLength": "טקסט כותרת לא יכול לעלות על 255 תווים",
+            "headerFontSizeRange": "גודל גופן כותרת חייב להיות בין 8 ל-72 פיקסלים",
+            "footerTextMaxLength": "טקסט כותרת תחתונה לא יכול לעלות על 255 תווים",
+            "footerFontSizeRange": "גודל גופן כותרת תחתונה חייב להיות בין 8 ל-72 פיקסלים",
+            "marginRange": "שוליים חייבים להיות בין 0 ל-50 מ\"מ",
+            "logoRequired": "לוגו נדרש",
+            "logoFileSize": "גודל קובץ לוגו לא יכול לעלות על 2MB",
+            "logoFileType": "לוגו חייב להיות תמונת PNG או JPG",
+            "headerTextRequired": "טקסט כותרת נדרש",
+            "footerTextRequired": "טקסט כותרת תחתונה נדרש"
+        },
+        "settingsCreatedSuccessfully": "הגדרות נוצרו בהצלחה",
+        "errorCreatingSettings": "שגיאה ביצירת הגדרות",
+        "addSettings": "הוסף הגדרות",
+        "previewSubtitle": "תצוגה מקדימה של הגדרות המסמך עבור {{companyName}}",
+        "documentPreview": "תצוגה מקדימה של המסמך",
+        "documentContentArea": "אזור תוכן המסמך",
+        "contentAreaDescription": "כאן יופיע התוכן של המסמך שלך",
+        "documentType": "סוג מסמך",
+        "termsAndConditions": "תנאים והגבלות",
+        "status": "סטטוס",
+        "headerCompanyName": "שם חברה בכותרת",
+        "companyWebsite": "אתר החברה",
+        "additionalFooterText": "טקסט נוסף בכותרת התחתונה",
+        "settings": "הגדרות",
+        "addSettingsSubtitle": "כותרת משנה להוספת הגדרות",
+        "companyNamePlaceholder": "מקום שמירה לשם חברה",
+        "headerTextPlaceholder": "מקום שמירה לטקסט כותרת",
+        "headerBgColor": "צבע רקע כותרת",
+        "footerTextPlaceholder": "מקום שמירה לטקסט כותרת תחתונה",
+        "footerBgColor": "צבע רקע כותרת תחתונה",
+        "marginsSettings": "הגדרות שוליים",
+        "marginTop": "שוליים עליונים",
+        "marginBottom": "שוליים תחתונים",
+        "marginLeft": "שוליים שמאליים",
+        "marginRight": "שוליים ימניים",
+        "logoUpload": "העלאת לוגו",
+        "dropLogoHere": "שחרר לוגו כאן",
+        "creating": "יוצר",
+        "createSettings": "צור הגדרות",
+        "activateError": "שגיאת הפעלה",
+        "cannotDeleteActive": "לא ניתן למחוק פעיל",
+        "successDelete": "מחיקה הצליחה",
+        "deleteError": "שגיאת מחיקה",
+        "exportSheetName": "שם גיליון ייצוא",
+        "exportExcelFileName": "שם קובץ ייצוא Excel",
+        "report_title": "כותרת דוח",
+        "exportPdfFileName": "שם קובץ ייצוא PDF",
+        "exportCsvFileName": "שם קובץ ייצוא CSV",
+        "secondeTitle": "כותרת שנייה",
+        "errorFetchingSettings": "שגיאה בטעינת הגדרות",
+        "settingsUpdatedSuccessfully": "הגדרות עודכנו בהצלחה",
+        "errorUpdatingSettings": "שגיאה בעדכון הגדרות",
+        "editSettings": "ערוך הגדרות",
+        "editSettingsSubtitle": "כותרת משנה לעריכת הגדרות",
+        "replaceLogo": "החלף לוגו",
+        "updateSettings": "עדכן הגדרות"
+    },
+    "insurances": {
+        "table": {
+            "insuredName": "שם מבוטח",
+            "plateNumber": "מספר לוחית",
+            "insuranceCompany": "חברת ביטוח",
+            "insuranceType": "סוג ביטוח",
+            "insuranceEndDate": "תאריך סיום ביטוח",
+            "remainingDebt": "חוב נותר",
+            "agent": "סוכן"
+        },
+        "exportSheetName": "שם גיליון ייצוא",
+        "exportExcelFileName": "שם קובץ ייצוא Excel",
+        "exportCsvFileName": "שם קובץ ייצוא CSV",
+        "report_title": "כותרת דוח",
+        "exportPdfFileName": "שם קובץ ייצוא PDF"
+    },
+    "confirmModal": {
+        "defaultTitle": "כותרת ברירת מחדל",
+        "defaultMessage": "הודעת ברירת מחדל",
+        "confirmDelete": "אשר מחיקה"
+    },
+    "vehicles": {
+        "messages": {
+            "fetchError": "שגיאת טעינה",
+            "deleteSuccess": "מחיקה הצליחה",
+            "deleteError": "שגיאת מחיקה"
+        },
+        "deleteModal": {
+            "title": "כותרת",
+            "message": "הודעה"
+        }
+    },
+    "policeNumberLabel": "תווית מספר משטרה",
+    "selectDefault": "בחירת ברירת מחדל",
+    "select": "בחר",
+    "registerUser": "רשום משתמש",
+    "sidebar": {
+        "closeMenu": "סגור תפריט",
+        "openMenu": "פתח תפריט"
+    },
+    "user": "משתמש",
+    "logoAlt": "טקסט חלופי ללוגו",
+    "error": "שגיאה",
+    "errorFetchingDocumentSettings": "שגיאה בטעינת הגדרות מסמך",
+    "ok": "אישור",
+    "documentSettingsNotFound": "הגדרות מסמך לא נמצאו",
+    "back": "חזור",
+    "viewDocumentSettings": "צפה בהגדרות מסמך",
+    "edit": "ערוך",
+    "print": "הדפס",
+    "download": "הורד",
+    "companyInformation": "מידע חברה",
+    "active": "פעיל",
+    "companyName": "שם חברה",
+    "notSpecified": "לא צוין",
+    "companyAddress": "כתובת חברה",
+    "phoneNumber": "מספר טלפון",
+    "companyLogo": "לוגו חברה",
+    "headerSettings": "הגדרות כותרת",
+    "headerText": "טקסט כותרת",
+    "headerFontSize": "גודל גופן כותרת",
+    "headerBackgroundColor": "צבע רקע כותרת",
+    "headerTextColor": "צבע טקסט כותרת",
+    "footerSettings": "הגדרות כותרת תחתונה",
+    "footerText": "טקסט כותרת תחתונה",
+    "footerFontSize": "גודל גופן כותרת תחתונה",
+    "footerBackgroundColor": "צבע רקע כותרת תחתונה",
+    "footerTextColor": "צבע טקסט כותרת תחתונה",
+    "documentMargins": "שוליים של מסמך",
+    "topMargin": "שוליים עליונים",
+    "bottomMargin": "שוליים תחתונים",
+    "leftMargin": "שוליים שמאליים",
+    "rightMargin": "שוליים ימניים",
+    "metadata": "מטא-נתונים",
+    "createdAt": "נוצר ב",
+    "notAvailable": "לא זמין",
+    "updatedAt": "עודכן ב",
+    "createdBy": "נוצר על ידי",
+    "updatedBy": "עודכן על ידי",
+    "email": "דואר אלקטרוני"
+>>>>>>> e6345ce163822f4a2046327e4f61b164dffeae4f
 }
