@@ -2658,5 +2658,66 @@
   },
   "common": {
     "cancel": "Cancel"
+  },
+    "breadcrumbs": {
+    "home": "Home",
+    "customers": "Customers",
+    "customerInfo": "Customer Info"
+  },
+  "common": {
+    "loading": "Loading...",
+    "delete": "Delete",
+    "notAvailable": "Not available"
+  },
+  "customerInfo": {
+    "title": "Customer Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "mobile": "Mobile",
+    "identity": "ID Number",
+    "birthDate": "Birth Date",
+    "joinDate": "Join Date",
+    "city": "City",
+    "notes": "Notes",
+    "attachments": {
+      "title": "Attachments",
+      "upload": "Upload Files",
+      "none": "No attachments"
+    },
+    "vehicles": {
+      "title": "Vehicles",
+      "add": "Add Vehicle",
+      "none": "No vehicles found",
+      "vehicleAlt": "Vehicle",
+      "licenseAlt": "Car License",
+      "addInsurance": "Add Insurance"
+    },
+    "insurances": {
+      "title": "Insurances",
+      "none": "No insurances found",
+      "fetchError": "Failed to fetch insurances.",
+      "category": "Category",
+      "type": "Type",
+      "company": "Company",
+      "agent": "Agent",
+      "paymentMethod": "Payment",
+      "status": "Status",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "paidAmount": "Paid Amount",
+      "remainingDebt": "Remaining Debt"
+    }
+  },
+  "vehicles": {
+    "messages": {
+      "fetchError": "Failed to fetch vehicles.",
+      "deleteSuccess": "Vehicle deleted successfully!",
+      "deleteError": "Failed to delete vehicle."
+    }
+  },
+  "customerInfo.attachments": {
+    "uploadSuccess": "Files uploaded successfully!",
+    "uploadError": "Failed to upload files."
   }
+  
 }
