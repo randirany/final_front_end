@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem, Button } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, Select, FormControl, InputLabel } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -15,12 +15,13 @@ import autoTable from 'jspdf-autotable';
 import EditCustomer from './EditCustomer';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Car, Edit, LayoutGrid, List, Trash2, User } from 'lucide-react';
-import CustomerCard from './CustomerCard'; 
-import { toast } from 'react-hot-toast'; 
+import CustomerCard from './CustomerCard';
+import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import { formatDateISO } from '../utils/dateFormatter'; 
+import { formatDateISO } from '../utils/dateFormatter';
+import Pagination from './shared/Pagination';
 
-const ROWS_PER_PAGE = 10;
+const ROWS_PER_PAGE = 20;
 
 export default function Customers() {
     const { t, i18n: { language } } = useTranslation();
@@ -31,13 +32,16 @@ export default function Customers() {
 
     // باقي الحالات كما هي
     const [allCustomers, setAllCustomers] = useState([]);
-    const [displayCount, setDisplayCount] = useState(ROWS_PER_PAGE);
+    const [pagination, setPagination] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [anchorEls, setAnchorEls] = useState({});
     const [showAddForm, setShowAddForm] = useState(false);
     const [showaddVehicle, setshowaddVehicle] = useState(false);
     const [selectedInsuredId, setSelectedInsuredId] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
     const [showEditForm, setShowEditForm] = useState(false);
     const [selectedCustomerData, setSelectedCustomerData] = useState(null);
@@ -53,34 +57,18 @@ export default function Customers() {
         setSortConfig({ key, direction });
     };
 
-    const sortedData = useMemo(() => {
-        let sortableItems = [...allCustomers];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                const aValue = a[sortConfig.key] || '';
-                const bValue = b[sortConfig.key] || '';
-                if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
-                if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [allCustomers, sortConfig]);
-
+    // Client-side search filtering (for current page only)
     const filteredCustomers = useMemo(() => {
-        if (!searchText) return sortedData;
+        if (!searchText) return allCustomers;
         const lowerSearch = searchText.toLowerCase();
-        return sortedData.filter((customer) =>
+        return allCustomers.filter((customer) =>
             Object.values(customer).some((val) =>
                 String(val).toLowerCase().includes(lowerSearch)
             )
         );
-    }, [searchText, sortedData]);
+    }, [searchText, allCustomers]);
 
-    const visibleRows = useMemo(() => {
-
-        return filteredCustomers.slice(0, displayCount);
-    }, [filteredCustomers, displayCount]);
+    const visibleRows = filteredCustomers;
 
     const handleExportExcel = () => {
         const exportData = filteredCustomers.map(c => ({
@@ -214,15 +202,27 @@ export default function Customers() {
         document.body.removeChild(link);
     };
 
-    const fetchCustomers = async () => {
-        setLoading(true);
-        setDisplayCount(ROWS_PER_PAGE);
+    const fetchCustomers = async (page = 1, append = false) => {
+        if (append) {
+            setLoadingMore(true);
+        } else {
+            setLoading(true);
+        }
+
         try {
             const token = `islam__${localStorage.getItem("token")}`;
             const res = await axios.get(`http://localhost:3002/api/v1/insured/allInsured`, {
-                headers: { token }
+                headers: { token },
+                params: {
+                    page: page,
+                    limit: ROWS_PER_PAGE,
+                    sortBy: '-createdAt'
+                }
             });
-            const formattedData = res.data.insuredList.map(item => ({
+
+            // Handle new paginated response structure
+            const customersData = res.data.data || res.data.insuredList || [];
+            const formattedData = customersData.map(item => ({
                 id: item._id,
                 first_name: item.first_name,
                 last_name: item.last_name,
@@ -240,11 +240,32 @@ export default function Customers() {
                 agent: item.agentsName,
                 image: item.image
             }));
-            setAllCustomers(formattedData);
+
+            // Append or replace data based on scroll behavior
+            if (append) {
+                setAllCustomers(prev => [...prev, ...formattedData]);
+            } else {
+                setAllCustomers(formattedData);
+            }
+
+            // Set pagination metadata and check if there's more data
+            if (res.data.pagination) {
+                setPagination(res.data.pagination);
+                setHasMore(res.data.pagination.hasNextPage);
+            } else {
+                // Fallback: if no pagination, assume no more data if we got less than requested
+                setHasMore(formattedData.length === ROWS_PER_PAGE);
+            }
         } catch (err) {
-            setAllCustomers([]);
+            console.error('Error fetching customers:', err);
+            if (!append) {
+                setAllCustomers([]);
+            }
+            setPagination(null);
+            setHasMore(false);
         } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
     };
 
@@ -301,22 +322,36 @@ export default function Customers() {
         navigate(`/profile/${customer.id}`);
     };
 
-    useEffect(() => { fetchCustomers(); }, []);
+    useEffect(() => {
+        fetchCustomers(1, false);
+    }, []);
 
+    // Infinite scroll handler
     const handleScroll = useCallback(() => {
+        if (loadingMore || !hasMore) return;
+
         const threshold = 200;
         const nearBottom = window.innerHeight + document.documentElement.scrollTop >=
             document.documentElement.offsetHeight - threshold;
 
-        if (nearBottom && displayCount < filteredCustomers.length && !loading) {
-            setTimeout(() => {
-                setDisplayCount(prevCount => Math.min(prevCount + ROWS_PER_PAGE, filteredCustomers.length));
-            }, 300);
+        if (nearBottom) {
+            const nextPage = currentPage + 1;
+            setCurrentPage(nextPage);
+            fetchCustomers(nextPage, true);
         }
-    }, [displayCount, filteredCustomers.length, loading]);
+    }, [loadingMore, hasMore, currentPage]);
 
-    useEffect(() => { window.addEventListener('scroll', handleScroll); return () => window.removeEventListener('scroll', handleScroll); }, [handleScroll]);
-    useEffect(() => { setDisplayCount(ROWS_PER_PAGE); }, [searchText]);
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+
+    // Reset when search changes
+    useEffect(() => {
+        if (searchText) {
+            // Client-side search only, no need to refetch
+        }
+    }, [searchText]);
 
     const tableColumns = [
         { key: 'name', label: t('customers.table.name', 'Name') },
@@ -375,7 +410,17 @@ export default function Customers() {
             </div>
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {t('customers.showing_results', 'Showing {{count}} of {{total}} customers', { count: visibleRows.length, total: filteredCustomers.length })}
+                {pagination ? (
+                    t('customers.showing_results', 'Showing {{count}} of {{total}} customers', {
+                        count: allCustomers.length,
+                        total: pagination.total
+                    })
+                ) : (
+                    t('customers.showing_results', 'Showing {{count}} customers', {
+                        count: allCustomers.length
+                    })
+                )}
+                {loadingMore && <span className="ml-2">{t('common.loadingMore', 'Loading more...')}</span>}
             </div>
 
             {viewMode === 'table' ? (
@@ -445,7 +490,22 @@ export default function Customers() {
                 </div>
             )}
 
-            {showAddForm && <AddCustomer isOpen={showAddForm} onClose={() => setShowAddForm(false)} onAddSuccess={() => { setShowAddForm(false); fetchCustomers(); }} />}
+            {/* Loading more indicator at bottom */}
+            {loadingMore && (
+                <div className="mt-4 text-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('common.loadingMore', 'Loading more...')}</p>
+                </div>
+            )}
+
+            {/* End of list indicator */}
+            {!hasMore && allCustomers.length > 0 && !loading && (
+                <div className="mt-4 text-center py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {t('common.endOfList', 'You have reached the end of the list')}
+                </div>
+            )}
+
+            {showAddForm && <AddCustomer isOpen={showAddForm} onClose={() => setShowAddForm(false)} onAddSuccess={() => { setShowAddForm(false); setCurrentPage(1); setAllCustomers([]); fetchCustomers(1, false); }} />}
             {showaddVehicle && <Add_vehicle isOpen={showaddVehicle} onClose={() => setshowaddVehicle(false)} insuredId={selectedInsuredId} />}
             {showEditForm && selectedCustomerData && <EditCustomer isOpen={showEditForm} onClose={() => setShowEditForm(false)} customerData={selectedCustomerData} onEditSuccess={() => { setShowEditForm(false); fetchCustomers(); }} />}
         </div>

@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import ChartDashboard from './../components/ChartDashboard';
 import ChartCustromerDashboard from "../components/ChartCustromerDashboard";
+import UpcomingChequesTable from '../components/UpcomingChequesTable';
+import ReturnedChequesTable from '../components/ReturnedChequesTable';
+import ViewChequeModal from '../components/ViewChequeModal';
 import { useTranslation } from 'react-i18next';
 
 // Custom hook for animated counter
@@ -97,144 +100,51 @@ const AnimatedStatValue = ({ value, originalValue }) => {
 };
 
 function Home() {
-  const [totalInsured, setTotalInsured] = useState(null);
-  const [totalIncome, setTotalIncome] = useState(null);
-  const [financialData, setFinancialData] = useState(null);
-    const [totalCar, settotalCar] = useState(null);
-    const[getActiveInsurancesCount, setActiveInsurancesCount]=useState(null);
-     const[getExpiredInsurancesCount, setExpiredInsurancesCount]=useState(null);
-      const[getAccident, setAccident]=useState(null);
-           const[getAgents, setAgents]=useState(null);
-             const[getReturnedChecksAmount, setReturnedChecksAmount]=useState(null);
-    const [paymentMethods, setPaymentMethods] = useState({
-    visaPayments: 0,
-    cashPayments: 0,
-    checkPayments: 0,
-    bankPayments: 0
-  }); 
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { t } = useTranslation();
 
-  // Debug: Check if translation is working
-  console.log('TotalProfit translation:', t("home.TotalProfit"));
+  // Cheque modal state
+  const [viewChequeModalOpen, setViewChequeModalOpen] = useState(false);
+  const [selectedChequeId, setSelectedChequeId] = useState(null);
 
   useEffect(() => {
-    const fetchTotalInsured = async () => {
+    const fetchDashboardStatistics = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/get_count");
-        const data = await res.json();
-        setTotalInsured(data.total);
-      } catch {
-            // Handle error silently
-        }
-    };
+        const res = await fetch("http://localhost:3002/api/v1/insured/dashboard-statistics");
 
-    const fetchTotalIncome = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/revenue/getCustomerPaymentsReport");
-        const data = await res.json();
-        setTotalIncome(data.totalPayments);
-      } catch {
-            // Handle error silently
-        }
-    };
-
-    const fetchFinancialData = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/expense/getNetProfit");
-        const data = await res.json();
-        setFinancialData(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-
-        const fetchPaymentMethods = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/getPaymentsByMethod");
-        const data = await res.json();
-        setPaymentMethods(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-
-        const fetchTotalCar = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/getTotalCar");
-        const data = await res.json();
-        settotalCar(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-        const ActiveInsurancesCount = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/getActiveInsurancesCount");
-        const data = await res.json();
-        setActiveInsurancesCount(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-
-
-           const ExpiredInsurancesCount = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/getExpiredInsurancesCount");
-        const data = await res.json();
-        setExpiredInsurancesCount(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-             const TotalAccident = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/accident/totalAccidents");
-        const data = await res.json();
-        setAccident(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-
-                 const Agents = async () => {
-      try {
-        const res = await fetch("http://localhost:3002/api/v1/agents/totalAgents");
-        const data = await res.json();
-        setAgents(data); 
-      } catch {
-            // Handle error silently
-        }
-    };
-
-    const ReturnedChecksAmount=async()=>{
-     try {
-        const res = await fetch("http://localhost:3002/api/v1/insured/getReturnedChecksAmount");
-        const data = await res.json();
-        setReturnedChecksAmount(data); 
-      } catch {
-            // Handle error silently
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
 
-    }
-    Agents();
- TotalAccident();
-ExpiredInsurancesCount();
-ActiveInsurancesCount();
-     fetchTotalCar();
-    fetchTotalInsured();
-    fetchTotalIncome();
-    fetchFinancialData();
-    fetchPaymentMethods();
-    ReturnedChecksAmount()
+        const response = await res.json();
+        setDashboardData(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching dashboard statistics:', err);
+        setError(err.message);
+        setDashboardData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardStatistics();
   }, []);
+
+  // Handler for viewing cheque details
+  const handleViewCheque = (chequeId) => {
+    setSelectedChequeId(chequeId);
+    setViewChequeModalOpen(true);
+  };
 
   const stats = [
     {
       name: t("home.totalCu"),
-      value: totalInsured !== null ? totalInsured : null,
-      displayValue: totalInsured !== null ? totalInsured.toString() : "—",
-
+      value: dashboardData?.summary?.totalCustomers ?? null,
+      displayValue: dashboardData?.summary?.totalCustomers?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="29" cy="29" r="29" fill="#3F94D9" />
@@ -247,9 +157,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalIncome"),
-      value: totalIncome !== null ? totalIncome : null,
-      displayValue: totalIncome !== null ? `${totalIncome} ₪` : "—",
-
+      value: dashboardData?.summary?.totalIncome ?? null,
+      displayValue: dashboardData?.summary?.totalIncome ? `${dashboardData.summary.totalIncome} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#3F94D9"></circle>
@@ -257,11 +166,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-      {
+    {
       name: t("home.TotalExpenses"),
-      value: financialData ? financialData.totalExpenses : null,
-      displayValue: financialData ? `${financialData.totalExpenses} ₪` : "—",
-
+      value: dashboardData?.summary?.totalExpenses ?? null,
+      displayValue: dashboardData?.summary?.totalExpenses ? `${dashboardData.summary.totalExpenses} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#E53E3E"></circle>
@@ -274,8 +182,8 @@ ActiveInsurancesCount();
    
     {
       name: t("home.TotalVisa"),
-      value: paymentMethods.visaPayments,
-      displayValue: `${paymentMethods.visaPayments} ₪`,
+      value: dashboardData?.summary?.visaIncome ?? 0,
+      displayValue: `${dashboardData?.summary?.visaIncome ?? 0} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#1565C0"></circle>
@@ -289,8 +197,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalCash"),
-      value: paymentMethods.cashPayments,
-      displayValue: `${paymentMethods.cashPayments} ₪`,
+      value: dashboardData?.summary?.cashIncome ?? 0,
+      displayValue: `${dashboardData?.summary?.cashIncome ?? 0} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -304,8 +212,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalBank"),
-      value: paymentMethods.bankPayments,
-      displayValue: `${paymentMethods.bankPayments} ₪`,
+      value: dashboardData?.summary?.bankTransferIncome ?? 0,
+      displayValue: `${dashboardData?.summary?.bankTransferIncome ?? 0} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#FF9800"></circle>
@@ -319,8 +227,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.checkPayments"),
-      value: paymentMethods.checkPayments,
-      displayValue: `${paymentMethods.checkPayments} ₪`,
+      value: dashboardData?.summary?.totalChequeIncome ?? 0,
+      displayValue: `${dashboardData?.summary?.totalChequeIncome ?? 0} ₪`,
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#9C27B0"></circle>
@@ -335,8 +243,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.TotalProfit"),
-      value: financialData ? financialData.netProfit : null,
-      displayValue: financialData ? `${financialData.netProfit} ₪` : "—",
+      value: dashboardData?.summary?.totalProfit ?? null,
+      displayValue: dashboardData?.summary?.totalProfit ? `${dashboardData.summary.totalProfit} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -352,8 +260,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.totalCar"),
-      value: totalCar ? totalCar.totalVehicles : null,
-      displayValue: totalCar ? totalCar.totalVehicles.toString() : "—",
+      value: dashboardData?.summary?.totalVehicles ?? null,
+      displayValue: dashboardData?.summary?.totalVehicles?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#2196F3"></circle>
@@ -367,8 +275,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.ActiveInsurancesCount"),
-      value: getActiveInsurancesCount ? getActiveInsurancesCount.activeInsurances : null,
-      displayValue: getActiveInsurancesCount ? getActiveInsurancesCount.activeInsurances.toString() : "—",
+      value: dashboardData?.summary?.activeInsurances ?? null,
+      displayValue: dashboardData?.summary?.activeInsurances?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#4CAF50"></circle>
@@ -377,10 +285,10 @@ ActiveInsurancesCount();
         </svg>
       )
     },
-          {
+    {
       name: t("home.ExpiredInsurancesCount"),
-      value: getExpiredInsurancesCount ? getExpiredInsurancesCount.expiredInsurances : null,
-      displayValue: getExpiredInsurancesCount ? getExpiredInsurancesCount.expiredInsurances.toString() : "—",
+      value: dashboardData?.summary?.expiredInsurances ?? null,
+      displayValue: dashboardData?.summary?.expiredInsurances?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#FF5722"></circle>
@@ -392,8 +300,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.accident"),
-      value: getAccident ? getAccident.total : null,
-      displayValue: getAccident ? getAccident.total.toString() : "—",
+      value: dashboardData?.summary?.totalAccidents ?? null,
+      displayValue: dashboardData?.summary?.totalAccidents?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#F44336"></circle>
@@ -405,8 +313,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.Agents"),
-      value: getAgents ? getAgents.total : null,
-      displayValue: getAgents ? getAgents.total.toString() : "—",
+      value: dashboardData?.summary?.totalAgents ?? null,
+      displayValue: dashboardData?.summary?.totalAgents?.toString() ?? "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#795548"></circle>
@@ -420,8 +328,8 @@ ActiveInsurancesCount();
     },
     {
       name: t("home.returnedChecksTotal"),
-      value: getReturnedChecksAmount ? getReturnedChecksAmount.returnedChecksTotal : null,
-      displayValue: getReturnedChecksAmount ? `${getReturnedChecksAmount.returnedChecksTotal} ₪` : "—",
+      value: dashboardData?.summary?.returnedChequesAmount ?? null,
+      displayValue: dashboardData?.summary?.returnedChequesAmount ? `${dashboardData.summary.returnedChequesAmount} ₪` : "—",
       icon: (
         <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="29" fill="#E91E63"></circle>
@@ -460,8 +368,25 @@ return (
               </div>
             ))}
           </div>
-          <ChartDashboard />
-          <ChartCustromerDashboard />
+
+          {/* Charts Section - Responsive Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <ChartDashboard />
+            <ChartCustromerDashboard />
+          </div>
+
+          {/* Cheque Tables Section - Responsive Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <UpcomingChequesTable onViewCheque={handleViewCheque} />
+            <ReturnedChequesTable onViewCheque={handleViewCheque} />
+          </div>
+
+          {/* View Cheque Modal */}
+          <ViewChequeModal
+            open={viewChequeModalOpen}
+            onClose={() => setViewChequeModalOpen(false)}
+            chequeId={selectedChequeId}
+          />
     </div>
   );
 }

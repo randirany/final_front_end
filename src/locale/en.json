@@ -56,10 +56,16 @@
             "categore": {
                 "dash": "Dashboard",
                 "custom": "Customers",
+                "customers": {
+                    "allCustomers": "All Customers",
+                    "addCustomer": "Add New Customer"
+                },
                 "sms": "Send SMS",
                 "audits": "audits",
                 "insucresComp": {
-                    "titleInsucresComp": "Insurance Company",
+                    "titleInsucresComp": "Insurance Companies",
+                    "allCompanies": "All Insurance Companies",
+                    "addCompany": "Add New Company",
                     "categore": {
                         "Mandatory": "Mandatory Insurance",
                         "Third": "Third Party Insurance",
@@ -73,6 +79,12 @@
                 "onlinePayment": "Online Payment",
                 "emailManagement": "Email Management",
                 "cheques": "Cheques",
+                "insuranceTypes": "Insurance Types",
+                "insuranceCompanies": "Insurance Companies",
+                "pricingTypes": "Pricing Types",
+                "companyPricing": "Company Pricing",
+                "expenses": "Expenses",
+                "roadServices": "Road Services",
                 "documentSettings": "Document Settings",
                 "reports": {
                     "title": "Reports",
@@ -456,6 +468,7 @@
         "actions": "Actions",
         "add": "Add",
         "cancel": "Cancel",
+        "close": "Close",
         "cardView": "Card View",
         "deleting": "Deleting...",
         "details": "Details",
@@ -2129,7 +2142,29 @@
             "ipAddress": "IP Address",
             "userAgent": "User Agent",
             "additionalData": "Additional Data / Payload",
-            "extraData": "Additional Data"
+            "extraData": "Additional Changes",
+            "basicInfo": "Basic Information",
+            "userEmail": "User Email",
+            "entityId": "Entity ID",
+            "changesTitle": "Changes",
+            "oldValue": "Old Value",
+            "newValue": "New Value",
+            "noOldValue": "No previous value (new record)",
+            "noNewValue": "No new value (record deleted)"
+        },
+        "pagination": {
+            "showing": "Showing",
+            "of": "of",
+            "logs": "logs"
+        },
+        "filters": {
+            "title": "Filters",
+            "dateFrom": "Date From",
+            "dateTo": "Date To",
+            "user": "User",
+            "allUsers": "All Users",
+            "apply": "Apply Filters",
+            "reset": "Reset"
         },
         "error": {
             "fetchFailed": "Failed to fetch audit logs."
@@ -2171,7 +2206,13 @@
             "confirm": "Yes, Send"
         },
         "success": {
-            "sent": "SMS sent successfully to {{count}} recipients"
+            "sent": "SMS Sent Successfully!"
+        },
+        "summary": {
+            "total": "Total",
+            "successful": "Successful",
+            "failed": "Failed",
+            "batchId": "Batch ID"
         },
         "errors": {
             "fetchCustomers": "Failed to load customers",
@@ -2302,7 +2343,12 @@
         "noResults": "No notifications match your search",
         "noUnread": "No unread notifications",
         "noRead": "No read notifications",
-        "empty": "No notifications yet"
+        "empty": "No notifications yet",
+        "showing": "Showing",
+        "of": "of",
+        "notifications": "notifications",
+        "previous": "Previous",
+        "next": "Next"
     },
     "cheques": {
         "title": "Cheques Management",
@@ -2396,6 +2442,146 @@
             "cleared": "Cleared",
             "bounced": "Bounced",
             "cancelled": "Cancelled"
+        }
+    },
+    "expenses": {
+        "title": "Expenses Management",
+        "subtitle": "Manage and track all expenses in the system",
+        "firstTitle": "Dashboard",
+        "secondeTitle": "Expenses",
+        "add_button": "Add Expense",
+        "search_placeholder": "Search by title, paid by...",
+        "showing_results": "Showing {{count}} of {{total}} expenses",
+        "no_results": "No expenses found",
+        "addExpense": "Add Expense",
+        "addExpenseSubtitle": "Create a new expense record with all necessary details",
+        "editExpense": "Edit Expense",
+        "editExpenseSubtitle": "Update expense details",
+        "viewExpense": "View Expense",
+        "viewExpenseSubtitle": "View complete expense details",
+        "deleteExpense": "Delete Expense",
+        "updateExpense": "Update Expense",
+        "receiptNumber": "Receipt Number",
+        "expenseTitle": "Title",
+        "title_label": "Expense Title",
+        "amount": "Amount",
+        "paidBy": "Paid By",
+        "paymentMethod": "Payment Method",
+        "description": "Description",
+        "date": "Date",
+        "actions": "Actions",
+        "searchPlaceholder": "Search by title, paid by, or payment method...",
+        "titlePlaceholder": "Enter expense title",
+        "amountPlaceholder": "Enter amount",
+        "paidByPlaceholder": "Enter who paid",
+        "descriptionPlaceholder": "Add any additional notes about this expense...",
+        "cancel": "Cancel",
+        "saveExpense": "Save Expense",
+        "saving": "Saving...",
+        "updating": "Updating...",
+        "noExpenses": "No expenses found",
+        "noResultsFound": "No expenses match your search criteria",
+        "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+        "previous": "Previous",
+        "next": "Next",
+        "expenseDetails": "Expense Details",
+        "metadata": "Metadata",
+        "createdAt": "Created At",
+        "lastUpdated": "Last Updated",
+        "notFound": "Expense Not Found",
+        "expenseNotFoundDescription": "The requested expense was not found or has been deleted",
+        "backToList": "Back to List",
+        "error": "Error",
+        "errorFetchingDetails": "Failed to fetch expense details",
+        "errorUpdatingExpense": "Failed to update expense",
+        "updateSuccess": "Update Successful",
+        "expenseUpdatedSuccessfully": "Expense updated successfully",
+        "expenseCreatedSuccessfully": "Expense created successfully",
+        "delete_confirm": "Are you sure you want to delete expense {{title}}?",
+        "delete_confirm_text": "This action cannot be undone!",
+        "yes_delete": "Yes, Delete",
+        "successDelete": "Successfully Deleted",
+        "exportSheetName": "Expenses",
+        "exportExcelFileName": "expenses_report.xlsx",
+        "exportPdfFileName": "expenses_report.pdf",
+        "exportCsvFileName": "expenses_report.csv",
+        "report_title": "Expenses Report",
+        "validation": {
+            "titleRequired": "Expense title is required",
+            "amountRequired": "Amount must be greater than 0",
+            "paidByRequired": "Paid by is required"
+        },
+        "saveError": "Failed to save expense. Please try again.",
+        "tryAgain": "Try Again",
+        "paymentMethods": {
+            "cash": "Cash",
+            "card": "Card",
+            "cheque": "Cheque",
+            "bank_transfer": "Bank Transfer"
+        }
+    },
+    "email": {
+        "breadcrumb": {
+            "dashboard": "Dashboard",
+            "emails": "Email Management"
+        },
+        "tabs": {
+            "inbox": "Inbox",
+            "compose": "Compose",
+            "bulk": "Bulk Email"
+        },
+        "inbox": {
+            "searchPlaceholder": "Search emails...",
+            "noEmails": "No emails found",
+            "showing": "Showing page {{page}} of {{totalPages}}"
+        },
+        "compose": {
+            "title": "Compose Email",
+            "to": "To",
+            "toPlaceholder": "recipient@example.com",
+            "subject": "Subject",
+            "subjectPlaceholder": "Email subject",
+            "message": "Message",
+            "messagePlaceholder": "Type your message here...",
+            "send": "Send Email",
+            "sending": "Sending..."
+        },
+        "bulk": {
+            "selectCustomers": "Select Recipients",
+            "searchPlaceholder": "Search customers...",
+            "selectAll": "Select All",
+            "noCustomers": "No customers with email addresses found",
+            "compose": "Compose Bulk Email",
+            "subject": "Subject",
+            "subjectPlaceholder": "Email subject",
+            "message": "Message",
+            "messagePlaceholder": "Type your bulk email message here...",
+            "info": "This email will be sent to {{count}} recipients",
+            "send": "Send Bulk Email",
+            "sending": "Sending..."
+        },
+        "attachments": "Attachments",
+        "attachmentFile": "Attachment {{index}}",
+        "reply": "Reply",
+        "forward": "Forward",
+        "deleteButton": "Delete",
+        "success": {
+            "sent": "Email sent successfully!",
+            "bulkSent": "Bulk email sent successfully!",
+            "deleted": "Emails deleted successfully"
+        },
+        "errors": {
+            "fetchInbox": "Failed to load inbox",
+            "fetchCustomers": "Failed to load customers",
+            "sendFailed": "Failed to send email",
+            "bulkSendFailed": "Failed to send bulk email",
+            "deleteFailed": "Failed to delete emails",
+            "noRecipients": "Please select at least one recipient"
+        },
+        "delete": {
+            "confirm": "Are you sure?",
+            "confirmText": "You are about to delete {{count}} email(s)",
+            "yes": "Yes, delete"
         }
     },
     "documentSettings": {
@@ -2784,6 +2970,462 @@
             }
         }
     },
+    "companies": {
+        "title": "Insurance Companies",
+        "subtitle": "Manage insurance companies and their pricing configurations",
+        "addNew": "Add Company",
+        "addCompany": "Add Insurance Company",
+        "editCompany": "Edit Insurance Company",
+        "viewCompany": "Company Details",
+        "name": "Company Name",
+        "description": "Description",
+        "createdAt": "Created Date",
+        "listTitle": "Companies List",
+        "fetchError": "Failed to fetch insurance companies",
+        "deleteConfirm": "Are you sure you want to delete {{name}}?",
+        "deleteSuccess": "Company deleted successfully",
+        "deleteError": "Failed to delete company",
+        "addSuccess": "Success!",
+        "companyAddedSuccessfully": "Company added successfully",
+        "updateSuccess": "Success!",
+        "companyUpdatedSuccessfully": "Company updated successfully",
+        "errorAddingCompany": "Error adding company",
+        "errorUpdatingCompany": "Error updating company",
+        "errorFetchingCompany": "Error loading company data",
+        "errorFetchingData": "Error loading data",
+        "companyInformation": "Company Information",
+        "pricingConfigurations": "Pricing Configurations",
+        "roadServices": "Road Services",
+        "noPricingConfigs": "No pricing configurations yet",
+        "noRoadServices": "No road services",
+        "saveChanges": "Save Changes",
+        "update": "Update Company",
+        "managementTitle": "Insurance Company Management",
+        "managementSubtitle": "Manage companies, insurance types, and system configuration",
+        "noCompanies": "No Companies Yet",
+        "addFirstCompany": "Get started by adding your first insurance company",
+        "pricingStatus": "Pricing Configuration",
+        "error": "Error",
+        "validation": {
+            "nameRequired": "Company name is required",
+            "atLeastOneType": "At least one insurance type is required"
+        },
+        "labels": {
+            "name": "Company Name",
+            "description": "Description",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services"
+        },
+        "noInsuranceTypes": "No insurance types available",
+        "placeholders": {
+            "name": "Enter company name",
+            "description": "Enter company description"
+        },
+        "buttons": {
+            "save": "Save Company",
+            "update": "Update Company",
+            "cancel": "Cancel",
+            "close": "Close"
+        },
+        "columns": {
+            "name": "Company Name",
+            "description": "Description",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services",
+            "createdAt": "Created Date",
+            "actions": "Actions"
+        },
+        "actions": {
+            "view": "View",
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "tabs": {
+            "info": "Information",
+            "pricing": "Pricing Configurations",
+            "services": "Road Services"
+        },
+        "pricingConfig": {
+            "type": "Pricing Type",
+            "rules": "Rules",
+            "configured": "Configured",
+            "notConfigured": "Not Configured"
+        }
+    },
+    "pricingTypes": {
+        "title": "Pricing Types",
+        "subtitle": "Standard insurance pricing types configuration",
+        "id": "Type ID",
+        "name": "Name",
+        "description": "Description",
+        "requiresPricingTable": "Pricing Table",
+        "required": "Required",
+        "manualEntry": "Manual Entry",
+        "listTitle": "Available Pricing Types",
+        "initialize": "Initialize Types",
+        "initializing": "Initializing...",
+        "initializeConfirm": "Initialize Pricing Types?",
+        "initializeDescription": "This will create the 5 standard pricing types if they don't exist",
+        "initializeSuccess": "Success!",
+        "initialized": "Pricing types initialized successfully",
+        "initializeError": "Error initializing pricing types",
+        "inserted": "Inserted",
+        "updated": "Updated",
+        "total": "Total",
+        "fetchError": "Failed to fetch pricing types",
+        "aboutTitle": "About Pricing Types",
+        "aboutDescription": "The system supports 5 standard pricing types:",
+        "compulsory": "Compulsory Insurance - Manual entry",
+        "thirdParty": "Third Party Insurance - Matrix pricing",
+        "comprehensive": "Comprehensive Insurance - Matrix pricing",
+        "roadService": "Road Services - Service-based pricing",
+        "accidentFee": "Accident Fee Waiver - Fixed amount",
+        "columns": {
+            "id": "Type ID",
+            "name": "Name",
+            "description": "Description",
+            "requiresTable": "Pricing Table"
+        },
+        "types": {
+            "compulsory": "Compulsory",
+            "third_party": "Third Party",
+            "comprehensive": "Comprehensive",
+            "road_service": "Road Services",
+            "accident_fee_waiver": "Accident Fee Waiver"
+        }
+    },
+    "insuranceType": {
+        "title": "Insurance Types",
+        "subtitle": "Manage general insurance type categories and their pricing methods",
+        "addInsuranceType": "Add Insurance Type",
+        "editInsuranceType": "Edit Insurance Type",
+        "viewDetails": "Insurance Type Details",
+        "addSubtitle": "Create a new insurance type category",
+        "error": "Error",
+        "noTypes": "No Insurance Types",
+        "addFirstType": "Create your first insurance type category",
+        "addButton": "Add Insurance Type",
+        "totalTypes": "Total Insurance Types",
+        "statsDesc": "Available categories for companies",
+        "deleteConfirmText": "Are you sure you want to delete this insurance type?",
+        "deleteSuccessText": "Insurance type has been deleted.",
+        "infoTitle": "Insurance Type Setup",
+        "infoDesc": "Define a new insurance type and link it to a pricing method",
+        "selectedPricingType": "Selected Pricing Method",
+        "matrixPricingExplain": "Companies will configure pricing matrices based on vehicle details",
+        "simplePricingExplain": "Companies will set fixed pricing amounts",
+        "pricingTypeChangeWarning": "Pricing Type Change",
+        "pricingTypeChangeDesc": "Changing the pricing type may affect existing company pricing configurations using this insurance type.",
+        "viewInfoText": "This insurance type can be used by companies when configuring their insurance offerings. The pricing type determines how pricing is calculated.",
+        "nameChanged": "Name updated",
+        "pricingTypeChanged": "Pricing type changed",
+        "descriptionChanged": "Description updated",
+        "labels": {
+            "name": "Name",
+            "pricingType": "Pricing Type",
+            "description": "Description"
+        },
+        "placeholders": {
+            "name": "Enter insurance type name",
+            "selectPricingType": "Select pricing type",
+            "description": "Enter description (optional)"
+        },
+        "helpers": {
+            "pricingType": "This determines how pricing is calculated for this insurance type"
+        },
+        "validation": {
+            "nameRequired": "Insurance type name is required",
+            "pricingTypeRequired": "Pricing type is required"
+        },
+        "messages": {
+            "createSuccess": "Insurance type created successfully",
+            "createError": "Failed to create insurance type",
+            "updateSuccess": "Insurance type updated successfully",
+            "updateError": "Failed to update insurance type",
+            "deleteError": "Failed to delete insurance type",
+            "fetchError": "Failed to fetch insurance types",
+            "fetchPricingTypesError": "Failed to load pricing types"
+        },
+        "buttons": {
+            "save": "Create Insurance Type",
+            "update": "Update",
+            "saveChanges": "Save Changes"
+        }
+    },
+    "companyPricing": {
+        "title": "Company Pricing Configuration",
+        "subtitle": "Configure pricing rules for insurance companies",
+        "manageTitle": "Manage Pricing Configuration",
+        "selectCompany": "Select Insurance Company",
+        "selectCompanyPlaceholder": "Choose a company...",
+        "pricingTypes": "Pricing Types",
+        "notConfigured": "Not Configured",
+        "configured": "Configured",
+        "noConfigRequired": "No Configuration Required",
+        "rules": "rules",
+        "manualEntry": "Manual entry",
+        "configure": "Configure",
+        "editConfiguration": "Edit Configuration",
+        "noCompanySelected": "No Company Selected",
+        "selectCompanyPrompt": "Please select an insurance company to configure pricing",
+        "configurePricing": "Configure Pricing",
+        "info": "Information",
+        "infoTitle": "Company-Specific Pricing",
+        "infoDesc": "Configure pricing for each insurance type offered by this company",
+        "manualEntryInfo": "This pricing type requires manual entry during insurance creation. No configuration needed.",
+        "roadServiceInfo": "Road services are configured in the dedicated Road Services page.",
+        "compulsoryDesc": "Manual entry during insurance creation",
+        "roadServiceDesc": "Configured in Road Services section",
+        "matrixDesc": "Matrix-based pricing with vehicle type, age, and value",
+        "fixedAmountDesc": "Fixed amount pricing",
+        "fetchError": "Failed to fetch pricing data",
+        "configurationProgress": "Pricing Configuration",
+        "fixedAmount": "Fixed Amount",
+        "fixedAmountHelp": "Enter the fixed amount for accident fee waiver",
+        "pricingMatrix": "Pricing Matrix",
+        "progress": "Progress",
+        "matrixBased": "Matrix-based",
+        "simplePricing": "Simple Pricing",
+        "matrixRules": "matrix rules",
+        "pricingRules": "pricing rule(s)",
+        "noPricingTypes": "No pricing types available for this company",
+        "noConfigured": "No pricing types have been configured yet",
+        "allConfigured": "All pricing types have been configured!",
+        "tabs": {
+            "all": "All",
+            "configured": "Configured",
+            "pending": "Pending"
+        },
+        "addRule": "Add Rule",
+        "noRules": "No pricing rules defined yet. Click \"Add Rule\" to create one.",
+        "rule": "Rule",
+        "vehicleType": "Vehicle Type",
+        "driverAge": "Driver Age",
+        "minAmount": "Min Amount (₪)",
+        "maxAmount": "Max Amount (₪)",
+        "price": "Price (₪)",
+        "car": "Car",
+        "bus": "Bus",
+        "commercialUnder4t": "Commercial < 4t",
+        "commercialOver4t": "Commercial > 4t",
+        "taxi": "Taxi",
+        "under24": "Under 24",
+        "above24": "24 and Above",
+        "success": "Success!",
+        "configurationSaved": "Pricing configuration saved successfully",
+        "errorSaving": "Error saving configuration",
+        "saveConfiguration": "Save Configuration",
+        "saving": "Saving...",
+        "cancel": "Cancel",
+        "close": "Close",
+        "validation": {
+            "fixedAmountRequired": "Valid fixed amount is required",
+            "atLeastOneRule": "At least one pricing rule is required",
+            "allFieldsRequired": "All fields are required for rule",
+            "minMaxError": "Min amount must be less than max amount in rule"
+        },
+        "vehicleTypes": {
+            "car": "Car",
+            "truck": "Truck",
+            "bus": "Bus",
+            "motorcycle": "Motorcycle",
+            "commercial_under_4t": "Commercial < 4t"
+        },
+        "ageGroups": {
+            "under_24": "Under 24",
+            "above_24": "24 and Above"
+        },
+        "labels": {
+            "company": "Insurance Company",
+            "pricingType": "Pricing Type",
+            "fixedAmount": "Fixed Amount (₪)",
+            "vehicleType": "Vehicle Type",
+            "driverAge": "Driver Age Group",
+            "minAmount": "Minimum Amount (₪)",
+            "maxAmount": "Maximum Amount (₪)",
+            "price": "Price (₪)"
+        },
+        "placeholders": {
+            "selectCompany": "Select a company...",
+            "fixedAmount": "Enter fixed amount",
+            "minAmount": "Min amount",
+            "maxAmount": "Max amount",
+            "price": "Price"
+        },
+        "buttons": {
+            "configure": "Configure",
+            "save": "Save Configuration",
+            "cancel": "Cancel",
+            "addRule": "Add Rule",
+            "removeRule": "Remove"
+        }
+    },
+    "wizard": {
+        "title": "Add New Insurance Company",
+        "subtitle": "Step-by-step setup wizard",
+        "step1": "Company Info",
+        "step2": "Insurance Types",
+        "step3": "Pricing Setup",
+        "step4": "Road Services",
+        "step5": "Review & Submit",
+        "step1Title": "Company Information",
+        "step1Desc": "Enter basic details about the insurance company",
+        "step2Title": "Select Insurance Types",
+        "step2Desc": "Choose which insurance types this company will offer",
+        "step3Title": "Configure Pricing",
+        "step3Desc": "Set up pricing rules for each insurance type (optional)",
+        "step4Title": "Road Services",
+        "step4Desc": "Add road services offered by this company (optional)",
+        "step5Title": "Review & Submit",
+        "step5Desc": "Review all information before creating the company",
+        "steps": {
+            "basicInfo": "Basic Information",
+            "insuranceTypes": "Insurance Types",
+            "roadServices": "Road Services",
+            "pricingReview": "Pricing Review"
+        },
+        "basicInfoDesc": "Update the company name and description",
+        "insuranceTypesDesc": "Select the insurance types offered by this company",
+        "roadServicesDesc": "Select road services offered by this company (optional)",
+        "pricingReviewDesc": "Review pricing configuration status. You can configure pricing after saving the company.",
+        "stepProgress": "Step {{current}} of {{total}}",
+        "selectedInsuranceTypes": "Selected Insurance Types",
+        "changesSummary": "Changes to be saved",
+        "nameChanged": "Company name updated",
+        "descriptionChanged": "Description updated",
+        "insuranceTypesChanged": "Insurance types updated",
+        "roadServicesChanged": "Road services updated",
+        "companyName": "Company Name",
+        "companyDescription": "Description (Optional)",
+        "serviceName": "Service Name",
+        "normalPrice": "Normal Price (₪)",
+        "oldCarPrice": "Old Car Price (₪)",
+        "cutoffYear": "Cutoff Year",
+        "description": "Description",
+        "addService": "Add Service",
+        "addedServices": "Added Services",
+        "companyInfo": "Company Information",
+        "name": "Name",
+        "insuranceTypes": "Insurance Types",
+        "pricingConfigs": "Pricing Configurations",
+        "roadServices": "Road Services",
+        "noPricingConfigured": "No pricing configured (can be added later)",
+        "noRoadServices": "No road services added (can be added later)",
+        "createCompany": "Create Company",
+        "typesSelected": "insurance type(s) selected",
+        "pricingOptional": "Pricing configuration is optional. You can skip this step and configure later.",
+        "noPricingTypesAvailable": "The selected insurance types do not require pricing configuration, or all selected types use manual pricing.",
+        "configured": "Configured",
+        "configure": "Configure",
+        "fixedAmount": "Fixed Amount (₪)",
+        "addRule": "Add Rule",
+        "vehicleType": "Vehicle Type",
+        "driverAge": "Driver Age",
+        "minAmount": "Min Amount",
+        "maxAmount": "Max Amount",
+        "price": "Price",
+        "success": "Success!",
+        "companyCreated": "Insurance company created successfully with all configurations",
+        "errorCreating": "Failed to create company",
+        "confirmClose": "Are you sure?",
+        "confirmCloseText": "Your progress will be lost",
+        "validation": {
+            "companyNameRequired": "Company name is required",
+            "selectInsuranceTypes": "Please select at least one insurance type",
+            "roadServiceRequired": "Please fill all required fields"
+        },
+        "ruleNumber": "Rule #{{number}}"
+    },
+    "vehicleTypes": {
+        "car": "Car",
+        "bus": "Bus",
+        "commercialUnder4t": "Commercial < 4t",
+        "commercialOver4t": "Commercial > 4t",
+        "taxi": "Taxi"
+    },
+    "driverAge": {
+        "under24": "Under 24",
+        "above24": "24 and Above"
+    },
+    "roadService": {
+        "title": "Road Services",
+        "subtitle": "Manage road service pricing for insurance companies",
+        "addNew": "Add Road Service",
+        "addRoadService": "Add Road Service",
+        "editRoadService": "Edit Road Service",
+        "viewRoadService": "Road Service Details",
+        "listTitle": "Road Services List",
+        "fetchError": "Failed to fetch road services",
+        "deleteConfirm": "Are you sure you want to delete this road service?",
+        "deleteSuccess": "Road service deleted successfully",
+        "deleteError": "Failed to delete road service",
+        "filterByCompany": "Filter by Company",
+        "filterByStatus": "Filter by Status",
+        "allCompanies": "All Companies",
+        "allStatuses": "All Statuses",
+        "labels": {
+            "company": "Insurance Company",
+            "serviceName": "Service Name",
+            "normalPrice": "Normal Price (₪)",
+            "oldCarPrice": "Old Car Price (₪)",
+            "cutoffYear": "Cutoff Year",
+            "year": "Year",
+            "description": "Description",
+            "isActive": "Service is active"
+        },
+        "placeholders": {
+            "selectCompany": "Select insurance company...",
+            "serviceName": "e.g., Towing Service",
+            "description": "Enter service description..."
+        },
+        "help": {
+            "normalPrice": "Price for newer vehicles",
+            "oldCarPrice": "Price for vehicles before cutoff year",
+            "cutoffYear": "Vehicles manufactured before this year use old car price",
+            "companyReadonly": "Company cannot be changed after creation"
+        },
+        "validation": {
+            "companyRequired": "Please select an insurance company",
+            "nameRequired": "Service name is required",
+            "normalPriceRequired": "Normal price must be greater than 0",
+            "oldCarPriceRequired": "Old car price must be greater than 0",
+            "cutoffYearInvalid": "Cutoff year is invalid"
+        },
+        "messages": {
+            "addSuccess": "Road service added successfully",
+            "addError": "Failed to add road service",
+            "updateSuccess": "Road service updated successfully",
+            "updateError": "Failed to update road service",
+            "deleteSuccess": "Road service deleted successfully",
+            "deleteError": "Failed to delete road service"
+        },
+        "buttons": {
+            "add": "Add Service",
+            "update": "Update",
+            "cancel": "Cancel",
+            "close": "Close",
+            "save": "Save",
+            "delete": "Delete"
+        },
+        "columns": {
+            "serviceName": "Service Name",
+            "company": "Company",
+            "normalPrice": "Normal Price",
+            "oldCarPrice": "Old Car Price",
+            "cutoffYear": "Cutoff Year",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "actions": {
+            "view": "View",
+            "edit": "Edit",
+            "delete": "Delete"
+        }
+    },
     "common": {
         "showing": "Showing",
         "results": "results",
@@ -2792,6 +3434,9 @@
         "search": "Search",
         "clear": "Clear",
         "all": "All",
+        "optional": "Optional",
+        "none": "None",
+        "noDescription": "No description",
         "filters": "Filters",
         "active": "Active",
         "inactive": "Inactive",

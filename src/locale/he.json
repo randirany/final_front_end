@@ -56,10 +56,16 @@
             "categore": {
                 "dash": "לוח בקרה",
                 "custom": "לקוחות",
+                "customers": {
+                    "allCustomers": "כל הלקוחות",
+                    "addCustomer": "הוסף לקוח חדש"
+                },
                 "sms": "שלח SMS",
                 "audits": "ביקורות",
                 "insucresComp": {
-                    "titleInsucresComp": "חברת ביטוח",
+                    "titleInsucresComp": "חברות ביטוח",
+                    "allCompanies": "כל חברות הביטוח",
+                    "addCompany": "הוסף חברה חדשה",
                     "categore": {
                         "Mandatory": "ביטוח חובה",
                         "Third": "ביטוח צד שלישי",
@@ -73,6 +79,12 @@
                 "onlinePayment": "תשלום מקוון",
                 "emailManagement": "ניהול דואר אלקטרוני",
                 "cheques": "צ'קים",
+                "insuranceTypes": "סוגי ביטוח",
+                "insuranceCompanies": "חברות ביטוח",
+                "pricingTypes": "סוגי תמחור",
+                "companyPricing": "תמחור חברות",
+                "expenses": "הוצאות",
+                "roadServices": "שירותי דרכים",
                 "documentSettings": "הגדרות מסמכים",
                 "reports": {
                     "title": "דוחות",
@@ -391,6 +403,7 @@
         "actions": "פעולות",
         "add": "הוסף",
         "cancel": "ביטול",
+        "close": "סגור",
         "cardView": "תצוגת כרטיסים",
         "deleting": "מוחק...",
         "details": "פרטים",
@@ -1005,7 +1018,29 @@
             "ipAddress": "כתובת IP",
             "userAgent": "סוכן משתמש",
             "additionalData": "נתונים נוספים / מטען",
-            "extraData": "נתונים נוספים"
+            "extraData": "שינויים נוספים",
+            "basicInfo": "מידע בסיסי",
+            "userEmail": "אימייל משתמש",
+            "entityId": "מזהה ישות",
+            "changesTitle": "שינויים",
+            "oldValue": "ערך קודם",
+            "newValue": "ערך חדש",
+            "noOldValue": "אין ערך קודם (רשומה חדשה)",
+            "noNewValue": "אין ערך חדש (רשומה נמחקה)"
+        },
+        "pagination": {
+            "showing": "מציג",
+            "of": "מתוך",
+            "logs": "יומנים"
+        },
+        "filters": {
+            "title": "מסננים",
+            "dateFrom": "מתאריך",
+            "dateTo": "עד תאריך",
+            "user": "משתמש",
+            "allUsers": "כל המשתמשים",
+            "apply": "החל מסננים",
+            "reset": "איפוס"
         },
         "error": {
             "fetchFailed": "נכשל בטעינת יומני ביקורת."
@@ -1047,7 +1082,13 @@
             "confirm": "אשר"
         },
         "success": {
-            "sent": "SMS נשלח בהצלחה"
+            "sent": "ההודעות נשלחו בהצלחה!"
+        },
+        "summary": {
+            "total": "סה״כ",
+            "successful": "הצליח",
+            "failed": "נכשל",
+            "batchId": "מזהה אצווה"
         },
         "errors": {
             "fetchCustomers": "נכשל בטעינת לקוחות",
@@ -1226,6 +1267,146 @@
         "continue": "המשך עם נתוני דוגמה",
         "retry": "נסה לטעון שוב",
         "tryAgain": "נסה שוב"
+    },
+    "expenses": {
+        "title": "ניהול הוצאות",
+        "subtitle": "נהל ועקוב אחר כל ההוצאות במערכת",
+        "firstTitle": "לוח בקרה",
+        "secondeTitle": "הוצאות",
+        "add_button": "הוסף הוצאה",
+        "search_placeholder": "חפש לפי כותרת, שולם על ידי...",
+        "showing_results": "מציג {{count}} מתוך {{total}} הוצאות",
+        "no_results": "לא נמצאו הוצאות",
+        "addExpense": "הוסף הוצאה",
+        "addExpenseSubtitle": "צור רשומת הוצאה חדשה עם כל הפרטים הנדרשים",
+        "editExpense": "ערוך הוצאה",
+        "editExpenseSubtitle": "עדכן פרטי הוצאה",
+        "viewExpense": "צפה בהוצאה",
+        "viewExpenseSubtitle": "צפה בפרטי הוצאה מלאים",
+        "deleteExpense": "מחק הוצאה",
+        "updateExpense": "עדכן הוצאה",
+        "receiptNumber": "מספר קבלה",
+        "expenseTitle": "כותרת",
+        "title_label": "כותרת הוצאה",
+        "amount": "סכום",
+        "paidBy": "שולם על ידי",
+        "paymentMethod": "אמצעי תשלום",
+        "description": "תיאור",
+        "date": "תאריך",
+        "actions": "פעולות",
+        "searchPlaceholder": "חפש לפי כותרת, שולם על ידי, או אמצעי תשלום...",
+        "titlePlaceholder": "הזן כותרת הוצאה",
+        "amountPlaceholder": "הזן סכום",
+        "paidByPlaceholder": "הזן מי שילם",
+        "descriptionPlaceholder": "הוסף הערות נוספות על הוצאה זו...",
+        "cancel": "ביטול",
+        "saveExpense": "שמור הוצאה",
+        "saving": "שומר...",
+        "updating": "מעדכן...",
+        "noExpenses": "לא נמצאו הוצאות",
+        "noResultsFound": "אין הוצאות התואמות את קריטריוני החיפוש",
+        "showingResults": "מציג {{from}} עד {{to}} מתוך {{total}} תוצאות",
+        "previous": "קודם",
+        "next": "הבא",
+        "expenseDetails": "פרטי הוצאה",
+        "metadata": "מטא נתונים",
+        "createdAt": "נוצר ב",
+        "lastUpdated": "עודכן לאחרונה",
+        "notFound": "הוצאה לא נמצאה",
+        "expenseNotFoundDescription": "ההוצאה המבוקשת לא נמצאה או נמחקה",
+        "backToList": "חזור לרשימה",
+        "error": "שגיאה",
+        "errorFetchingDetails": "נכשל בטעינת פרטי הוצאה",
+        "errorUpdatingExpense": "נכשל בעדכון הוצאה",
+        "updateSuccess": "עודכן בהצלחה",
+        "expenseUpdatedSuccessfully": "הוצאה עודכנה בהצלחה",
+        "expenseCreatedSuccessfully": "הוצאה נוצרה בהצלחה",
+        "delete_confirm": "האם אתה בטוח שברצונך למחוק את ההוצאה {{title}}?",
+        "delete_confirm_text": "לא ניתן לבטל פעולה זו!",
+        "yes_delete": "כן, מחק",
+        "successDelete": "נמחק בהצלחה",
+        "exportSheetName": "הוצאות",
+        "exportExcelFileName": "דוח_הוצאות.xlsx",
+        "exportPdfFileName": "דוח_הוצאות.pdf",
+        "exportCsvFileName": "דוח_הוצאות.csv",
+        "report_title": "דוח הוצאות",
+        "validation": {
+            "titleRequired": "כותרת הוצאה נדרשת",
+            "amountRequired": "סכום חייב להיות גדול מ-0",
+            "paidByRequired": "שולם על ידי נדרש"
+        },
+        "saveError": "נכשל בשמירת הוצאה. אנא נסה שוב.",
+        "tryAgain": "נסה שוב",
+        "paymentMethods": {
+            "cash": "מזומן",
+            "card": "כרטיס",
+            "cheque": "צ'ק",
+            "bank_transfer": "העברה בנקאית"
+        }
+    },
+    "email": {
+        "breadcrumb": {
+            "dashboard": "לוח בקרה",
+            "emails": "ניהול דוא\"ל"
+        },
+        "tabs": {
+            "inbox": "תיבת דואר נכנס",
+            "compose": "כתוב הודעה",
+            "bulk": "דוא\"ל המוני"
+        },
+        "inbox": {
+            "searchPlaceholder": "חפש הודעות...",
+            "noEmails": "לא נמצאו הודעות",
+            "showing": "מציג עמוד {{page}} מתוך {{totalPages}}"
+        },
+        "compose": {
+            "title": "כתוב הודעה",
+            "to": "אל",
+            "toPlaceholder": "נמען@example.com",
+            "subject": "נושא",
+            "subjectPlaceholder": "נושא הדוא\"ל",
+            "message": "הודעה",
+            "messagePlaceholder": "כתוב את ההודעה שלך כאן...",
+            "send": "שלח הודעה",
+            "sending": "שולח..."
+        },
+        "bulk": {
+            "selectCustomers": "בחר נמענים",
+            "searchPlaceholder": "חפש לקוחות...",
+            "selectAll": "בחר הכל",
+            "noCustomers": "לא נמצאו לקוחות עם כתובות דוא\"ל",
+            "compose": "כתוב דוא\"ל המוני",
+            "subject": "נושא",
+            "subjectPlaceholder": "נושא הדוא\"ל",
+            "message": "הודעה",
+            "messagePlaceholder": "כתוב את הודעת הדוא\"ל ההמוני כאן...",
+            "info": "הודעה זו תישלח ל-{{count}} נמענים",
+            "send": "שלח דוא\"ל המוני",
+            "sending": "שולח..."
+        },
+        "attachments": "קבצים מצורפים",
+        "attachmentFile": "קובץ מצורף {{index}}",
+        "reply": "השב",
+        "forward": "העבר",
+        "deleteButton": "מחק",
+        "success": {
+            "sent": "הדוא\"ל נשלח בהצלחה!",
+            "bulkSent": "דוא\"ל המוני נשלח בהצלחה!",
+            "deleted": "ההודעות נמחקו בהצלחה"
+        },
+        "errors": {
+            "fetchInbox": "נכשל בטעינת תיבת הדואר הנכנס",
+            "fetchCustomers": "נכשל בטעינת לקוחות",
+            "sendFailed": "נכשל בשליחת דוא\"ל",
+            "bulkSendFailed": "נכשל בשליחת דוא\"ל המוני",
+            "deleteFailed": "נכשל במחיקת הודעות",
+            "noRecipients": "אנא בחר לפחות נמען אחד"
+        },
+        "delete": {
+            "confirm": "האם אתה בטוח?",
+            "confirmText": "אתה עומד למחוק {{count}} הודעות",
+            "yes": "כן, מחק"
+        }
     },
     "documentSettings": {
         "title": "הגדרות מסמך",
@@ -1707,6 +1888,9 @@
         "search": "חפש",
         "clear": "נקה",
         "all": "הכל",
+        "optional": "אופציונלי",
+        "none": "ללא",
+        "noDescription": "אין תיאור",
         "filters": "מסננים",
         "active": "פעיל",
         "inactive": "לא פעיל",
@@ -1724,6 +1908,443 @@
             "cash": "מזומן",
             "card": "כרטיס",
             "bank_transfer": "העברה בנקאית"
+        }
+    },
+    "companies": {
+        "title": "חברות ביטוח",
+        "subtitle": "ניהול חברות ביטוח והגדרות התמחור שלהן",
+        "addNew": "הוסף חברה",
+        "addCompany": "הוסף חברת ביטוח",
+        "editCompany": "ערוך חברת ביטוח",
+        "viewCompany": "פרטי החברה",
+        "name": "שם החברה",
+        "description": "תיאור",
+        "createdAt": "תאריך יצירה",
+        "listTitle": "רשימת חברות",
+        "fetchError": "נכשל בטעינת חברות הביטוח",
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק חברה זו?",
+        "deleteSuccess": "החברה נמחקה בהצלחה",
+        "deleteError": "נכשל במחיקת החברה",
+        "addSuccess": "הצלחה!",
+        "companyAddedSuccessfully": "החברה נוספה בהצלחה",
+        "updateSuccess": "הצלחה!",
+        "companyUpdatedSuccessfully": "החברה עודכנה בהצלחה",
+        "errorAddingCompany": "שגיאה בהוספת החברה",
+        "errorUpdatingCompany": "שגיאה בעדכון החברה",
+        "errorFetchingCompany": "שגיאה בטעינת נתוני החברה",
+        "companyInformation": "מידע על החברה",
+        "pricingConfigurations": "הגדרות תמחור",
+        "roadServices": "שירותי דרך",
+        "noPricingConfigs": "אין הגדרות תמחור עדיין",
+        "noRoadServices": "אין שירותי דרך עדיין",
+        "validation": {
+            "nameRequired": "שם החברה נדרש",
+            "atLeastOneType": "נדרש לפחות סוג ביטוח אחד"
+        },
+        "noInsuranceTypes": "אין סוגי ביטוח זמינים",
+        "labels": {
+            "name": "שם החברה",
+            "description": "תיאור",
+            "insuranceTypes": "סוגי ביטוח",
+            "roadServices": "שירותי דרך"
+        },
+        "placeholders": {
+            "name": "הזן שם חברה",
+            "description": "הזן תיאור חברה"
+        },
+        "buttons": {
+            "save": "שמור חברה",
+            "update": "עדכן חברה",
+            "cancel": "ביטול",
+            "close": "סגור"
+        },
+        "columns": {
+            "name": "שם החברה",
+            "description": "תיאור",
+            "insuranceTypes": "סוגי ביטוח",
+            "roadServices": "שירותי דרך",
+            "createdAt": "תאריך יצירה",
+            "actions": "פעולות"
+        },
+        "actions": {
+            "view": "צפה",
+            "edit": "ערוך",
+            "delete": "מחק"
+        },
+        "tabs": {
+            "info": "מידע",
+            "pricing": "הגדרות תמחור",
+            "services": "שירותי דרך"
+        },
+        "pricingConfig": {
+            "type": "סוג תמחור",
+            "rules": "כללים",
+            "configured": "מוגדר",
+            "notConfigured": "לא מוגדר"
+        }
+    },
+    "pricingTypes": {
+        "title": "סוגי תמחור",
+        "subtitle": "הגדרת סוגי תמחור סטנדרטיים לביטוח",
+        "id": "מזהה סוג",
+        "name": "שם",
+        "description": "תיאור",
+        "requiresPricingTable": "טבלת תמחור",
+        "required": "נדרש",
+        "manualEntry": "הזנה ידנית",
+        "listTitle": "סוגי תמחור זמינים",
+        "initialize": "אתחל סוגים",
+        "initializing": "מאתחל...",
+        "initializeConfirm": "לאתחל סוגי תמחור?",
+        "initializeDescription": "פעולה זו תיצור את 5 סוגי התמחור הסטנדרטיים אם הם לא קיימים",
+        "initializeSuccess": "הצלחה!",
+        "initialized": "סוגי התמחור אותחלו בהצלחה",
+        "initializeError": "שגיאה באתחול סוגי התמחור",
+        "inserted": "הוכנס",
+        "updated": "עודכן",
+        "total": "סה״כ",
+        "fetchError": "נכשל בטעינת סוגי התמחור",
+        "aboutTitle": "אודות סוגי תמחור",
+        "aboutDescription": "המערכת תומכת ב-5 סוגי תמחור סטנדרטיים:",
+        "compulsory": "ביטוח חובה - הזנה ידנית",
+        "thirdParty": "ביטוח צד ג׳ - תמחור מטריצה",
+        "comprehensive": "ביטוח מקיף - תמחור מטריצה",
+        "roadService": "שירותי דרך - תמחור מבוסס שירות",
+        "accidentFee": "ויתור על אגרת תאונה - סכום קבוע",
+        "columns": {
+            "id": "מזהה סוג",
+            "name": "שם",
+            "description": "תיאור",
+            "requiresTable": "טבלת תמחור"
+        },
+        "types": {
+            "compulsory": "חובה",
+            "third_party": "צד ג׳",
+            "comprehensive": "מקיף",
+            "road_service": "שירותי דרך",
+            "accident_fee_waiver": "ויתור על אגרת תאונה"
+        }
+    },
+    "insuranceType": {
+        "title": "סוגי ביטוח",
+        "subtitle": "נהל קטגוריות סוגי ביטוח כלליות ושיטות התמחור שלהן",
+        "addInsuranceType": "הוסף סוג ביטוח",
+        "editInsuranceType": "ערוך סוג ביטוח",
+        "viewDetails": "פרטי סוג ביטוח",
+        "addSubtitle": "צור קטגוריית סוג ביטוח חדשה",
+        "error": "שגיאה",
+        "noTypes": "אין סוגי ביטוח",
+        "addFirstType": "צור את קטגוריית סוג הביטוח הראשונה שלך",
+        "addButton": "הוסף סוג ביטוח",
+        "totalTypes": "סך הכל סוגי ביטוח",
+        "statsDesc": "קטגוריות זמינות לחברות",
+        "deleteConfirmText": "האם אתה בטוח שברצונך למחוק את סוג הביטוח הזה?",
+        "deleteSuccessText": "סוג הביטוח נמחק בהצלחה.",
+        "infoTitle": "הגדרת סוג ביטוח",
+        "infoDesc": "הגדר סוג ביטוח חדש וקשר אותו לשיטת תמחור",
+        "selectedPricingType": "שיטת התמחור שנבחרה",
+        "matrixPricingExplain": "חברות יגדירו מטריצות תמחור על בסיס פרטי הרכב",
+        "simplePricingExplain": "חברות יקבעו סכומי תמחור קבועים",
+        "pricingTypeChangeWarning": "שינוי סוג התמחור",
+        "pricingTypeChangeDesc": "שינוי סוג התמחור עלול להשפיע על תצורות תמחור החברה הקיימות המשתמשות בסוג ביטוח זה.",
+        "viewInfoText": "ניתן להשתמש בסוג ביטוח זה על ידי חברות בעת הגדרת הצעות הביטוח שלהן. סוג התמחור קובע כיצד מחושב התמחור.",
+        "nameChanged": "השם עודכן",
+        "pricingTypeChanged": "סוג התמחור שונה",
+        "descriptionChanged": "התיאור עודכן",
+        "labels": {
+            "name": "שם",
+            "pricingType": "סוג תמחור",
+            "description": "תיאור"
+        },
+        "placeholders": {
+            "name": "הזן שם סוג ביטוח",
+            "selectPricingType": "בחר סוג תמחור",
+            "description": "הזן תיאור (אופציונלי)"
+        },
+        "helpers": {
+            "pricingType": "זה קובע כיצד מחושב התמחור עבור סוג ביטוח זה"
+        },
+        "validation": {
+            "nameRequired": "שם סוג הביטוח נדרש",
+            "pricingTypeRequired": "סוג התמחור נדרש"
+        },
+        "messages": {
+            "createSuccess": "סוג הביטוח נוצר בהצלחה",
+            "createError": "יצירת סוג הביטוח נכשלה",
+            "updateSuccess": "סוג הביטוח עודכן בהצלחה",
+            "updateError": "עדכון סוג הביטוח נכשל",
+            "deleteError": "מחיקת סוג הביטוח נכשלה",
+            "fetchError": "אחזור סוגי הביטוח נכשל",
+            "fetchPricingTypesError": "טעינת סוגי התמחור נכשלה"
+        },
+        "buttons": {
+            "save": "צור סוג ביטוח",
+            "update": "עדכן",
+            "saveChanges": "שמור שינויים"
+        }
+    },
+    "companyPricing": {
+        "title": "הגדרת תמחור חברות",
+        "subtitle": "הגדר כללי תמחור לחברות ביטוח",
+        "selectCompany": "בחר חברת ביטוח",
+        "selectCompanyPlaceholder": "בחר חברה...",
+        "pricingTypes": "סוגי תמחור",
+        "notConfigured": "לא מוגדר",
+        "configured": "מוגדר",
+        "rules": "כללים",
+        "manualEntry": "הזנה ידנית",
+        "configure": "הגדר",
+        "editConfiguration": "ערוך הגדרה",
+        "noCompanySelected": "לא נבחרה חברה",
+        "selectCompanyPrompt": "אנא בחר חברת ביטוח להגדרת תמחור",
+        "configurePricing": "הגדר תמחור",
+        "info": "מידע",
+        "manualEntryInfo": "סוג תמחור זה דורש הזנה ידנית במהלך יצירת הביטוח. אין צורך בהגדרה.",
+        "roadServiceInfo": "שירותי דרך מוגדרים בעמוד שירותי הדרך הייעודי.",
+        "fixedAmount": "סכום קבוע",
+        "fixedAmountHelp": "הזן את הסכום הקבוע לויתור על אגרת תאונה",
+        "pricingMatrix": "מטריצת תמחור",
+        "progress": "התקדמות",
+        "matrixBased": "מבוסס מטריצה",
+        "simplePricing": "תמחור פשוט",
+        "matrixRules": "כללי מטריצה",
+        "pricingRules": "כלל(י) תמחור",
+        "noPricingTypes": "אין סוגי תמחור זמינים לחברה זו",
+        "noConfigured": "עדיין לא הוגדרו סוגי תמחור",
+        "allConfigured": "כל סוגי התמחור הוגדרו!",
+        "tabs": {
+            "all": "הכל",
+            "configured": "מוגדר",
+            "pending": "ממתין"
+        },
+        "addRule": "הוסף כלל",
+        "noRules": "עדיין לא הוגדרו כללי תמחור. לחץ על \"הוסף כלל\" ליצירת אחד.",
+        "rule": "כלל",
+        "vehicleType": "סוג רכב",
+        "driverAge": "גיל נהג",
+        "minAmount": "סכום מינימום (₪)",
+        "maxAmount": "סכום מקסימום (₪)",
+        "price": "מחיר (₪)",
+        "car": "מכונית",
+        "bus": "אוטובוס",
+        "commercialUnder4t": "מסחרי < 4 טון",
+        "commercialOver4t": "מסחרי > 4 טון",
+        "taxi": "מונית",
+        "under24": "מתחת ל-24",
+        "above24": "24 ומעלה",
+        "success": "הצלחה!",
+        "configurationSaved": "הגדרת התמחור נשמרה בהצלחה",
+        "errorSaving": "שגיאה בשמירת ההגדרה",
+        "saveConfiguration": "שמור הגדרה",
+        "saving": "שומר...",
+        "cancel": "ביטול",
+        "close": "סגור",
+        "validation": {
+            "fixedAmountRequired": "נדרש סכום קבוע תקין",
+            "atLeastOneRule": "נדרש כלל תמחור אחד לפחות",
+            "allFieldsRequired": "כל השדות נדרשים לכלל",
+            "minMaxError": "הסכום המינימלי חייב להיות נמוך מהמקסימלי בכלל"
+        },
+        "vehicleTypes": {
+            "car": "מכונית",
+            "truck": "משאית",
+            "bus": "אוטובוס",
+            "motorcycle": "אופנוע",
+            "commercial_under_4t": "מסחרי < 4 טון"
+        },
+        "ageGroups": {
+            "under_24": "מתחת ל-24",
+            "above_24": "24 ומעלה"
+        },
+        "labels": {
+            "company": "חברת ביטוח",
+            "pricingType": "סוג תמחור",
+            "fixedAmount": "סכום קבוע (₪)",
+            "vehicleType": "סוג רכב",
+            "driverAge": "קבוצת גיל נהג",
+            "minAmount": "סכום מינימום (₪)",
+            "maxAmount": "סכום מקסימום (₪)",
+            "price": "מחיר (₪)"
+        },
+        "placeholders": {
+            "selectCompany": "בחר חברה...",
+            "fixedAmount": "הזן סכום קבוע",
+            "minAmount": "מינימום",
+            "maxAmount": "מקסימום",
+            "price": "מחיר"
+        },
+        "buttons": {
+            "configure": "הגדר",
+            "save": "שמור הגדרה",
+            "cancel": "ביטול",
+            "addRule": "הוסף כלל",
+            "removeRule": "הסר"
+        }
+    },
+    "wizard": {
+        "title": "הוסף חברת ביטוח חדשה",
+        "subtitle": "אשף הגדרה שלב אחר שלב",
+        "step1": "מידע על החברה",
+        "step2": "סוגי ביטוח",
+        "step3": "הגדרת תמחור",
+        "step4": "שירותי דרך",
+        "step5": "סקירה ושליחה",
+        "step1Title": "מידע על החברה",
+        "step1Desc": "הזן פרטים בסיסיים על חברת הביטוח",
+        "step2Title": "בחר סוגי ביטוח",
+        "step2Desc": "בחר אילו סוגי ביטוח חברה זו תציע",
+        "step3Title": "הגדר תמחור",
+        "step3Desc": "הגדר כללי תמחור לכל סוג ביטוח (אופציונלי)",
+        "step4Title": "שירותי דרך",
+        "step4Desc": "הוסף שירותי דרך המוצעים על ידי חברה זו (אופציונלי)",
+        "step5Title": "סקירה ושליחה",
+        "step5Desc": "סקור את כל המידע לפני יצירת החברה",
+        "steps": {
+            "basicInfo": "מידע בסיסי",
+            "insuranceTypes": "סוגי ביטוח",
+            "roadServices": "שירותי דרך",
+            "pricingReview": "סקירת תמחור"
+        },
+        "basicInfoDesc": "עדכן את שם החברה והתיאור",
+        "insuranceTypesDesc": "בחר את סוגי הביטוח המוצעים על ידי חברה זו",
+        "roadServicesDesc": "בחר שירותי דרך המוצעים על ידי חברה זו (אופציונלי)",
+        "pricingReviewDesc": "סקור את מצב תצורת התמחור. תוכל להגדיר תמחור לאחר שמירת החברה.",
+        "stepProgress": "שלב {{current}} מתוך {{total}}",
+        "selectedInsuranceTypes": "סוגי ביטוח שנבחרו",
+        "changesSummary": "שינויים לשמירה",
+        "nameChanged": "שם החברה עודכן",
+        "descriptionChanged": "התיאור עודכן",
+        "insuranceTypesChanged": "סוגי הביטוח עודכנו",
+        "roadServicesChanged": "שירותי הדרך עודכנו",
+        "companyName": "שם החברה",
+        "companyDescription": "תיאור (אופציונלי)",
+        "serviceName": "שם השירות",
+        "normalPrice": "מחיר רגיל (₪)",
+        "oldCarPrice": "מחיר רכב ישן (₪)",
+        "cutoffYear": "שנת חיתוך",
+        "description": "תיאור",
+        "addService": "הוסף שירות",
+        "addedServices": "שירותים שנוספו",
+        "companyInfo": "מידע על החברה",
+        "name": "שם",
+        "insuranceTypes": "סוגי ביטוח",
+        "pricingConfigs": "תצורות תמחור",
+        "roadServices": "שירותי דרך",
+        "noPricingConfigured": "אין תמחור מוגדר (ניתן להוסיף מאוחר יותר)",
+        "noRoadServices": "לא נוספו שירותי דרך (ניתן להוסיף מאוחר יותר)",
+        "createCompany": "צור חברה",
+        "typesSelected": "סוג(י) ביטוח נבחר(ו)",
+        "pricingOptional": "תצורת התמחור היא אופציונלית. אתה יכול לדלג על שלב זה ולהגדיר מאוחר יותר.",
+        "noPricingTypesAvailable": "סוגי הביטוח שנבחרו אינם דורשים תצורת תמחור, או שכל הסוגים שנבחרו משתמשים בתמחור ידני.",
+        "configured": "מוגדר",
+        "configure": "הגדר",
+        "fixedAmount": "סכום קבוע (₪)",
+        "addRule": "הוסף כלל",
+        "vehicleType": "סוג רכב",
+        "driverAge": "גיל נהג",
+        "minAmount": "סכום מינימלי",
+        "maxAmount": "סכום מקסימלי",
+        "price": "מחיר",
+        "success": "הצלחה!",
+        "companyCreated": "חברת הביטוח נוצרה בהצלחה עם כל התצורות",
+        "errorCreating": "יצירת החברה נכשלה",
+        "confirmClose": "האם אתה בטוח?",
+        "confirmCloseText": "ההתקדמות שלך תאבד",
+        "validation": {
+            "companyNameRequired": "שם החברה נדרש",
+            "selectInsuranceTypes": "אנא בחר לפחות סוג ביטוח אחד",
+            "roadServiceRequired": "אנא מלא את כל השדות הנדרשים"
+        },
+        "ruleNumber": "כלל #{{number}}"
+    },
+    "vehicleTypes": {
+        "car": "מכונית",
+        "bus": "אוטובוס",
+        "commercialUnder4t": "מסחרי < 4 טון",
+        "commercialOver4t": "מסחרי > 4 טון",
+        "taxi": "מונית"
+    },
+    "driverAge": {
+        "under24": "מתחת ל-24",
+        "above24": "24 ומעלה"
+    },
+    "roadService": {
+        "title": "שירותי דרך",
+        "subtitle": "ניהול תמחור שירותי דרך לחברות ביטוח",
+        "addNew": "הוסף שירות דרך",
+        "addRoadService": "הוסף שירות דרך",
+        "editRoadService": "ערוך שירות דרך",
+        "viewRoadService": "פרטי שירות דרך",
+        "listTitle": "רשימת שירותי דרך",
+        "fetchError": "נכשל בטעינת שירותי דרך",
+        "deleteConfirm": "האם אתה בטוח שברצונך למחוק שירות דרך זה?",
+        "deleteSuccess": "שירות הדרך נמחק בהצלחה",
+        "deleteError": "נכשל במחיקת שירות הדרך",
+        "filterByCompany": "סנן לפי חברה",
+        "filterByStatus": "סנן לפי סטטוס",
+        "allCompanies": "כל החברות",
+        "allStatuses": "כל הסטטוסים",
+        "labels": {
+            "company": "חברת ביטוח",
+            "serviceName": "שם השירות",
+            "normalPrice": "מחיר רגיל (₪)",
+            "oldCarPrice": "מחיר לרכב ישן (₪)",
+            "cutoffYear": "שנת חיתוך",
+            "year": "שנה",
+            "description": "תיאור",
+            "isActive": "השירות פעיל"
+        },
+        "placeholders": {
+            "selectCompany": "בחר חברת ביטוח...",
+            "serviceName": "לדוגמה: שירות גרירה",
+            "description": "הזן תיאור שירות..."
+        },
+        "help": {
+            "normalPrice": "מחיר לרכבים חדשים יותר",
+            "oldCarPrice": "מחיר לרכבים לפני שנת החיתוך",
+            "cutoffYear": "רכבים שיוצרו לפני שנה זו משתמשים במחיר הרכב הישן",
+            "companyReadonly": "לא ניתן לשנות את החברה לאחר היצירה"
+        },
+        "validation": {
+            "companyRequired": "אנא בחר חברת ביטוח",
+            "nameRequired": "שם השירות נדרש",
+            "normalPriceRequired": "המחיר הרגיל חייב להיות גדול מ-0",
+            "oldCarPriceRequired": "מחיר הרכב הישן חייב להיות גדול מ-0",
+            "cutoffYearInvalid": "שנת החיתוך אינה תקינה"
+        },
+        "messages": {
+            "addSuccess": "שירות הדרך נוסף בהצלחה",
+            "addError": "נכשל בהוספת שירות הדרך",
+            "updateSuccess": "שירות הדרך עודכן בהצלחה",
+            "updateError": "נכשל בעדכון שירות הדרך",
+            "deleteSuccess": "שירות הדרך נמחק בהצלחה",
+            "deleteError": "נכשל במחיקת שירות הדרך"
+        },
+        "buttons": {
+            "add": "הוסף שירות",
+            "update": "עדכן",
+            "cancel": "ביטול",
+            "close": "סגור",
+            "save": "שמור",
+            "delete": "מחק"
+        },
+        "columns": {
+            "serviceName": "שם השירות",
+            "company": "החברה",
+            "normalPrice": "מחיר רגיל",
+            "oldCarPrice": "מחיר רכב ישן",
+            "cutoffYear": "שנת חיתוך",
+            "status": "סטטוס",
+            "actions": "פעולות"
+        },
+        "status": {
+            "active": "פעיל",
+            "inactive": "לא פעיל"
+        },
+        "actions": {
+            "view": "צפה",
+            "edit": "ערוך",
+            "delete": "מחק"
         }
     }
 }

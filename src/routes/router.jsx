@@ -33,9 +33,6 @@ import OnlinePayment from "../components/OnlinePayment.jsx";
 import EmailManagement from "../components/EmailManagement.jsx";
 import NotificationsPage from "../Pages/NotificationsPage.jsx";
 import Cheques from "../Pages/Cheques.jsx";
-import AddCheque from "../Pages/AddCheque.jsx";
-import ViewCheque from "../Pages/ViewCheque.jsx";
-import EditCheque from "../Pages/EditCheque.jsx";
 import DocumentSettings from "../Pages/DocumentSettings.jsx";
 import AddDocumentSettings from "../Pages/AddDocumentSettings.jsx";
 import ViewDocumentSettings from "../Pages/ViewDocumentSettings.jsx";
@@ -47,6 +44,15 @@ import AccidentsReport from "../components/reports/AccidentsReport.jsx";
 import RevenuesReport from "../components/reports/RevenuesReport.jsx";
 import PaymentsReport from "../components/reports/PaymentsReport.jsx";
 import ReceivablesDebtsReport from "../components/reports/ReceivablesDebtsReport.jsx";
+import Expenses from "../Pages/Expenses.jsx";
+import AddExpense from "../Pages/AddExpense.jsx";
+import ViewExpense from "../Pages/ViewExpense.jsx";
+import EditExpense from "../Pages/EditExpense.jsx";
+import InsuranceTypes from "../Pages/InsuranceTypes.jsx";
+import RoadServices from "../Pages/RoadServices.jsx";
+import InsuranceCompanies from "../Pages/InsuranceCompanies.jsx";
+import PricingTypes from "../Pages/PricingTypes.jsx";
+import CompanyPricing from "../Pages/CompanyPricing.jsx";
 
 const router = createBrowserRouter([
     {
@@ -90,14 +96,32 @@ const router = createBrowserRouter([
                 path: '/cheques',
                 element: <ProtectedRouter> <Cheques /></ProtectedRouter>
             }, {
-                path: '/cheques/add',
-                element: <ProtectedRouter> <AddCheque /></ProtectedRouter>
+                path: '/expenses',
+                element: <ProtectedRouter> <Expenses /></ProtectedRouter>
             }, {
-                path: '/cheques/view/:id',
-                element: <ProtectedRouter> <ViewCheque /></ProtectedRouter>
+                path: '/expenses/add',
+                element: <ProtectedRouter> <AddExpense /></ProtectedRouter>
             }, {
-                path: '/cheques/edit/:id',
-                element: <ProtectedRouter> <EditCheque /></ProtectedRouter>
+                path: '/expenses/view/:id',
+                element: <ProtectedRouter> <ViewExpense /></ProtectedRouter>
+            }, {
+                path: '/expenses/edit/:id',
+                element: <ProtectedRouter> <EditExpense /></ProtectedRouter>
+            }, {
+                path: '/insurance-types',
+                element: <ProtectedRouter> <InsuranceTypes /></ProtectedRouter>
+            }, {
+                path: '/road-services',
+                element: <ProtectedRouter> <RoadServices /></ProtectedRouter>
+            }, {
+                path: '/insurance-companies',
+                element: <ProtectedRouter> <InsuranceCompanies /></ProtectedRouter>
+            }, {
+                path: '/pricing-types',
+                element: <ProtectedRouter> <PricingTypes /></ProtectedRouter>
+            }, {
+                path: '/company-pricing',
+                element: <ProtectedRouter> <CompanyPricing /></ProtectedRouter>
             }, {
                 path: '/document-settings',
                 element: <ProtectedRouter> <DocumentSettings /></ProtectedRouter>

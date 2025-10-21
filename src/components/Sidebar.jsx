@@ -12,6 +12,7 @@ import InsurancePalestineRep from "./InsurancePalestinelRep";
 import InsuranceTrustRep from './InsuranceTrustRep';
 import InsuranceHoliRep from "./InsuranceHoliRep";
 import AddInsuranceCompany from "./AddInsuranceCompany";
+import AddCustomer from "./AddCustomer";
 import { useTheme } from '../context/ThemeProvider';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -28,6 +29,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [isOpenSetting, setIsOpenSetting] = useState(false);
   const [isOpenAddInsurance, setIsOpenAddInsurance] = useState(false)
   const [isOpenReport, setIsOpenReport] = useState(false)
+  const [isOpenCustomers, setIsOpenCustomers] = useState(false)
+  const [isOpenInsuranceCompanies, setIsOpenInsuranceCompanies] = useState(false)
+  const [isOpenAddCustomer, setIsOpenAddCustomer] = useState(false)
+  const [isOpenAddCompany, setIsOpenAddCompany] = useState(false)
   const { t, i18n: { language } } = useTranslation();
 
   const location = useLocation();
@@ -71,18 +76,87 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to='/customers' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
-                    <svg width={24} height={24} viewBox="0 0 24 24" className="size-6 shrink-0 w-[19px] h-[19px]" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 1.25C9.37678 1.25 7.25013 3.37665 7.25013 6C7.25013 8.62335 9.37678 10.75 12.0001 10.75C14.6235 10.75 16.7501 8.62335 16.7501 6C16.7501 3.37665 14.6235 1.25 12.0001 1.25ZM8.75013 6C8.75013 4.20507 10.2052 2.75 12.0001 2.75C13.7951 2.75 15.2501 4.20507 15.2501 6C15.2501 7.79493 13.7951 9.25 12.0001 9.25C10.2052 9.25 8.75013 7.79493 8.75013 6Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 12.25C9.68658 12.25 7.55506 12.7759 5.97558 13.6643C4.41962 14.5396 3.25013 15.8661 3.25013 17.5L3.25007 17.602C3.24894 18.7638 3.24752 20.222 4.52655 21.2635C5.15602 21.7761 6.03661 22.1406 7.22634 22.3815C8.4194 22.6229 9.97436 22.75 12.0001 22.75C14.0259 22.75 15.5809 22.6229 16.7739 22.3815C17.9637 22.1406 18.8443 21.7761 19.4737 21.2635C20.7527 20.222 20.7513 18.7638 20.7502 17.602L20.7501 17.5C20.7501 15.8661 19.5807 14.5396 18.0247 13.6643C16.4452 12.7759 14.3137 12.25 12.0001 12.25ZM4.75013 17.5C4.75013 16.6487 5.37151 15.7251 6.71098 14.9717C8.02693 14.2315 9.89541 13.75 12.0001 13.75C14.1049 13.75 15.9733 14.2315 17.2893 14.9717C18.6288 15.7251 19.2501 16.6487 19.2501 17.5C19.2501 18.8078 19.2098 19.544 18.5265 20.1004C18.156 20.4022 17.5366 20.6967 16.4763 20.9113C15.4194 21.1252 13.9744 21.25 12.0001 21.25C10.0259 21.25 8.58087 21.1252 7.52393 20.9113C6.46366 20.6967 5.84425 20.4022 5.47372 20.1004C4.79045 19.544 4.75013 18.8078 4.75013 17.5Z" fill="currentColor" /></svg>
-                    <span>{t("sideBar.mainMenu.categore.custom")}</span>
-                  </Link>
+                  <div>
+                    <button
+                      onClick={() => setIsOpenCustomers(!isOpenCustomers)}
+                      aria-expanded={isOpenCustomers}
+                      className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3"
+                    >
+                      <svg width={24} height={24} viewBox="0 0 24 24" className="size-6 shrink-0 w-[19px] h-[19px]" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 1.25C9.37678 1.25 7.25013 3.37665 7.25013 6C7.25013 8.62335 9.37678 10.75 12.0001 10.75C14.6235 10.75 16.7501 8.62335 16.7501 6C16.7501 3.37665 14.6235 1.25 12.0001 1.25ZM8.75013 6C8.75013 4.20507 10.2052 2.75 12.0001 2.75C13.7951 2.75 15.2501 4.20507 15.2501 6C15.2501 7.79493 13.7951 9.25 12.0001 9.25C10.2052 9.25 8.75013 7.79493 8.75013 6Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 12.25C9.68658 12.25 7.55506 12.7759 5.97558 13.6643C4.41962 14.5396 3.25013 15.8661 3.25013 17.5L3.25007 17.602C3.24894 18.7638 3.24752 20.222 4.52655 21.2635C5.15602 21.7761 6.03661 22.1406 7.22634 22.3815C8.4194 22.6229 9.97436 22.75 12.0001 22.75C14.0259 22.75 15.5809 22.6229 16.7739 22.3815C17.9637 22.1406 18.8443 21.7761 19.4737 21.2635C20.7527 20.222 20.7513 18.7638 20.7502 17.602L20.7501 17.5C20.7501 15.8661 19.5807 14.5396 18.0247 13.6643C16.4452 12.7759 14.3137 12.25 12.0001 12.25ZM4.75013 17.5C4.75013 16.6487 5.37151 15.7251 6.71098 14.9717C8.02693 14.2315 9.89541 13.75 12.0001 13.75C14.1049 13.75 15.9733 14.2315 17.2893 14.9717C18.6288 15.7251 19.2501 16.6487 19.2501 17.5C19.2501 18.8078 19.2098 19.544 18.5265 20.1004C18.156 20.4022 17.5366 20.6967 16.4763 20.9113C15.4194 21.1252 13.9744 21.25 12.0001 21.25C10.0259 21.25 8.58087 21.1252 7.52393 20.9113C6.46366 20.6967 5.84425 20.4022 5.47372 20.1004C4.79045 19.544 4.75013 18.8078 4.75013 17.5Z" fill="currentColor" /></svg>
+                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.custom")}</span>
+                      <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenCustomers ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    {isOpenCustomers && (
+                      <div className={`ml-8 mt-2 space-y-1 ${isRTL ? 'mr-8 ml-0' : ''}`}>
+                        <Link
+                          to='/customers'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M12.0001 1.25C9.37678 1.25 7.25013 3.37665 7.25013 6C7.25013 8.62335 9.37678 10.75 12.0001 10.75C14.6235 10.75 16.7501 8.62335 16.7501 6C16.7501 3.37665 14.6235 1.25 12.0001 1.25ZM8.75013 6C8.75013 4.20507 10.2052 2.75 12.0001 2.75C13.7951 2.75 15.2501 4.20507 15.2501 6C15.2501 7.79493 13.7951 9.25 12.0001 9.25C10.2052 9.25 8.75013 7.79493 8.75013 6Z" fill="currentColor" />
+                              <path fillRule="evenodd" clipRule="evenodd" d="M12.0001 12.25C9.68658 12.25 7.55506 12.7759 5.97558 13.6643C4.41962 14.5396 3.25013 15.8661 3.25013 17.5L3.25007 17.602C3.24894 18.7638 3.24752 20.222 4.52655 21.2635C5.15602 21.7761 6.03661 22.1406 7.22634 22.3815C8.4194 22.6229 9.97436 22.75 12.0001 22.75C14.0259 22.75 15.5809 22.6229 16.7739 22.3815C17.9637 22.1406 18.8443 21.7761 19.4737 21.2635C20.7527 20.222 20.7513 18.7638 20.7502 17.602L20.7501 17.5C20.7501 15.8661 19.5807 14.5396 18.0247 13.6643C16.4452 12.7759 14.3137 12.25 12.0001 12.25ZM4.75013 17.5C4.75013 16.6487 5.37151 15.7251 6.71098 14.9717C8.02693 14.2315 9.89541 13.75 12.0001 13.75C14.1049 13.75 15.9733 14.2315 17.2893 14.9717C18.6288 15.7251 19.2501 16.6487 19.2501 17.5C19.2501 18.8078 19.2098 19.544 18.5265 20.1004C18.156 20.4022 17.5366 20.6967 16.4763 20.9113C15.4194 21.1252 13.9744 21.25 12.0001 21.25C10.0259 21.25 8.58087 21.1252 7.52393 20.9113C6.46366 20.6967 5.84425 20.4022 5.47372 20.1004C4.79045 19.544 4.75013 18.8078 4.75013 17.5Z" fill="currentColor" />
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.customers.allCustomers", "All Customers")}</span>
+                          </div>
+                        </Link>
+                        <button
+                          onClick={() => setIsOpenAddCustomer(true)}
+                          className="w-full block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.customers.addCustomer", "Add New Customer")}</span>
+                          </div>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </li>
              
                 <li>
                   <div>
-                    <Link aria-expanded="false" to='/InsuranceCompany' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3">
+                    <button
+                      onClick={() => setIsOpenInsuranceCompanies(!isOpenInsuranceCompanies)}
+                      aria-expanded={isOpenInsuranceCompanies}
+                      className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3"
+                    >
                       <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]" ><path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75C3.87665 1.75 1.75 3.87665 1.75 6.5C1.75 9.12335 3.87665 11.25 6.5 11.25C9.12335 11.25 11.25 9.12335 11.25 6.5C11.25 3.87665 9.12335 1.75 6.5 1.75ZM3.25 6.5C3.25 4.70507 4.70507 3.25 6.5 3.25C8.29493 3.25 9.75 4.70507 9.75 6.5C9.75 8.29493 8.29493 9.75 6.5 9.75C4.70507 9.75 3.25 8.29493 3.25 6.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M17.5 12.75C14.8766 12.75 12.75 14.8766 12.75 17.5C12.75 20.1234 14.8766 22.25 17.5 22.25C20.1234 22.25 22.25 20.1234 22.25 17.5C22.25 14.8766 20.1234 12.75 17.5 12.75ZM14.25 17.5C14.25 15.7051 15.7051 14.25 17.5 14.25C19.2949 14.25 20.75 15.7051 20.75 17.5C20.75 19.2949 19.2949 20.75 17.5 20.75C15.7051 20.75 14.25 19.2949 14.25 17.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.75 6.5C12.75 3.87665 14.8766 1.75 17.5 1.75C20.1234 1.75 22.25 3.87665 22.25 6.5C22.25 9.12335 20.1234 11.25 17.5 11.25C14.8766 11.25 12.75 9.12335 12.75 6.5ZM17.5 3.25C15.7051 3.25 14.25 4.70507 14.25 6.5C14.25 8.29493 15.7051 9.75 17.5 9.75C19.2949 9.75 20.75 8.29493 20.75 6.5C20.75 4.70507 19.2949 3.25 17.5 3.25Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6.5 12.75C3.87665 12.75 1.75 14.8766 1.75 17.5C1.75 20.1234 3.87665 22.25 6.5 22.25C9.12335 22.25 11.25 20.1234 11.25 17.5C11.25 14.8766 9.12335 12.75 6.5 12.75ZM3.25 17.5C3.25 15.7051 4.70507 14.25 6.5 14.25C8.29493 14.25 9.75 15.7051 9.75 17.5C9.75 19.2949 8.29493 20.75 6.5 20.75C4.70507 20.75 3.25 19.2949 3.25 17.5Z" fill="currentColor" /></svg>
-                      <span>{t("sideBar.mainMenu.categore.insucresComp.titleInsucresComp")}</span>
-                    </Link>
+                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.insucresComp.titleInsucresComp")}</span>
+                      <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenInsuranceCompanies ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    {isOpenInsuranceCompanies && (
+                      <div className={`ml-8 mt-2 space-y-1 ${isRTL ? 'mr-8 ml-0' : ''}`}>
+                        <Link
+                          to='/InsuranceCompany'
+                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75C3.87665 1.75 1.75 3.87665 1.75 6.5C1.75 9.12335 3.87665 11.25 6.5 11.25C9.12335 11.25 11.25 9.12335 11.25 6.5C11.25 3.87665 9.12335 1.75 6.5 1.75ZM3.25 6.5C3.25 4.70507 4.70507 3.25 6.5 3.25C8.29493 3.25 9.75 4.70507 9.75 6.5C9.75 8.29493 8.29493 9.75 6.5 9.75C4.70507 9.75 3.25 8.29493 3.25 6.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M17.5 12.75C14.8766 12.75 12.75 14.8766 12.75 17.5C12.75 20.1234 14.8766 22.25 17.5 22.25C20.1234 22.25 22.25 20.1234 22.25 17.5C22.25 14.8766 20.1234 12.75 17.5 12.75ZM14.25 17.5C14.25 15.7051 15.7051 14.25 17.5 14.25C19.2949 14.25 20.75 15.7051 20.75 17.5C20.75 19.2949 19.2949 20.75 17.5 20.75C15.7051 20.75 14.25 19.2949 14.25 17.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.75 6.5C12.75 3.87665 14.8766 1.75 17.5 1.75C20.1234 1.75 22.25 3.87665 22.25 6.5C22.25 9.12335 20.1234 11.25 17.5 11.25C14.8766 11.25 12.75 9.12335 12.75 6.5ZM17.5 3.25C15.7051 3.25 14.25 4.70507 14.25 6.5C14.25 8.29493 15.7051 9.75 17.5 9.75C19.2949 9.75 20.75 8.29493 20.75 6.5C20.75 4.70507 19.2949 3.25 17.5 3.25Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6.5 12.75C3.87665 12.75 1.75 14.8766 1.75 17.5C1.75 20.1234 3.87665 22.25 6.5 22.25C9.12335 22.25 11.25 20.1234 11.25 17.5C11.25 14.8766 9.12335 12.75 6.5 12.75ZM3.25 17.5C3.25 15.7051 4.70507 14.25 6.5 14.25C8.29493 14.25 9.75 15.7051 9.75 17.5C9.75 19.2949 8.29493 20.75 6.5 20.75C4.70507 20.75 3.25 19.2949 3.25 17.5Z" fill="currentColor" />
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.insucresComp.allCompanies", "All Insurance Companies")}</span>
+                          </div>
+                        </Link>
+                        <button
+                          onClick={() => setIsOpenAddCompany(true)}
+                          className="w-full block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <span>{t("sideBar.mainMenu.categore.insucresComp.addCompany", "Add New Company")}</span>
+                          </div>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </li>
                 <li>
@@ -109,6 +183,24 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <span>{t('breadcrumbs.allInsurances', 'All Insurances')}</span>
                     </Link>
                   </div>
+                </li>
+                {/* Consolidated Insurance Company Management - includes types, pricing, and system setup */}
+                <li>
+                  <Link to='/insurance-companies' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11m16-11v11M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01M16 17h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.insuranceCompanies", "Insurance Companies")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/expenses' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path d="M21 12V7H5a2 2 0 100 4h14zm0 0a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                      <circle cx="8" cy="15" r="1" fill="currentColor"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.expenses", "Expenses")}</span>
+                  </Link>
                 </li>
                 <li>
                   <Link to='/departments' className="text-[14px]  rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
@@ -330,6 +422,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <InsuranceTrustRep isOpen={isOpenTrustRep} onClose={() => setIsOpenTrustRep(false)} />
       <InsuranceHoliRep isOpen={isOpenHoliRep} onClose={() => setIsOpenHoliRep(false)} />
       <AddInsuranceCompany isOpen={isOpenAddInsurance} onClose={() => setIsOpenAddInsurance(false)} />
+      <AddCustomer isOpen={isOpenAddCustomer} onClose={() => setIsOpenAddCustomer(false)} />
+      <AddInsuranceCompany isOpen={isOpenAddCompany} onClose={() => setIsOpenAddCompany(false)} />
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30  bg-opacity-30 2md:hidden"

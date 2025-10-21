@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Add, Search, Edit, Delete, Visibility, MoreVert, ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom';
+import { Add, Edit, Delete, Visibility, MoreVert, ArrowUpward, ArrowDownward, FilterList } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -9,46 +9,99 @@ import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
 import Swal from 'sweetalert2';
 import { toLocaleDateStringEN } from '../utils/dateFormatter';
+import { getAllCheques, deleteCheque } from '../services/chequeApi';
+import AddChequeModal from '../components/AddChequeModal';
+import EditChequeModal from '../components/EditChequeModal';
+import ViewChequeModal from '../components/ViewChequeModal';
 
-const ROWS_PER_PAGE = 10;
+const ROWS_PER_PAGE = 20;
 
 const Cheques = () => {
   const { t, i18n: { language } } = useTranslation();
-  const navigate = useNavigate();
   const [cheques, setCheques] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [displayCount, setDisplayCount] = useState(ROWS_PER_PAGE);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [totalCheques, setTotalCheques] = useState(0);
+  const [summary, setSummary] = useState(null);
   const [anchorEls, setAnchorEls] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-  // Sample data for demonstration
+  // Modals state
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedChequeId, setSelectedChequeId] = useState(null);
+
+  // Filters
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  // Fetch cheques on mount and when filters change
   useEffect(() => {
-    const sampleCheques = [
-      {
-        id: 1,
-        chequeNumber: 'CHK001',
-        customerName: 'أحمد محمد',
-        cheque_date: '2024-01-15',
-        status: 'Pending'
-      },
-      {
-        id: 2,
-        chequeNumber: 'CHK002',
-        customerName: 'سارة أحمد',
-        cheque_date: '2024-01-20',
-        status: 'Cleared'
-      },
-      {
-        id: 3,
-        chequeNumber: 'CHK003',
-        customerName: 'محمد حسن',
-        cheque_date: '2024-01-25',
-        status: 'Pending'
+    fetchCheques(1, false);
+  }, [statusFilter, startDate, endDate]);
+
+  const fetchCheques = async (page = 1, append = false) => {
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
+
+    try {
+      const filters = {
+        page,
+        limit: ROWS_PER_PAGE,
+        ...(statusFilter !== 'all' && { status: statusFilter }),
+        ...(startDate && { startDate }),
+        ...(endDate && { endDate })
+      };
+
+      const response = await getAllCheques(filters);
+
+      if (append) {
+        setCheques(prev => [...prev, ...response.data]);
+      } else {
+        setCheques(response.data);
       }
-    ];
-    setCheques(sampleCheques);
-  }, []);
+
+      setCurrentPage(page);
+      setHasMore(response.pagination?.hasNextPage || false);
+      setTotalCheques(response.pagination?.totalItems || 0);
+      setSummary(response.summary);
+    } catch (error) {
+      console.error('Error fetching cheques:', error);
+      Swal.fire({
+        title: t('cheques.error', 'Error'),
+        text: t('cheques.errorFetchingCheques', 'Error fetching cheques'),
+        icon: 'error'
+      });
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const handleScroll = useCallback(() => {
+    if (loadingMore || !hasMore) return;
+
+    const threshold = 200;
+    const nearBottom = window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - threshold;
+
+    if (nearBottom) {
+      fetchCheques(currentPage + 1, true);
+    }
+  }, [loadingMore, hasMore, currentPage]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   const handleMenuOpen = (event, rowId) => setAnchorEls((prev) => ({ ...prev, [rowId]: event.currentTarget }));
   const handleMenuClose = (rowId) => setAnchorEls((prev) => ({ ...prev, [rowId]: undefined }));
@@ -65,8 +118,19 @@ const Cheques = () => {
     let sortableItems = [...cheques];
     if (sortConfig.key !== null) {
       sortableItems.sort((a, b) => {
-        const aValue = a[sortConfig.key] || '';
-        const bValue = b[sortConfig.key] || '';
+        let aValue, bValue;
+
+        if (sortConfig.key === 'customerName') {
+          aValue = a.customer?.name || '';
+          bValue = b.customer?.name || '';
+        } else if (sortConfig.key === 'amount') {
+          aValue = a.amount || 0;
+          bValue = b.amount || 0;
+        } else {
+          aValue = a[sortConfig.key] || '';
+          bValue = b[sortConfig.key] || '';
+        }
+
         if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
         if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
         return 0;
@@ -79,58 +143,36 @@ const Cheques = () => {
     if (!searchText) return sortedData;
     const lowerSearch = searchText.toLowerCase();
     return sortedData.filter((cheque) =>
-      Object.values(cheque).some((val) =>
-        String(val).toLowerCase().includes(lowerSearch)
-      )
+      cheque.chequeNumber?.toLowerCase().includes(lowerSearch) ||
+      cheque.customer?.name?.toLowerCase().includes(lowerSearch) ||
+      cheque.status?.toLowerCase().includes(lowerSearch)
     );
   }, [searchText, sortedData]);
 
-  const visibleRows = useMemo(() => {
-    return filteredCheques.slice(0, displayCount);
-  }, [filteredCheques, displayCount]);
-
-  const handleScroll = useCallback(() => {
-    const threshold = 200;
-    const nearBottom = window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - threshold;
-
-    if (nearBottom && displayCount < filteredCheques.length && !loading) {
-      setTimeout(() => {
-        setDisplayCount(prevCount => Math.min(prevCount + ROWS_PER_PAGE, filteredCheques.length));
-      }, 300);
-    }
-  }, [displayCount, filteredCheques.length, loading]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  useEffect(() => {
-    setDisplayCount(ROWS_PER_PAGE);
-  }, [searchText]);
+  const handleView = (cheque) => {
+    setSelectedChequeId(cheque._id);
+    setViewModalOpen(true);
+    handleMenuClose(cheque._id);
+  };
 
   const handleEdit = (cheque) => {
-    navigate(`/cheques/edit/${cheque.id}`);
-    handleMenuClose(cheque.id);
+    setSelectedChequeId(cheque._id);
+    setEditModalOpen(true);
+    handleMenuClose(cheque._id);
   };
 
-  const handleView = (cheque) => {
-    navigate(`/cheques/view/${cheque.id}`);
-    handleMenuClose(cheque.id);
-  };
-
-  const handleDelete = (chequeId, chequeNumber) => {
+  const handleDelete = async (chequeId, chequeNumber) => {
     handleMenuClose(chequeId);
-    Swal.fire({
-      title: t('cheques.delete_confirm', `هل أنت متأكد من حذف الشيك رقم ${chequeNumber}؟`),
-      text: t('cheques.delete_confirm_text', "لا يمكن التراجع عن هذا الإجراء!"),
+
+    const result = await Swal.fire({
+      title: t('cheques.delete_confirm', `Are you sure you want to delete cheque ${chequeNumber}?`),
+      text: t('cheques.delete_confirm_text', "This action cannot be undone!"),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6e7881',
-      confirmButtonText: t('cheques.yes_delete'),
-      cancelButtonText: t('common.cancel', 'إلغاء'),
+      confirmButtonText: t('cheques.yes_delete', 'Yes, delete it!'),
+      cancelButtonText: t('common.cancel', 'Cancel'),
       reverseButtons: true,
       focusCancel: true,
       customClass: {
@@ -138,23 +180,39 @@ const Cheques = () => {
         title: 'dark:text-white',
         htmlContainer: 'dark:text-gray-300'
       }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Delete logic here
-        setCheques(cheques.filter(c => c.id !== chequeId));
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteCheque(chequeId);
         Swal.fire({
-          title: t('cheques.successDelete'),
-          icon: "success"
+          title: t('cheques.successDelete', 'Deleted!'),
+          text: t('cheques.chequeDeleted', 'Cheque has been deleted'),
+          icon: 'success',
+          timer: 2000
+        });
+        fetchCheques(1, false);
+      } catch (error) {
+        console.error('Error deleting cheque:', error);
+        Swal.fire({
+          title: t('cheques.error', 'Error'),
+          text: error.message || t('cheques.errorDeletingCheque', 'Error deleting cheque'),
+          icon: 'error'
         });
       }
-    });
+    }
+  };
+
+  const handleModalSuccess = () => {
+    fetchCheques(1, false);
   };
 
   const handleExportExcel = () => {
     const exportData = filteredCheques.map(c => ({
       [t('cheques.chequeNumber')]: c.chequeNumber,
-      [t('cheques.customer')]: c.customerName,
-      [t('cheques.cheque_date')]: c.cheque_date,
+      [t('cheques.customer')]: c.customer?.name || 'N/A',
+      [t('cheques.amount')]: c.amount,
+      [t('cheques.cheque_date')]: toLocaleDateStringEN(c.chequeDate),
       [t('cheques.statusHeader')]: c.status,
     }));
     const worksheet = XLSX.utils.json_to_sheet(exportData);
@@ -172,20 +230,20 @@ const Cheques = () => {
     doc.setFontSize(18);
     doc.text(t('cheques.report_title', 'Cheques Report'), 14, 22);
 
-    const rows = filteredCheques.map(cheque => {
-      let row = {};
-      exportColumns.forEach(col => {
-        row[col.dataKey] = cheque[col.dataKey] || '-';
-      });
-      return row;
-    });
+    const rows = filteredCheques.map(cheque => ({
+      chequeNumber: cheque.chequeNumber,
+      customerName: cheque.customer?.name || 'N/A',
+      amount: cheque.amount?.toLocaleString(),
+      chequeDate: toLocaleDateStringEN(cheque.chequeDate),
+      status: cheque.status
+    }));
 
     autoTable(doc, {
       startY: 30,
       columns: exportColumns,
       body: rows,
       styles: { fontSize: 8, font: "Arial" },
-      headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+      headStyles: { fillColor: [108, 95, 252], textColor: 255 },
     });
     doc.save(t('cheques.exportPdfFileName', "cheques_report.pdf"));
   };
@@ -193,9 +251,10 @@ const Cheques = () => {
   const handleExportCSV = () => {
     const exportData = filteredCheques.map(c => ({
       [t('cheques.chequeNumber')]: c.chequeNumber,
-      [t('cheques.customer')]: c.customerName,
-      [t('cheques.cheque_date')]: c.cheque_date,
-      [t('cheques.status')]: c.status,
+      [t('cheques.customer')]: c.customer?.name || 'N/A',
+      [t('cheques.amount')]: c.amount,
+      [t('cheques.cheque_date')]: toLocaleDateStringEN(c.chequeDate),
+      [t('cheques.statusHeader')]: c.status,
     }));
 
     const headers = Object.keys(exportData[0]);
@@ -233,7 +292,7 @@ const Cheques = () => {
     printWindow.document.write(`
       table { border-collapse: collapse; width: 100%; }
       th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-      th { background-color: #f2f2f2; }
+      th { background-color: #6C5FFC; color: white; }
       tr:nth-child(even) { background-color: #f9f9f9; }
       @media print {
         body { font-family: ${(language === 'ar' || language === 'he') ? 'Cairo, sans-serif' : 'Arial, sans-serif'}; }
@@ -256,11 +315,11 @@ const Cheques = () => {
     printWindow.document.write('<tbody>');
     filteredCheques.forEach(cheque => {
       printWindow.document.write('<tr>');
-      tableColumns.forEach(col => {
-        if (col.key !== 'actions') {
-          printWindow.document.write('<td>' + (cheque[col.key] || '-') + '</td>');
-        }
-      });
+      printWindow.document.write('<td>' + cheque.chequeNumber + '</td>');
+      printWindow.document.write('<td>' + (cheque.customer?.name || 'N/A') + '</td>');
+      printWindow.document.write('<td>' + (cheque.amount?.toLocaleString() || '-') + '</td>');
+      printWindow.document.write('<td>' + toLocaleDateStringEN(cheque.chequeDate) + '</td>');
+      printWindow.document.write('<td>' + cheque.status + '</td>');
       printWindow.document.write('</tr>');
     });
     printWindow.document.write('</tbody>');
@@ -279,7 +338,8 @@ const Cheques = () => {
   const tableColumns = [
     { key: 'chequeNumber', label: t('cheques.chequeNumber', 'Cheque Number') },
     { key: 'customerName', label: t('cheques.customer', 'Customer') },
-    { key: 'cheque_date', label: t('cheques.cheque_date', 'Cheque Date') },
+    { key: 'amount', label: t('cheques.amount', 'Amount') },
+    { key: 'chequeDate', label: t('cheques.cheque_date', 'Cheque Date') },
     { key: 'status', label: t('cheques.statusHeader', 'Status') },
     { key: 'actions', label: t('cheques.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
   ];
@@ -295,21 +355,22 @@ const Cheques = () => {
 
   const getStatusBadge = (status) => {
     const statusClasses = {
-      'Pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-      'Cleared': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      'Bounced': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-      'Cancelled': 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
+      'pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+      'cleared': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+      'returned': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+      'cancelled': 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
     };
 
     return (
-      <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusClasses[status] || statusClasses['Pending']}`}>
-        {t(`cheques.status.${status.toLowerCase()}`)}
+      <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusClasses[status] || statusClasses['pending']}`}>
+        {t(`cheques.status.${status?.toLowerCase()}`, status)}
       </span>
     );
   };
 
   return (
     <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
+      {/* Header */}
       <div className="bg-[rgb(255,255,255)] dark:bg-navbarBack flex p-4 md:p-[22px] rounded-md justify-between items-center mb-4 flex-wrap shadow-sm">
         <div className={`flex gap-2 md:gap-[14px] items-center mb-2 md:mb-0 text-sm md:text-base ${(language === "ar" || language === "he") ? "text-right" : "text-left"}`}>
           <NavLink className="hover:underline text-blue-600 dark:text-blue-400" to="/home">{t('cheques.firstTitle', 'Dashboard')}</NavLink>
@@ -317,14 +378,43 @@ const Cheques = () => {
           <span className="text-gray-500 dark:text-gray-400">{t('cheques.secondeTitle', 'Cheques')}</span>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Button variant="contained" size="small" onClick={() => navigate('/cheques/add')} sx={{ background: '#6C5FFC', color: '#fff' }}>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<Add />}
+            onClick={() => setAddModalOpen(true)}
+            sx={{ background: '#6C5FFC', color: '#fff', '&:hover': { background: '#5a4dd4' } }}
+          >
             {t('cheques.add_button', 'Add Cheque')}
           </Button>
         </div>
       </div>
 
-      <div className='flex rounded-md justify-between items-start flex-wrap mb-4'>
-        <div className="flex items-center gap-4">
+      {/* Summary Cards */}
+      {summary && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <div className="bg-white dark:bg-navbarBack rounded-lg p-4 shadow-sm">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t('cheques.totalCheques', 'Total Cheques')}</p>
+            <p className="text-2xl font-bold dark:text-white">{summary.totalCheques}</p>
+          </div>
+          <div className="bg-white dark:bg-navbarBack rounded-lg p-4 shadow-sm">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t('cheques.totalAmount', 'Total Amount')}</p>
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">{summary.totalAmount?.toLocaleString()} ₪</p>
+          </div>
+          <div className="bg-white dark:bg-navbarBack rounded-lg p-4 shadow-sm">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t('cheques.pendingCount', 'Pending')}</p>
+            <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{summary.pendingCount}</p>
+          </div>
+          <div className="bg-white dark:bg-navbarBack rounded-lg p-4 shadow-sm">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t('cheques.returnedCount', 'Returned')}</p>
+            <p className="text-2xl font-bold text-red-600 dark:text-red-400">{summary.returnedCount}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Filters and Actions */}
+      <div className='flex rounded-md justify-between items-start flex-wrap mb-4 gap-4'>
+        <div className="flex items-center gap-4 flex-wrap">
           <input
             type="text"
             placeholder={t('cheques.search_placeholder', 'Search by cheque number, customer...')}
@@ -332,8 +422,33 @@ const Cheques = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="p-2 border dark:!border-none dark:bg-gray-700 dark:text-gray-200 rounded-lg shadow-sm"
+          >
+            <option value="all">{t('cheques.allStatus', 'All Status')}</option>
+            <option value="pending">{t('cheques.status.pending', 'Pending')}</option>
+            <option value="cleared">{t('cheques.status.cleared', 'Cleared')}</option>
+            <option value="returned">{t('cheques.status.returned', 'Returned')}</option>
+            <option value="cancelled">{t('cheques.status.cancelled', 'Cancelled')}</option>
+          </select>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="p-2 border dark:!border-none dark:bg-gray-700 dark:text-gray-200 rounded-lg shadow-sm"
+            placeholder={t('cheques.startDate', 'Start Date')}
+          />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="p-2 border dark:!border-none dark:bg-gray-700 dark:text-gray-200 rounded-lg shadow-sm"
+            placeholder={t('cheques.endDate', 'End Date')}
+          />
         </div>
-        <div className="flex gap-2 flex-wrap sm:mt-0">
+        <div className="flex gap-2 flex-wrap">
           <Button variant="outlined" size="small" onClick={handleExportCSV} disabled={filteredCheques.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportCsv', 'CSV')}</Button>
           <Button variant="outlined" size="small" onClick={handleExportExcel} disabled={filteredCheques.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportExcel', 'Excel')}</Button>
           <Button variant="outlined" size="small" onClick={handleExportPDF} disabled={filteredCheques.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportPdf', 'PDF')}</Button>
@@ -342,9 +457,10 @@ const Cheques = () => {
       </div>
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {t('cheques.showing_results', 'Showing {{count}} of {{total}} cheques', { count: visibleRows.length, total: filteredCheques.length })}
+        {t('cheques.showing_results', 'Showing {{count}} of {{total}} cheques', { count: filteredCheques.length, total: totalCheques })}
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto hide-scrollbar bg-[rgb(255,255,255)] dark:bg-navbarBack shadow-md rounded-lg">
         <table id="cheques-table" className="w-full text-sm text-left rtl:text-right dark:bg-navbarBack text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
@@ -360,31 +476,70 @@ const Cheques = () => {
             </tr>
           </thead>
           <tbody>
-            {loading && visibleRows.length === 0 ? (
+            {loading && filteredCheques.length === 0 ? (
               <tr><td colSpan={tableColumns.length} className="text-center py-16"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div></td></tr>
-            ) : visibleRows.length > 0 ? (
-              visibleRows.map((cheque) => (
-                <tr key={cheque.id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            ) : filteredCheques.length > 0 ? (
+              filteredCheques.map((cheque) => (
+                <tr key={cheque._id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-[rgb(255,255,255)]">{cheque.chequeNumber}</td>
-                  <td className="px-6 py-4">{cheque.customerName}</td>
-                  <td className="px-6 py-4">{toLocaleDateStringEN(cheque.cheque_date)}</td>
+                  <td className="px-6 py-4">{cheque.customer?.name || 'N/A'}</td>
+                  <td className="px-6 py-4 font-semibold">{cheque.amount?.toLocaleString()} ₪</td>
+                  <td className="px-6 py-4">{toLocaleDateStringEN(cheque.chequeDate)}</td>
                   <td className="px-6 py-4">{getStatusBadge(cheque.status)}</td>
                   <td className="px-6 py-4 text-right">
-                    <IconButton aria-label="Actions" size="small" onClick={(event) => handleMenuOpen(event, cheque.id)}><MoreVert /></IconButton>
-                    <Menu anchorEl={anchorEls[cheque.id]} open={Boolean(anchorEls[cheque.id])} onClose={() => handleMenuClose(cheque.id)}>
-                      <MenuItem onClick={() => handleView(cheque)}><Visibility size={16} className="mr-2" /> {t('common.view')}</MenuItem>
-                      <MenuItem onClick={() => handleEdit(cheque)}><Edit size={16} className="mr-2" /> {t('common.edit')}</MenuItem>
-                      <MenuItem onClick={() => handleDelete(cheque.id, cheque.chequeNumber)} className="text-red-600 dark:text-red-400"><Delete size={16} className="mr-2" /> {t('common.delete')}</MenuItem>
+                    <IconButton aria-label="Actions" size="small" onClick={(event) => handleMenuOpen(event, cheque._id)}><MoreVert /></IconButton>
+                    <Menu anchorEl={anchorEls[cheque._id]} open={Boolean(anchorEls[cheque._id])} onClose={() => handleMenuClose(cheque._id)}>
+                      <MenuItem onClick={() => handleView(cheque)}><Visibility fontSize="small" className="mr-2" /> {t('common.view', 'View')}</MenuItem>
+                      <MenuItem onClick={() => handleEdit(cheque)}><Edit fontSize="small" className="mr-2" /> {t('common.edit', 'Edit Status')}</MenuItem>
+                      <MenuItem onClick={() => handleDelete(cheque._id, cheque.chequeNumber)} className="text-red-600 dark:text-red-400"><Delete fontSize="small" className="mr-2" /> {t('common.delete', 'Delete')}</MenuItem>
                     </Menu>
                   </td>
                 </tr>
               ))
             ) : (
-              <tr><td colSpan={tableColumns.length} className="text-center py-10 text-gray-500">{t('cheques.no_results')}</td></tr>
+              <tr><td colSpan={tableColumns.length} className="text-center py-10 text-gray-500">{t('cheques.no_results', 'No cheques found')}</td></tr>
             )}
           </tbody>
         </table>
+
+        {loadingMore && (
+          <div className="text-center py-4">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto"></div>
+            <p className="mt-2 text-sm text-gray-500">{t('common.loadingMore', 'Loading more...')}</p>
+          </div>
+        )}
+
+        {!hasMore && filteredCheques.length > 0 && (
+          <div className="text-center py-4 text-sm text-gray-500">
+            {t('common.endOfList', 'End of list')}
+          </div>
+        )}
       </div>
+
+      {/* Modals */}
+      <AddChequeModal
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSuccess={handleModalSuccess}
+      />
+
+      <EditChequeModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onSuccess={handleModalSuccess}
+        chequeId={selectedChequeId}
+      />
+
+      <ViewChequeModal
+        open={viewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        onEdit={(id) => {
+          setSelectedChequeId(id);
+          setEditModalOpen(true);
+        }}
+        onSuccess={handleModalSuccess}
+        chequeId={selectedChequeId}
+      />
     </div>
   );
 };

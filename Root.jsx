@@ -27,7 +27,7 @@ function Root() {
         <Sidebar sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
-        <div className={` ${language == 'en' ? 'paddingCompEn' : 'paddingCompAr'} ${isDarkMode? 'secondcomponent':'secondcomponentLight'}`} style={{ width: '100%',background:" rgb(241, 242, 242);" }}>
+        <div className={` ${language == 'en' ? 'paddingCompEn' : 'paddingCompAr'} ${isDarkMode? 'secondcomponent':'secondcomponentLight'}`} style={{ width: '100%',background:"rgb(241, 242, 242)" }}>
           <Navbar
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}

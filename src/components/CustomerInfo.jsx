@@ -554,25 +554,62 @@ function CustomerInfo() {
 
             {vehicles.length > 0 ? (
               <Swiper modules={[Navigation, A11y]} spaceBetween={10} slidesPerView={1} navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }} onInit={(swiper) => { swiper.params.navigation.prevEl = prevRef.current; swiper.params.navigation.nextEl = nextRef.current; swiper.navigation.init(); swiper.navigation.update(); }} breakpoints={{ 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 }, 1280: { slidesPerView: 4 } }} className="attachments-swiper pb-8">
-                {vehicles.map(vehicle => (
+                {vehicles.map(vehicle => {
+                  // Check if vehicle has expired insurance
+                  const hasExpiredInsurance = vehicle.insurance?.some(ins => {
+                    if (!ins.insuranceEndDate || ins.insuranceStatus === 'cancelled') return false;
+                    const endDate = new Date(ins.insuranceEndDate);
+                    const today = new Date();
+                    return endDate < today;
+                  });
+
+                  return (
                   <SwiperSlide key={vehicle._id}>
-                    <div className="max-w-full text-center p-3 border dark:border-gray-700 rounded-lg h-full flex flex-col justify-between group relative">
+                    <div className={`max-w-full text-center p-3 border rounded-lg h-full flex flex-col justify-between group relative transition-all duration-300 ${
+                      hasExpiredInsurance
+                        ? 'border-red-400 dark:border-red-600 bg-red-50/50 dark:bg-red-900/20 opacity-75 hover:opacity-100'
+                        : 'border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600'
+                    }`}>
+                      {/* Expired Badge */}
+                      {hasExpiredInsurance && (
+                        <div className="absolute top-2 left-2 z-10 px-2 py-1 bg-red-500 text-white text-xs font-semibold rounded-md shadow-md">
+                          {t('customerInfo.vehicles.expired', 'Expired')}
+                        </div>
+                      )}
+
                       <button onClick={() => openDeleteModal(vehicle)} className="absolute top-2 right-2 z-10 p-1.5 bg-red-100/80 dark:bg-red-900/80 text-red-600 dark:text-red-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-200 dark:hover:bg-red-800" title={t('common.delete')}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                       <div>
-                        <img src={vehicle.image || carLogo} alt={`${t('customerInfo.vehicles.vehicleAlt')} ${vehicle.plateNumber}`} className="w-full h-32 object-cover rounded-md mb-2 cursor-pointer" onClick={() => navigate(`/insured/${insuredId}/${vehicle._id}`, { state: { plateNumber: vehicle.plateNumber } })} />
+                        <img
+                          src={vehicle.image || carLogo}
+                          alt={`${t('customerInfo.vehicles.vehicleAlt')} ${vehicle.plateNumber}`}
+                          className={`w-full h-32 object-cover rounded-md mb-2 cursor-pointer transition-all ${
+                            hasExpiredInsurance ? 'filter grayscale-50 brightness-95' : ''
+                          }`}
+                          onClick={() => navigate(`/insured/${insuredId}/${vehicle._id}`, { state: { plateNumber: vehicle.plateNumber } })}
+                        />
                         <div className="relative w-full h-10 mb-2">
                           <img src={carLisence} alt={t('customerInfo.vehicles.licenseAlt')} className="w-full h-full object-contain" />
-                          <p className="absolute inset-0 flex items-center justify-center text-sm md:text-base font-medium text-black">{vehicle.plateNumber}</p>
+                          <p className={`absolute inset-0 flex items-center justify-center text-sm md:text-base font-medium ${
+                            hasExpiredInsurance ? 'text-red-700 dark:text-red-400' : 'text-black dark:text-gray-800'
+                          }`}>{vehicle.plateNumber}</p>
                         </div>
                       </div>
-                      <button className="w-full mt-auto rounded-md border border-gray-300 dark:!border-none px-3 py-1.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => { setIsOpenMandatory(true); setVehicleId(vehicle._id); }}>
-                        {t('customerInfo.vehicles.addInsurance')}
+                      <button
+                        className={`w-full mt-auto rounded-md border px-3 py-1.5 text-xs transition-all ${
+                          hasExpiredInsurance
+                            ? 'border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-800/40'
+                            : 'border-gray-300 dark:!border-none text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
+                        onClick={() => { setIsOpenMandatory(true); setVehicleId(vehicle._id); }}
+                      >
+                        {hasExpiredInsurance ? t('customerInfo.vehicles.renewInsurance', 'Renew Insurance') : t('customerInfo.vehicles.addInsurance')}
                       </button>
                     </div>
                   </SwiperSlide>
-                ))}
+                  );
+                })}
               </Swiper>
             ) : <p className="text-center text-gray-500 dark:text-gray-400 py-4">{t('customerInfo.vehicles.none')}</p>}
           </div>
@@ -669,7 +706,7 @@ function CustomerInfo() {
       </div>
 
   
-      {isAddVehicleOpen && <Add_vehicle isOpen={isAddVehicleOpen} close={() => setAddVehicleOpen(false)} insuredId={insuredId} fetchVehicles={fetchVehicles} />}
+      {isAddVehicleOpen && <Add_vehicle isOpen={isAddVehicleOpen} onClose={() => setAddVehicleOpen(false)} insuredId={insuredId} onVehicleAdded={fetchVehicles} />}
     {isOpenMandatory && <AddInsuranceMandatory 
     isOpen={isOpenMandatory} 
     onClose={() => setIsOpenMandatory(false)} 

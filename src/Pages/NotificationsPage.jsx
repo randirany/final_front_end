@@ -37,9 +37,18 @@ function NotificationsPage() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all'); // 'all', 'unread', 'read'
   const [searchQuery, setSearchQuery] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
 
-  // Fetch all notifications
-  const fetchNotifications = useCallback(async () => {
+  // Fetch notifications with pagination
+  const fetchNotifications = useCallback(async (page = 1, isReadFilter = null) => {
     setLoading(true);
     setError(null);
 
@@ -51,30 +60,36 @@ function NotificationsPage() {
       }
 
       const token = `islam__${rawToken}`;
+      const params = {
+        page,
+        limit: pagination.limit
+      };
+
+      // Add isRead filter if specified
+      if (isReadFilter !== null) {
+        params.isRead = isReadFilter;
+      }
+
       const response = await axios.get(`${API_BASE_URL}/notification/all`, {
-        headers: { token }
+        headers: { token },
+        params
       });
 
-      const fetchedNotifications = response.data.notifications || [];
+      const fetchedNotifications = response.data.data || [];
       setNotifications(fetchedNotifications);
       setFilteredNotifications(fetchedNotifications);
+      setUnreadCount(response.data.unreadCount || 0);
+      setPagination(response.data.pagination || pagination);
     } catch {
       setError(t('notifications.fetchError', 'Failed to load notifications'));
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [t, pagination.limit]);
 
-  // Filter notifications based on current filter and search query
+  // Apply search filter locally (client-side)
   useEffect(() => {
     let filtered = [...notifications];
-
-    // Apply filter
-    if (filter === 'unread') {
-      filtered = filtered.filter(n => !n.isRead);
-    } else if (filter === 'read') {
-      filtered = filtered.filter(n => n.isRead);
-    }
 
     // Apply search
     if (searchQuery.trim()) {
@@ -85,7 +100,18 @@ function NotificationsPage() {
     }
 
     setFilteredNotifications(filtered);
-  }, [notifications, filter, searchQuery]);
+  }, [notifications, searchQuery]);
+
+  // Handle filter changes - fetch from backend
+  useEffect(() => {
+    let isReadFilter = null;
+    if (filter === 'unread') {
+      isReadFilter = false;
+    } else if (filter === 'read') {
+      isReadFilter = true;
+    }
+    fetchNotifications(1, isReadFilter);
+  }, [filter]);
 
   // Mark notification as read
   const handleMarkAsRead = async (notificationId) => {
@@ -154,10 +180,8 @@ function NotificationsPage() {
 
   // Load notifications on component mount
   useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
-
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+    fetchNotifications(1);
+  }, []);
 
   return (
     <div className="py-4 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
@@ -224,7 +248,7 @@ function NotificationsPage() {
               isActive={filter === 'all'}
               onClick={() => setFilter('all')}
             >
-              {t('notifications.filter.all', 'All')} ({notifications.length})
+              {t('notifications.filter.all', 'All')} ({pagination.total})
             </FilterButton>
             <FilterButton
               isActive={filter === 'unread'}
@@ -236,7 +260,7 @@ function NotificationsPage() {
               isActive={filter === 'read'}
               onClick={() => setFilter('read')}
             >
-              {t('notifications.filter.read', 'Read')} ({notifications.length - unreadCount})
+              {t('notifications.filter.read', 'Read')} ({pagination.total - unreadCount})
             </FilterButton>
           </div>
 
@@ -346,6 +370,83 @@ function NotificationsPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && !error && filteredNotifications.length > 0 && (
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              {/* Page info */}
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('notifications.showing', 'Showing')} {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} {t('notifications.of', 'of')} {pagination.total} {t('notifications.notifications', 'notifications')}
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const isReadFilter = filter === 'unread' ? false : filter === 'read' ? true : null;
+                    fetchNotifications(pagination.page - 1, isReadFilter);
+                  }}
+                  disabled={!pagination.hasPrevPage}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    pagination.hasPrevPage
+                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600'
+                  }`}
+                >
+                  {t('notifications.previous', 'Previous')}
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (pagination.totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (pagination.page <= 3) {
+                      pageNum = i + 1;
+                    } else if (pagination.page >= pagination.totalPages - 2) {
+                      pageNum = pagination.totalPages - 4 + i;
+                    } else {
+                      pageNum = pagination.page - 2 + i;
+                    }
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => {
+                          const isReadFilter = filter === 'unread' ? false : filter === 'read' ? true : null;
+                          fetchNotifications(pageNum, isReadFilter);
+                        }}
+                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          pagination.page === pageNum
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => {
+                    const isReadFilter = filter === 'unread' ? false : filter === 'read' ? true : null;
+                    fetchNotifications(pagination.page + 1, isReadFilter);
+                  }}
+                  disabled={!pagination.hasNextPage}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    pagination.hasNextPage
+                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-600'
+                  }`}
+                >
+                  {t('notifications.next', 'Next')}
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>

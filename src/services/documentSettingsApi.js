@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
-const BASE_URL = '/api/document-settings';
+const BASE_URL = `${API_BASE_URL}/document-settings`;
 
 export const documentSettingsApi = {
   // Get all document settings with pagination and search

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
+import { smsApi } from '../services/smsApi';
 
 const MAX_SMS_LENGTH = 160;
 
@@ -124,22 +125,47 @@ export default function SmsSend() {
     if (result.isConfirmed) {
       setSending(true);
       try {
-        const token = `islam__${localStorage.getItem("token")}`;
+        // Prepare recipients array with phone numbers and names for personalization
+        const recipients = selectedCustomersData.map(customer => ({
+          phoneNumber: customer.mobile,
+          name: customer.name
+        }));
 
-        // Simulate SMS sending API call
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Send bulk SMS via API
+        const response = await smsApi.sendBulk(recipients, message);
 
-        // TODO: Replace with actual SMS API endpoint
-        // await axios.post('http://localhost:3002/api/v1/sms/send', {
-        //   message: message,
-        //   recipients: selectedCustomers
-        // }, { headers: { token } });
+        // Show success message with summary
+        Swal.fire({
+          title: t('sms.success.sent'),
+          html: `
+            <div class="text-left">
+              <p><strong>${t('sms.summary.total')}:</strong> ${response.summary.total}</p>
+              <p class="text-green-600"><strong>${t('sms.summary.successful')}:</strong> ${response.summary.successful}</p>
+              ${response.summary.failed > 0 ? `<p class="text-red-600"><strong>${t('sms.summary.failed')}:</strong> ${response.summary.failed}</p>` : ''}
+            </div>
+          `,
+          icon: response.summary.failed === 0 ? 'success' : 'warning',
+          customClass: {
+            popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+            title: 'dark:text-white',
+            htmlContainer: 'dark:text-gray-300'
+          }
+        });
 
-        toast.success(t('sms.success.sent', 'SMS sent successfully to {{count}} recipients', { count: selectedCustomers.length }));
         setMessage('');
         setSelectedCustomers([]);
       } catch (err) {
-        toast.error(t('sms.errors.sendFailed', 'Failed to send SMS'));
+        console.error('SMS send error:', err);
+        Swal.fire({
+          title: t('sms.errors.sendFailed', 'Failed to send SMS'),
+          text: err.response?.data?.message || err.message,
+          icon: 'error',
+          customClass: {
+            popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+            title: 'dark:text-white',
+            htmlContainer: 'dark:text-gray-300'
+          }
+        });
       } finally {
         setSending(false);
       }

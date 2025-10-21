@@ -1,0 +1,252 @@
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Add, Edit, Delete, Visibility, Business } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import Swal from 'sweetalert2';
+import DataTable from '../components/shared/DataTable';
+import AddCompanyModal from '../components/AddCompanyModal';
+import EditCompanyModal from '../components/EditCompanyModal';
+import ViewCompanyModal from '../components/ViewCompanyModal';
+import { getAllCompanies, deleteCompany } from '../services/insuranceCompanyApi';
+
+const InsuranceCompanies = () => {
+  const { t } = useTranslation();
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  const fetchCompanies = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllCompanies({ page: 1, limit: 1000 });
+      console.log('Companies response:', response);
+      // The response is directly an array based on your example
+      setCompanies(Array.isArray(response) ? response : (response.data || []));
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+      Swal.fire({
+        icon: 'error',
+        title: t('common.error'),
+        text: t('companies.fetchError', 'Failed to fetch insurance companies')
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (companyId, companyName) => {
+    const result = await Swal.fire({
+      title: t('common.areYouSure'),
+      text: t('companies.deleteConfirm', { name: companyName }),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: t('common.delete'),
+      cancelButtonText: t('common.cancel')
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteCompany(companyId);
+        Swal.fire({
+          icon: 'success',
+          title: t('common.deleted'),
+          text: t('companies.deleteSuccess'),
+          timer: 2000
+        });
+        fetchCompanies();
+      } catch (error) {
+        console.error('Error deleting company:', error);
+        Swal.fire({
+          icon: 'error',
+          title: t('common.error'),
+          text: error.response?.data?.message || t('companies.deleteError')
+        });
+      }
+    }
+  };
+
+  const handleView = (companyId) => {
+    setSelectedCompanyId(companyId);
+    setViewModalOpen(true);
+  };
+
+  const handleEdit = (companyId) => {
+    setSelectedCompanyId(companyId);
+    setEditModalOpen(true);
+  };
+
+  const columns = [
+    {
+      header: t('companies.name', 'Company Name'),
+      accessor: 'name',
+      render: (value, row) => (
+        <div className="flex items-center gap-2">
+          <Business className="text-blue-600 dark:text-blue-400" fontSize="small" />
+          <span className="font-medium text-gray-900 dark:text-white">{value}</span>
+        </div>
+      )
+    },
+    {
+      header: t('companies.description', 'Description'),
+      accessor: 'description',
+      render: (value) => (
+        <span className="text-gray-700 dark:text-gray-300">
+          {value || t('common.noDescription', 'No description')}
+        </span>
+      )
+    },
+    {
+      header: t('companies.columns.insuranceTypes', 'Insurance Types'),
+      accessor: 'insuranceTypes',
+      render: (value) => (
+        <div className="flex flex-wrap gap-1">
+          {value && value.length > 0 ? (
+            value.map((type) => (
+              <span
+                key={type._id}
+                className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              >
+                {type.name}
+              </span>
+            ))
+          ) : (
+            <span className="text-gray-500 dark:text-gray-400 text-sm">
+              {t('common.none', 'None')}
+            </span>
+          )}
+        </div>
+      )
+    },
+    {
+      header: t('companies.columns.roadServices', 'Road Services'),
+      accessor: 'roadServices',
+      render: (value) => (
+        <div className="flex flex-wrap gap-1">
+          {value && value.length > 0 ? (
+            value.map((service, index) => (
+              <span
+                key={service._id}
+                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                  service.is_active
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                }`}
+                title={service.description || ''}
+              >
+                {service.cutoff_year ? `Year ${service.cutoff_year}` : `Service ${index + 1}`}
+              </span>
+            ))
+          ) : (
+            <span className="text-gray-500 dark:text-gray-400 text-sm">
+              {t('common.none', 'None')}
+            </span>
+          )}
+        </div>
+      )
+    },
+    {
+      header: t('companies.createdAt', 'Created Date'),
+      accessor: 'createdAt',
+      render: (value) => new Date(value).toLocaleDateString()
+    },
+    {
+      header: t('common.actions', 'Actions'),
+      accessor: '_id',
+      render: (value, row) => (
+        <div className="flex gap-1">
+          <IconButton
+            size="small"
+            onClick={() => handleView(value)}
+            className="text-blue-600 dark:text-blue-400"
+            title={t('common.view')}
+          >
+            <Visibility fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => handleEdit(value)}
+            className="text-green-600 dark:text-green-400"
+            title={t('common.edit')}
+          >
+            <Edit fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => handleDelete(value, row.name)}
+            className="text-red-600 dark:text-red-400"
+            title={t('common.delete')}
+          >
+            <Delete fontSize="small" />
+          </IconButton>
+        </div>
+      ),
+      sortable: false
+    }
+  ];
+
+  return (
+    <div className="p-6">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Business className="text-blue-600 dark:text-blue-400" />
+            {t('companies.title', 'Insurance Companies')}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {t('companies.subtitle', 'Manage insurance companies and their pricing configurations')}
+          </p>
+        </div>
+        <button
+          onClick={() => setAddModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+        >
+          <Add />
+          {t('companies.addNew', 'Add Company')}
+        </button>
+      </div>
+
+      {/* Data Table */}
+      <DataTable
+        data={companies}
+        columns={columns}
+        title={t('companies.listTitle', 'Companies List')}
+        loading={loading}
+        onRefresh={fetchCompanies}
+        enableSearch={true}
+        enableExport={true}
+      />
+
+      {/* Modals */}
+      <AddCompanyModal
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSuccess={fetchCompanies}
+      />
+
+      <EditCompanyModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        companyId={selectedCompanyId}
+        onSuccess={fetchCompanies}
+      />
+
+      <ViewCompanyModal
+        open={viewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        companyId={selectedCompanyId}
+      />
+    </div>
+  );
+};
+
+export default InsuranceCompanies;

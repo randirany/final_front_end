@@ -1,22 +1,24 @@
 import axios from "axios"
 import { useNavigate, useParams } from "react-router-dom"
 import { useFormik } from "formik"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 
 import { Bounce, toast, ToastContainer } from "react-toastify"
+import { vehicleApi } from "../services/vehicleApi"
 
 const MySwal = withReactContent(Swal)
 function AddVehicle() {
     const { id } = useParams()
     const [loading, setLoading] = useState(false)
     const [imagePreview, setImagePreview] = useState(null)
+    const [fetchingVehicleData, setFetchingVehicleData] = useState(false)
     const navigate = useNavigate()
     const { t } = useTranslation()
 
-    
+
     const formik = useFormik({
         initialValues: {
             plateNumber: "",
@@ -138,6 +140,77 @@ function AddVehicle() {
         }
     }
 
+    // Fetch vehicle data when plate number is entered
+    const handlePlateNumberBlur = async () => {
+        const plateNumber = formik.values.plateNumber
+        if (!plateNumber || plateNumber.toString().trim() === "") {
+            return
+        }
+
+        try {
+            setFetchingVehicleData(true)
+            toast.info("جاري جلب بيانات المركبة...", {
+                position: "top-center",
+                autoClose: 2000,
+            })
+
+            const response = await vehicleApi.getVehicleDataByPlate(plateNumber)
+
+            // Check if we have data
+            if (response && response.data && response.data.length > 0) {
+                // Use the first vehicle in the results
+                const vehicleData = response.data[0]
+
+                // Format the date fields from the API
+                const formatDate = (dateStr) => {
+                    if (!dateStr) return ""
+                    try {
+                        const date = new Date(dateStr)
+                        return date.toISOString().split('T')[0]
+                    } catch {
+                        return ""
+                    }
+                }
+
+                // Map the API fields to form fields
+                formik.setValues({
+                    ...formik.values,
+                    model: vehicleData.tozeret_nm || formik.values.model, // Manufacturer name
+                    type: vehicleData.kinuy_mishari || vehicleData.degem_nm || formik.values.type, // Commercial name or model
+                    ownership: vehicleData.baalut || formik.values.ownership, // Ownership type
+                    modelNumber: vehicleData.misgeret || formik.values.modelNumber, // Chassis/VIN
+                    color: vehicleData.tzeva_rechev || formik.values.color, // Color
+                    price: formik.values.price, // Price not in API
+                    licenseExpiry: formatDate(vehicleData.tokef_dt) || formik.values.licenseExpiry, // License expiry
+                    lastTest: formatDate(vehicleData.mivchan_acharon_dt) || formik.values.lastTest, // Last test date
+                })
+
+                const message = response.count > 1
+                    ? `تم جلب بيانات المركبة بنجاح (تم العثور على ${response.count} مركبات، تم استخدام الأولى)`
+                    : "تم جلب بيانات المركبة بنجاح"
+
+                toast.success(message, {
+                    position: "top-center",
+                    autoClose: 4000,
+                })
+            } else {
+                toast.warning("لم يتم العثور على بيانات للمركبة. يرجى إدخال البيانات يدوياً", {
+                    position: "top-center",
+                    autoClose: 3000,
+                })
+            }
+        } catch (error) {
+            console.error("Error fetching vehicle data:", error)
+            const errorMessage = error.response?.data?.message || "لم يتم العثور على بيانات للمركبة. يرجى إدخال البيانات يدوياً"
+            toast.warning(errorMessage, {
+                position: "top-center",
+                autoClose: 3000,
+            })
+        } finally {
+            setFetchingVehicleData(false)
+        }
+    }
+
     return (
         <div className="container p-4">
             <div className="bg-[rgb(255,255,255)] rounded-lg shadow-md p-6">
@@ -157,9 +230,16 @@ function AddVehicle() {
                                 className={`w-full p-1 border dark:border-borderNav rounded-md ${formik.touched.plateNumber && formik.errors.plateNumber ? "border dark:border-borderNav-red-500" : "border dark:border-borderNav-gray-300"
                                     }`}
                                 onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                onBlur={(e) => {
+                                    formik.handleBlur(e)
+                                    handlePlateNumberBlur()
+                                }}
                                 value={formik.values.plateNumber}
+                                disabled={fetchingVehicleData}
                             />
+                            {fetchingVehicleData && (
+                                <p className="mt-1 text-sm text-blue-500">جاري جلب البيانات...</p>
+                            )}
                             {formik.touched.plateNumber && formik.errors.plateNumber && (
                                 <p className="mt-1 text-sm text-red-500">{formik.errors.plateNumber}</p>
                             )}

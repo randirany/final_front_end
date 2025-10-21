@@ -16,7 +16,13 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Alert
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
+  Chip
 } from '@mui/material';
 import { toLocaleDateStringEN } from '../utils/dateFormatter';
 import {
@@ -35,13 +41,17 @@ import {
   Edit3,
   X,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { emailApi } from '../services/emailApi';
+import Swal from 'sweetalert2';
 
 // Email validation schema
 const emailValidationSchema = Yup.object({
@@ -67,54 +77,89 @@ export default function EmailManagement() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [emailSearchText, setEmailSearchText] = useState('');
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0
+  });
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [emailViewOpen, setEmailViewOpen] = useState(false);
 
   const isRTL = (language === 'ar' || language === 'he');
 
-  // Sample inbox data
-  const sampleEmails = [
-    {
-      id: 1,
-      from: 'ahmed.hassan@example.com',
-      fromName: 'Ahmed Hassan',
-      subject: 'Insurance Policy Inquiry',
-      preview: 'I would like to inquire about comprehensive car insurance...',
-      content: 'Dear Al-Basheer Insurance Team,\n\nI hope this message finds you well. I would like to inquire about comprehensive car insurance options for my 2023 Toyota Camry...',
-      date: new Date().toISOString(),
-      read: false,
-      starred: false,
-      important: true
-    },
-    {
-      id: 2,
-      from: 'sara.ali@example.com',
-      fromName: 'Sara Ali',
-      subject: 'Claim Status Update Request',
-      preview: 'Could you please provide an update on my recent claim...',
-      content: 'Hello,\n\nI submitted a claim last week (Reference: CLM-2024-001) and would appreciate an update on its current status...',
-      date: new Date(Date.now() - 86400000).toISOString(),
-      read: true,
-      starred: true,
-      important: false
-    },
-    {
-      id: 3,
-      from: 'omar.ibrahim@example.com',
-      fromName: 'Omar Ibrahim',
-      subject: 'Policy Renewal Reminder',
-      preview: 'This is a reminder that your policy expires next month...',
-      content: 'Dear Valued Customer,\n\nThis is a friendly reminder that your current insurance policy is set to expire on March 15, 2024...',
-      date: new Date(Date.now() - 172800000).toISOString(),
-      read: true,
-      starred: false,
-      important: false
-    }
-  ];
-
   // Initialize data
   useEffect(() => {
-    setEmails(sampleEmails);
+    fetchInbox();
     fetchCustomers();
   }, []);
+
+  // Parse email address from "Name <email@domain.com>" format
+  const parseEmailFrom = (fromString) => {
+    if (!fromString) return { name: 'Unknown', email: '' };
+
+    // Check if format is "Name <email@domain.com>"
+    const match = fromString.match(/^"?([^"<]+)"?\s*<([^>]+)>$/);
+    if (match) {
+      return {
+        name: match[1].trim(),
+        email: match[2].trim()
+      };
+    }
+
+    // If no angle brackets, assume it's just an email
+    return {
+      name: fromString.split('@')[0],
+      email: fromString
+    };
+  };
+
+  // Fetch inbox from API
+  const fetchInbox = async (page = 1) => {
+    setLoading(true);
+    try {
+      const response = await emailApi.getInbox(page, pagination.limit);
+
+      // Transform API data to match component structure
+      const formattedEmails = response.data.map(email => {
+        const fromParsed = parseEmailFrom(email.from);
+
+        return {
+          id: email.messageId,
+          from: email.from,
+          fromName: fromParsed.name,
+          fromEmail: fromParsed.email,
+          subject: email.subject || '(No Subject)',
+          preview: email.text ? email.text.substring(0, 100).replace(/\n/g, ' ').trim() : '(No preview)',
+          content: email.text || email.html || '',
+          html: email.html || '',
+          text: email.text || '',
+          date: email.date,
+          attachments: email.attachments || [],
+          read: false,
+          starred: false,
+          important: false
+        };
+      });
+
+      setEmails(formattedEmails);
+      setPagination(response.pagination);
+    } catch (error) {
+      console.error('Error fetching inbox:', error);
+      Swal.fire({
+        title: t('email.errors.fetchInbox', 'Failed to load inbox'),
+        text: error.response?.data?.message || error.message,
+        icon: 'error',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white',
+          htmlContainer: 'dark:text-gray-300'
+        }
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch customers for bulk email
   const fetchCustomers = async () => {
@@ -200,15 +245,35 @@ export default function EmailManagement() {
   const handleSendEmail = async (values, { setSubmitting, resetForm }) => {
     setSending(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const emailData = {
+        to: values.to,
+        subject: values.subject,
+        text: values.message,
+        html: `<p>${values.message.replace(/\n/g, '<br>')}</p>`
+      };
 
-      // TODO: Replace with actual email API
+      const response = await emailApi.send(emailData);
 
-      toast.success(t('email.success.sent', 'Email sent successfully!'));
+      Swal.fire({
+        title: t('email.success.sent', 'Email sent successfully!'),
+        icon: 'success',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white'
+        }
+      });
       resetForm();
     } catch (error) {
-      toast.error(t('email.errors.sendFailed', 'Failed to send email'));
+      Swal.fire({
+        title: t('email.errors.sendFailed', 'Failed to send email'),
+        text: error.response?.data?.message || error.message,
+        icon: 'error',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white',
+          htmlContainer: 'dark:text-gray-300'
+        }
+      });
     } finally {
       setSending(false);
       setSubmitting(false);
@@ -218,22 +283,65 @@ export default function EmailManagement() {
   // Send bulk email
   const handleSendBulkEmail = async (values, { setSubmitting, resetForm }) => {
     if (selectedCustomers.length === 0) {
-      toast.error(t('email.errors.noRecipients', 'Please select at least one recipient'));
+      Swal.fire({
+        title: t('email.errors.noRecipients', 'Please select at least one recipient'),
+        icon: 'warning',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white'
+        }
+      });
       return;
     }
 
     setSending(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      const recipients = customers
+        .filter(c => selectedCustomers.includes(c.id))
+        .map(c => ({
+          email: c.email,
+          name: c.name
+        }));
 
-      const recipients = customers.filter(c => selectedCustomers.includes(c.id));
+      const bulkEmailData = {
+        recipients: recipients,
+        subject: values.subject,
+        text: values.message,
+        html: `<p>${values.message.replace(/\n/g, '<br>')}</p>`
+      };
 
-      toast.success(t('email.success.bulkSent', 'Bulk email sent to {{count}} recipients', { count: selectedCustomers.length }));
+      const response = await emailApi.sendBulk(bulkEmailData);
+
+      Swal.fire({
+        title: t('email.success.bulkSent', 'Bulk email sent successfully!'),
+        html: `
+          <div class="text-left">
+            <p><strong>Total:</strong> ${response.summary.total}</p>
+            <p class="text-green-600"><strong>Successful:</strong> ${response.summary.successful}</p>
+            ${response.summary.failed > 0 ? `<p class="text-red-600"><strong>Failed:</strong> ${response.summary.failed}</p>` : ''}
+          </div>
+        `,
+        icon: response.summary.failed === 0 ? 'success' : 'warning',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white',
+          htmlContainer: 'dark:text-gray-300'
+        }
+      });
+
       resetForm();
       setSelectedCustomers([]);
     } catch (error) {
-      toast.error(t('email.errors.bulkSendFailed', 'Failed to send bulk email'));
+      Swal.fire({
+        title: t('email.errors.bulkSendFailed', 'Failed to send bulk email'),
+        text: error.response?.data?.message || error.message,
+        icon: 'error',
+        customClass: {
+          popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+          title: 'dark:text-white',
+          htmlContainer: 'dark:text-gray-300'
+        }
+      });
     } finally {
       setSending(false);
       setSubmitting(false);
@@ -254,11 +362,71 @@ export default function EmailManagement() {
     ));
   };
 
+  // Open email view dialog
+  const handleViewEmail = (email) => {
+    setSelectedEmail(email);
+    setEmailViewOpen(true);
+    markAsRead(email.id);
+  };
+
+  // Close email view dialog
+  const handleCloseEmailView = () => {
+    setEmailViewOpen(false);
+    setSelectedEmail(null);
+  };
+
   // Delete emails
-  const deleteSelectedEmails = () => {
-    setEmails(prev => prev.filter(email => !selectedEmails.includes(email.id)));
-    setSelectedEmails([]);
-    toast.success(t('email.success.deleted', 'Selected emails deleted'));
+  const deleteSelectedEmails = async () => {
+    if (selectedEmails.length === 0) return;
+
+    Swal.fire({
+      title: t('email.delete.confirm', 'Are you sure?'),
+      text: t('email.delete.confirmText', `You are about to delete ${selectedEmails.length} email(s)`),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: t('email.delete.yes', 'Yes, delete'),
+      cancelButtonText: t('common.cancel', 'Cancel'),
+      reverseButtons: true,
+      customClass: {
+        popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+        title: 'dark:text-white',
+        htmlContainer: 'dark:text-gray-300'
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Delete emails one by one
+          const deletePromises = selectedEmails.map(emailId => emailApi.delete(emailId));
+          await Promise.all(deletePromises);
+
+          // Remove from local state
+          setEmails(prev => prev.filter(email => !selectedEmails.includes(email.id)));
+          setSelectedEmails([]);
+
+          Swal.fire({
+            title: t('email.success.deleted', 'Emails deleted successfully'),
+            icon: 'success',
+            customClass: {
+              popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+              title: 'dark:text-white'
+            }
+          });
+        } catch (error) {
+          Swal.fire({
+            title: t('email.errors.deleteFailed', 'Failed to delete emails'),
+            text: error.response?.data?.message || error.message,
+            icon: 'error',
+            customClass: {
+              popup: 'dark:bg-navbarBack dark:text-white rounded-lg',
+              title: 'dark:text-white',
+              htmlContainer: 'dark:text-gray-300'
+            }
+          });
+        }
+      }
+    });
   };
 
   const TabPanel = ({ children, value, index }) => (
@@ -340,7 +508,7 @@ export default function EmailManagement() {
                   onChange={(e) => handleSelectAllEmails(e.target.checked)}
                   size="small"
                 />
-                <IconButton onClick={() => window.location.reload()} size="small">
+                <IconButton onClick={() => fetchInbox(pagination.page)} size="small">
                   <RefreshCw className="w-4 h-4" />
                 </IconButton>
                 {selectedEmails.length > 0 && (
@@ -385,7 +553,7 @@ export default function EmailManagement() {
                         ? 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
                         : 'bg-white dark:bg-gray-600 border-blue-200 dark:border-blue-700'
                     } hover:bg-gray-100 dark:hover:bg-gray-600`}
-                    onClick={() => markAsRead(email.id)}
+                    onClick={() => handleViewEmail(email)}
                   >
                     <Checkbox
                       checked={selectedEmails.includes(email.id)}
@@ -442,6 +610,62 @@ export default function EmailManagement() {
                 </div>
               )}
             </div>
+
+            {/* Pagination */}
+            {!loading && pagination.totalPages > 1 && (
+              <div className="mt-6 flex justify-between items-center">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {t('email.inbox.showing', 'Showing page {{page}} of {{totalPages}}', {
+                    page: pagination.page,
+                    totalPages: pagination.totalPages
+                  })}
+                </div>
+                <div className="flex gap-2">
+                  <IconButton
+                    size="small"
+                    disabled={pagination.page === 1}
+                    onClick={() => fetchInbox(pagination.page - 1)}
+                    sx={{
+                      border: '1px solid #6C5FFC',
+                      borderRadius: '6px',
+                      color: '#6C5FFC',
+                      '&:hover': {
+                        borderColor: '#5a4fd8',
+                        backgroundColor: 'rgba(108, 95, 252, 0.04)'
+                      },
+                      '&:disabled': {
+                        borderColor: '#9ca3af',
+                        color: '#9ca3af',
+                        backgroundColor: 'transparent'
+                      }
+                    }}
+                  >
+                    {isRTL ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    disabled={pagination.page === pagination.totalPages}
+                    onClick={() => fetchInbox(pagination.page + 1)}
+                    sx={{
+                      border: '1px solid #6C5FFC',
+                      borderRadius: '6px',
+                      color: '#6C5FFC',
+                      '&:hover': {
+                        borderColor: '#5a4fd8',
+                        backgroundColor: 'rgba(108, 95, 252, 0.04)'
+                      },
+                      '&:disabled': {
+                        borderColor: '#9ca3af',
+                        color: '#9ca3af',
+                        backgroundColor: 'transparent'
+                      }
+                    }}
+                  >
+                    {isRTL ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                  </IconButton>
+                </div>
+              </div>
+            )}
           </div>
         </TabPanel>
 
@@ -470,7 +694,7 @@ export default function EmailManagement() {
                           fullWidth
                           label={t('email.compose.to', 'To')}
                           type="email"
-                          placeholder="recipient@example.com"
+                          placeholder={t('email.compose.toPlaceholder', 'recipient@example.com')}
                           error={meta.touched && !!meta.error}
                           helperText={meta.touched && meta.error}
                           sx={{
@@ -490,7 +714,7 @@ export default function EmailManagement() {
                           {...field}
                           fullWidth
                           label={t('email.compose.subject', 'Subject')}
-                          placeholder="Email subject"
+                          placeholder={t('email.compose.subjectPlaceholder', 'Email subject')}
                           error={meta.touched && !!meta.error}
                           helperText={meta.touched && meta.error}
                           sx={{
@@ -512,7 +736,7 @@ export default function EmailManagement() {
                           multiline
                           rows={8}
                           label={t('email.compose.message', 'Message')}
-                          placeholder="Type your message here..."
+                          placeholder={t('email.compose.messagePlaceholder', 'Type your message here...')}
                           error={meta.touched && !!meta.error}
                           helperText={meta.touched && meta.error}
                           sx={{
@@ -662,7 +886,7 @@ export default function EmailManagement() {
                                 {...field}
                                 fullWidth
                                 label={t('email.bulk.subject', 'Subject')}
-                                placeholder="Email subject"
+                                placeholder={t('email.bulk.subjectPlaceholder', 'Email subject')}
                                 error={meta.touched && !!meta.error}
                                 helperText={meta.touched && meta.error}
                                 sx={{
@@ -684,7 +908,7 @@ export default function EmailManagement() {
                                 multiline
                                 rows={10}
                                 label={t('email.bulk.message', 'Message')}
-                                placeholder="Type your bulk email message here..."
+                                placeholder={t('email.bulk.messagePlaceholder', 'Type your bulk email message here...')}
                                 error={meta.touched && !!meta.error}
                                 helperText={meta.touched && meta.error}
                                 sx={{
@@ -733,6 +957,111 @@ export default function EmailManagement() {
           </div>
         </TabPanel>
       </div>
+
+      {/* Email View Dialog */}
+      <Dialog
+        open={emailViewOpen}
+        onClose={handleCloseEmailView}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: 'background.paper',
+            backgroundImage: 'none'
+          },
+          className: 'dark:bg-navbarBack'
+        }}
+      >
+        {selectedEmail && (
+          <>
+            <DialogTitle className="dark:text-white border-b dark:border-gray-700">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <Typography variant="h6" className="dark:text-white font-semibold mb-2">
+                    {selectedEmail.subject}
+                  </Typography>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <span className="font-medium">{selectedEmail.fromName}</span>
+                    <span>&lt;{selectedEmail.fromEmail}&gt;</span>
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    {toLocaleDateStringEN(selectedEmail.date)}
+                  </div>
+                </div>
+                <IconButton onClick={handleCloseEmailView} size="small">
+                  <X className="w-5 h-5" />
+                </IconButton>
+              </div>
+            </DialogTitle>
+
+            <DialogContent className="dark:bg-navbarBack" sx={{ mt: 2 }}>
+              {/* Attachments */}
+              {selectedEmail.attachments && selectedEmail.attachments.length > 0 && (
+                <div className="mb-4">
+                  <Typography variant="subtitle2" className="dark:text-white mb-2 flex items-center gap-2">
+                    <Archive className="w-4 h-4" />
+                    {t('email.attachments', 'Attachments')} ({selectedEmail.attachments.length})
+                  </Typography>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedEmail.attachments.map((attachment, index) => (
+                      <Chip
+                        key={index}
+                        label={attachment.filename || t('email.attachmentFile', 'Attachment {{index}}', { index: index + 1 })}
+                        size="small"
+                        sx={{ bgcolor: '#6C5FFC', color: '#fff' }}
+                      />
+                    ))}
+                  </div>
+                  <Divider sx={{ my: 2 }} className="dark:bg-gray-700" />
+                </div>
+              )}
+
+              {/* Email Content */}
+              <div className="dark:text-gray-300">
+                {selectedEmail.html ? (
+                  <div
+                    className="prose dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: selectedEmail.html }}
+                  />
+                ) : (
+                  <div className="whitespace-pre-wrap font-mono text-sm">
+                    {selectedEmail.text || selectedEmail.content}
+                  </div>
+                )}
+              </div>
+            </DialogContent>
+
+            <DialogActions className="dark:bg-navbarBack border-t dark:border-gray-700 p-4">
+              <Button
+                variant="outlined"
+                startIcon={<Trash2 className="w-4 h-4" />}
+                onClick={() => {
+                  handleCloseEmailView();
+                  deleteSelectedEmails();
+                }}
+                sx={{
+                  borderColor: '#d33',
+                  color: '#d33',
+                  '&:hover': { borderColor: '#b82828', backgroundColor: 'rgba(211, 51, 51, 0.04)' }
+                }}
+              >
+                {t('email.deleteButton', 'Delete')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleCloseEmailView}
+                sx={{
+                  borderColor: '#6C5FFC',
+                  color: '#6C5FFC',
+                  '&:hover': { borderColor: '#5a4fd8', backgroundColor: 'rgba(108, 95, 252, 0.04)' }
+                }}
+              >
+                {t('common.close', 'Close')}
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
     </div>
   );
 }

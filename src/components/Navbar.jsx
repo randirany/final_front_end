@@ -43,18 +43,23 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
     }
     const token = `islam__${rawToken}`;
 
-    // تحميل الإشعارات من API
+    // تحميل الإشعارات من API with pagination
     const fetchNotifications = async () => {
       setLoadingNotifications(true);
       setNotificationError(null);
       try {
         const response = await axios.get(`${API_BASE_URL}/notification/all`, {
-          headers: { token }
+          headers: { token },
+          params: {
+            page: 1,
+            limit: 10,
+            isRead: false // Only fetch unread notifications for dropdown
+          }
         });
 
-        const fetchedNotifications = response.data.notifications || [];
+        const fetchedNotifications = response.data.data || [];
         setNotifications(fetchedNotifications);
-        setUnreadCount(fetchedNotifications.filter(n => !n.isRead).length);
+        setUnreadCount(response.data.unreadCount || 0);
       } catch {
         setNotificationError(t('nav.dropdown.fetchError', 'Failed to load notifications.'));
       } finally {
@@ -448,11 +453,11 @@ useEffect(() => {
                       <div className="text-center py-4 dark:text-gray-400">{t('loading', 'Loading...')}</div>
                     ) : notificationError ? (
                       <div className="text-center py-4 text-red-500">{notificationError}</div>
-                    ) : unreadCount === 0 ? (
+                    ) : notifications.length === 0 ? (
                       <div className="text-center py-4 dark:text-gray-400">{t('nav.dropdown.noNotifications', 'No new notifications.')}</div>
                     ) : (
                       <ul className='mb-3 max-h-[23rem] space-y-1.5 overflow-y-auto'>
-                        {notifications.filter(n => !n.isRead).map((notification) => (
+                        {notifications.map((notification) => (
                           <li key={notification._id} role="menuitem">
                             <button
                               onClick={() => handleMarkAsRead(notification._id)}

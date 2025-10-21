@@ -56,10 +56,16 @@
             "categore": {
                 "dash": "لوحة التحكم",
                 "custom": "العملاء",
+                "customers": {
+                    "allCustomers": "جميع العملاء",
+                    "addCustomer": "إضافة عميل جديد"
+                },
                 "sms": "إرسال SMS",
                 "audits": "التدقيق",
                 "insucresComp": {
-                    "titleInsucresComp": "شركة التأمين",
+                    "titleInsucresComp": "شركات التأمين",
+                    "allCompanies": "جميع شركات التأمين",
+                    "addCompany": "إضافة شركة جديدة",
                     "categore": {
                         "Mandatory": "تأمين إلزامي",
                         "Third": "تأمين الطرف الثالث",
@@ -73,6 +79,12 @@
                 "onlinePayment": "الدفع الإلكتروني",
                 "emailManagement": "إدارة البريد الإلكتروني",
                 "cheques": "الشيكات",
+                "insuranceTypes": "أنواع التأمين",
+                "insuranceCompanies": "شركات التأمين",
+                "pricingTypes": "أنواع التسعير",
+                "companyPricing": "تسعير الشركات",
+                "expenses": "المصروفات",
+                "roadServices": "خدمات الطريق",
                 "documentSettings": "إعدادات المستندات",
                 "reports": {
                     "title": "التقارير",
@@ -2103,7 +2115,29 @@
             "ipAddress": "عنوان IP",
             "userAgent": "وكيل المستخدم",
             "additionalData": "بيانات إضافية / الحمولة",
-            "extraData": "بيانات اضافية"
+            "extraData": "تغييرات إضافية",
+            "basicInfo": "المعلومات الأساسية",
+            "userEmail": "البريد الإلكتروني للمستخدم",
+            "entityId": "معرف الكيان",
+            "changesTitle": "التغييرات",
+            "oldValue": "القيمة القديمة",
+            "newValue": "القيمة الجديدة",
+            "noOldValue": "لا توجد قيمة سابقة (سجل جديد)",
+            "noNewValue": "لا توجد قيمة جديدة (تم حذف السجل)"
+        },
+        "pagination": {
+            "showing": "عرض",
+            "of": "من",
+            "logs": "سجلات"
+        },
+        "filters": {
+            "title": "الفلاتر",
+            "dateFrom": "من تاريخ",
+            "dateTo": "إلى تاريخ",
+            "user": "المستخدم",
+            "allUsers": "جميع المستخدمين",
+            "apply": "تطبيق الفلاتر",
+            "reset": "إعادة تعيين"
         },
         "error": {
             "fetchFailed": "فشل في جلب سجلات التدقيق."
@@ -2145,7 +2179,13 @@
             "confirm": "نعم، إرسال"
         },
         "success": {
-            "sent": "تم إرسال SMS بنجاح إلى {{count}} مستقبل"
+            "sent": "تم إرسال الرسائل بنجاح!"
+        },
+        "summary": {
+            "total": "الإجمالي",
+            "successful": "ناجح",
+            "failed": "فشل",
+            "batchId": "معرف الدفعة"
         },
         "errors": {
             "fetchCustomers": "فشل في تحميل العملاء",
@@ -2370,6 +2410,146 @@
             "cleared": "تم الصرف",
             "bounced": "مرتد",
             "cancelled": "ملغي"
+        }
+    },
+    "expenses": {
+        "title": "إدارة المصروفات",
+        "subtitle": "إدارة وتتبع جميع المصروفات في النظام",
+        "firstTitle": "لوحة التحكم",
+        "secondeTitle": "المصروفات",
+        "add_button": "إضافة مصروف",
+        "search_placeholder": "البحث بالعنوان، دفعت بواسطة...",
+        "showing_results": "عرض {{count}} من {{total}} مصروفات",
+        "no_results": "لم يتم العثور على مصروفات",
+        "addExpense": "إضافة مصروف",
+        "addExpenseSubtitle": "إنشاء سجل مصروف جديد مع جميع التفاصيل الضرورية",
+        "editExpense": "تعديل مصروف",
+        "editExpenseSubtitle": "تحديث تفاصيل المصروف",
+        "viewExpense": "عرض مصروف",
+        "viewExpenseSubtitle": "عرض تفاصيل المصروف الكاملة",
+        "deleteExpense": "حذف مصروف",
+        "updateExpense": "تحديث مصروف",
+        "receiptNumber": "رقم الإيصال",
+        "expenseTitle": "العنوان",
+        "title_label": "عنوان المصروف",
+        "amount": "المبلغ",
+        "paidBy": "دفع بواسطة",
+        "paymentMethod": "طريقة الدفع",
+        "description": "الوصف",
+        "date": "التاريخ",
+        "actions": "الإجراءات",
+        "searchPlaceholder": "البحث بالعنوان، دفع بواسطة، أو طريقة الدفع...",
+        "titlePlaceholder": "أدخل عنوان المصروف",
+        "amountPlaceholder": "أدخل المبلغ",
+        "paidByPlaceholder": "أدخل من دفع",
+        "descriptionPlaceholder": "أضف أي ملاحظات إضافية عن هذا المصروف...",
+        "cancel": "إلغاء",
+        "saveExpense": "حفظ المصروف",
+        "saving": "جاري الحفظ...",
+        "updating": "جاري التحديث...",
+        "noExpenses": "لم يتم العثور على مصروفات",
+        "noResultsFound": "لا توجد مصروفات تطابق معايير البحث",
+        "showingResults": "عرض {{from}} إلى {{to}} من {{total}} نتيجة",
+        "previous": "السابق",
+        "next": "التالي",
+        "expenseDetails": "تفاصيل المصروف",
+        "metadata": "البيانات الوصفية",
+        "createdAt": "تاريخ الإنشاء",
+        "lastUpdated": "آخر تحديث",
+        "notFound": "المصروف غير موجود",
+        "expenseNotFoundDescription": "المصروف المطلوب غير موجود أو تم حذفه",
+        "backToList": "العودة إلى القائمة",
+        "error": "خطأ",
+        "errorFetchingDetails": "فشل في جلب تفاصيل المصروف",
+        "errorUpdatingExpense": "فشل في تحديث المصروف",
+        "updateSuccess": "تم التحديث بنجاح",
+        "expenseUpdatedSuccessfully": "تم تحديث المصروف بنجاح",
+        "expenseCreatedSuccessfully": "تم إنشاء المصروف بنجاح",
+        "delete_confirm": "هل أنت متأكد من حذف المصروف {{title}}؟",
+        "delete_confirm_text": "لا يمكن التراجع عن هذا الإجراء!",
+        "yes_delete": "نعم، احذف",
+        "successDelete": "تم الحذف بنجاح",
+        "exportSheetName": "المصروفات",
+        "exportExcelFileName": "تقرير_المصروفات.xlsx",
+        "exportPdfFileName": "تقرير_المصروفات.pdf",
+        "exportCsvFileName": "تقرير_المصروفات.csv",
+        "report_title": "تقرير المصروفات",
+        "validation": {
+            "titleRequired": "عنوان المصروف مطلوب",
+            "amountRequired": "المبلغ يجب أن يكون أكبر من 0",
+            "paidByRequired": "دفع بواسطة مطلوب"
+        },
+        "saveError": "فشل في حفظ المصروف. يرجى المحاولة مرة أخرى.",
+        "tryAgain": "حاول مرة أخرى",
+        "paymentMethods": {
+            "cash": "نقدي",
+            "card": "بطاقة",
+            "cheque": "شيك",
+            "bank_transfer": "تحويل بنكي"
+        }
+    },
+    "email": {
+        "breadcrumb": {
+            "dashboard": "لوحة التحكم",
+            "emails": "إدارة البريد الإلكتروني"
+        },
+        "tabs": {
+            "inbox": "البريد الوارد",
+            "compose": "إنشاء رسالة",
+            "bulk": "بريد جماعي"
+        },
+        "inbox": {
+            "searchPlaceholder": "البحث في الرسائل...",
+            "noEmails": "لم يتم العثور على رسائل",
+            "showing": "عرض الصفحة {{page}} من {{totalPages}}"
+        },
+        "compose": {
+            "title": "إنشاء رسالة",
+            "to": "إلى",
+            "toPlaceholder": "المستلم@example.com",
+            "subject": "الموضوع",
+            "subjectPlaceholder": "موضوع البريد الإلكتروني",
+            "message": "الرسالة",
+            "messagePlaceholder": "اكتب رسالتك هنا...",
+            "send": "إرسال الرسالة",
+            "sending": "جاري الإرسال..."
+        },
+        "bulk": {
+            "selectCustomers": "اختر المستلمين",
+            "searchPlaceholder": "البحث عن العملاء...",
+            "selectAll": "تحديد الكل",
+            "noCustomers": "لا يوجد عملاء لديهم عناوين بريد إلكتروني",
+            "compose": "إنشاء بريد جماعي",
+            "subject": "الموضوع",
+            "subjectPlaceholder": "موضوع البريد الإلكتروني",
+            "message": "الرسالة",
+            "messagePlaceholder": "اكتب رسالة البريد الجماعي هنا...",
+            "info": "سيتم إرسال هذا البريد إلى {{count}} مستلم",
+            "send": "إرسال بريد جماعي",
+            "sending": "جاري الإرسال..."
+        },
+        "attachments": "المرفقات",
+        "attachmentFile": "مرفق {{index}}",
+        "reply": "رد",
+        "forward": "إعادة توجيه",
+        "deleteButton": "حذف",
+        "success": {
+            "sent": "تم إرسال البريد بنجاح!",
+            "bulkSent": "تم إرسال البريد الجماعي بنجاح!",
+            "deleted": "تم حذف الرسائل بنجاح"
+        },
+        "errors": {
+            "fetchInbox": "فشل في تحميل البريد الوارد",
+            "fetchCustomers": "فشل في تحميل العملاء",
+            "sendFailed": "فشل في إرسال البريد",
+            "bulkSendFailed": "فشل في إرسال البريد الجماعي",
+            "deleteFailed": "فشل في حذف الرسائل",
+            "noRecipients": "يرجى تحديد مستلم واحد على الأقل"
+        },
+        "delete": {
+            "confirm": "هل أنت متأكد؟",
+            "confirmText": "أنت على وشك حذف {{count}} رسالة",
+            "yes": "نعم، احذف"
         }
     },
     "documentSettings": {
@@ -2758,7 +2938,11 @@
         "print": "طباعة",
         "search": "بحث",
         "clear": "مسح",
+        "close": "إغلاق",
         "all": "الكل",
+        "optional": "اختياري",
+        "none": "لا يوجد",
+        "noDescription": "لا يوجد وصف",
         "filters": "المرشحات",
         "active": "نشط",
         "inactive": "غير نشط",
@@ -2806,5 +2990,442 @@
         "yes": "نعم",
         "no": "لا",
         "saving": "جاري الحفظ..."
+    },
+    "companies": {
+        "title": "شركات التأمين",
+        "subtitle": "إدارة شركات التأمين وإعدادات التسعير الخاصة بها",
+        "addNew": "إضافة شركة",
+        "addCompany": "إضافة شركة تأمين",
+        "editCompany": "تعديل شركة تأمين",
+        "viewCompany": "تفاصيل الشركة",
+        "name": "اسم الشركة",
+        "description": "الوصف",
+        "createdAt": "تاريخ الإنشاء",
+        "listTitle": "قائمة الشركات",
+        "fetchError": "فشل في جلب شركات التأمين",
+        "deleteConfirm": "هل أنت متأكد من حذف هذه الشركة؟",
+        "deleteSuccess": "تم حذف الشركة بنجاح",
+        "deleteError": "فشل في حذف الشركة",
+        "addSuccess": "نجح!",
+        "companyAddedSuccessfully": "تمت إضافة الشركة بنجاح",
+        "updateSuccess": "نجح!",
+        "companyUpdatedSuccessfully": "تم تحديث الشركة بنجاح",
+        "errorAddingCompany": "خطأ في إضافة الشركة",
+        "errorUpdatingCompany": "خطأ في تحديث الشركة",
+        "errorFetchingCompany": "خطأ في تحميل بيانات الشركة",
+        "companyInformation": "معلومات الشركة",
+        "pricingConfigurations": "إعدادات التسعير",
+        "roadServices": "خدمات الطريق",
+        "noPricingConfigs": "لا توجد إعدادات تسعير بعد",
+        "noRoadServices": "لا توجد خدمات طريق بعد",
+        "validation": {
+            "nameRequired": "اسم الشركة مطلوب",
+            "atLeastOneType": "مطلوب نوع تأمين واحد على الأقل"
+        },
+        "noInsuranceTypes": "لا توجد أنواع تأمين متاحة",
+        "labels": {
+            "name": "اسم الشركة",
+            "description": "الوصف",
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "خدمات الطريق"
+        },
+        "placeholders": {
+            "name": "أدخل اسم الشركة",
+            "description": "أدخل وصف الشركة"
+        },
+        "buttons": {
+            "save": "حفظ الشركة",
+            "update": "تحديث الشركة",
+            "cancel": "إلغاء",
+            "close": "إغلاق"
+        },
+        "columns": {
+            "name": "اسم الشركة",
+            "description": "الوصف",
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "خدمات الطريق",
+            "createdAt": "تاريخ الإنشاء",
+            "actions": "الإجراءات"
+        },
+        "actions": {
+            "view": "عرض",
+            "edit": "تعديل",
+            "delete": "حذف"
+        },
+        "tabs": {
+            "info": "المعلومات",
+            "pricing": "إعدادات التسعير",
+            "services": "خدمات الطريق"
+        },
+        "pricingConfig": {
+            "type": "نوع التسعير",
+            "rules": "القواعد",
+            "configured": "مُعد",
+            "notConfigured": "غير مُعد"
+        }
+    },
+    "pricingTypes": {
+        "title": "أنواع التسعير",
+        "subtitle": "إعداد أنواع التسعير القياسية للتأمين",
+        "id": "معرف النوع",
+        "name": "الاسم",
+        "description": "الوصف",
+        "requiresPricingTable": "جدول التسعير",
+        "required": "مطلوب",
+        "manualEntry": "إدخال يدوي",
+        "listTitle": "أنواع التسعير المتاحة",
+        "initialize": "تهيئة الأنواع",
+        "initializing": "جاري التهيئة...",
+        "initializeConfirm": "تهيئة أنواع التسعير؟",
+        "initializeDescription": "سيتم إنشاء أنواع التسعير القياسية الخمسة إذا لم تكن موجودة",
+        "initializeSuccess": "نجح!",
+        "initialized": "تمت تهيئة أنواع التسعير بنجاح",
+        "initializeError": "خطأ في تهيئة أنواع التسعير",
+        "inserted": "المُدرج",
+        "updated": "المُحدث",
+        "total": "الإجمالي",
+        "fetchError": "فشل في جلب أنواع التسعير",
+        "aboutTitle": "حول أنواع التسعير",
+        "aboutDescription": "يدعم النظام 5 أنواع تسعير قياسية:",
+        "compulsory": "التأمين الإلزامي - إدخال يدوي",
+        "thirdParty": "تأمين الطرف الثالث - تسعير مصفوفة",
+        "comprehensive": "التأمين الشامل - تسعير مصفوفة",
+        "roadService": "خدمات الطريق - تسعير قائم على الخدمة",
+        "accidentFee": "إعفاء رسوم الحادث - مبلغ ثابت",
+        "columns": {
+            "id": "معرف النوع",
+            "name": "الاسم",
+            "description": "الوصف",
+            "requiresTable": "جدول التسعير"
+        },
+        "types": {
+            "compulsory": "إلزامي",
+            "third_party": "طرف ثالث",
+            "comprehensive": "شامل",
+            "road_service": "خدمات الطريق",
+            "accident_fee_waiver": "إعفاء رسوم الحادث"
+        }
+    },
+    "insuranceType": {
+        "title": "أنواع التأمين",
+        "subtitle": "إدارة فئات أنواع التأمين العامة وطرق التسعير الخاصة بها",
+        "addInsuranceType": "إضافة نوع تأمين",
+        "editInsuranceType": "تعديل نوع التأمين",
+        "viewDetails": "تفاصيل نوع التأمين",
+        "addSubtitle": "إنشاء فئة نوع تأمين جديدة",
+        "error": "خطأ",
+        "noTypes": "لا توجد أنواع تأمين",
+        "addFirstType": "قم بإنشاء فئة نوع التأمين الأولى",
+        "addButton": "إضافة نوع تأمين",
+        "totalTypes": "إجمالي أنواع التأمين",
+        "statsDesc": "الفئات المتاحة للشركات",
+        "deleteConfirmText": "هل أنت متأكد من حذف نوع التأمين هذا؟",
+        "deleteSuccessText": "تم حذف نوع التأمين بنجاح.",
+        "infoTitle": "إعداد نوع التأمين",
+        "infoDesc": "حدد نوع تأمين جديد وربطه بطريقة تسعير",
+        "selectedPricingType": "طريقة التسعير المحددة",
+        "matrixPricingExplain": "ستقوم الشركات بتكوين مصفوفات تسعير بناءً على تفاصيل المركبة",
+        "simplePricingExplain": "ستحدد الشركات مبالغ تسعير ثابتة",
+        "pricingTypeChangeWarning": "تغيير نوع التسعير",
+        "pricingTypeChangeDesc": "قد يؤثر تغيير نوع التسعير على إعدادات تسعير الشركات الحالية التي تستخدم نوع التأمين هذا.",
+        "viewInfoText": "يمكن استخدام نوع التأمين هذا من قبل الشركات عند تكوين عروض التأمين الخاصة بها. يحدد نوع التسعير كيفية حساب التسعير.",
+        "nameChanged": "تم تحديث الاسم",
+        "pricingTypeChanged": "تم تغيير نوع التسعير",
+        "descriptionChanged": "تم تحديث الوصف",
+        "labels": {
+            "name": "الاسم",
+            "pricingType": "نوع التسعير",
+            "description": "الوصف"
+        },
+        "placeholders": {
+            "name": "أدخل اسم نوع التأمين",
+            "selectPricingType": "اختر نوع التسعير",
+            "description": "أدخل الوصف (اختياري)"
+        },
+        "helpers": {
+            "pricingType": "يحدد هذا كيفية حساب التسعير لنوع التأمين هذا"
+        },
+        "validation": {
+            "nameRequired": "اسم نوع التأمين مطلوب",
+            "pricingTypeRequired": "نوع التسعير مطلوب"
+        },
+        "messages": {
+            "createSuccess": "تم إنشاء نوع التأمين بنجاح",
+            "createError": "فشل إنشاء نوع التأمين",
+            "updateSuccess": "تم تحديث نوع التأمين بنجاح",
+            "updateError": "فشل تحديث نوع التأمين",
+            "deleteError": "فشل حذف نوع التأمين",
+            "fetchError": "فشل جلب أنواع التأمين",
+            "fetchPricingTypesError": "فشل تحميل أنواع التسعير"
+        },
+        "buttons": {
+            "save": "إنشاء نوع التأمين",
+            "update": "تحديث",
+            "saveChanges": "حفظ التغييرات"
+        }
+    },
+    "companyPricing": {
+        "title": "إعداد تسعير الشركات",
+        "subtitle": "تكوين قواعد التسعير لشركات التأمين",
+        "selectCompany": "اختر شركة التأمين",
+        "selectCompanyPlaceholder": "اختر شركة...",
+        "pricingTypes": "أنواع التسعير",
+        "notConfigured": "غير مُعد",
+        "configured": "مُعد",
+        "rules": "قواعد",
+        "manualEntry": "إدخال يدوي",
+        "configure": "إعداد",
+        "editConfiguration": "تعديل الإعداد",
+        "noCompanySelected": "لم يتم اختيار شركة",
+        "selectCompanyPrompt": "الرجاء اختيار شركة تأمين لإعداد التسعير",
+        "configurePricing": "إعداد التسعير",
+        "info": "معلومات",
+        "manualEntryInfo": "يتطلب نوع التسعير هذا إدخالاً يدوياً أثناء إنشاء التأمين. لا حاجة للإعداد.",
+        "roadServiceInfo": "يتم تكوين خدمات الطريق في صفحة خدمات الطريق المخصصة.",
+        "fixedAmount": "مبلغ ثابت",
+        "fixedAmountHelp": "أدخل المبلغ الثابت لإعفاء رسوم الحادث",
+        "pricingMatrix": "مصفوفة التسعير",
+        "progress": "التقدم",
+        "matrixBased": "قائم على المصفوفة",
+        "simplePricing": "تسعير بسيط",
+        "matrixRules": "قواعد المصفوفة",
+        "pricingRules": "قاعدة (قواعد) تسعير",
+        "noPricingTypes": "لا توجد أنواع تسعير متاحة لهذه الشركة",
+        "noConfigured": "لم يتم تكوين أي أنواع تسعير بعد",
+        "allConfigured": "تم تكوين جميع أنواع التسعير!",
+        "tabs": {
+            "all": "الكل",
+            "configured": "مُكوَّن",
+            "pending": "قيد الانتظار"
+        },
+        "addRule": "إضافة قاعدة",
+        "noRules": "لم يتم تحديد قواعد تسعير بعد. انقر على \"إضافة قاعدة\" لإنشاء واحدة.",
+        "rule": "قاعدة",
+        "vehicleType": "نوع المركبة",
+        "driverAge": "عمر السائق",
+        "minAmount": "الحد الأدنى للمبلغ (₪)",
+        "maxAmount": "الحد الأقصى للمبلغ (₪)",
+        "price": "السعر (₪)",
+        "car": "سيارة",
+        "bus": "حافلة",
+        "commercialUnder4t": "تجاري < 4 طن",
+        "commercialOver4t": "تجاري > 4 طن",
+        "taxi": "تاكسي",
+        "under24": "أقل من 24",
+        "above24": "24 وما فوق",
+        "success": "نجح!",
+        "configurationSaved": "تم حفظ إعداد التسعير بنجاح",
+        "errorSaving": "خطأ في حفظ الإعداد",
+        "saveConfiguration": "حفظ الإعداد",
+        "saving": "جاري الحفظ...",
+        "cancel": "إلغاء",
+        "close": "إغلاق",
+        "validation": {
+            "fixedAmountRequired": "المبلغ الثابت الصحيح مطلوب",
+            "atLeastOneRule": "مطلوب قاعدة تسعير واحدة على الأقل",
+            "allFieldsRequired": "جميع الحقول مطلوبة للقاعدة",
+            "minMaxError": "يجب أن يكون الحد الأدنى للمبلغ أقل من الحد الأقصى في القاعدة"
+        },
+        "vehicleTypes": {
+            "car": "سيارة",
+            "truck": "شاحنة",
+            "bus": "حافلة",
+            "motorcycle": "دراجة نارية",
+            "commercial_under_4t": "تجاري < 4 طن"
+        },
+        "ageGroups": {
+            "under_24": "أقل من 24",
+            "above_24": "24 وما فوق"
+        },
+        "labels": {
+            "company": "شركة التأمين",
+            "pricingType": "نوع التسعير",
+            "fixedAmount": "مبلغ ثابت (₪)",
+            "vehicleType": "نوع المركبة",
+            "driverAge": "فئة عمر السائق",
+            "minAmount": "الحد الأدنى للمبلغ (₪)",
+            "maxAmount": "الحد الأقصى للمبلغ (₪)",
+            "price": "السعر (₪)"
+        },
+        "placeholders": {
+            "selectCompany": "اختر شركة...",
+            "fixedAmount": "أدخل المبلغ الثابت",
+            "minAmount": "الحد الأدنى",
+            "maxAmount": "الحد الأقصى",
+            "price": "السعر"
+        },
+        "buttons": {
+            "configure": "إعداد",
+            "save": "حفظ الإعداد",
+            "cancel": "إلغاء",
+            "addRule": "إضافة قاعدة",
+            "removeRule": "إزالة"
+        }
+    },
+    "wizard": {
+        "title": "إضافة شركة تأمين جديدة",
+        "subtitle": "معالج الإعداد خطوة بخطوة",
+        "step1": "معلومات الشركة",
+        "step2": "أنواع التأمين",
+        "step3": "إعداد التسعير",
+        "step4": "خدمات الطريق",
+        "step5": "المراجعة والإرسال",
+        "step1Title": "معلومات الشركة",
+        "step1Desc": "أدخل التفاصيل الأساسية عن شركة التأمين",
+        "step2Title": "اختر أنواع التأمين",
+        "step2Desc": "اختر أنواع التأمين التي ستقدمها هذه الشركة",
+        "step3Title": "تكوين التسعير",
+        "step3Desc": "إعداد قواعد التسعير لكل نوع تأمين (اختياري)",
+        "step4Title": "خدمات الطريق",
+        "step4Desc": "أضف خدمات الطريق التي تقدمها هذه الشركة (اختياري)",
+        "step5Title": "المراجعة والإرسال",
+        "step5Desc": "راجع جميع المعلومات قبل إنشاء الشركة",
+        "steps": {
+            "basicInfo": "المعلومات الأساسية",
+            "insuranceTypes": "أنواع التأمين",
+            "roadServices": "خدمات الطريق",
+            "pricingReview": "مراجعة التسعير"
+        },
+        "basicInfoDesc": "قم بتحديث اسم الشركة والوصف",
+        "insuranceTypesDesc": "اختر أنواع التأمين التي تقدمها هذه الشركة",
+        "roadServicesDesc": "اختر خدمات الطريق التي تقدمها هذه الشركة (اختياري)",
+        "pricingReviewDesc": "راجع حالة تكوين التسعير. يمكنك تكوين التسعير بعد حفظ الشركة.",
+        "stepProgress": "الخطوة {{current}} من {{total}}",
+        "selectedInsuranceTypes": "أنواع التأمين المحددة",
+        "changesSummary": "التغييرات المراد حفظها",
+        "nameChanged": "تم تحديث اسم الشركة",
+        "descriptionChanged": "تم تحديث الوصف",
+        "insuranceTypesChanged": "تم تحديث أنواع التأمين",
+        "roadServicesChanged": "تم تحديث خدمات الطريق",
+        "companyName": "اسم الشركة",
+        "companyDescription": "الوصف (اختياري)",
+        "serviceName": "اسم الخدمة",
+        "normalPrice": "السعر العادي (₪)",
+        "oldCarPrice": "سعر السيارة القديمة (₪)",
+        "cutoffYear": "سنة القطع",
+        "description": "الوصف",
+        "addService": "إضافة خدمة",
+        "addedServices": "الخدمات المضافة",
+        "companyInfo": "معلومات الشركة",
+        "name": "الاسم",
+        "insuranceTypes": "أنواع التأمين",
+        "pricingConfigs": "تكوينات التسعير",
+        "roadServices": "خدمات الطريق",
+        "noPricingConfigured": "لم يتم تكوين التسعير (يمكن إضافته لاحقاً)",
+        "noRoadServices": "لم يتم إضافة خدمات طريق (يمكن إضافتها لاحقاً)",
+        "createCompany": "إنشاء الشركة",
+        "typesSelected": "نوع (أنواع) تأمين محدد",
+        "pricingOptional": "تكوين التسعير اختياري. يمكنك تخطي هذه الخطوة وتكوينها لاحقاً.",
+        "noPricingTypesAvailable": "أنواع التأمين المحددة لا تتطلب تكوين تسعير، أو جميع الأنواع المحددة تستخدم التسعير اليدوي.",
+        "configured": "مُكوَّن",
+        "configure": "تكوين",
+        "fixedAmount": "مبلغ ثابت (₪)",
+        "addRule": "إضافة قاعدة",
+        "vehicleType": "نوع المركبة",
+        "driverAge": "عمر السائق",
+        "minAmount": "الحد الأدنى",
+        "maxAmount": "الحد الأقصى",
+        "price": "السعر",
+        "success": "نجاح!",
+        "companyCreated": "تم إنشاء شركة التأمين بنجاح مع جميع التكوينات",
+        "errorCreating": "فشل إنشاء الشركة",
+        "confirmClose": "هل أنت متأكد؟",
+        "confirmCloseText": "سيتم فقدان تقدمك",
+        "validation": {
+            "companyNameRequired": "اسم الشركة مطلوب",
+            "selectInsuranceTypes": "الرجاء اختيار نوع تأمين واحد على الأقل",
+            "roadServiceRequired": "الرجاء ملء جميع الحقول المطلوبة"
+        },
+        "ruleNumber": "قاعدة #{{number}}"
+    },
+    "vehicleTypes": {
+        "car": "سيارة",
+        "bus": "حافلة",
+        "commercialUnder4t": "تجاري < 4 طن",
+        "commercialOver4t": "تجاري > 4 طن",
+        "taxi": "تاكسي"
+    },
+    "driverAge": {
+        "under24": "أقل من 24",
+        "above24": "24 وما فوق"
+    },
+    "roadService": {
+        "title": "خدمات الطريق",
+        "subtitle": "إدارة تسعير خدمات الطريق لشركات التأمين",
+        "addNew": "إضافة خدمة طريق",
+        "addRoadService": "إضافة خدمة طريق",
+        "editRoadService": "تعديل خدمة طريق",
+        "viewRoadService": "تفاصيل خدمة الطريق",
+        "listTitle": "قائمة خدمات الطريق",
+        "fetchError": "فشل في جلب خدمات الطريق",
+        "deleteConfirm": "هل أنت متأكد من حذف خدمة الطريق هذه؟",
+        "deleteSuccess": "تم حذف خدمة الطريق بنجاح",
+        "deleteError": "فشل في حذف خدمة الطريق",
+        "filterByCompany": "تصفية حسب الشركة",
+        "filterByStatus": "تصفية حسب الحالة",
+        "allCompanies": "جميع الشركات",
+        "allStatuses": "جميع الحالات",
+        "labels": {
+            "company": "شركة التأمين",
+            "serviceName": "اسم الخدمة",
+            "normalPrice": "السعر العادي (₪)",
+            "oldCarPrice": "سعر السيارة القديمة (₪)",
+            "cutoffYear": "سنة القطع",
+            "year": "السنة",
+            "description": "الوصف",
+            "isActive": "الخدمة نشطة"
+        },
+        "placeholders": {
+            "selectCompany": "اختر شركة التأمين...",
+            "serviceName": "مثال: خدمة السحب",
+            "description": "أدخل وصف الخدمة..."
+        },
+        "help": {
+            "normalPrice": "السعر للمركبات الأحدث",
+            "oldCarPrice": "السعر للمركبات قبل سنة القطع",
+            "cutoffYear": "المركبات المصنعة قبل هذه السنة تستخدم سعر السيارة القديمة",
+            "companyReadonly": "لا يمكن تغيير الشركة بعد الإنشاء"
+        },
+        "validation": {
+            "companyRequired": "الرجاء اختيار شركة التأمين",
+            "nameRequired": "اسم الخدمة مطلوب",
+            "normalPriceRequired": "يجب أن يكون السعر العادي أكبر من 0",
+            "oldCarPriceRequired": "يجب أن يكون سعر السيارة القديمة أكبر من 0",
+            "cutoffYearInvalid": "سنة القطع غير صالحة"
+        },
+        "messages": {
+            "addSuccess": "تمت إضافة خدمة الطريق بنجاح",
+            "addError": "فشل في إضافة خدمة الطريق",
+            "updateSuccess": "تم تحديث خدمة الطريق بنجاح",
+            "updateError": "فشل في تحديث خدمة الطريق",
+            "deleteSuccess": "تم حذف خدمة الطريق بنجاح",
+            "deleteError": "فشل في حذف خدمة الطريق"
+        },
+        "buttons": {
+            "add": "إضافة خدمة",
+            "update": "تحديث",
+            "cancel": "إلغاء",
+            "close": "إغلاق",
+            "save": "حفظ",
+            "delete": "حذف"
+        },
+        "columns": {
+            "serviceName": "اسم الخدمة",
+            "company": "الشركة",
+            "normalPrice": "السعر العادي",
+            "oldCarPrice": "سعر السيارة القديمة",
+            "cutoffYear": "سنة القطع",
+            "status": "الحالة",
+            "actions": "الإجراءات"
+        },
+        "status": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+        },
+        "actions": {
+            "view": "عرض",
+            "edit": "تعديل",
+            "delete": "حذف"
+        }
     }
 }

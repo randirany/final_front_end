@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { Car, Edit, Trash2, Plus } from "lucide-react"\nimport { toLocaleDateStringEN } from '../utils/dateFormatter'
+import { Car, Edit, Trash2, Plus, AlertTriangle } from "lucide-react"
+import { toLocaleDateStringEN } from '../utils/dateFormatter'
 
 function VehiclesList({ id }) {
   const [vehicles, setVehicles] = useState([])
@@ -113,17 +114,44 @@ function VehiclesList({ id }) {
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((vehicle) => (
-                <tr key={vehicle._id} className="hover:bg-gray-50">
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.plateNumber}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.model}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.type}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.ownership}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{toLocaleDateStringEN(vehicle.licenseExpiry)}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.color}</td>
-                  <td className="py-2 px-4 border dark:border-borderNav-b">{vehicle.price}</td>
+              {vehicles.map((vehicle) => {
+                // Check if vehicle has expired insurance
+                const hasExpiredInsurance = vehicle.insurance?.some(ins => {
+                  if (!ins.insuranceEndDate || ins.insuranceStatus === 'cancelled') return false;
+                  const endDate = new Date(ins.insuranceEndDate);
+                  const today = new Date();
+                  return endDate < today;
+                });
+
+                return (
+                <tr key={vehicle._id} className={`transition-all ${
+                  hasExpiredInsurance
+                    ? 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500'
+                    : 'hover:bg-gray-50'
+                }`}>
+                  <td className="py-2 px-4 border dark:border-borderNav-b">
+                    <div className="flex items-center gap-2">
+                      {hasExpiredInsurance && (
+                        <AlertTriangle size={16} className="text-red-500" title="تأمين منتهي" />
+                      )}
+                      <span className={hasExpiredInsurance ? 'text-red-700 font-semibold' : ''}>
+                        {vehicle.plateNumber}
+                      </span>
+                    </div>
+                  </td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{vehicle.model}</td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{vehicle.type}</td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{vehicle.ownership}</td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{toLocaleDateStringEN(vehicle.licenseExpiry)}</td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{vehicle.color}</td>
+                  <td className={`py-2 px-4 border dark:border-borderNav-b ${hasExpiredInsurance ? 'text-red-600' : ''}`}>{vehicle.price}</td>
                   <td className="py-2 px-4 border dark:border-borderNav-b">
                     <div className="flex gap-2">
+                      {hasExpiredInsurance && (
+                        <span className="px-2 py-1 text-xs bg-red-500 text-white rounded font-semibold">
+                          منتهي
+                        </span>
+                      )}
                       <button
                         onClick={() => handleEditVehicle(vehicle)}
                         className="p-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
@@ -143,7 +171,8 @@ function VehiclesList({ id }) {
                     </div>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
           {isEditModalOpen && selectedVehicle && (

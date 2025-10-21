@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem, Button } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, Select, FormControl, InputLabel } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -12,18 +12,22 @@ import autoTable from 'jspdf-autotable';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { formatDateISO } from '../utils/dateFormatter';
+import Pagination from './shared/Pagination';
 
-const ROWS_PER_PAGE = 15;
+const ROWS_PER_PAGE = 20;
 
 function AllInsurances() {
     const { t, i18n: { language } } = useTranslation();
     let navigate = useNavigate();
 
     const [allInsurances, setAllInsurances] = useState([]);
-    const [displayCount, setDisplayCount] = useState(ROWS_PER_PAGE);
+    const [pagination, setPagination] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [anchorEls, setAnchorEls] = useState({});
     const [searchText, setSearchText] = useState("");
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     const handleMenuOpen = (event, rowId) => setAnchorEls((prev) => ({ ...prev, [rowId]: event.currentTarget }));
@@ -37,43 +41,18 @@ function AllInsurances() {
         setSortConfig({ key, direction });
     };
 
-    const sortedData = useMemo(() => {
-        let sortableItems = [...allInsurances];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                const aValue = a[sortConfig.key];
-                const bValue = b[sortConfig.key];
-                if (typeof aValue === 'number' && typeof bValue === 'number') {
-                    return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
-                }
-                if (sortConfig.key.toLowerCase().includes('date')) {
-                    const dateA = new Date(aValue);
-                    const dateB = new Date(bValue);
-                    return sortConfig.direction === 'ascending' ? dateA - dateB : dateB - dateA;
-                }
-                const strA = String(aValue || '').toLowerCase();
-                const strB = String(bValue || '').toLowerCase();
-                if (strA < strB) return sortConfig.direction === 'ascending' ? -1 : 1;
-                if (strA > strB) return sortConfig.direction === 'ascending' ? 1 : -1;
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [allInsurances, sortConfig]);
-
+    // Client-side search filtering (for current page only)
     const filteredInsurances = useMemo(() => {
-        if (!searchText) return sortedData;
+        if (!searchText) return allInsurances;
         const lowerSearch = searchText.toLowerCase();
-        return sortedData.filter((insurance) =>
+        return allInsurances.filter((insurance) =>
             Object.values(insurance).some((val) =>
                 String(val).toLowerCase().includes(lowerSearch)
             )
         );
-    }, [searchText, sortedData]);
+    }, [searchText, allInsurances]);
 
-    const visibleRows = useMemo(() => {
-        return filteredInsurances.slice(0, displayCount);
-    }, [filteredInsurances, displayCount]);
+    const visibleRows = filteredInsurances;
 
     const tableColumns = [
         { key: 'insuredName', label: t('customers.table.name', 'Insured Name') },
@@ -87,15 +66,25 @@ function AllInsurances() {
         { key: 'actions', label: t('insuranceList.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
     ];
 
-    const fetchInsurances = async () => {
-        setLoading(true);
-        setDisplayCount(ROWS_PER_PAGE);
+    const fetchInsurances = async (page = 1, append = false) => {
+        if (append) {
+            setLoadingMore(true);
+        } else {
+            setLoading(true);
+        }
+
         try {
             const token = `islam__${localStorage.getItem("token")}`;
-            const res = await axios.get(`http://localhost:3002/api/v1/insured/insurances/all`, {
-                headers: { token }
+            const res = await axios.get(`http://localhost:3002/api/v1/insured/allVehicleInsurances`, {
+                headers: { token },
+                params: {
+                    page: page,
+                    limit: ROWS_PER_PAGE
+                }
             });
-            const apiData = res.data.insurances || [];
+
+            // Handle new paginated response structure
+            const apiData = res.data.insurances || res.data.data || [];
             const formattedData = apiData.map(item => ({
                 id: item._id,
                 insuredId: item.insuredId,
@@ -111,26 +100,64 @@ function AllInsurances() {
                 remainingDebt: item.remainingDebt,
                 agent: item.agent,
             }));
-            setAllInsurances(formattedData);
+
+            // Append or replace data based on scroll behavior
+            if (append) {
+                setAllInsurances(prev => [...prev, ...formattedData]);
+            } else {
+                setAllInsurances(formattedData);
+            }
+
+            // Set pagination metadata and check if there's more data
+            if (res.data.pagination) {
+                setPagination(res.data.pagination);
+                setHasMore(res.data.pagination.hasNextPage);
+            } else {
+                // Fallback: if no pagination, assume no more data if we got less than requested
+                setHasMore(formattedData.length === ROWS_PER_PAGE);
+            }
         } catch (err) {
-            setAllInsurances([]);
+            console.error('Error fetching insurances:', err);
+            if (!append) {
+                setAllInsurances([]);
+            }
+            setPagination(null);
+            setHasMore(false);
         } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
     };
 
-    useEffect(() => { fetchInsurances(); }, []);
+    useEffect(() => {
+        fetchInsurances(1, false);
+    }, []);
 
+    // Infinite scroll handler
     const handleScroll = useCallback(() => {
-        const threshold = 300;
-        const nearBottom = window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - threshold;
-        if (nearBottom && displayCount < filteredInsurances.length && !loading) {
-            setDisplayCount(prevCount => Math.min(prevCount + ROWS_PER_PAGE, filteredInsurances.length));
-        }
-    }, [displayCount, filteredInsurances.length, loading]);
+        if (loadingMore || !hasMore) return;
 
-    useEffect(() => { window.addEventListener('scroll', handleScroll); return () => window.removeEventListener('scroll', handleScroll); }, [handleScroll]);
-    useEffect(() => { setDisplayCount(ROWS_PER_PAGE); }, [searchText]);
+        const threshold = 300;
+        const nearBottom = window.innerHeight + document.documentElement.scrollTop >=
+            document.documentElement.offsetHeight - threshold;
+
+        if (nearBottom) {
+            const nextPage = currentPage + 1;
+            setCurrentPage(nextPage);
+            fetchInsurances(nextPage, true);
+        }
+    }, [loadingMore, hasMore, currentPage]);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+
+    useEffect(() => {
+        if (searchText) {
+            // Client-side search only
+        }
+    }, [searchText]);
 
     const getExportData = () => filteredInsurances.map(ins => ({
         [t('insurances.table.insuredName', 'Insured Name')]: ins.insuredName,
@@ -241,7 +268,17 @@ function AllInsurances() {
             </div>
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {t('ahliaReport.show', 'Showing {{count}} of {{total}} results', { count: visibleRows.length, total: filteredInsurances.length })}
+                {pagination ? (
+                    t('ahliaReport.show', 'Showing {{count}} of {{total}} results', {
+                        count: allInsurances.length,
+                        total: pagination.total
+                    })
+                ) : (
+                    t('ahliaReport.show', 'Showing {{count}} results', {
+                        count: allInsurances.length
+                    })
+                )}
+                {loadingMore && <span className="ml-2">{t('common.loadingMore', 'Loading more...')}</span>}
             </div>
 
             <div className="overflow-x-auto bg-[rgb(255,255,255)] dark:bg-navbarBack shadow-md rounded-lg">
@@ -303,6 +340,21 @@ function AllInsurances() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Loading more indicator at bottom */}
+            {loadingMore && (
+                <div className="mt-4 text-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('common.loadingMore', 'Loading more...')}</p>
+                </div>
+            )}
+
+            {/* End of list indicator */}
+            {!hasMore && allInsurances.length > 0 && !loading && (
+                <div className="mt-4 text-center py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {t('common.endOfList', 'You have reached the end of the list')}
+                </div>
+            )}
         </div>
     );
 }

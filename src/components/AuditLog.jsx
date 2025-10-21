@@ -25,6 +25,8 @@ export default function AuditLogs() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
 
   const [sortConfig, setSortConfig] = useState({ key: 'createdAtDate', direction: 'descending' });
 
@@ -36,29 +38,44 @@ export default function AuditLogs() {
     { key: 'actions', label: t('audit.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
   ], [t, language]);
 
-  const fetchLogs = async () => {
-    setLoadingLogs(true);
-    setDisplayCount(ROWS_PER_PAGE);
+  const fetchLogs = useCallback(async (page = 1, append = false) => {
+    if (!append) {
+      setLoadingLogs(true);
+      setDisplayCount(ROWS_PER_PAGE);
+    } else {
+      setIsLoadingMore(true);
+    }
     try {
       const token = `islam__${localStorage.getItem("token")}`;
-      const res = await axios.get(`http://localhost:3002/api/v1/AuditLog/all`, { headers: { token } });
+      const res = await axios.get(`http://localhost:3002/api/v1/AuditLog/all?page=${page}&limit=${ROWS_PER_PAGE}`, { headers: { token } });
       const logsArray = res.data.logs || [];
       const formatted = logsArray.map((log) => ({
         id: log._id,
-        userName: log.userName,
+        userName: log.userName || (log.user?.email ? log.user.email : 'N/A'),
         action: log.action,
         entity: log.entity,
         createdAt: toLocaleStringEN(log.createdAt),
         createdAtDate: new Date(log.createdAt), // For sorting
         fullLog: log,
       }));
-      setAllLogs(formatted);
+
+      if (append) {
+        setAllLogs((prev) => [...prev, ...formatted]);
+      } else {
+        setAllLogs(formatted);
+      }
+
+      setPagination(res.data.pagination);
+      setCurrentPage(page);
     } catch (err) {
-      setAllLogs([]);
+      if (!append) {
+        setAllLogs([]);
+      }
     } finally {
       setLoadingLogs(false);
+      setIsLoadingMore(false);
     }
-  };
+  }, []);
 
   const requestSort = (key) => {
     let sortKey = key;
@@ -111,7 +128,13 @@ export default function AuditLogs() {
     );
   }, [sortedData, searchText]);
 
-  const visibleLogs = useMemo(() => filteredLogs.slice(0, displayCount), [filteredLogs, displayCount]);
+  // When searching, show only displayCount items. When not searching, show all loaded items
+  const visibleLogs = useMemo(() => {
+    if (searchText) {
+      return filteredLogs.slice(0, displayCount);
+    }
+    return filteredLogs;
+  }, [filteredLogs, displayCount, searchText]);
 
   const handleMenuOpen = (event, rowId) => setAnchorEls((prev) => ({ ...prev, [rowId]: event.currentTarget }));
   const handleMenuClose = (rowId) => setAnchorEls((prev) => ({ ...prev, [rowId]: undefined }));
@@ -195,16 +218,24 @@ export default function AuditLogs() {
 
   const handleScroll = useCallback(() => {
     const nearBottom = window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200;
-    if (nearBottom && displayCount < filteredLogs.length && !isLoadingMore && !loadingLogs) {
+
+    // Check if we should load more from the server
+    if (nearBottom && !isLoadingMore && !loadingLogs && pagination && currentPage < pagination.totalPages && !searchText) {
+      fetchLogs(currentPage + 1, true);
+    }
+    // Or if we're filtering locally and have more local results to show
+    else if (nearBottom && displayCount < filteredLogs.length && !isLoadingMore && !loadingLogs && searchText) {
       setIsLoadingMore(true);
       setTimeout(() => {
         setDisplayCount((prev) => Math.min(prev + ROWS_PER_PAGE, filteredLogs.length));
         setIsLoadingMore(false);
       }, 300);
     }
-  }, [displayCount, filteredLogs.length, isLoadingMore, loadingLogs]);
+  }, [displayCount, filteredLogs.length, isLoadingMore, loadingLogs, pagination, currentPage, searchText, fetchLogs]);
 
-  useEffect(() => { fetchLogs(); }, []);
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
   useEffect(() => { window.addEventListener('scroll', handleScroll); return () => window.removeEventListener('scroll', handleScroll); }, [handleScroll]);
   useEffect(() => { setDisplayCount(ROWS_PER_PAGE); }, [searchText]);
 
@@ -216,9 +247,14 @@ export default function AuditLogs() {
 
         </div>
       </div>
-      <div className='flex rounded-md justify-between items-start flex-wrap '>
-        <div className="">
-          <input type="text" placeholder={t('audit.searchPlaceholder', 'Search logs...')} className="p-2 border dark:!border-none dark:bg-gray-700  dark:text-gray-200 rounded-md w-[300px] mb-6 shadow-sm focus:ring-2 focus:ring-blue-500" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+      <div className='flex rounded-md justify-between items-start flex-wrap gap-4 mb-4'>
+        <div className="flex flex-col gap-2">
+          <input type="text" placeholder={t('audit.searchPlaceholder', 'Search logs...')} className="p-2 border dark:!border-none dark:bg-gray-700  dark:text-gray-200 rounded-md w-[300px] shadow-sm focus:ring-2 focus:ring-blue-500" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+          {pagination && !searchText && (
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {t('audit.pagination.showing', 'Showing')} <span className="font-semibold">{allLogs.length}</span> {t('audit.pagination.of', 'of')} <span className="font-semibold">{pagination.total}</span> {t('audit.pagination.logs', 'logs')}
+            </div>
+          )}
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button variant="outlined" size="small" onClick={handleExportCSV} sx={{ background: '#6C5FFC', color: '#fff' }} disabled={filteredLogs.length === 0}> {t('common.exportCsv', 'CSV')} </Button>
@@ -274,23 +310,26 @@ export default function AuditLogs() {
       {isLoadingMore && <div className="text-center py-8 w-full max-w-5xl bg-[rgb(255,255,255)] rounded-lg shadow-xl flex flex-col dark:bg-navbarBack max-h-[95vh]
 ">
         <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"><div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>{t('common.loadingMore', 'Loading more...')}</div></div>}
-      {!isLoadingMore && !loadingLogs && displayCount >= filteredLogs.length && filteredLogs.length > ROWS_PER_PAGE && <div className="text-center py-8 text-gray-500 dark:text-gray-400">{t('common.endOfResults', "You've reached the end of the results")}</div>}
+      {!isLoadingMore && !loadingLogs && (
+        (searchText && displayCount >= filteredLogs.length && filteredLogs.length > ROWS_PER_PAGE) ||
+        (!searchText && pagination && currentPage >= pagination.totalPages && allLogs.length > ROWS_PER_PAGE)
+      ) && <div className="text-center py-8 text-gray-500 dark:text-gray-400">{t('common.endOfResults', "You've reached the end of the results")}</div>}
       {detailDialogOpen && (
         <div
           className="fixed inset-0 bg-gray-900/75 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300"
           onClick={closeDetailDialog}>
           <div
-            className="bg-[rgb(255,255,255)] dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transition-all duration-300"
+            className="bg-[rgb(255,255,255)] dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col transition-all duration-300"
             onClick={e => e.stopPropagation()}
             dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
-            <div className="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-800">
               <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 {t('audit.detailsTitle', 'Audit Log Details')}
               </h2>
               <button
                 type="button"
                 onClick={closeDetailDialog}
-                className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               >
                 <X size={24} />
               </button>
@@ -301,56 +340,131 @@ export default function AuditLogs() {
               {selectedLog ? (
                 <>
                   {/* Main Details Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
-                    {/* User Name */}
-                    <div>
-                      <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                        <User size={16} /> {t('audit.table.userName')}
-                      </p>
-                      <p className="mt-1 text-base font-semibold text-gray-800 dark:text-gray-200">{selectedLog.userName}</p>
-                    </div>
-                    {/* Action */}
-                    <div>
-                      <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                        <GitCommit size={16} /> {t('audit.table.action')}
-                      </p>
-                      <p className="mt-1 text-base text-gray-700 dark:text-gray-300">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${selectedLog.action === 'CREATE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                          selectedLog.action === 'UPDATE' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                            selectedLog.action === 'DELETE' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                              'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                          }`}>
+                  <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
+                    <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                      {t('audit.details.basicInfo', 'Basic Information')}
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+                      {/* User Name */}
+                      <div>
+                        <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                          <User size={16} /> {t('audit.table.userName', 'User Name')}
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-gray-800 dark:text-gray-200">{selectedLog.userName}</p>
+                      </div>
+                      {/* User Email */}
+                      {selectedLog.fullLog?.user?.email && (
+                        <div>
+                          <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                            <User size={16} /> {t('audit.details.userEmail', 'User Email')}
+                          </p>
+                          <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{selectedLog.fullLog.user.email}</p>
+                        </div>
+                      )}
+                      {/* Action */}
+                      <div>
+                        <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                          <GitCommit size={16} /> {t('audit.table.action', 'Action')}
+                        </p>
+                        <p className="mt-1 text-base text-gray-700 dark:text-gray-300">
                           {selectedLog.action}
-                        </span>
-                      </p>
-                    </div>
-                    {/* Entity */}
-                    <div>
-                      <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                        <Database size={16} /> {t('audit.table.entity')}
-                      </p>
-                      <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{selectedLog.entity}</p>
-                    </div>
-                    {/* Date */}
-                    <div>
-                      <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                        <Calendar size={16} /> {t('audit.table.date')}
-                      </p>
-                      <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{toLocaleStringEN(selectedLog.createdAt)}</p>
+                        </p>
+                      </div>
+                      {/* Entity */}
+                      <div>
+                        <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                          <Database size={16} /> {t('audit.table.entity', 'Entity')}
+                        </p>
+                        <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{selectedLog.entity}</p>
+                      </div>
+                      {/* Entity ID */}
+                      {selectedLog.fullLog?.entityId && (
+                        <div className="sm:col-span-2">
+                          <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                            <Code size={16} /> {t('audit.details.entityId', 'Entity ID')}
+                          </p>
+                          <p className="mt-1 text-sm font-mono text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            {selectedLog.fullLog.entityId}
+                          </p>
+                        </div>
+                      )}
+                      {/* Date */}
+                      <div className="sm:col-span-2">
+                        <p className="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                          <Calendar size={16} /> {t('audit.table.date', 'Date')}
+                        </p>
+                        <p className="mt-1 text-base text-gray-700 dark:text-gray-300">{selectedLog.createdAt}</p>
+                      </div>
                     </div>
                   </div>
 
                   {/* Extra Data Section */}
-                  {selectedLog.fullLog && (
-                    <div>
-                      <h4 className="flex items-center gap-2 font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                        <Code size={18} /> {t('audit.details.extraData', 'Changes Data')}
-                      </h4>
-                      <pre className="bg-gray-100 dark:bg-gray-900 dark:bg-black/50 text-gray-200 p-4 rounded-lg font-mono text-xs overflow-auto max-h-60">
-                        <code>
-                          {JSON.stringify(selectedLog.fullLog.changes, null, 2)}
-                        </code>
-                      </pre>
+                  {selectedLog.fullLog && (selectedLog.fullLog.oldValue || selectedLog.fullLog.newValue || selectedLog.fullLog.changes) && (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600 pb-2">
+                        {t('audit.details.changesTitle', 'Changes')}
+                      </h3>
+
+                      {/* Side by side comparison for oldValue and newValue */}
+                      {(selectedLog.fullLog.oldValue || selectedLog.fullLog.newValue) && (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          {/* Old Value */}
+                          <div className="bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                            <div className="bg-red-100 dark:bg-red-900/40 px-4 py-2 border-b border-red-200 dark:border-red-800 rounded-t-lg">
+                              <h4 className="flex items-center gap-2 font-semibold text-red-800 dark:text-red-200">
+                                <Code size={16} /> {t('audit.details.oldValue', 'Old Value')}
+                              </h4>
+                            </div>
+                            <div className="p-3 max-h-96 overflow-auto">
+                              {selectedLog.fullLog.oldValue ? (
+                                <pre className="bg-white/50 dark:bg-black/30 text-gray-800 dark:text-gray-200 p-3 rounded font-mono text-xs">
+                                  <code>{JSON.stringify(selectedLog.fullLog.oldValue, null, 2)}</code>
+                                </pre>
+                              ) : (
+                                <p className="text-sm text-gray-600 dark:text-gray-400 italic p-3">
+                                  {t('audit.details.noOldValue', 'No previous value (new record)')}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* New Value */}
+                          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <div className="bg-green-100 dark:bg-green-900/40 px-4 py-2 border-b border-green-200 dark:border-green-800 rounded-t-lg">
+                              <h4 className="flex items-center gap-2 font-semibold text-green-800 dark:text-green-200">
+                                <Code size={16} /> {t('audit.details.newValue', 'New Value')}
+                              </h4>
+                            </div>
+                            <div className="p-3 max-h-96 overflow-auto">
+                              {selectedLog.fullLog.newValue ? (
+                                <pre className="bg-white/50 dark:bg-black/30 text-gray-800 dark:text-gray-200 p-3 rounded font-mono text-xs">
+                                  <code>{JSON.stringify(selectedLog.fullLog.newValue, null, 2)}</code>
+                                </pre>
+                              ) : (
+                                <p className="text-sm text-gray-600 dark:text-gray-400 italic p-3">
+                                  {t('audit.details.noNewValue', 'No new value (record deleted)')}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Changes Data (if available) */}
+                      {selectedLog.fullLog.changes && (
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <div className="bg-blue-100 dark:bg-blue-900/40 px-4 py-2 border-b border-blue-200 dark:border-blue-800 rounded-t-lg">
+                            <h4 className="flex items-center gap-2 font-semibold text-blue-800 dark:text-blue-200">
+                              <Code size={16} /> {t('audit.details.extraData', 'Additional Changes')}
+                            </h4>
+                          </div>
+                          <div className="p-3 max-h-96 overflow-auto">
+                            <pre className="bg-white/50 dark:bg-black/30 text-gray-800 dark:text-gray-200 p-3 rounded font-mono text-xs">
+                              <code>{JSON.stringify(selectedLog.fullLog.changes, null, 2)}</code>
+                            </pre>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </>
