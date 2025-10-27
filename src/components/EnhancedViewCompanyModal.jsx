@@ -30,12 +30,14 @@ import {
 import Swal from 'sweetalert2';
 import { getCompanyById, deleteCompany } from '../services/insuranceCompanyApi';
 import { getPricingByCompany } from '../services/companyPricingApi';
+import { insuranceTypeApi } from '../services/insuranceTypeApi';
 
 const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, onConfigurePricing, onManageRoadServices }) => {
   const { t, i18n: { language } } = useTranslation();
 
   const [company, setCompany] = useState(null);
   const [pricingConfigs, setPricingConfigs] = useState([]);
+  const [insuranceTypesDetails, setInsuranceTypesDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -52,6 +54,22 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
       const response = await getCompanyById(companyId);
       const companyData = response.company || response;
       setCompany(companyData);
+
+      // Fetch full insurance type details for each insurance type
+      if (companyData.insuranceTypes && companyData.insuranceTypes.length > 0) {
+        const insuranceTypePromises = companyData.insuranceTypes.map(async (insuranceType) => {
+          try {
+            const typeResponse = await insuranceTypeApi.getById(insuranceType._id);
+            return typeResponse.insuranceType || typeResponse;
+          } catch (error) {
+            console.error('Error fetching insurance type:', insuranceType._id, error);
+            return insuranceType; // Return basic info if fetch fails
+          }
+        });
+
+        const detailedInsuranceTypes = await Promise.all(insuranceTypePromises);
+        setInsuranceTypesDetails(detailedInsuranceTypes);
+      }
 
       // Fetch pricing configurations
       try {
@@ -76,6 +94,7 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
   const handleClose = () => {
     setCompany(null);
     setPricingConfigs([]);
+    setInsuranceTypesDetails([]);
     setActiveTab(0);
     onClose();
   };
@@ -148,24 +167,32 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
   };
 
   const getPricingProgress = () => {
-    if (!company || !company.insuranceTypes) return { configured: 0, total: 0, percentage: 0 };
+    // Use detailed insurance types if available, otherwise use basic company data
+    const insuranceTypes = insuranceTypesDetails.length > 0 ? insuranceTypesDetails : (company?.insuranceTypes || []);
 
-    // Get unique pricing types from insurance types
-    const uniquePricingTypes = new Set();
-    company.insuranceTypes.forEach(insuranceType => {
+    // Count how many insurance types have pricing configured
+    let configuredCount = 0;
+    insuranceTypes.forEach(insuranceType => {
       const pricingTypeId = typeof insuranceType.pricing_type_id === 'string'
         ? insuranceType.pricing_type_id
         : insuranceType.pricing_type_id?._id;
-      if (pricingTypeId && pricingTypeId !== 'compulsory' && pricingTypeId !== 'road_service') {
-        uniquePricingTypes.add(pricingTypeId);
+
+      if (pricingTypeId) {
+        const config = getPricingTypeConfig(pricingTypeId);
+        if (config) {
+          configuredCount++;
+        }
       }
     });
 
-    const total = uniquePricingTypes.size;
-    const configured = pricingConfigs.length;
-    const percentage = total > 0 ? (configured / total) * 100 : 0;
+    const total = insuranceTypes.length;
+    const percentage = total > 0 ? (configuredCount / total) * 100 : 0;
 
-    return { configured, total, percentage };
+    return {
+      configured: configuredCount,
+      total: total,
+      percentage
+    };
   };
 
   const getPricingTypeConfig = (pricingTypeId) => {
@@ -290,16 +317,22 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
   };
 
   const renderInsuranceTypesTab = () => {
+    const insuranceTypesToDisplay = insuranceTypesDetails.length > 0 ? insuranceTypesDetails : (company?.insuranceTypes || []);
+
     return (
       <div className="space-y-4 mt-4">
-        {company.insuranceTypes && company.insuranceTypes.length > 0 ? (
-          company.insuranceTypes.map((insuranceType) => {
+        {insuranceTypesToDisplay.length > 0 ? (
+          insuranceTypesToDisplay.map((insuranceType) => {
+            // Get pricing type ID from the insurance type
             const pricingTypeId = typeof insuranceType.pricing_type_id === 'string'
               ? insuranceType.pricing_type_id
               : insuranceType.pricing_type_id?._id;
+
             const pricingTypeName = typeof insuranceType.pricing_type_id === 'object'
               ? insuranceType.pricing_type_id?.name
               : pricingTypeId;
+
+            // Find matching pricing configuration
             const config = getPricingTypeConfig(pricingTypeId);
             const isConfigured = !!config;
 
@@ -311,55 +344,99 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
+                      <Category className="text-blue-600 dark:text-blue-400" />
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {insuranceType.name}
                       </h4>
                       {isConfigured ? (
                         <CheckCircle className="text-green-600 dark:text-green-400" fontSize="small" />
-                      ) : pricingTypeId !== 'compulsory' && pricingTypeId !== 'road_service' ? (
+                      ) : (
                         <Warning className="text-yellow-600 dark:text-yellow-400" fontSize="small" />
-                      ) : null}
+                      )}
                     </div>
 
                     {insuranceType.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                         {insuranceType.description}
                       </p>
                     )}
 
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      <Chip
-                        label={pricingTypeName || pricingTypeId}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                      />
-                      {isConfigured && (
+                    {/* Display Pricing Type */}
+                    {pricingTypeId && (
+                      <div className="flex flex-wrap gap-2 mb-3">
                         <Chip
-                          label={t('companies.configured', 'Configured')}
+                          label={pricingTypeName || pricingTypeId}
                           size="small"
-                          color="success"
-                          icon={<CheckCircle />}
+                          color="primary"
+                          variant="outlined"
                         />
-                      )}
-                      {!isConfigured && pricingTypeId !== 'compulsory' && pricingTypeId !== 'road_service' && (
-                        <Chip
-                          label={t('companies.notConfigured', 'Not Configured')}
-                          size="small"
-                          color="warning"
-                          icon={<Warning />}
-                        />
-                      )}
-                    </div>
+                        {isConfigured ? (
+                          <Chip
+                            label={t('companies.configured', 'Configured')}
+                            size="small"
+                            color="success"
+                            icon={<CheckCircle />}
+                          />
+                        ) : (
+                          <Chip
+                            label={t('companies.notConfigured', 'Not Configured')}
+                            size="small"
+                            color="warning"
+                            icon={<Warning />}
+                          />
+                        )}
+                      </div>
+                    )}
 
-                    {isConfigured && config.rules && (
-                      <div className="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                        {config.rules.fixedAmount && (
-                          <span>{t('companyPricing.fixedAmount', 'Fixed Amount')}: ₪{config.rules.fixedAmount}</span>
+                    {/* Display Pricing Configuration Summary */}
+                    {isConfigured && config && (
+                      <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          {t('companies.pricingConfiguration', 'Pricing Configuration')}:
+                        </h5>
+
+                        {config.rules?.fixedAmount && (
+                          <div className="flex items-center gap-2">
+                            <AttachMoney className="text-green-600 dark:text-green-400" fontSize="small" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                              {t('companyPricing.fixedAmount', 'Fixed Amount')}:
+                            </span>
+                            <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                              ₪{config.rules.fixedAmount.toLocaleString()}
+                            </span>
+                          </div>
                         )}
-                        {config.rules.matrix && (
-                          <span>{config.rules.matrix.length} {t('companyPricing.pricingRules', 'pricing rule(s)')}</span>
+
+                        {config.rules?.matrix && config.rules.matrix.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Category className="text-blue-600 dark:text-blue-400" fontSize="small" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                              {config.rules.matrix.length} {t('companyPricing.pricingRules', 'pricing rule(s)')} -
+                            </span>
+                            <span
+                              className="text-sm text-blue-600 dark:text-blue-400 cursor-pointer hover:underline"
+                              onClick={() => setActiveTab(2)}
+                            >
+                              {t('companies.viewDetails', 'View Details')}
+                            </span>
+                          </div>
                         )}
+
+                        {!config.rules?.fixedAmount && !config.rules?.matrix && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {t('companyPricing.manualEntry', 'Manual entry - no pricing rules configured')}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Not Configured Warning */}
+                    {!isConfigured && pricingTypeId && (
+                      <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg flex items-start gap-2">
+                        <Warning className="text-yellow-600 dark:text-yellow-400 mt-0.5" fontSize="small" />
+                        <p className="text-sm text-yellow-800 dark:text-yellow-300">
+                          {t('companies.pricingNotConfigured', 'Pricing configuration is missing for this insurance type')}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -369,8 +446,129 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
           })
         ) : (
           <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-            {t('companies.noInsuranceTypes', 'No insurance types')}
+            {t('companies.noInsuranceTypes', 'No insurance types configured')}
           </p>
+        )}
+      </div>
+    );
+  };
+
+  const renderPricingDetailsTab = () => {
+    return (
+      <div className="space-y-4 mt-4">
+        {pricingConfigs && pricingConfigs.length > 0 ? (
+          pricingConfigs.map((config) => {
+            const pricingTypeName = config.pricing_type_id?.name || config.pricing_type_id;
+            const requiresPricingTable = config.pricing_type_id?.requiresPricingTable;
+
+            return (
+              <div
+                key={config._id}
+                className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <AttachMoney className="text-green-600 dark:text-green-400" />
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {pricingTypeName}
+                  </h4>
+                  {requiresPricingTable && (
+                    <Chip
+                      label={t('companyPricing.matrixBased', 'Matrix Based')}
+                      size="small"
+                      color="info"
+                      variant="outlined"
+                    />
+                  )}
+                </div>
+
+                {config.pricing_type_id?.description && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    {config.pricing_type_id.description}
+                  </p>
+                )}
+
+                {/* Fixed Amount Pricing */}
+                {config.rules?.fixedAmount && (
+                  <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                    <div className="flex items-center gap-2">
+                      <AttachMoney className="text-green-600 dark:text-green-400" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        {t('companyPricing.fixedAmount', 'Fixed Amount')}:
+                      </span>
+                      <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                        ₪{config.rules.fixedAmount.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Matrix-Based Pricing */}
+                {config.rules?.matrix && config.rules.matrix.length > 0 && (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-200 dark:border-gray-700 rounded-lg text-sm">
+                      <thead className="bg-gray-50 dark:bg-gray-800">
+                        <tr>
+                          <th className="px-3 py-2 text-left text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+                            {t('companyPricing.vehicleType', 'Vehicle Type')}
+                          </th>
+                          <th className="px-3 py-2 text-left text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+                            {t('companyPricing.driverAge', 'Driver Age')}
+                          </th>
+                          <th className="px-3 py-2 text-left text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+                            {t('companyPricing.minAmount', 'Min Amount')}
+                          </th>
+                          <th className="px-3 py-2 text-left text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+                            {t('companyPricing.maxAmount', 'Max Amount')}
+                          </th>
+                          <th className="px-3 py-2 text-left text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+                            {t('companyPricing.price', 'Price')}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {config.rules.matrix.map((row, idx) => (
+                          <tr key={idx} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="px-3 py-2 text-gray-900 dark:text-white capitalize">
+                              {row.vehicle_type || '-'}
+                            </td>
+                            <td className="px-3 py-2 text-gray-900 dark:text-white">
+                              {row.driver_age_group === 'above_24' ? t('companyPricing.above24', 'Above 24') : row.driver_age_group === 'below_24' ? t('companyPricing.below24', 'Below 24') : row.driver_age_group}
+                            </td>
+                            <td className="px-3 py-2 text-gray-900 dark:text-white">
+                              ₪{row.offer_amount_min?.toLocaleString() || 0}
+                            </td>
+                            <td className="px-3 py-2 text-gray-900 dark:text-white">
+                              ₪{row.offer_amount_max?.toLocaleString() || 0}
+                            </td>
+                            <td className="px-3 py-2 font-semibold text-green-600 dark:text-green-400">
+                              ₪{row.price?.toLocaleString() || 0}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Empty Rules */}
+                {!config.rules?.fixedAmount && !config.rules?.matrix && (
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 text-center">
+                    <Warning className="text-yellow-600 dark:text-yellow-400 mb-2" />
+                    <p className="text-sm text-yellow-800 dark:text-yellow-300">
+                      {t('companyPricing.noRulesConfigured', 'No pricing rules configured')}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <div className="text-center py-8">
+            <AttachMoney className="text-gray-400 text-5xl mb-3" />
+            <p className="text-gray-500 dark:text-gray-400">
+              {t('companies.noPricingConfigurations', 'No pricing configurations found')}
+            </p>
+          </div>
         )}
       </div>
     );
@@ -389,7 +587,7 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
                 <div className="flex items-center gap-2">
                   <CarRepair className="text-blue-600 dark:text-blue-400" />
                   <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-                    {t('roadService.service', 'Service')} #{index + 1}
+                    {service.service_name || `${t('roadService.service', 'Service')} #${index + 1}`}
                   </h4>
                 </div>
                 <Chip
@@ -400,6 +598,22 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    {t('roadService.labels.normalPrice', 'Normal Price')}:
+                  </span>
+                  <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                    ₪{service.normal_price?.toLocaleString() || 0}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    {t('roadService.labels.oldCarPrice', 'Old Car Price')}:
+                  </span>
+                  <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                    ₪{service.old_car_price?.toLocaleString() || 0}
+                  </span>
+                </div>
                 <div>
                   <span className="text-gray-500 dark:text-gray-400">
                     {t('roadService.labels.cutoffYear', 'Cutoff Year')}:
@@ -468,6 +682,7 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
             <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
               <Tab label={t('companies.tabs.overview', 'Overview')} />
               <Tab label={t('companies.tabs.insuranceTypes', 'Insurance Types')} />
+              <Tab label={t('companies.tabs.pricingDetails', 'Pricing Details')} />
               <Tab label={t('companies.tabs.roadServices', 'Road Services')} />
             </Tabs>
           </div>
@@ -475,7 +690,8 @@ const EnhancedViewCompanyModal = ({ open, onClose, companyId, onEdit, onDelete, 
           <DialogContent className="dark:bg-navbarBack dark:text-white">
             {activeTab === 0 && renderOverviewTab()}
             {activeTab === 1 && renderInsuranceTypesTab()}
-            {activeTab === 2 && renderRoadServicesTab()}
+            {activeTab === 2 && renderPricingDetailsTab()}
+            {activeTab === 3 && renderRoadServicesTab()}
           </DialogContent>
 
           <DialogActions className="dark:bg-navbarBack dark:border-gray-700 border-t px-6 py-4 gap-2">

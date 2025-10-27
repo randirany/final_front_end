@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowBack, CloudUpload, Delete, Palette, FormatSize, Image } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
 import { ChromePicker } from 'react-color';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { documentSettingsApi } from '../services/documentSettingsApi';
 
 const EditDocumentSettings = () => {
   const { t, i18n: { language } } = useTranslation();
@@ -62,12 +62,9 @@ const EditDocumentSettings = () => {
   const fetchDocumentSettings = async () => {
     setPageLoading(true);
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-      const response = await axios.get(`http://localhost:3002/api/v1/documentSettings/${id}`, {
-        headers: { token }
-      });
+      const response = await documentSettingsApi.getById(id);
+      const settings = response.data || response.documentSettings;
 
-      const settings = response.data.documentSettings;
       setFormData({
         companyName: settings.companyName || '',
         documentType: settings.documentType || '',
@@ -275,72 +272,38 @@ const EditDocumentSettings = () => {
     setLoading(true);
 
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-
-      // Create FormData for file upload
-      const formDataToSend = new FormData();
-
-      // Append basic fields
-      if (formData.companyName) {
-        formDataToSend.append('companyName', formData.companyName);
-      }
-      if (formData.documentType) {
-        formDataToSend.append('documentType', formData.documentType);
-      }
-
-      // Append header data as JSON string
-      const headerData = {
-        text: formData.headerText,
-        backgroundColor: formData.headerBgColor,
-        textColor: formData.headerTextColor,
-        fontSize: formData.headerFontSize,
-        companyName: formData.headerCompanyName,
-        companyAddress: formData.headerCompanyAddress,
-        companyEmail: formData.headerCompanyEmail,
-        companyPhone: formData.headerCompanyPhone,
-        companyWebsite: formData.headerCompanyWebsite
-      };
-      formDataToSend.append('header', JSON.stringify(headerData));
-
-      // Append footer data as JSON string
-      const footerData = {
-        text: formData.footerText,
-        backgroundColor: formData.footerBgColor,
-        textColor: formData.footerTextColor,
-        fontSize: formData.footerFontSize,
-        footerText: formData.footerFooterText,
-        termsAndConditions: formData.footerTermsAndConditions
-      };
-      formDataToSend.append('footer', JSON.stringify(footerData));
-
-      // Append document template data as JSON string
-      const documentTemplateData = {
-        marginTop: formData.marginTop,
-        marginBottom: formData.marginBottom,
-        marginLeft: formData.marginLeft,
-        marginRight: formData.marginRight
-      };
-      formDataToSend.append('documentTemplate', JSON.stringify(documentTemplateData));
-
-      // Append logo files if selected
-      if (uploadedLogo) {
-        formDataToSend.append('logo', uploadedLogo);
-      }
-      if (uploadedHeaderLogo) {
-        formDataToSend.append('headerLogo', uploadedHeaderLogo);
-      }
-      if (uploadedFooterLogo) {
-        formDataToSend.append('footerLogo', uploadedFooterLogo);
-      }
-
-      const response = await axios.put(`http://localhost:3002/api/v1/documentSettings/update/${id}`, formDataToSend, {
-        headers: {
-          token,
-          'Content-Type': 'multipart/form-data'
+      // Prepare the data according to API specification
+      const documentSettingsData = {
+        companyName: formData.companyName,
+        header: {
+          text: formData.headerText || '',
+          backgroundColor: formData.headerBgColor,
+          textColor: formData.headerTextColor,
+          fontSize: parseInt(formData.headerFontSize)
+        },
+        footer: {
+          text: formData.footerText || '',
+          backgroundColor: formData.footerBgColor,
+          textColor: formData.footerTextColor,
+          fontSize: parseInt(formData.footerFontSize)
+        },
+        documentTemplate: {
+          marginTop: parseInt(formData.marginTop),
+          marginBottom: parseInt(formData.marginBottom),
+          marginLeft: parseInt(formData.marginLeft),
+          marginRight: parseInt(formData.marginRight)
         }
-      });
+      };
 
-      console.log('Document settings updated:', response.data);
+      // Add logo file if selected
+      if (uploadedLogo) {
+        documentSettingsData.logo = uploadedLogo;
+      }
+
+      // Use the API service
+      const response = await documentSettingsApi.update(id, documentSettingsData);
+
+      console.log('Document settings updated:', response);
 
       Swal.fire({
         title: t('documentSettings.updateSuccess'),

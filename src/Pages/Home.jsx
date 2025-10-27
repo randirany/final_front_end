@@ -1,10 +1,13 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import ChartDashboard from './../components/ChartDashboard';
 import ChartCustromerDashboard from "../components/ChartCustromerDashboard";
 import UpcomingChequesTable from '../components/UpcomingChequesTable';
 import ReturnedChequesTable from '../components/ReturnedChequesTable';
 import ViewChequeModal from '../components/ViewChequeModal';
 import { useTranslation } from 'react-i18next';
+import { getAllAccidents } from '../services/accidentApi';
+import { AlertTriangle, Eye, Clock } from 'lucide-react';
 
 // Custom hook for animated counter
 const useAnimatedCounter = (end, duration = 2000, isVisible = true) => {
@@ -100,6 +103,7 @@ const AnimatedStatValue = ({ value, originalValue }) => {
 };
 
 function Home() {
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -108,6 +112,10 @@ function Home() {
   // Cheque modal state
   const [viewChequeModalOpen, setViewChequeModalOpen] = useState(false);
   const [selectedChequeId, setSelectedChequeId] = useState(null);
+
+  // Accidents state
+  const [activeAccidents, setActiveAccidents] = useState([]);
+  const [loadingAccidents, setLoadingAccidents] = useState(true);
 
   useEffect(() => {
     const fetchDashboardStatistics = async () => {
@@ -132,6 +140,29 @@ function Home() {
     };
 
     fetchDashboardStatistics();
+  }, []);
+
+  // Fetch active accidents
+  useEffect(() => {
+    const fetchActiveAccidents = async () => {
+      setLoadingAccidents(true);
+      try {
+        const response = await getAllAccidents({
+          status: 'open',
+          limit: 10,
+          sortBy: 'createdAt',
+          sortOrder: 'desc'
+        });
+        setActiveAccidents(response.accidents || []);
+      } catch (err) {
+        console.error('Error fetching active accidents:', err);
+        setActiveAccidents([]);
+      } finally {
+        setLoadingAccidents(false);
+      }
+    };
+
+    fetchActiveAccidents();
   }, []);
 
   // Handler for viewing cheque details
@@ -379,6 +410,120 @@ return (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             <UpcomingChequesTable onViewCheque={handleViewCheque} />
             <ReturnedChequesTable onViewCheque={handleViewCheque} />
+          </div>
+
+          {/* Active Accidents Section */}
+          <div className="mt-4">
+            <div className="bg-white dark:bg-navbarBack rounded-lg shadow-lg p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full bg-red-500 dark:bg-red-600 flex items-center justify-center">
+                  <AlertTriangle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {t('home.activeAccidents', 'Active Accident Tickets')}
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {t('home.activeAccidentsDesc', 'Latest 10 open accident tickets')}
+                  </p>
+                </div>
+              </div>
+
+              {loadingAccidents ? (
+                <div className="flex justify-center items-center h-40">
+                  <div className="animate-spin rounded-full h-10 w-10 border-4 border-red-500 border-t-transparent"></div>
+                </div>
+              ) : activeAccidents.length === 0 ? (
+                <div className="text-center py-12">
+                  <AlertTriangle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {t('home.noActiveAccidents', 'No active accident tickets')}
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      <tr>
+                        <th className="px-4 py-3">{t('accidents.ticketNumber', 'Ticket #')}</th>
+                        <th className="px-4 py-3">{t('accidents.customer', 'Customer')}</th>
+                        <th className="px-4 py-3">{t('accidents.vehicle', 'Vehicle')}</th>
+                        <th className="px-4 py-3">{t('accidents.priority', 'Priority')}</th>
+                        <th className="px-4 py-3">{t('accidents.description', 'Description')}</th>
+                        <th className="px-4 py-3">{t('accidents.createdAt', 'Created')}</th>
+                        <th className="px-4 py-3 text-center">{t('common.actions', 'Actions')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeAccidents.map((accident) => (
+                        <tr key={accident._id} className="bg-white dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                          <td className="px-4 py-3">
+                            <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">
+                              {accident.ticketNumber}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div>
+                              <div className="font-medium text-gray-900 dark:text-gray-100">
+                                {accident.insured?.first_name} {accident.insured?.last_name}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">
+                                {accident.insured?.id_Number}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div>
+                              <div className="font-medium text-gray-900 dark:text-gray-100">
+                                {accident.vehicle?.model}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">
+                                {accident.vehicle?.plateNumber}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                              accident.priority === 'urgent'
+                                ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                                : accident.priority === 'high'
+                                ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300'
+                                : accident.priority === 'medium'
+                                ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                            }`}>
+                              {accident.priority}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 max-w-xs">
+                            <div className="truncate text-gray-700 dark:text-gray-300">
+                              {accident.title || accident.description || '-'}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+                              <Clock className="w-4 h-4" />
+                              <span className="text-xs">
+                                {new Date(accident.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <button
+                              onClick={() => navigate(`/accidents/${accident.ticketNumber}`)}
+                              className="inline-flex items-center gap-1 px-3 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+                            >
+                              <Eye className="w-3 h-3" />
+                              {t('common.view', 'View')}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* View Cheque Modal */}

@@ -12,7 +12,7 @@ import CustomerMessage from "../components/CustomerMessage.jsx";
 import Inbox from "../components/Inbox.jsx";
 import SendMessage from "../components/SendMessage.jsx";
 import AddVehicleWrapper from "../components/AddVehicleWrapper.jsx";
-import Departments from "../components/Departments.jsx";
+import DepartmentsNew from "../components/DepartmentsNew.jsx";
 import AhlieReport from "../components/AhlieReport.jsx";
 import MashreqRep from "../components/MashreqRep.jsx";
 import TakafulRep from "../components/TakafulRep.jsx";
@@ -44,6 +44,7 @@ import AccidentsReport from "../components/reports/AccidentsReport.jsx";
 import RevenuesReport from "../components/reports/RevenuesReport.jsx";
 import PaymentsReport from "../components/reports/PaymentsReport.jsx";
 import ReceivablesDebtsReport from "../components/reports/ReceivablesDebtsReport.jsx";
+import ExpensesReport from "../components/reports/ExpensesReport.jsx";
 import Expenses from "../Pages/Expenses.jsx";
 import AddExpense from "../Pages/AddExpense.jsx";
 import ViewExpense from "../Pages/ViewExpense.jsx";
@@ -53,6 +54,10 @@ import RoadServices from "../Pages/RoadServices.jsx";
 import InsuranceCompanies from "../Pages/InsuranceCompanies.jsx";
 import PricingTypes from "../Pages/PricingTypes.jsx";
 import CompanyPricing from "../Pages/CompanyPricing.jsx";
+import AgentStatement from "../Pages/AgentStatement.jsx";
+import AccidentList from "../components/AccidentList.jsx";
+import AccidentDetail from "../components/AccidentDetail.jsx";
+import AccidentStats from "../components/AccidentStats.jsx";
 
 const router = createBrowserRouter([
     {
@@ -151,7 +156,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRouter> <SendMessage /></ProtectedRouter>
             }, {
                 path: '/departments',
-                element: <ProtectedRouter> <Departments />   </ProtectedRouter>
+                element: <ProtectedRouter> <DepartmentsNew />   </ProtectedRouter>
             }, {
                 path: '/AhlieReport/:vehicleId',
                 element: <ProtectedRouter><AhlieReport /></ProtectedRouter>
@@ -223,6 +228,21 @@ const router = createBrowserRouter([
             }, {
                 path: '/reports/receivables-debts',
                 element: <ProtectedRouter><ReceivablesDebtsReport /></ProtectedRouter>
+            }, {
+                path: '/reports/expenses',
+                element: <ProtectedRouter><ExpensesReport /></ProtectedRouter>
+            }, {
+                path: '/agent-statement/:agentName',
+                element: <ProtectedRouter><AgentStatement /></ProtectedRouter>
+            }, {
+                path: '/accidents',
+                element: <ProtectedRouter><AccidentList /></ProtectedRouter>
+            }, {
+                path: '/accidents/:ticketNumber',
+                element: <ProtectedRouter><AccidentDetail /></ProtectedRouter>
+            }, {
+                path: '/accidents/stats',
+                element: <ProtectedRouter><AccidentStats /></ProtectedRouter>
             }
         ],
 

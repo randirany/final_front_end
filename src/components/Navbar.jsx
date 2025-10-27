@@ -2,7 +2,6 @@ import { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { UserContext } from '../context/User';
 import avater from '../assets/Avatar.png';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../context/ThemeProvider';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
@@ -15,9 +14,9 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
   const { logout, UserData } = useContext(UserContext);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const { language } = i18n;
-  const { isDarkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
 
   const [notifications, setNotifications] = useState([]);
@@ -30,7 +29,6 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
     if (!UserData?.id) {
@@ -166,23 +164,42 @@ function Navbar({ setSidebarOpen, sidebarOpen }) {
   const toggleNotification = () => {
     setNotificationOpen(prev => !prev);
     if (profileOpen) setProfileOpen(false);
+    if (languageOpen) setLanguageOpen(false);
   };
 
   const toggleProfile = () => {
     setProfileOpen(prev => !prev);
     if (notificationOpen) setNotificationOpen(false);
+    if (languageOpen) setLanguageOpen(false);
   };
 
-  const handleThemeToggle = () => {
-    toggleDarkMode();
+  const toggleLanguage = () => {
+    setLanguageOpen(prev => !prev);
+    if (notificationOpen) setNotificationOpen(false);
+    if (profileOpen) setProfileOpen(false);
   };
 
-  const handleLanguageToggle = () => {
-    const languages = ['en', 'ar', 'he'];
-    const currentIndex = languages.indexOf(language);
-    const nextIndex = (currentIndex + 1) % languages.length;
-    const newLang = languages[nextIndex];
+  const handleLanguageChange = (newLang) => {
     i18n.changeLanguage(newLang);
+    setLanguageOpen(false);
+  };
+
+  const getLanguageLabel = (lang) => {
+    switch(lang) {
+      case 'en': return 'English';
+      case 'ar': return 'العربية';
+      case 'he': return 'עברית';
+      default: return 'English';
+    }
+  };
+
+  const getLanguageFlag = (lang) => {
+    switch(lang) {
+      case 'en': return '🇬🇧';
+      case 'ar': return '🇵🇸';
+      case 'he': return '🇮🇱';
+      default: return '🇬🇧';
+    }
   };
 
 const formatTimeAgo = (dateString) => {
@@ -199,37 +216,46 @@ const formatTimeAgo = (dateString) => {
   return t('time.daysAgo', { count: days });
 };
 
-// Fetch customers for search
-const fetchCustomers = useCallback(async () => {
+// Search customers using API
+const searchCustomers = useCallback(async (searchKey) => {
+  if (!searchKey.trim()) {
+    setSearchResults([]);
+    setSearchLoading(false);
+    return;
+  }
+
   try {
     const rawToken = localStorage.getItem("token");
     if (!rawToken) return;
 
     const token = `islam__${rawToken}`;
-    const response = await axios.get(`${API_BASE_URL}/insured/allInsured`, {
-      headers: { token }
+    const response = await axios.get(`${API_BASE_URL}/insured/searchCustomer`, {
+      headers: { token },
+      params: { searchKey }
     });
 
-    const formattedCustomers = response.data.insuredList.map(item => ({
-      id: item._id,
-      name: `${item.first_name || ''} ${item.last_name || ''}`.trim(),
-      email: item.email,
-      mobile: item.phone_number,
-      idNumber: item.id_number,
-      city: item.city,
-      agentsName: item.agentsName
-    }));
-
-    setCustomers(formattedCustomers);
+    // The API returns a single customer object, not an array
+    const customer = response.data.customer;
+    if (customer) {
+      const formattedCustomer = {
+        id: customer._id,
+        name: `${customer.first_name || ''} ${customer.last_name || ''}`.trim(),
+        email: customer.email,
+        mobile: customer.phone_number,
+        idNumber: customer.id_Number,
+        city: customer.city,
+        agentsName: customer.agentsName
+      };
+      setSearchResults([formattedCustomer]);
+    } else {
+      setSearchResults([]);
+    }
+    setSearchLoading(false);
   } catch {
-            // Handle error silently
-        }
+    setSearchResults([]);
+    setSearchLoading(false);
+  }
 }, []);
-
-// Load customers on component mount
-useEffect(() => {
-  fetchCustomers();
-}, [fetchCustomers]);
 
 // Debounced search function
 const debouncedSearch = useCallback(
@@ -238,22 +264,11 @@ const debouncedSearch = useCallback(
     return (query) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        if (query.trim().length > 0) {
-          const filtered = customers.filter(customer =>
-            customer.name.toLowerCase().includes(query.toLowerCase()) ||
-            customer.email?.toLowerCase().includes(query.toLowerCase()) ||
-            customer.mobile?.includes(query) ||
-            customer.idNumber?.includes(query)
-          ).slice(0, 8); // Limit to 8 results
-          setSearchResults(filtered);
-        } else {
-          setSearchResults([]);
-        }
-        setSearchLoading(false);
+        searchCustomers(query);
       }, 300);
     };
-  }, [customers]),
-  [customers]
+  }, [searchCustomers]),
+  [searchCustomers]
 );
 
 // Handle search input change
@@ -398,26 +413,77 @@ useEffect(() => {
 
           <div className=''>
             <div className='flex justify-center items-center gap-2'> {/* Increased gap slightly if needed */}
-              {/* Theme Toggle Button */}
-              <button onClick={handleThemeToggle} title={isDarkMode ? t('nav.switchToLight') : t('nav.switchToDark')} className="group rounded-full bg-gray-3 p-[5px] text-[#111928] outline-1 outline-primary focus-visible:outline bg-[#F3F4F6]  dark:bg-dark2">
-                <span className="sr-only">{isDarkMode ? t('nav.switchToLight') : t('nav.switchToDark')}</span>
-                <span aria-hidden="true" className="relative flex gap-2.5">
-                  <span className={`absolute size-[38px] rounded-full border dark:border-gray-200 bg-[rgb(255,255,255)] transition-all duration-300 ease-in-out dark:border dark:border-borderNav-none dark:bg-dark-2 dark:group-hover:bg-dark-3 ${isDarkMode && language === 'en' ? 'translate-x-[48px]' : ''} ${isDarkMode && (language === 'ar' || language === 'he') ? '-translate-x-[48px]' : ''}`}></span>
-                  <span className="relative grid size-[38px] place-items-center rounded-full"><svg className='dark:text-dark3' width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.042c.345 0 .625.28.625.625V2.5a.625.625 0 11-1.25 0v-.833c0-.346.28-.625.625-.625zM3.666 3.665a.625.625 0 01.883 0l.328.328a.625.625 0 01-.884.884l-.327-.328a.625.625 0 010-.884zm12.668 0a.625.625 0 010 .884l-.327.328a.625.625 0 01-.884-.884l.327-.327a.625.625 0 01.884 0zM10 5.626a4.375 4.375 0 100 8.75 4.375 4.375 0 000-8.75zM4.375 10a5.625 5.625 0 1111.25 0 5.625 5.625 0 01-11.25 0zm-3.333 0c0-.345.28-.625.625-.625H2.5a.625.625 0 110 1.25h-.833A.625.625 0 011.042 10zm15.833 0c0-.345.28-.625.625-.625h.833a.625.625 0 010 1.25H17.5a.625.625 0 01-.625-.625zm-1.752 5.123a.625.625 0 01.884 0l.327.327a.625.625 0 11-.884.884l-.327-.327a.625.625 0 010-.884zm-10.246 0a.625.625 0 010 .884l-.328.327a.625.625 0 11-.883-.884l.327-.327a.625.625 0 01.884 0zM10 16.875c.345 0 .625.28.625.625v.833a.625.625 0 01-1.25 0V17.5c0-.345.28-.625.625-.625z"></path></svg></span>
-                  <span className="relative grid size-[38px] place-items-center rounded-full dark:text-[rgb(255,255,255)] dark:bg-dark3"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" clipRule="evenodd" d="M9.18 2.334a7.71 7.71 0 108.485 8.485A6.042 6.042 0 119.18 2.335zM1.042 10a8.958 8.958 0 018.958-8.958c.598 0 .896.476.948.855.049.364-.086.828-.505 1.082a4.792 4.792 0 106.579 6.579c.253-.42.717-.555 1.081-.506.38.052.856.35.856.948A8.958 8.958 0 011.04 10z"></path></svg></span>
-                </span>
-              </button>
-
-              <button
-                onClick={handleLanguageToggle}
-                title={t('nav.toggleLanguage', 'Change Language')}
-                aria-label={t('nav.toggleLanguage', 'Change Language')}
-                className="grid dark:bg-dark4 dark:border dark:border-borderNav size-12 w-12 h-12 place-items-center rounded-full border bg-gray-2 outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-[rgb(255,255,255)] dark:focus-visible:border-primary"
-              >
-                <span className="font-semibold text-sm uppercase">
-                  {language === 'en' ? t('language.ar', 'AR') : (language === 'ar' || language === 'he') ? t('language.he', 'HE') : t('language.en', 'EN')}
-                </span>
-              </button>
+              {/* Language Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={toggleLanguage}
+                  className="grid dark:bg-dark4 dark:border dark:border-borderNav size-12 w-12 h-12 place-items-center rounded-full border bg-gray-2 outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-[rgb(255,255,255)] dark:focus-visible:border-primary"
+                  aria-expanded={languageOpen}
+                  aria-haspopup="menu"
+                >
+                  <span className="text-xl">{getLanguageFlag(language)}</span>
+                </button>
+                {languageOpen && (
+                  <div
+                    role="menu"
+                    aria-orientation="vertical"
+                    className={`z-50 absolute mt-2 w-48 origin-top-right rounded-lg border bg-white shadow-lg dark:border-gray-700 dark:bg-dark2 ${
+                      (language === 'ar' || language === 'he') ? 'left-0' : 'right-0'
+                    } ${languageOpen ? "block animate-in fade-in-0 zoom-in-95" : "hidden"}`}
+                  >
+                    <div className="py-1">
+                      <button
+                        onClick={() => handleLanguageChange('en')}
+                        className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                          language === 'en' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'
+                        }`}
+                      >
+                        <span className="text-xl">{getLanguageFlag('en')}</span>
+                        <span className="font-medium">{getLanguageLabel('en')}</span>
+                        {language === 'en' && (
+                          <span className="ml-auto">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleLanguageChange('ar')}
+                        className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                          language === 'ar' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'
+                        }`}
+                      >
+                        <span className="text-xl">{getLanguageFlag('ar')}</span>
+                        <span className="font-medium">{getLanguageLabel('ar')}</span>
+                        {language === 'ar' && (
+                          <span className="ml-auto">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleLanguageChange('he')}
+                        className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                          language === 'he' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200'
+                        }`}
+                      >
+                        <span className="text-xl">{getLanguageFlag('he')}</span>
+                        <span className="font-medium">{getLanguageLabel('he')}</span>
+                        {language === 'he' && (
+                          <span className="ml-auto">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="relative">
                 <button

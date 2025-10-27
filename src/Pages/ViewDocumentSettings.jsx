@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowBack, Edit, Image, Palette, FormatSize } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import { toLocaleDateStringEN } from '../utils/dateFormatter';
+import { documentSettingsApi } from '../services/documentSettingsApi';
 
 const ViewDocumentSettings = () => {
   const { id } = useParams();
@@ -21,35 +21,16 @@ const ViewDocumentSettings = () => {
 
   const fetchDocumentSettings = async () => {
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-      // First try the specific endpoint for single item
-      let response;
-      try {
-        response = await axios.get(`http://localhost:3002/api/v1/documentSettings/${id}`, {
-          headers: { token }
-        });
-      } catch (error) {
-        // If that fails, try fetching from the list and find the specific item
-        console.log('Single item endpoint failed, trying list endpoint');
-        const listResponse = await axios.get('http://localhost:3002/api/v1/documentSettings/', {
-          headers: { token }
-        });
-        const foundItem = listResponse.data.data?.find(item => item._id === id);
-        if (foundItem) {
-          response = { data: { documentSettings: foundItem } };
-        } else {
-          throw new Error('Document settings not found');
-        }
-      }
+      const response = await documentSettingsApi.getById(id);
 
       // Handle different possible response structures
       let settings = null;
-      if (response.data.documentSettings) {
-        settings = response.data.documentSettings;
-      } else if (response.data.data) {
-        settings = response.data.data;
+      if (response.documentSettings) {
+        settings = response.documentSettings;
       } else if (response.data) {
         settings = response.data;
+      } else if (response) {
+        settings = response;
       }
 
       if (settings) {

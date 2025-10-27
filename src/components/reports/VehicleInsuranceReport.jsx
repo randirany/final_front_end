@@ -1,88 +1,60 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import DataTable from '../shared/DataTable';
 import FormInput from '../shared/FormInput';
 import StatCard from '../shared/StatCard';
 import { toLocaleDateStringEN } from '../../utils/dateFormatter';
+import { getAllAgents } from '../../services/insuranceApi';
+import { getAllCompanies } from '../../services/insuranceCompanyApi';
+import { insuranceTypeApi } from '../../services/insuranceTypeApi';
+
+const API_BASE_URL = 'http://localhost:3002/api/v1';
 
 const VehicleInsuranceReport = () => {
   const { t, i18n: { language } } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState({
+    totalInsurances: 0,
+    activeInsurances: 0,
+    expiredInsurances: 0,
+    totalInsuranceAmount: 0,
+    totalPaidAmount: 0,
+    totalRemainingDebt: 0
+  });
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 10,
+    hasNextPage: false,
+    hasPreviousPage: false
+  });
   const [filters, setFilters] = useState({
-    periodFrom: '',
-    periodTo: '',
+    startDate: '',
+    endDate: '',
     agent: '',
-    company: '',
-    status: '',
-    insuranceType: ''
+    insuranceCompany: '',
+    status: 'all',
+    insuranceType: '',
+    page: 1,
+    limit: 10
   });
 
 
-  // Mock data - replace with actual API call
-  const mockData = [
-    {
-      id: 1,
-      customerName: 'أحمد محمد علي',
-      plateNumber: 'ع ق م 123',
-      vehicleModel: 'تويوتا كورولا 2020',
-      insuranceCompany: 'الأهلية',
-      policyNumber: 'AHL-2023-001',
-      startDate: '2023-01-15',
-      endDate: '2024-01-15',
-      premium: 1200,
-      agent: 'سالم أحمد',
-      status: 'active',
-      insuranceType: 'comprehensive'
-    },
-    {
-      id: 2,
-      customerName: 'فاطمة حسن',
-      plateNumber: 'ص ل م 456',
-      vehicleModel: 'نيسان صني 2019',
-      insuranceCompany: 'المشرق',
-      policyNumber: 'MSH-2023-002',
-      startDate: '2023-03-22',
-      endDate: '2024-03-22',
-      premium: 950,
-      agent: 'محمد علي',
-      status: 'active',
-      insuranceType: 'third_party'
-    },
-    {
-      id: 3,
-      customerName: 'خالد سعد',
-      plateNumber: 'ح ك ل 789',
-      vehicleModel: 'هونداي إلنترا 2021',
-      insuranceCompany: 'تكافل',
-      policyNumber: 'TKF-2023-003',
-      startDate: '2023-06-10',
-      endDate: '2024-06-10',
-      premium: 1350,
-      agent: 'سالم أحمد',
-      status: 'expired',
-      insuranceType: 'comprehensive'
-    }
-  ];
-
-  const agents = [
-    { id: 1, name: 'سالم أحمد' },
-    { id: 2, name: 'محمد علي' },
-    { id: 3, name: 'علي حسن' }
-  ];
-
-  const companies = [
-    { id: 1, name: 'الأهلية' },
-    { id: 2, name: 'المشرق' },
-    { id: 3, name: 'تكافل' },
-    { id: 4, name: 'فلسطين' },
-    { id: 5, name: 'الثقة' }
-  ];
+  const [agents, setAgents] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [insuranceTypes, setInsuranceTypes] = useState([]);
 
   const columns = [
     {
       header: t('reports.vehicleInsurance.customerName'),
-      accessor: 'customerName'
+      accessor: 'insuredName'
+    },
+    {
+      header: t('reports.vehicleInsurance.customerPhone'),
+      accessor: 'insuredPhone'
     },
     {
       header: t('reports.vehicleInsurance.plateNumber'),
@@ -97,23 +69,29 @@ const VehicleInsuranceReport = () => {
       accessor: 'insuranceCompany'
     },
     {
-      header: t('reports.vehicleInsurance.policyNumber'),
-      accessor: 'policyNumber'
-    },
-    {
       header: t('reports.vehicleInsurance.startDate'),
-      accessor: 'startDate',
+      accessor: 'insuranceStartDate',
       render: (value) => toLocaleDateStringEN(value)
     },
     {
       header: t('reports.vehicleInsurance.endDate'),
-      accessor: 'endDate',
+      accessor: 'insuranceEndDate',
       render: (value) => toLocaleDateStringEN(value)
     },
     {
-      header: t('reports.vehicleInsurance.premium'),
-      accessor: 'premium',
-      render: (value) => `${value.toLocaleString()} ${t('common.currency')}`
+      header: t('reports.vehicleInsurance.insuranceAmount'),
+      accessor: 'insuranceAmount',
+      render: (value) => `${value?.toLocaleString() || 0} ${t('common.currency')}`
+    },
+    {
+      header: t('reports.vehicleInsurance.paidAmount'),
+      accessor: 'paidAmount',
+      render: (value) => `${value?.toLocaleString() || 0} ${t('common.currency')}`
+    },
+    {
+      header: t('reports.vehicleInsurance.remainingDebt'),
+      accessor: 'remainingDebt',
+      render: (value) => `${value?.toLocaleString() || 0} ${t('common.currency')}`
     },
     {
       header: t('reports.vehicleInsurance.agent'),
@@ -128,13 +106,13 @@ const VehicleInsuranceReport = () => {
             ? 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
             : 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100'
         }`}>
-          {t(`reports.vehicleInsurance.type.${value}`)}
+          {value || '-'}
         </span>
       )
     },
     {
       header: t('reports.vehicleInsurance.status'),
-      accessor: 'status',
+      accessor: 'insuranceStatus',
       render: (value) => (
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
           value === 'active'
@@ -143,7 +121,7 @@ const VehicleInsuranceReport = () => {
             ? 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
             : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
         }`}>
-          {t(`common.${value}`)}
+          {value || '-'}
         </span>
       )
     }
@@ -151,80 +129,112 @@ const VehicleInsuranceReport = () => {
 
   useEffect(() => {
     fetchData();
-  }, [filters]);
+  }, [filters.page]);
+
+  useEffect(() => {
+    fetchAgentsAndCompanies();
+  }, []);
+
+  const fetchAgentsAndCompanies = async () => {
+    try {
+      // Fetch agents using the correct API function
+      const agentsResponse = await getAllAgents();
+      // Response structure: { message: "Agents ", getAll: [...] }
+      setAgents(agentsResponse.getAll || []);
+
+      // Fetch insurance companies using the correct API function
+      const companiesResponse = await getAllCompanies({ page: 1, limit: 1000 });
+      // Response structure: Direct array or nested object - handle both
+      const companiesArray = Array.isArray(companiesResponse)
+        ? companiesResponse
+        : (companiesResponse.companies || []);
+      setCompanies(companiesArray);
+
+      // Fetch insurance types using the correct API function
+      const insuranceTypesResponse = await insuranceTypeApi.getAll();
+      // Response structure: Direct array or nested object - handle both
+      const insuranceTypesArray = Array.isArray(insuranceTypesResponse)
+        ? insuranceTypesResponse
+        : (insuranceTypesResponse.insuranceTypes || insuranceTypesResponse.data || []);
+      setInsuranceTypes(insuranceTypesArray);
+    } catch (error) {
+      console.error('Error fetching agents and companies:', error);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      let filteredData = mockData;
-
-      // Apply filters
-      if (filters.periodFrom) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.startDate) >= new Date(filters.periodFrom)
-        );
+      const rawToken = localStorage.getItem("token");
+      if (!rawToken) {
+        setLoading(false);
+        return;
       }
+      const token = `islam__${rawToken}`;
 
-      if (filters.periodTo) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.endDate) <= new Date(filters.periodTo)
-        );
-      }
+      // Build query parameters
+      const params = {};
+      if (filters.startDate) params.startDate = filters.startDate;
+      if (filters.endDate) params.endDate = filters.endDate;
+      if (filters.agent) params.agent = filters.agent;
+      if (filters.insuranceCompany) params.insuranceCompany = filters.insuranceCompany;
+      if (filters.insuranceType) params.insuranceType = filters.insuranceType;
+      if (filters.status && filters.status !== 'all') params.status = filters.status;
+      params.page = filters.page;
+      params.limit = filters.limit;
 
-      if (filters.agent) {
-        filteredData = filteredData.filter(item =>
-          item.agent === filters.agent
-        );
-      }
+      const response = await axios.get(`${API_BASE_URL}/insured/insurances/all`, {
+        headers: { token },
+        params
+      });
 
-      if (filters.company) {
-        filteredData = filteredData.filter(item =>
-          item.insuranceCompany === filters.company
-        );
-      }
+      const { insurances, summary: apiSummary, pagination: apiPagination } = response.data;
 
-      if (filters.status) {
-        filteredData = filteredData.filter(item =>
-          item.status === filters.status
-        );
-      }
-
-      if (filters.insuranceType) {
-        filteredData = filteredData.filter(item =>
-          item.insuranceType === filters.insuranceType
-        );
-      }
-
-      setData(filteredData);
+      setData(insurances || []);
+      setSummary(apiSummary || {
+        totalInsurances: 0,
+        activeInsurances: 0,
+        expiredInsurances: 0,
+        totalInsuranceAmount: 0,
+        totalPaidAmount: 0,
+        totalRemainingDebt: 0
+      });
+      setPagination(apiPagination || {
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: 0,
+        itemsPerPage: 10,
+        hasNextPage: false,
+        hasPreviousPage: false
+      });
     } catch (error) {
       console.error('Error fetching vehicle insurance data:', error);
+      setData([]);
     } finally {
       setLoading(false);
     }
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
   };
 
   const clearFilters = () => {
     setFilters({
-      periodFrom: '',
-      periodTo: '',
+      startDate: '',
+      endDate: '',
       agent: '',
-      company: '',
-      status: '',
-      insuranceType: ''
+      insuranceCompany: '',
+      status: 'all',
+      insuranceType: '',
+      page: 1,
+      limit: 10
     });
   };
 
-  // Calculate statistics
-  const totalPremium = data.reduce((sum, item) => sum + item.premium, 0);
-  const activeCount = data.filter(item => item.status === 'active').length;
-  const expiredCount = data.filter(item => item.status === 'expired').length;
+  const handlePageChange = (newPage) => {
+    setFilters(prev => ({ ...prev, page: newPage }));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
@@ -240,10 +250,10 @@ const VehicleInsuranceReport = () => {
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
           <StatCard
             title={t('reports.vehicleInsurance.totalPolicies')}
-            value={data.length}
+            value={summary.totalInsurances}
             color="blue"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,7 +263,7 @@ const VehicleInsuranceReport = () => {
           />
           <StatCard
             title={t('reports.vehicleInsurance.activePolicies')}
-            value={activeCount}
+            value={summary.activeInsurances}
             color="green"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,7 +273,7 @@ const VehicleInsuranceReport = () => {
           />
           <StatCard
             title={t('reports.vehicleInsurance.expiredPolicies')}
-            value={expiredCount}
+            value={summary.expiredInsurances}
             color="red"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,13 +282,35 @@ const VehicleInsuranceReport = () => {
             }
           />
           <StatCard
-            title={t('reports.vehicleInsurance.totalPremium')}
-            value={totalPremium.toLocaleString()}
+            title={t('reports.vehicleInsurance.totalInsuranceAmount')}
+            value={summary.totalInsuranceAmount?.toLocaleString() || 0}
+            suffix={t('common.currency')}
+            color="purple"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+              </svg>
+            }
+          />
+          <StatCard
+            title={t('reports.vehicleInsurance.totalPaidAmount')}
+            value={summary.totalPaidAmount?.toLocaleString() || 0}
             suffix={t('common.currency')}
             color="yellow"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            }
+          />
+          <StatCard
+            title={t('reports.vehicleInsurance.totalRemainingDebt')}
+            value={summary.totalRemainingDebt?.toLocaleString() || 0}
+            suffix={t('common.currency')}
+            color="orange"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             }
           />
@@ -294,15 +326,15 @@ const VehicleInsuranceReport = () => {
             <FormInput
               type="date"
               label={t('reports.vehicleInsurance.periodFrom')}
-              value={filters.periodFrom}
-              onChange={(e) => handleFilterChange('periodFrom', e.target.value)}
+              value={filters.startDate}
+              onChange={(e) => handleFilterChange('startDate', e.target.value)}
             />
 
             <FormInput
               type="date"
               label={t('reports.vehicleInsurance.periodTo')}
-              value={filters.periodTo}
-              onChange={(e) => handleFilterChange('periodTo', e.target.value)}
+              value={filters.endDate}
+              onChange={(e) => handleFilterChange('endDate', e.target.value)}
             />
 
             <FormInput
@@ -319,8 +351,8 @@ const VehicleInsuranceReport = () => {
             <FormInput
               type="select"
               label={t('reports.vehicleInsurance.company')}
-              value={filters.company}
-              onChange={(e) => handleFilterChange('company', e.target.value)}
+              value={filters.insuranceCompany}
+              onChange={(e) => handleFilterChange('insuranceCompany', e.target.value)}
               options={[
                 { value: '', label: t('common.all') },
                 ...companies.map(company => ({ value: company.name, label: company.name }))
@@ -334,8 +366,7 @@ const VehicleInsuranceReport = () => {
               onChange={(e) => handleFilterChange('insuranceType', e.target.value)}
               options={[
                 { value: '', label: t('common.all') },
-                { value: 'comprehensive', label: t('reports.vehicleInsurance.type.comprehensive') },
-                { value: 'third_party', label: t('reports.vehicleInsurance.type.third_party') }
+                ...insuranceTypes.map(type => ({ value: type.name, label: type.name }))
               ]}
             />
 
@@ -345,10 +376,9 @@ const VehicleInsuranceReport = () => {
               value={filters.status}
               onChange={(e) => handleFilterChange('status', e.target.value)}
               options={[
-                { value: '', label: t('common.all') },
+                { value: 'all', label: t('common.all') },
                 { value: 'active', label: t('common.active') },
-                { value: 'expired', label: t('common.expired') },
-                { value: 'pending', label: t('common.pending') }
+                { value: 'expired', label: t('common.expired') }
               ]}
             />
           </div>
@@ -385,6 +415,71 @@ const VehicleInsuranceReport = () => {
           enableSearch={true}
           enableExport={true}
         />
+
+        {/* Pagination */}
+        {pagination.totalPages > 1 && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 mt-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-sm text-gray-700 dark:text-gray-300">
+                {t('common.showingResults', {
+                  from: (pagination.currentPage - 1) * pagination.itemsPerPage + 1,
+                  to: Math.min(pagination.currentPage * pagination.itemsPerPage, pagination.totalItems),
+                  total: pagination.totalItems
+                })}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePageChange(pagination.currentPage - 1)}
+                  disabled={!pagination.hasPreviousPage}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {t('common.previous')}
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {[...Array(pagination.totalPages)].map((_, index) => {
+                    const pageNumber = index + 1;
+                    // Show first page, last page, current page, and pages around current
+                    if (
+                      pageNumber === 1 ||
+                      pageNumber === pagination.totalPages ||
+                      (pageNumber >= pagination.currentPage - 1 && pageNumber <= pagination.currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={pageNumber}
+                          onClick={() => handlePageChange(pageNumber)}
+                          className={`px-3 py-1 rounded-lg transition-all duration-200 ${
+                            pageNumber === pagination.currentPage
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      );
+                    } else if (
+                      pageNumber === pagination.currentPage - 2 ||
+                      pageNumber === pagination.currentPage + 2
+                    ) {
+                      return <span key={pageNumber} className="px-2 text-gray-500">...</span>;
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <button
+                  onClick={() => handlePageChange(pagination.currentPage + 1)}
+                  disabled={!pagination.hasNextPage}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {t('common.next')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -162,7 +162,16 @@ const AddChequeModal = ({ open, onClose, onSuccess, selectedCustomerId }) => {
       });
 
       handleClose();
-      if (onSuccess) onSuccess();
+      if (onSuccess) {
+        // Pass the cheque data to the parent component
+        onSuccess({
+          chequeNumber: formData.chequeNumber,
+          amount: parseFloat(formData.amount),
+          chequeDate: formData.chequeDate,
+          notes: formData.notes,
+          status: 'pending'
+        });
+      }
     } catch (error) {
       console.error('Error saving cheque:', error);
       Swal.fire({

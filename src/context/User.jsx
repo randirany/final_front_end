@@ -16,17 +16,23 @@ const UserContextProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     useEffect(() => {
-        if (token) {
-            const decoded = jwtDecode(token);
-            const currentTime = Date.now() / 1000; // تحويل الوقت إلى ثوانٍ
-            if (decoded.exp < currentTime) {
+        if (token && token.split('.').length === 3) {
+            try {
+                const decoded = jwtDecode(token);
+                const currentTime = Date.now() / 1000; // تحويل الوقت إلى ثوانٍ
+                if (decoded.exp < currentTime) {
+                    logout();
+                    toast.warning("انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجددًا.");
+                } else {
+                    setLogin(true);
+                    setUserData(decoded);
+                    // getUser();
+                    // getInsurance();
+                }
+            } catch (error) {
+                // If token is invalid, clear it and logout
+                console.error("Invalid token:", error);
                 logout();
-                toast.warning("انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجددًا.");
-            } else {
-                setLogin(true);
-                setUserData(decoded);
-                // getUser();
-                // getInsurance();
             }
         }
     }, []);

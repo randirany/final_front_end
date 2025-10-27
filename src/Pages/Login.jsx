@@ -5,6 +5,7 @@ import axios from 'axios'
 import { UserContext } from '../context/User'
 import { jwtDecode } from "jwt-decode"
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 function Login() {
     const { setUserData, setLogin } = useContext(UserContext);
@@ -22,14 +23,42 @@ function Login() {
     const RegisterUser = async () => {
         try {
             const { data } = await axios.post(`http://localhost:3002/api/v1/user/signin`, formik.values)
+
+            // Check if login failed (when success is explicitly false or message is not "success")
+            if (data.success === false || (data.message && data.message !== "success" && !data.token)) {
+                toast.error(data.message)
+                return
+            }
+
+            // Check if token exists
+            if (!data.token) {
+                toast.error(t('login.errorOccurred', 'An error occurred. Please try again.'))
+                return
+            }
+
             localStorage.setItem('token', data.token)
             const decoded = jwtDecode(data.token);
             setUserData(decoded)
             setLogin(true);
             navigate('/home')
 
-        } catch {
-            // Handle error silently
+        } catch (error) {
+            // Handle different types of errors
+            if (error.response?.data?.message) {
+                // Backend error message
+                toast.error(error.response.data.message)
+            } else if (error.response?.status === 429) {
+                // Rate limiting error
+                toast.error(t('login.tooManyAttempts', 'Too many login attempts. Please try again later.'))
+            } else if (error.response?.status === 401) {
+                // Unauthorized error
+                toast.error(t('login.invalidCredentials', 'Invalid email or password'))
+            } else if (error.message) {
+                // Generic error
+                toast.error(t('login.errorOccurred', 'An error occurred. Please try again.'))
+            } else {
+                toast.error(t('login.errorOccurred', 'An error occurred. Please try again.'))
+            }
         }
     }
 

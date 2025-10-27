@@ -1,72 +1,50 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import DataTable from '../shared/DataTable';
 import FormInput from '../shared/FormInput';
 import StatCard from '../shared/StatCard';
 import { toLocaleDateStringEN } from '../../utils/dateFormatter';
+import { API_BASE_URL } from '../../config/api';
 
 const PaymentsReport = () => {
   const { t, i18n: { language } } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState({
+    totalPayments: 0,
+    totalAmount: 0,
+    byPaymentMethod: {
+      cash: 0,
+      card: 0,
+      cheque: 0,
+      bank_transfer: 0
+    },
+    paymentMethodCounts: {
+      cash: 0,
+      card: 0,
+      cheque: 0,
+      bank_transfer: 0
+    }
+  });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 50,
+    total: 0,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
   const [filters, setFilters] = useState({
     periodFrom: '',
     periodTo: '',
-    paymentType: '',
-    company: ''
+    paymentMethod: '',
+    customerId: '',
+    sortBy: 'paymentDate',
+    sortOrder: 'desc'
   });
 
 
-  const mockData = [
-    {
-      id: 1,
-      paymentDate: '2023-01-25',
-      insuranceCompany: 'الأهلية',
-      paymentType: 'commission',
-      amount: 2500,
-      description: 'عمولة تأمين مركبات - يناير',
-      referenceNumber: 'PAY-AHL-001',
-      status: 'paid'
-    },
-    {
-      id: 2,
-      paymentDate: '2023-02-15',
-      insuranceCompany: 'المشرق',
-      paymentType: 'claim_settlement',
-      amount: 15000,
-      description: 'تسوية مطالبة حادث',
-      referenceNumber: 'CLAIM-MSH-002',
-      status: 'paid'
-    },
-    {
-      id: 3,
-      paymentDate: '2023-03-10',
-      insuranceCompany: 'تكافل',
-      paymentType: 'premium',
-      amount: 8500,
-      description: 'قسط تأمين - مارس',
-      referenceNumber: 'PREM-TKF-003',
-      status: 'pending'
-    },
-    {
-      id: 4,
-      paymentDate: '2023-04-20',
-      insuranceCompany: 'فلسطين',
-      paymentType: 'commission',
-      amount: 1800,
-      description: 'عمولة تأمين حياة',
-      referenceNumber: 'PAY-PAL-004',
-      status: 'paid'
-    }
-  ];
-
-  const companies = [
-    { id: 1, name: 'الأهلية' },
-    { id: 2, name: 'المشرق' },
-    { id: 3, name: 'تكافل' },
-    { id: 4, name: 'فلسطين' },
-    { id: 5, name: 'الثقة' }
-  ];
 
   const columns = [
     {
@@ -75,84 +53,114 @@ const PaymentsReport = () => {
       render: (value) => toLocaleDateStringEN(value)
     },
     {
-      header: t('reports.payments.insuranceCompany'),
-      accessor: 'insuranceCompany'
+      header: t('reports.payments.customerName'),
+      accessor: 'customer',
+      render: (customer) => customer?.name || '-'
     },
     {
-      header: t('reports.payments.paymentType'),
-      accessor: 'paymentType',
+      header: t('reports.payments.vehiclePlate'),
+      accessor: 'vehicle',
+      render: (vehicle) => vehicle?.plateNumber || '-'
+    },
+    {
+      header: t('reports.payments.insuranceCompany'),
+      accessor: 'insurance',
+      render: (insurance) => insurance?.insuranceCompany || '-'
+    },
+    {
+      header: t('reports.payments.insuranceType'),
+      accessor: 'insurance',
+      render: (insurance) => insurance?.insuranceType || '-'
+    },
+    {
+      header: t('reports.payments.paymentMethod'),
+      accessor: 'paymentMethod',
       render: (value) => (
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value === 'commission'
+          value === 'cash'
             ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-            : value === 'claim_settlement'
-            ? 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-            : 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
+            : value === 'card'
+            ? 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
+            : value === 'cheque'
+            ? 'bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100'
+            : 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100'
         }`}>
-          {t(`reports.payments.paymentTypes.${value}`)}
+          {t(`reports.payments.paymentMethods.${value}`)}
         </span>
       )
     },
     {
       header: t('reports.payments.amount'),
       accessor: 'amount',
-      render: (value) => `${value.toLocaleString()} ${t('common.currency')}`
+      render: (value) => `${value?.toLocaleString()} ${t('common.currency')}`
     },
     {
-      header: t('reports.payments.referenceNumber'),
-      accessor: 'referenceNumber'
+      header: t('reports.payments.receiptNumber'),
+      accessor: 'receiptNumber',
+      render: (value) => value || '-'
     },
     {
-      header: t('reports.payments.description'),
-      accessor: 'description'
-    },
-    {
-      header: t('reports.payments.status'),
-      accessor: 'status',
-      render: (value) => (
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value === 'paid'
-            ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-            : value === 'pending'
-            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
-            : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-        }`}>
-          {t(`common.${value}`)}
-        </span>
-      )
+      header: t('reports.payments.recordedBy'),
+      accessor: 'recordedBy',
+      render: (value) => value || '-'
     }
   ];
 
   useEffect(() => {
     fetchData();
-  }, [filters]);
+  }, [filters, pagination.page]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      let filteredData = mockData;
-
-      if (filters.periodFrom) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.paymentDate) >= new Date(filters.periodFrom)
-        );
-      }
-      if (filters.periodTo) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.paymentDate) <= new Date(filters.periodTo)
-        );
-      }
-      if (filters.paymentType) {
-        filteredData = filteredData.filter(item => item.paymentType === filters.paymentType);
-      }
-      if (filters.company) {
-        filteredData = filteredData.filter(item => item.insuranceCompany === filters.company);
+      const token = `islam__${localStorage.getItem('token')}`;
+      if (!token || token === 'islam__null') {
+        console.error('No authentication token found');
+        return;
       }
 
-      setData(filteredData);
+      // Build query parameters
+      const params = new URLSearchParams();
+
+      if (filters.customerId) params.append('customerId', filters.customerId);
+      if (filters.paymentMethod) params.append('paymentMethod', filters.paymentMethod);
+      if (filters.periodFrom) params.append('startDate', filters.periodFrom);
+      if (filters.periodTo) params.append('endDate', filters.periodTo);
+
+      params.append('page', pagination.page);
+      params.append('limit', pagination.limit);
+      params.append('sortBy', filters.sortBy);
+      params.append('sortOrder', filters.sortOrder);
+
+      const response = await axios.get(
+        `${API_BASE_URL}/insured/payments/all?${params.toString()}`,
+        {
+          headers: { token }
+        }
+      );
+
+      if (response.data.success) {
+        setData(response.data.data || []);
+        setSummary(response.data.summary || {
+          totalPayments: 0,
+          totalAmount: 0,
+          byPaymentMethod: { cash: 0, card: 0, cheque: 0, bank_transfer: 0 },
+          paymentMethodCounts: { cash: 0, card: 0, cheque: 0, bank_transfer: 0 }
+        });
+        setPagination(response.data.pagination || {
+          page: 1,
+          limit: 50,
+          total: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPrevPage: false
+        });
+      }
     } catch (error) {
       console.error('Error fetching payments data:', error);
+      if (error.response?.status === 401) {
+        console.error('Unauthorized - please check your authentication');
+      }
     } finally {
       setLoading(false);
     }
@@ -160,20 +168,84 @@ const PaymentsReport = () => {
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to page 1 when filters change
   };
 
   const clearFilters = () => {
     setFilters({
       periodFrom: '',
       periodTo: '',
-      paymentType: '',
-      company: ''
+      paymentMethod: '',
+      customerId: '',
+      sortBy: 'paymentDate',
+      sortOrder: 'desc'
     });
+    setPagination(prev => ({ ...prev, page: 1 }));
   };
 
-  const totalPayments = data.reduce((sum, item) => sum + item.amount, 0);
-  const paidAmount = data.filter(item => item.status === 'paid').reduce((sum, item) => sum + item.amount, 0);
-  const pendingAmount = data.filter(item => item.status === 'pending').reduce((sum, item) => sum + item.amount, 0);
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+  };
+
+  const handleExportToCSV = async () => {
+    try {
+      const token = `islam__${localStorage.getItem('token')}`;
+      const params = new URLSearchParams();
+
+      if (filters.customerId) params.append('customerId', filters.customerId);
+      if (filters.paymentMethod) params.append('paymentMethod', filters.paymentMethod);
+      if (filters.periodFrom) params.append('startDate', filters.periodFrom);
+      if (filters.periodTo) params.append('endDate', filters.periodTo);
+
+      params.append('limit', '10000'); // Get all records for export
+
+      const response = await axios.get(
+        `${API_BASE_URL}/insured/payments/all?${params.toString()}`,
+        {
+          headers: { token }
+        }
+      );
+
+      if (response.data.success && response.data.data.length > 0) {
+        const csv = [
+          // Headers
+          [
+            t('reports.payments.paymentDate'),
+            t('reports.payments.customerName'),
+            t('reports.payments.vehiclePlate'),
+            t('reports.payments.insuranceCompany'),
+            t('reports.payments.insuranceType'),
+            t('reports.payments.paymentMethod'),
+            t('reports.payments.amount'),
+            t('reports.payments.receiptNumber'),
+            t('reports.payments.recordedBy')
+          ],
+          // Data
+          ...response.data.data.map(p => [
+            toLocaleDateStringEN(p.paymentDate),
+            p.customer?.name || '-',
+            p.vehicle?.plateNumber || '-',
+            p.insurance?.insuranceCompany || '-',
+            p.insurance?.insuranceType || '-',
+            t(`reports.payments.paymentMethods.${p.paymentMethod}`),
+            p.amount,
+            p.receiptNumber || '',
+            p.recordedBy || ''
+          ])
+        ].map(row => row.join(',')).join('\n');
+
+        const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `payments-report-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error exporting to CSV:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
@@ -189,8 +261,8 @@ const PaymentsReport = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <StatCard
-            title={t('reports.payments.totalPayments')}
-            value={totalPayments.toLocaleString()}
+            title={t('reports.payments.totalAmount')}
+            value={summary.totalAmount.toLocaleString()}
             suffix={t('common.currency')}
             color="blue"
             icon={
@@ -200,31 +272,31 @@ const PaymentsReport = () => {
             }
           />
           <StatCard
-            title={t('reports.payments.paidAmount')}
-            value={paidAmount.toLocaleString()}
+            title={t('reports.payments.cashPayments')}
+            value={summary.byPaymentMethod.cash.toLocaleString()}
             suffix={t('common.currency')}
             color="green"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             }
           />
           <StatCard
-            title={t('reports.payments.pendingAmount')}
-            value={pendingAmount.toLocaleString()}
+            title={t('reports.payments.cardPayments')}
+            value={summary.byPaymentMethod.card.toLocaleString()}
             suffix={t('common.currency')}
-            color="yellow"
+            color="purple"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg>
             }
           />
           <StatCard
             title={t('reports.payments.totalTransactions')}
-            value={data.length}
-            color="purple"
+            value={summary.totalPayments.toLocaleString()}
+            color="orange"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -233,12 +305,65 @@ const PaymentsReport = () => {
           />
         </div>
 
+        {/* Additional Summary by Payment Method */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            {t('reports.payments.paymentMethodBreakdown')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <div className="text-sm text-green-700 dark:text-green-300 mb-1">
+                {t('reports.payments.paymentMethods.cash')}
+              </div>
+              <div className="text-2xl font-bold text-green-900 dark:text-green-100">
+                {summary.byPaymentMethod.cash.toLocaleString()} {t('common.currency')}
+              </div>
+              <div className="text-xs text-green-600 dark:text-green-400 mt-1">
+                {summary.paymentMethodCounts.cash} {t('reports.payments.transactions')}
+              </div>
+            </div>
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="text-sm text-blue-700 dark:text-blue-300 mb-1">
+                {t('reports.payments.paymentMethods.card')}
+              </div>
+              <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                {summary.byPaymentMethod.card.toLocaleString()} {t('common.currency')}
+              </div>
+              <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                {summary.paymentMethodCounts.card} {t('reports.payments.transactions')}
+              </div>
+            </div>
+            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+              <div className="text-sm text-purple-700 dark:text-purple-300 mb-1">
+                {t('reports.payments.paymentMethods.cheque')}
+              </div>
+              <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                {summary.byPaymentMethod.cheque.toLocaleString()} {t('common.currency')}
+              </div>
+              <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">
+                {summary.paymentMethodCounts.cheque} {t('reports.payments.transactions')}
+              </div>
+            </div>
+            <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+              <div className="text-sm text-orange-700 dark:text-orange-300 mb-1">
+                {t('reports.payments.paymentMethods.bank_transfer')}
+              </div>
+              <div className="text-2xl font-bold text-orange-900 dark:text-orange-100">
+                {summary.byPaymentMethod.bank_transfer.toLocaleString()} {t('common.currency')}
+              </div>
+              <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                {summary.paymentMethodCounts.bank_transfer} {t('reports.payments.transactions')}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             {t('common.filters')}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <FormInput
               type="date"
               label={t('reports.payments.periodFrom')}
@@ -255,25 +380,15 @@ const PaymentsReport = () => {
 
             <FormInput
               type="select"
-              label={t('reports.payments.paymentType')}
-              value={filters.paymentType}
-              onChange={(e) => handleFilterChange('paymentType', e.target.value)}
+              label={t('reports.payments.paymentMethod')}
+              value={filters.paymentMethod}
+              onChange={(e) => handleFilterChange('paymentMethod', e.target.value)}
               options={[
                 { value: '', label: t('common.all') },
-                { value: 'commission', label: t('reports.payments.paymentTypes.commission') },
-                { value: 'claim_settlement', label: t('reports.payments.paymentTypes.claim_settlement') },
-                { value: 'premium', label: t('reports.payments.paymentTypes.premium') }
-              ]}
-            />
-
-            <FormInput
-              type="select"
-              label={t('reports.payments.company')}
-              value={filters.company}
-              onChange={(e) => handleFilterChange('company', e.target.value)}
-              options={[
-                { value: '', label: t('common.all') },
-                ...companies.map(company => ({ value: company.name, label: company.name }))
+                { value: 'cash', label: t('reports.payments.paymentMethods.cash') },
+                { value: 'card', label: t('reports.payments.paymentMethods.card') },
+                { value: 'cheque', label: t('reports.payments.paymentMethods.cheque') },
+                { value: 'bank_transfer', label: t('reports.payments.paymentMethods.bank_transfer') }
               ]}
             />
           </div>
@@ -297,8 +412,61 @@ const PaymentsReport = () => {
               </svg>
               {t('common.clear')}
             </button>
+            <button
+              onClick={handleExportToCSV}
+              className="px-4 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 shadow-sm hover:shadow-md"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {t('common.exportCSV')}
+            </button>
           </div>
         </div>
+
+        {/* Pagination Controls */}
+        {pagination.total > 0 && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-700 dark:text-gray-300">
+                {t('reports.payments.showing')} {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} {t('reports.payments.of')} {pagination.total} {t('reports.payments.results')}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handlePageChange(pagination.page - 1)}
+                  disabled={!pagination.hasPrevPage}
+                  className={`px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${
+                    pagination.hasPrevPage
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                  }`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {t('common.previous')}
+                </button>
+                <div className="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
+                  {t('common.page')} {pagination.page} {t('common.of')} {pagination.totalPages}
+                </div>
+                <button
+                  onClick={() => handlePageChange(pagination.page + 1)}
+                  disabled={!pagination.hasNextPage}
+                  className={`px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${
+                    pagination.hasNextPage
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                  }`}
+                >
+                  {t('common.next')}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <DataTable
           data={data}

@@ -76,10 +76,23 @@ export const deleteCompany = async (id) => {
   return response.data;
 };
 
+/**
+ * Get companies by insurance type
+ * GET /api/v1/company/by-type/:insuranceTypeId
+ */
+export const getCompaniesByInsuranceType = async (insuranceTypeId) => {
+  const response = await axios.get(
+    `${BASE_URL}/by-type/${insuranceTypeId}`,
+    { headers: getAuthHeaders() }
+  );
+  return response.data;
+};
+
 export default {
   createCompany,
   getAllCompanies,
   getCompanyById,
   updateCompany,
-  deleteCompany
+  deleteCompany,
+  getCompaniesByInsuranceType
 };

@@ -25,13 +25,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const [isOpenPalestinelRep, setIsOpenPalestinelRep] = useState(false)
   const [isOpenTrustRep, setIsOpenTrustRep] = useState(false)
   const [isOpenHoliRep, setIsOpenHoliRep] = useState(false)
-  const [isOpenInsuranceCompany, setIsOpenInsuranceCompany] = useState(false);
-  const [isOpenSetting, setIsOpenSetting] = useState(false);
-  const [isOpenAddInsurance, setIsOpenAddInsurance] = useState(false)
+   const [isOpenAddInsurance, setIsOpenAddInsurance] = useState(false)
   const [isOpenReport, setIsOpenReport] = useState(false)
   const [isOpenCustomers, setIsOpenCustomers] = useState(false)
-  const [isOpenInsuranceCompanies, setIsOpenInsuranceCompanies] = useState(false)
-  const [isOpenAddCustomer, setIsOpenAddCustomer] = useState(false)
+   const [isOpenAddCustomer, setIsOpenAddCustomer] = useState(false)
   const [isOpenAddCompany, setIsOpenAddCompany] = useState(false)
   const { t, i18n: { language } } = useTranslation();
 
@@ -83,7 +80,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3"
                     >
                       <svg width={24} height={24} viewBox="0 0 24 24" className="size-6 shrink-0 w-[19px] h-[19px]" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 1.25C9.37678 1.25 7.25013 3.37665 7.25013 6C7.25013 8.62335 9.37678 10.75 12.0001 10.75C14.6235 10.75 16.7501 8.62335 16.7501 6C16.7501 3.37665 14.6235 1.25 12.0001 1.25ZM8.75013 6C8.75013 4.20507 10.2052 2.75 12.0001 2.75C13.7951 2.75 15.2501 4.20507 15.2501 6C15.2501 7.79493 13.7951 9.25 12.0001 9.25C10.2052 9.25 8.75013 7.79493 8.75013 6Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.0001 12.25C9.68658 12.25 7.55506 12.7759 5.97558 13.6643C4.41962 14.5396 3.25013 15.8661 3.25013 17.5L3.25007 17.602C3.24894 18.7638 3.24752 20.222 4.52655 21.2635C5.15602 21.7761 6.03661 22.1406 7.22634 22.3815C8.4194 22.6229 9.97436 22.75 12.0001 22.75C14.0259 22.75 15.5809 22.6229 16.7739 22.3815C17.9637 22.1406 18.8443 21.7761 19.4737 21.2635C20.7527 20.222 20.7513 18.7638 20.7502 17.602L20.7501 17.5C20.7501 15.8661 19.5807 14.5396 18.0247 13.6643C16.4452 12.7759 14.3137 12.25 12.0001 12.25ZM4.75013 17.5C4.75013 16.6487 5.37151 15.7251 6.71098 14.9717C8.02693 14.2315 9.89541 13.75 12.0001 13.75C14.1049 13.75 15.9733 14.2315 17.2893 14.9717C18.6288 15.7251 19.2501 16.6487 19.2501 17.5C19.2501 18.8078 19.2098 19.544 18.5265 20.1004C18.156 20.4022 17.5366 20.6967 16.4763 20.9113C15.4194 21.1252 13.9744 21.25 12.0001 21.25C10.0259 21.25 8.58087 21.1252 7.52393 20.9113C6.46366 20.6967 5.84425 20.4022 5.47372 20.1004C4.79045 19.544 4.75013 18.8078 4.75013 17.5Z" fill="currentColor" /></svg>
-                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.custom")}</span>
+                      <span className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>{t("sideBar.mainMenu.categore.custom")}</span>
                       <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenCustomers ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -118,73 +115,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </div>
                 </li>
              
-                <li>
-                  <div>
-                    <button
-                      onClick={() => setIsOpenInsuranceCompanies(!isOpenInsuranceCompanies)}
-                      aria-expanded={isOpenInsuranceCompanies}
-                      className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3"
-                    >
-                      <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]" ><path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75C3.87665 1.75 1.75 3.87665 1.75 6.5C1.75 9.12335 3.87665 11.25 6.5 11.25C9.12335 11.25 11.25 9.12335 11.25 6.5C11.25 3.87665 9.12335 1.75 6.5 1.75ZM3.25 6.5C3.25 4.70507 4.70507 3.25 6.5 3.25C8.29493 3.25 9.75 4.70507 9.75 6.5C9.75 8.29493 8.29493 9.75 6.5 9.75C4.70507 9.75 3.25 8.29493 3.25 6.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M17.5 12.75C14.8766 12.75 12.75 14.8766 12.75 17.5C12.75 20.1234 14.8766 22.25 17.5 22.25C20.1234 22.25 22.25 20.1234 22.25 17.5C22.25 14.8766 20.1234 12.75 17.5 12.75ZM14.25 17.5C14.25 15.7051 15.7051 14.25 17.5 14.25C19.2949 14.25 20.75 15.7051 20.75 17.5C20.75 19.2949 19.2949 20.75 17.5 20.75C15.7051 20.75 14.25 19.2949 14.25 17.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.75 6.5C12.75 3.87665 14.8766 1.75 17.5 1.75C20.1234 1.75 22.25 3.87665 22.25 6.5C22.25 9.12335 20.1234 11.25 17.5 11.25C14.8766 11.25 12.75 9.12335 12.75 6.5ZM17.5 3.25C15.7051 3.25 14.25 4.70507 14.25 6.5C14.25 8.29493 15.7051 9.75 17.5 9.75C19.2949 9.75 20.75 8.29493 20.75 6.5C20.75 4.70507 19.2949 3.25 17.5 3.25Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6.5 12.75C3.87665 12.75 1.75 14.8766 1.75 17.5C1.75 20.1234 3.87665 22.25 6.5 22.25C9.12335 22.25 11.25 20.1234 11.25 17.5C11.25 14.8766 9.12335 12.75 6.5 12.75ZM3.25 17.5C3.25 15.7051 4.70507 14.25 6.5 14.25C8.29493 14.25 9.75 15.7051 9.75 17.5C9.75 19.2949 8.29493 20.75 6.5 20.75C4.70507 20.75 3.25 19.2949 3.25 17.5Z" fill="currentColor" /></svg>
-                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.insucresComp.titleInsucresComp")}</span>
-                      <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenInsuranceCompanies ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                    {isOpenInsuranceCompanies && (
-                      <div className={`ml-8 mt-2 space-y-1 ${isRTL ? 'mr-8 ml-0' : ''}`}>
-                        <Link
-                          to='/InsuranceCompany'
-                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
-                        >
-                          <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                              <path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75C3.87665 1.75 1.75 3.87665 1.75 6.5C1.75 9.12335 3.87665 11.25 6.5 11.25C9.12335 11.25 11.25 9.12335 11.25 6.5C11.25 3.87665 9.12335 1.75 6.5 1.75ZM3.25 6.5C3.25 4.70507 4.70507 3.25 6.5 3.25C8.29493 3.25 9.75 4.70507 9.75 6.5C9.75 8.29493 8.29493 9.75 6.5 9.75C4.70507 9.75 3.25 8.29493 3.25 6.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M17.5 12.75C14.8766 12.75 12.75 14.8766 12.75 17.5C12.75 20.1234 14.8766 22.25 17.5 22.25C20.1234 22.25 22.25 20.1234 22.25 17.5C22.25 14.8766 20.1234 12.75 17.5 12.75ZM14.25 17.5C14.25 15.7051 15.7051 14.25 17.5 14.25C19.2949 14.25 20.75 15.7051 20.75 17.5C20.75 19.2949 19.2949 20.75 17.5 20.75C15.7051 20.75 14.25 19.2949 14.25 17.5Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M12.75 6.5C12.75 3.87665 14.8766 1.75 17.5 1.75C20.1234 1.75 22.25 3.87665 22.25 6.5C22.25 9.12335 20.1234 11.25 17.5 11.25C14.8766 11.25 12.75 9.12335 12.75 6.5ZM17.5 3.25C15.7051 3.25 14.25 4.70507 14.25 6.5C14.25 8.29493 15.7051 9.75 17.5 9.75C19.2949 9.75 20.75 8.29493 20.75 6.5C20.75 4.70507 19.2949 3.25 17.5 3.25Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6.5 12.75C3.87665 12.75 1.75 14.8766 1.75 17.5C1.75 20.1234 3.87665 22.25 6.5 22.25C9.12335 22.25 11.25 20.1234 11.25 17.5C11.25 14.8766 9.12335 12.75 6.5 12.75ZM3.25 17.5C3.25 15.7051 4.70507 14.25 6.5 14.25C8.29493 14.25 9.75 15.7051 9.75 17.5C9.75 19.2949 8.29493 20.75 6.5 20.75C4.70507 20.75 3.25 19.2949 3.25 17.5Z" fill="currentColor" />
-                            </svg>
-                            <span>{t("sideBar.mainMenu.categore.insucresComp.allCompanies", "All Insurance Companies")}</span>
-                          </div>
-                        </Link>
-                        <button
-                          onClick={() => setIsOpenAddCompany(true)}
-                          className="w-full block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
-                        >
-                          <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                            <span>{t("sideBar.mainMenu.categore.insucresComp.addCompany", "Add New Company")}</span>
-                          </div>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <Link aria-expanded="false" to='/allInsurance' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] flex w-full items-center gap-3 py-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="size-6 shrink-0 w-[19px] h-[19px]"
-                      >
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" x2="8" y1="13" y2="13" />
-                        <line x1="16" x2="8" y1="17" y2="17" />
-                        <line x1="10" x2="8" y1="9" y2="9" />
-                      </svg>
-                      <span>{t('breadcrumbs.allInsurances', 'All Insurances')}</span>
-                    </Link>
-                  </div>
-                </li>
-                {/* Consolidated Insurance Company Management - includes types, pricing, and system setup */}
+            
+                 {/* Consolidated Insurance Company Management - includes types, pricing, and system setup */}
                 <li>
                   <Link to='/insurance-companies' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
@@ -235,6 +167,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 </li>
                 <li>
+                  <Link to='/accidents' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
+                      <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span>{t("sideBar.mainMenu.categore.accidents")}</span>
+                  </Link>
+                </li>
+                <li>
                   <Link to='/document-settings' className="text-[14px] rounded-lg px-3.5 font-medium text-dark-4 transition-all duration-200 dark:text-dark-6 hover:bg-gray-100 hover:text-dark hover:dark:bg-[#FFFFFF1A] hover:dark:text-[rgb(255,255,255)] relative flex items-center gap-3 py-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-6 shrink-0 w-[19px] h-[19px]">
                       <path fillRule="evenodd" clipRule="evenodd" d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
@@ -258,7 +198,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         <path d="M3 3v18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="m19 9-5 5-4-4-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                      <span className="flex-1 text-left">{t("sideBar.mainMenu.categore.reports.title")}</span>
+                      <span className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>{t("sideBar.mainMenu.categore.reports.title")}</span>
                       <svg className={`w-4 h-4 transition-transform duration-200 ${isOpenReport ? 'rotate-90' : (isRTL ? 'rotate-180' : '')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -288,17 +228,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             <span>{t("sideBar.mainMenu.categore.reports.vehicleInsurance")}</span>
                           </div>
                         </Link>
-                        <Link
-                          to='/reports/other-insurance'
-                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
-                        >
-                          <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                            <span>{t("sideBar.mainMenu.categore.reports.otherInsurance")}</span>
-                          </div>
-                        </Link>
+                        
                         <Link
                           to='/reports/accidents'
                           className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
@@ -310,18 +240,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             <span>{t("sideBar.mainMenu.categore.reports.accidents")}</span>
                           </div>
                         </Link>
-                        <Link
-                          to='/reports/revenues'
-                          className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"
-                        >
-                          <div className="flex items-center gap-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                              <path d="M12 2v20m8-18H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="m15 9-3 3-3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                            <span>{t("sideBar.mainMenu.categore.reports.revenues")}</span>
-                          </div>
-                        </Link>
+                     
                         <Link
                           to='/reports/payments'
                           className="block rounded-md px-3 py-2 text-[13px] font-medium text-dark-4 transition-colors duration-200 hover:bg-gray-100 hover:text-dark dark:text-dark-6 dark:hover:bg-[#FFFFFF1A] dark:hover:text-[rgb(255,255,255)]"

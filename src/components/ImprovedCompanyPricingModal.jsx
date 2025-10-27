@@ -64,6 +64,14 @@ const ImprovedCompanyPricingModal = ({ open, onClose, company, onSuccess }) => {
       // Fetch configured pricings for this company
       const pricingResponse = await getPricingByCompany(company._id);
       const configured = pricingResponse.pricing || [];
+      console.log('📊 Pricing Configurations Loaded:', {
+        company: company.name,
+        count: configured.length,
+        configurations: configured.map(c => ({
+          type: c.pricing_type_id?.name || c.pricing_type_id,
+          rulesCount: c.rules?.matrix?.length || (c.rules?.fixedAmount ? 1 : 0)
+        }))
+      });
       setConfiguredPricings(configured);
     } catch (error) {
       console.error('Error fetching pricing data:', error);
@@ -78,12 +86,13 @@ const ImprovedCompanyPricingModal = ({ open, onClose, company, onSuccess }) => {
   };
 
   const isConfigured = (pricingTypeId) => {
-    return configuredPricings.some(p => {
+    const result = configuredPricings.some(p => {
       const configuredId = typeof p.pricing_type_id === 'string'
         ? p.pricing_type_id
         : p.pricing_type_id?._id;
       return configuredId === pricingTypeId;
     });
+    return result;
   };
 
   const getConfiguredPricing = (pricingTypeId) => {

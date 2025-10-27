@@ -4,8 +4,8 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Add, Edit, Delete, Visibility, MoreVert, CheckCircle } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import { toLocaleDateStringEN } from '../utils/dateFormatter';
+import { documentSettingsApi } from '../services/documentSettingsApi';
 
 const ROWS_PER_PAGE = 10;
 
@@ -30,59 +30,11 @@ const DocumentSettings = () => {
   const fetchDocumentSettings = async () => {
     setLoading(true);
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-      const response = await axios.get('http://localhost:3002/api/v1/documentSettings/', {
-        headers: { token }
-      });
-      setDocumentSettings(response.data.data || []);
+      const response = await documentSettingsApi.getAll();
+      setDocumentSettings(response.data || []);
     } catch (error) {
       console.error('Error fetching document settings:', error);
-      // Fallback sample data for development
-      const sampleData = [
-        {
-          _id: '1',
-          companyName: 'شركة التأمين الفلسطينية',
-          headerText: 'تقرير الشركة الرسمي',
-          headerBgColor: '#2563eb',
-          headerTextColor: '#ffffff',
-          headerFontSize: 24,
-          footerText: 'جميع الحقوق محفوظة © 2024',
-          footerBgColor: '#374151',
-          footerTextColor: '#ffffff',
-          footerFontSize: 12,
-          marginTop: 20,
-          marginBottom: 20,
-          marginLeft: 15,
-          marginRight: 15,
-          logoUrl: '/assets/logo.png',
-          isActive: true,
-          createdBy: 'Admin',
-          createdAt: '2024-01-10T10:00:00Z',
-          updatedAt: '2024-01-15T14:30:00Z'
-        },
-        {
-          _id: '2',
-          companyName: 'شركة التأمين العربي',
-          headerText: 'تقرير الأعمال الشهري',
-          headerBgColor: '#059669',
-          headerTextColor: '#ffffff',
-          headerFontSize: 22,
-          footerText: 'شركة التأمين العربي - فلسطين',
-          footerBgColor: '#1f2937',
-          footerTextColor: '#ffffff',
-          footerFontSize: 10,
-          marginTop: 25,
-          marginBottom: 25,
-          marginLeft: 20,
-          marginRight: 20,
-          logoUrl: '/assets/logo2.png',
-          isActive: false,
-          createdBy: 'Manager',
-          createdAt: '2024-01-05T09:00:00Z',
-          updatedAt: '2024-01-05T09:00:00Z'
-        }
-      ];
-      setDocumentSettings(sampleData);
+      setDocumentSettings([]);
     } finally {
       setLoading(false);
     }
@@ -90,11 +42,8 @@ const DocumentSettings = () => {
 
   const fetchActiveSettings = async () => {
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-      const response = await axios.get('http://localhost:3002/api/v1/documentSettings/active', {
-        headers: { token }
-      });
-      setActiveSettings(response.data.data);
+      const response = await documentSettingsApi.getActive();
+      setActiveSettings(response.data);
     } catch (error) {
       console.error('Error fetching active settings:', error);
     }
@@ -131,10 +80,7 @@ const DocumentSettings = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const token = `islam__${localStorage.getItem("token")}`;
-          await axios.patch(`http://localhost:3002/api/v1/documentSettings/activate/${settingId}`, {}, {
-            headers: { token }
-          });
+          await documentSettingsApi.activate(settingId);
           Swal.fire({
             title: t('documentSettings.activateSuccess'),
             icon: "success"
@@ -182,10 +128,7 @@ const DocumentSettings = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const token = `islam__${localStorage.getItem("token")}`;
-          await axios.delete(`http://localhost:3002/api/v1/documentSettings/delete/${settingId}`, {
-            headers: { token }
-          });
+          await documentSettingsApi.delete(settingId);
           Swal.fire({
             title: t('documentSettings.successDelete'),
             icon: "success"
@@ -221,9 +164,15 @@ const DocumentSettings = () => {
           <span className="text-gray-500 dark:text-gray-400">{t('documentSettings.secondeTitle', 'Document Settings')}</span>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Button variant="contained" size="small" onClick={() => navigate('/document-settings/add')} sx={{ background: '#6C5FFC', color: '#fff' }}>
+          <button
+            onClick={() => navigate('/document-settings/add')}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-navbarBack shadow-sm hover:shadow-md"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5v14m-7-7h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             {t('documentSettings.add_button', 'Add Settings')}
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -235,7 +184,7 @@ const DocumentSettings = () => {
       ) : documentSettings.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {documentSettings.map((setting) => (
-            <div key={setting._id} className="bg-white dark:bg-navbarBack rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-200">
+            <div key={setting._id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-200">
               {/* Card Header */}
               <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-start justify-between">

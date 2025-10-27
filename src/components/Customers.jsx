@@ -1,8 +1,6 @@
 import { IconButton, Menu, MenuItem, Button, Select, FormControl, InputLabel } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
@@ -20,6 +18,7 @@ import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { formatDateISO } from '../utils/dateFormatter';
 import Pagination from './shared/Pagination';
+import DataTable from './shared/DataTable';
 
 const ROWS_PER_PAGE = 20;
 
@@ -298,7 +297,7 @@ export default function Customers() {
                 const token = `islam__${localStorage.getItem("token")}`;
                 try {
                     await axios.delete(`http://localhost:3002/api/v1/insured/deleteInsured/${customerId}`, { headers: { token } });
-                    // toast.success(t('customers.messages.deleteSuccess', 'تم حذف العميل بنجاح!'));
+                    
     Swal.fire({
       title: t('customers.successDlete'),
       icon: "success"
@@ -360,17 +359,7 @@ export default function Customers() {
         { key: 'email', label: t('customers.table.email', 'Email') },
         { key: 'address', label: t('customers.table.address', 'Address') },
         { key: 'agent', label: t('customers.table.agent', 'Agent') },
-        { key: 'actions', label: t('customers.table.actions', 'Actions'), align: (language === 'ar' || language === 'he') ? 'left' : 'right' },
     ];
-
-    const getSortIcon = (columnKey) => {
-        if (sortConfig.key === columnKey) {
-            return sortConfig.direction === 'ascending'
-                ? <ArrowUpwardIcon fontSize="small" className="ml-1" />
-                : <ArrowDownwardIcon fontSize="small" className="ml-1" />;
-        }
-        return null;
-    };
 
     return (
         <div className="py-10 px-4 dark:bg-dark2 dark:text-dark3 min-h-screen" dir={(language === "ar" || language === "he") ? "rtl" : "ltr"}>
@@ -381,92 +370,179 @@ export default function Customers() {
                     <span className="text-gray-500 dark:text-gray-400">{t('customers.secondeTitle', 'Customers')}</span>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                    <Button variant="contained" size="small" onClick={() => setShowAddForm(true)} sx={{ background: '#6C5FFC', color: '#fff' }}>
+                    <button
+                        onClick={() => setShowAddForm(true)}
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-navbarBack shadow-sm hover:shadow-md"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5v14m-7-7h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                         {t('customers.add_button', 'Add Customer')}
-                    </Button>
+                    </button>
                 </div>
             </div>
 
             <div className='flex rounded-md justify-between items-start flex-wrap mb-4'>
                 <div className="flex items-center gap-4">
-                    <input
-                        type="text"
-                        placeholder={t('customers.search_placeholder', 'Search by name, mobile, ID...')}
-                        className="p-2 border dark:!border-none dark:bg-gray-700 dark:text-gray-200 rounded-lg w-full sm:w-[300px] shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
+                    {viewMode === 'card' && (
+                        <input
+                            type="text"
+                            placeholder={t('customers.search_placeholder', 'Search by name, mobile, ID...')}
+                            className="p-2 border dark:!border-none dark:bg-gray-700 dark:text-gray-200 rounded-lg w-full sm:w-[300px] shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                    )}
                     <div className="hidden sm:flex items-center bg-[rgb(255,255,255)]  dark:bg-gray-700 rounded-lg p-1">
                         <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-colors ${viewMode === 'table' ? 'bg-gray-3 dark:bg-indigo-600 text-indigo-600 dark:text-[rgb(255,255,255)] shadow' : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-[rgb(255,255,255)]'}`} title={t('common.tableView', 'Table View')}><List size={20} /></button>
                         <button onClick={() => setViewMode('card')} className={`p-1.5 rounded-md transition-colors ${viewMode === 'card' ? 'bg-gray-3 dark:bg-indigo-600 text-indigo-600 dark:text-[rgb(255,255,255)] shadow' : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-[rgb(255,255,255)]'}`} title={t('common.cardView', 'Card View')}><LayoutGrid size={20} /></button>
                     </div>
                 </div>
-                <div className="flex gap-2 flex-wrap  sm:mt-0">
-                    <Button variant="outlined" size="small" onClick={handleExportCSV} disabled={filteredCustomers.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportCsv', 'CSV')}</Button>
-                    <Button variant="outlined" size="small" onClick={handleExportExcel} disabled={filteredCustomers.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportExcel', 'Excel')}</Button>
-                    <Button variant="outlined" size="small" onClick={handleExportPDF} disabled={filteredCustomers.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.exportPdf', 'PDF')}</Button>
-                    <Button variant="outlined" size="small" onClick={handlePrint} disabled={filteredCustomers.length === 0} sx={{ background: '#6C5FFC', color: '#fff' }}>{t('common.print', 'Print')}</Button>
-                </div>
+                {viewMode === 'card' && (
+                    <div className="flex gap-2 flex-wrap sm:mt-0">
+                        <button
+                            onClick={handleExportCSV}
+                            disabled={filteredCustomers.length === 0}
+                            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-dark2 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            CSV
+                        </button>
+                        <button
+                            onClick={handleExportExcel}
+                            disabled={filteredCustomers.length === 0}
+                            className="px-4 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-dark2 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {t('common.exportExcel', 'Excel')}
+                        </button>
+                        <button
+                            onClick={handleExportPDF}
+                            disabled={filteredCustomers.length === 0}
+                            className="px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-dark2 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {t('common.exportPdf', 'PDF')}
+                        </button>
+                        <button
+                            onClick={handlePrint}
+                            disabled={filteredCustomers.length === 0}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white rounded-lg transition-all duration-200 flex items-center gap-2 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-dark2 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {t('common.print', 'Print')}
+                        </button>
+                    </div>
+                )}
             </div>
 
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {pagination ? (
-                    t('customers.showing_results', 'Showing {{count}} of {{total}} customers', {
-                        count: allCustomers.length,
-                        total: pagination.total
-                    })
-                ) : (
-                    t('customers.showing_results', 'Showing {{count}} customers', {
-                        count: allCustomers.length
-                    })
-                )}
-                {loadingMore && <span className="ml-2">{t('common.loadingMore', 'Loading more...')}</span>}
-            </div>
+            {viewMode === 'card' && (
+                <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    {pagination ? (
+                        t('customers.showing_results', 'Showing {{count}} of {{total}} customers', {
+                            count: allCustomers.length,
+                            total: pagination.total
+                        })
+                    ) : (
+                        t('customers.showing_results', 'Showing {{count}} customers', {
+                            count: allCustomers.length
+                        })
+                    )}
+                    {loadingMore && <span className="ml-2">{t('common.loadingMore', 'Loading more...')}</span>}
+                </div>
+            )}
 
             {viewMode === 'table' ? (
-                <div className="overflow-x-auto hide-scrollbar bg-[rgb(255,255,255)] dark:bg-navbarBack shadow-md rounded-lg">
-                    <table id="customers-table" className="w-full text-sm text-left rtl:text-right dark:bg-navbarBack text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
-                            <tr>
-                                {tableColumns.map(col => (
-                                    <th key={col.key} scope="col" className={`px-6 py-3 ${col.key !== 'actions' ? 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600' : ''}`} onClick={() => col.key !== 'actions' && requestSort(col.key)}>
-                                        <div className="flex items-center">
-                                            <span>{col.label}</span>
-                                            {col.key !== 'actions' && getSortIcon(col.key)}
-                                        </div>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loading && visibleRows.length === 0 ? (
-                                <tr><td colSpan={tableColumns.length} className="text-center py-16"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div></td></tr>
-                            ) : visibleRows.length > 0 ? (
-                                visibleRows.map((customer) => (
-                                    <tr key={customer.id} className="bg-[rgb(255,255,255)] dark:bg-navbarBack border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-[rgb(255,255,255)]">{customer.name}</td>
-                                        <td className="px-6 py-4">{customer.Mobile}</td>
-                                        <td className="px-6 py-4">{customer.Identity}</td>
-                                        <td className="px-6 py-4">{customer.email}</td>
-                                        <td className="px-6 py-4">{customer.address}</td>
-                                        <td className="px-6 py-4">{customer.agent}</td>
-                                        <td className="px-6 py-4 text-right">
-                                            <IconButton aria-label="Actions" size="small" onClick={(event) => handleMenuOpen(event, customer.id)}><MoreVertIcon /></IconButton>
-                                            <Menu anchorEl={anchorEls[customer.id]} open={Boolean(anchorEls[customer.id])} onClose={() => handleMenuClose(customer.id)}>
-                                                <MenuItem onClick={() => handleEdit(customer)}><Edit size={16} className="mr-2" /> {t('common.edit')}</MenuItem>
-                                                <MenuItem onClick={() => handleAddVehicleClick(customer.id)}><Car size={16} className="mr-2" />{t('customers.add_vehicle')}</MenuItem>
-                                                <MenuItem onClick={() => navigate(`/profile/${customer.id}`)}><User size={16} className="mr-2" />{t('customers.profile')}</MenuItem>
-                                                <MenuItem onClick={() => handleDelete(customer.id,customer.name)} className="text-red-600 dark:text-red-400"><Trash2 size={16} className="mr-2" /> {t('common.delete')}</MenuItem>
-                                            </Menu>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr><td colSpan={tableColumns.length} className="text-center py-10 text-gray-500">{t('customers.no_results')}</td></tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                <DataTable
+                    data={allCustomers}
+                    columns={[
+                        {
+                            accessor: 'name',
+                            header: t('customers.table.name', 'Name'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'Mobile',
+                            header: t('customers.table.mobile', 'Mobile'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'Identity',
+                            header: t('customers.table.id', 'Identity'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'email',
+                            header: t('customers.table.email', 'Email'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'address',
+                            header: t('customers.table.address', 'Address'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'agent',
+                            header: t('customers.table.agent', 'Agent'),
+                            sortable: true
+                        },
+                        {
+                            accessor: 'actions',
+                            header: t('customers.table.actions', 'Actions'),
+                            sortable: false,
+                            render: (value, customer) => (
+                                <div className="text-right">
+                                    <IconButton
+                                        aria-label="Actions"
+                                        size="small"
+                                        onClick={(event) => handleMenuOpen(event, customer.id)}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                    <Menu
+                                        anchorEl={anchorEls[customer.id]}
+                                        open={Boolean(anchorEls[customer.id])}
+                                        onClose={() => handleMenuClose(customer.id)}
+                                    >
+                                        <MenuItem onClick={() => handleEdit(customer)}>
+                                            <Edit size={16} className="mr-2" /> {t('common.edit')}
+                                        </MenuItem>
+                                        <MenuItem onClick={() => handleAddVehicleClick(customer.id)}>
+                                            <Car size={16} className="mr-2" />{t('customers.add_vehicle')}
+                                        </MenuItem>
+                                        <MenuItem onClick={() => navigate(`/profile/${customer.id}`)}>
+                                            <User size={16} className="mr-2" />{t('customers.profile')}
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={() => handleDelete(customer.id, customer.name)}
+                                            className="text-red-600 dark:text-red-400"
+                                        >
+                                            <Trash2 size={16} className="mr-2" /> {t('common.delete')}
+                                        </MenuItem>
+                                    </Menu>
+                                </div>
+                            )
+                        }
+                    ]}
+                    title={t('customers.secondeTitle', 'Customers')}
+                    loading={loading && allCustomers.length === 0}
+                    onRefresh={() => {
+                        setCurrentPage(1);
+                        setAllCustomers([]);
+                        setHasMore(true);
+                        fetchCustomers(1, false);
+                    }}
+                    enableSearch={true}
+                    enableExport={true}
+                    enableCSV={true}
+                    infiniteScroll={{
+                        hasMore: hasMore,
+                        loadingMore: loadingMore,
+                        onLoadMore: () => {
+                            if (!loadingMore && hasMore) {
+                                const nextPage = currentPage + 1;
+                                setCurrentPage(nextPage);
+                                fetchCustomers(nextPage, true);
+                            }
+                        }
+                    }}
+                />
             ) : (
                 <div>
                     {loading && visibleRows.length === 0 ? (
@@ -487,21 +563,21 @@ export default function Customers() {
                     ) : (
                         <div className="text-center py-10 text-gray-500">{t('customers.no_results')}</div>
                     )}
-                </div>
-            )}
 
-            {/* Loading more indicator at bottom */}
-            {loadingMore && (
-                <div className="mt-4 text-center py-4">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
-                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('common.loadingMore', 'Loading more...')}</p>
-                </div>
-            )}
+                    {/* Loading more indicator at bottom for card view */}
+                    {loadingMore && (
+                        <div className="mt-4 text-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
+                            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('common.loadingMore', 'Loading more...')}</p>
+                        </div>
+                    )}
 
-            {/* End of list indicator */}
-            {!hasMore && allCustomers.length > 0 && !loading && (
-                <div className="mt-4 text-center py-4 text-sm text-gray-500 dark:text-gray-400">
-                    {t('common.endOfList', 'You have reached the end of the list')}
+                    {/* End of list indicator for card view */}
+                    {!hasMore && allCustomers.length > 0 && !loading && (
+                        <div className="mt-4 text-center py-4 text-sm text-gray-500 dark:text-gray-400">
+                            {t('common.endOfList', 'You have reached the end of the list')}
+                        </div>
+                    )}
                 </div>
             )}
 

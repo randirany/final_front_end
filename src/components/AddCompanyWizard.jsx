@@ -1,22 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  Chip,
-  LinearProgress,
-  Alert
-} from '@mui/material';
-import {
   Close,
   NavigateNext,
   NavigateBefore,
@@ -25,11 +9,21 @@ import {
   Category,
   AttachMoney,
   CarRepair,
-  AssignmentTurnedIn,
   Add,
   Delete,
-  Edit
+  Edit,
+  Warning,
+  CheckCircleOutline
 } from '@mui/icons-material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  IconButton,
+  Chip
+} from '@mui/material';
 import Swal from 'sweetalert2';
 import { createCompany } from '../services/insuranceCompanyApi';
 import { insuranceTypeApi } from '../services/insuranceTypeApi';
@@ -44,9 +38,7 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
   // Wizard state
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [createdCompanyId, setCreatedCompanyId] = useState(null);
   const [validationError, setValidationError] = useState('');
-  const [roadServiceError, setRoadServiceError] = useState('');
 
   // Step 1: Basic Info
   const [companyName, setCompanyName] = useState('');
@@ -73,11 +65,11 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
   });
 
   const steps = [
-    { label: t('wizard.step1', 'Company Info'), icon: <Business /> },
-    { label: t('wizard.step2', 'Insurance Types'), icon: <Category /> },
-    { label: t('wizard.step3', 'Pricing Setup'), icon: <AttachMoney /> },
-    { label: t('wizard.step4', 'Road Services'), icon: <CarRepair /> },
-    { label: t('wizard.step5', 'Review & Submit'), icon: <AssignmentTurnedIn /> }
+    { label: t('wizard.step1', 'Basic Info'), number: 1 },
+    { label: t('wizard.step2', 'Insurance Types'), number: 2 },
+    { label: t('wizard.step3', 'Pricing'), number: 3 },
+    { label: t('wizard.step4', 'Road Services'), number: 4 },
+    { label: t('wizard.step5', 'Review'), number: 5 }
   ];
 
   useEffect(() => {
@@ -88,14 +80,12 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
 
   const fetchInitialData = async () => {
     try {
-      // Fetch insurance types
       const insuranceTypesRes = await insuranceTypeApi.getAll();
       const types = Array.isArray(insuranceTypesRes)
         ? insuranceTypesRes
         : (insuranceTypesRes.data || insuranceTypesRes.insuranceTypes || []);
       setAvailableInsuranceTypes(types);
 
-      // Fetch pricing types
       const pricingTypesRes = await getAllPricingTypes();
       const pTypes = pricingTypesRes.pricingTypes || pricingTypesRes.data || [];
       setPricingTypes(pTypes);
@@ -111,18 +101,21 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
     setSelectedInsuranceTypes([]);
     setPricingConfigs({});
     setRoadServices([]);
-    setCreatedCompanyId(null);
     setEditingPricingType(null);
     setEditingRoadService(null);
     setValidationError('');
-    setRoadServiceError('');
+    setRoadServiceForm({
+      service_name: '',
+      normal_price: '',
+      old_car_price: '',
+      cutoff_year: 2007,
+      description: ''
+    });
   };
 
   const handleNext = async () => {
-    // Clear previous validation errors
     setValidationError('');
 
-    // Validate current step
     if (activeStep === 0) {
       if (!companyName.trim()) {
         setValidationError(t('wizard.validation.companyNameRequired', 'Company name is required'));
@@ -137,32 +130,27 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
       }
     }
 
-    // Move to next step
     setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
     setValidationError('');
-    setRoadServiceError('');
     setActiveStep((prev) => prev - 1);
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Step 1: Create company
       const companyData = {
         name: companyName,
         description: companyDescription,
         insuranceTypeIds: selectedInsuranceTypes,
-        roadServiceIds: [] // Will be added after creating road services
+        roadServiceIds: []
       };
 
       const companyResponse = await createCompany(companyData);
       const newCompanyId = companyResponse.company?._id || companyResponse._id;
-      setCreatedCompanyId(newCompanyId);
 
-      // Step 2: Create pricing configurations
       for (const [pricingTypeId, config] of Object.entries(pricingConfigs)) {
         if (config && Object.keys(config).length > 0) {
           await createOrUpdatePricing(newCompanyId, {
@@ -172,7 +160,6 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
         }
       }
 
-      // Step 3: Create road services
       for (const service of roadServices) {
         await createRoadService(newCompanyId, {
           service_name: service.service_name,
@@ -183,11 +170,10 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
         });
       }
 
-      // Success
       Swal.fire({
         icon: 'success',
         title: t('wizard.success', 'Success!'),
-        text: t('wizard.companyCreated', 'Insurance company created successfully with all configurations'),
+        text: t('wizard.companyCreated', 'Company created successfully'),
         timer: 3000
       });
 
@@ -197,8 +183,8 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
       console.error('Error creating company:', error);
       Swal.fire({
         icon: 'error',
-        title: t('common.error'),
-        text: error.response?.data?.message || t('wizard.errorCreating', 'Failed to create company')
+        title: t('common.error', 'Error'),
+        text: error.response?.data?.message || t('wizard.errorCreating', 'Error creating company')
       });
     } finally {
       setLoading(false);
@@ -206,16 +192,16 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
   };
 
   const handleClose = () => {
-    if (activeStep > 0 && activeStep < steps.length - 1) {
+    if (activeStep > 0 && activeStep < steps.length - 1 && !loading) {
       Swal.fire({
-        title: t('wizard.confirmClose', 'Are you sure?'),
+        title: t('wizard.confirmClose', 'Close Wizard?'),
         text: t('wizard.confirmCloseText', 'Your progress will be lost'),
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: t('common.yes'),
-        cancelButtonText: t('common.cancel')
+        confirmButtonText: t('common.yes', 'Yes'),
+        cancelButtonText: t('common.cancel', 'Cancel')
       }).then((result) => {
         if (result.isConfirmed) {
           resetWizard();
@@ -228,7 +214,6 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
     }
   };
 
-  // Step 2: Toggle insurance type selection
   const toggleInsuranceType = (typeId) => {
     setSelectedInsuranceTypes((prev) =>
       prev.includes(typeId)
@@ -237,7 +222,6 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
     );
   };
 
-  // Step 3: Pricing configuration helpers
   const getPricingConfig = (pricingTypeId) => {
     return pricingConfigs[pricingTypeId] || null;
   };
@@ -258,27 +242,23 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
     });
   };
 
-  // Step 4: Road service helpers
   const addRoadService = () => {
-    setRoadServiceError('');
-
     if (!roadServiceForm.service_name || !roadServiceForm.normal_price || !roadServiceForm.old_car_price) {
-      setRoadServiceError(t('wizard.validation.roadServiceRequired', 'Please fill all required fields'));
+      setValidationError(t('wizard.validation.roadServiceRequired', 'All required fields must be filled'));
       return;
     }
 
+    setValidationError('');
+
     if (editingRoadService !== null) {
-      // Update existing
       const updated = [...roadServices];
       updated[editingRoadService] = { ...roadServiceForm };
       setRoadServices(updated);
       setEditingRoadService(null);
     } else {
-      // Add new
       setRoadServices((prev) => [...prev, { ...roadServiceForm }]);
     }
 
-    // Reset form
     setRoadServiceForm({
       service_name: '',
       normal_price: '',
@@ -295,118 +275,126 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
 
   const deleteRoadService = (index) => {
     setRoadServices((prev) => prev.filter((_, i) => i !== index));
+    if (editingRoadService === index) {
+      setEditingRoadService(null);
+      setRoadServiceForm({
+        service_name: '',
+        normal_price: '',
+        old_car_price: '',
+        cutoff_year: 2007,
+        description: ''
+      });
+    }
   };
 
-  const getStepProgress = () => {
-    const total = steps.length;
-    return ((activeStep + 1) / total) * 100;
-  };
-
-  // Render Step Content
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
         return (
-          <div className="space-y-3 sm:space-y-4 py-2 sm:py-4">
-            <div className="text-center mb-4 sm:mb-6">
-              <Business className="text-blue-600 dark:text-blue-400 mx-auto mb-2" sx={{ fontSize: { xs: 36, sm: 48 } }} />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                {t('wizard.step1Title', 'Company Information')}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 px-2">
-                {t('wizard.step1Desc', 'Enter basic details about the insurance company')}
+          <div className="space-y-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-300">
+                {t('wizard.step1Desc', 'Enter the basic information for the company')}
               </p>
             </div>
 
             {validationError && (
-              <Alert severity="error" onClose={() => setValidationError('')} className="mb-3">
-                {validationError}
-              </Alert>
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 flex items-start gap-2">
+                <Warning className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fontSize="small" />
+                <p className="text-sm text-red-800 dark:text-red-300">{validationError}</p>
+              </div>
             )}
 
-            <TextField
-              fullWidth
-              label={t('wizard.companyName', 'Company Name')}
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              required
-              className="dark:text-white"
-              InputLabelProps={{ className: 'dark:text-gray-400' }}
-              InputProps={{
-                className: 'dark:text-white dark:bg-dark2',
-                dir: isRTL ? 'rtl' : 'ltr'
-              }}
-            />
+            <div>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+                {t('wizard.companyName', 'Company Name')} <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="companyName"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm dark:bg-dark2 dark:text-white ${
+                  validationError && !companyName.trim()
+                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600'
+                }`}
+                placeholder={t('companies.placeholders.name', 'Enter company name')}
+                dir={isRTL ? 'rtl' : 'ltr'}
+              />
+            </div>
 
-            <TextField
-              fullWidth
-              label={t('wizard.companyDescription', 'Description (Optional)')}
-              value={companyDescription}
-              onChange={(e) => setCompanyDescription(e.target.value)}
-              multiline
-              rows={3}
-              className="dark:text-white"
-              InputLabelProps={{ className: 'dark:text-gray-400' }}
-              InputProps={{
-                className: 'dark:text-white dark:bg-dark2',
-                dir: isRTL ? 'rtl' : 'ltr'
-              }}
-            />
+            <div>
+              <label htmlFor="companyDescription" className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+                {t('wizard.companyDescription', 'Description')}
+              </label>
+              <textarea
+                id="companyDescription"
+                value={companyDescription}
+                onChange={(e) => setCompanyDescription(e.target.value)}
+                rows={4}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-dark2 dark:text-white"
+                placeholder={t('companies.placeholders.description', 'Enter company description')}
+                dir={isRTL ? 'rtl' : 'ltr'}
+              />
+            </div>
           </div>
         );
 
       case 1:
         return (
-          <div className="space-y-3 sm:space-y-4 py-2 sm:py-4">
-            <div className="text-center mb-4 sm:mb-6">
-              <Category className="text-blue-600 dark:text-blue-400 mx-auto mb-2" sx={{ fontSize: { xs: 36, sm: 48 } }} />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                {t('wizard.step2Title', 'Select Insurance Types')}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 px-2">
-                {t('wizard.step2Desc', 'Choose which insurance types this company will offer')}
+          <div className="space-y-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-300">
+                {t('wizard.step2Desc', 'Select the insurance types this company offers')}
               </p>
             </div>
 
             {validationError && (
-              <Alert severity="error" onClose={() => setValidationError('')} className="mb-3">
-                {validationError}
-              </Alert>
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 flex items-start gap-2">
+                <Warning className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fontSize="small" />
+                <p className="text-sm text-red-800 dark:text-red-300">{validationError}</p>
+              </div>
             )}
 
             <div className="grid grid-cols-1 gap-3">
-              {availableInsuranceTypes.map((type) => (
-                <div
-                  key={type._id}
-                  onClick={() => toggleInsuranceType(type._id)}
-                  className={`p-3 sm:p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                    selectedInsuranceTypes.includes(type._id)
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
-                  }`}
-                >
-                  <div className={`flex items-center justify-between gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">{type.name}</h4>
-                      {type.description && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{type.description}</p>
-                      )}
+              {availableInsuranceTypes.map((type) => {
+                const isSelected = selectedInsuranceTypes.includes(type._id);
+                return (
+                  <div
+                    key={type._id}
+                    onClick={() => toggleInsuranceType(type._id)}
+                    className={`relative border-2 rounded-lg p-3 cursor-pointer transition-all ${
+                      isSelected
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600 dark:bg-dark2'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0">
+                        {isSelected ? (
+                          <CheckCircleOutline className="text-blue-600 dark:text-blue-400" fontSize="small" />
+                        ) : (
+                          <div className="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{type.name}</p>
+                        {type.description && (
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{type.description}</p>
+                        )}
+                      </div>
                     </div>
-                    <Checkbox
-                      checked={selectedInsuranceTypes.includes(type._id)}
-                      onChange={() => toggleInsuranceType(type._id)}
-                      color="primary"
-                      className="flex-shrink-0"
-                    />
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {selectedInsuranceTypes.length > 0 && (
-              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mt-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 flex items-center gap-2">
+                <CheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" fontSize="small" />
                 <p className="text-sm text-green-800 dark:text-green-300">
-                  ✓ {selectedInsuranceTypes.length} {t('wizard.typesSelected', 'insurance type(s) selected')}
+                  {selectedInsuranceTypes.length} {t('wizard.typesSelected', 'types selected')}
                 </p>
               </div>
             )}
@@ -414,14 +402,10 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
         );
 
       case 2:
-        // Filter pricing types based on selected insurance types
         const relevantPricingTypes = pricingTypes.filter(pricingType => {
-          // Get selected insurance types
           const selectedTypes = availableInsuranceTypes.filter(it =>
             selectedInsuranceTypes.includes(it._id)
           );
-
-          // Check if any selected insurance type uses this pricing type
           return selectedTypes.some(insuranceType => {
             const pricingTypeId = typeof insuranceType.pricing_type_id === 'string'
               ? insuranceType.pricing_type_id
@@ -431,14 +415,10 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
         }).filter(pt => pt._id !== 'compulsory' && pt._id !== 'road_service');
 
         return (
-          <div className="space-y-3 sm:space-y-4 py-2 sm:py-4">
-            <div className="text-center mb-4 sm:mb-6">
-              <AttachMoney className="text-blue-600 dark:text-blue-400 mx-auto mb-2" sx={{ fontSize: { xs: 36, sm: 48 } }} />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                {t('wizard.step3Title', 'Configure Pricing')}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 px-2">
-                {t('wizard.step3Desc', 'Set up pricing rules for each insurance type (optional)')}
+          <div className="space-y-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-300">
+                {t('wizard.step3Desc', 'Configure pricing for insurance types (optional)')}
               </p>
             </div>
 
@@ -453,8 +433,9 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
               />
             ) : relevantPricingTypes.length === 0 ? (
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 text-center">
-                <p className="text-yellow-800 dark:text-yellow-300">
-                  {t('wizard.noPricingTypesAvailable', 'The selected insurance types do not require pricing configuration, or all selected types use manual pricing.')}
+                <Warning className="text-yellow-600 dark:text-yellow-400 mx-auto mb-2" fontSize="large" />
+                <p className="text-sm text-yellow-800 dark:text-yellow-300">
+                  {t('wizard.noPricingTypesAvailable', 'No pricing types available for selected insurance types')}
                 </p>
               </div>
             ) : (
@@ -466,28 +447,30 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
                   return (
                     <div
                       key={pricingType._id}
-                      className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4"
+                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2"
                     >
-                      <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-                        <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'} w-full`}>
-                          <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">{pricingType.name}</h4>
-                          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{pricingType.description}</p>
-                          {isConfigured && (
-                            <Chip
-                              label={t('wizard.configured', 'Configured')}
-                              size="small"
-                              color="success"
-                              icon={<CheckCircle />}
-                              className="mt-2"
-                            />
-                          )}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">{pricingType.name}</p>
+                            {isConfigured && (
+                              <Chip
+                                label={t('wizard.configured', 'Configured')}
+                                size="small"
+                                color="success"
+                                icon={<CheckCircle />}
+                                sx={{ height: 20, fontSize: '0.75rem' }}
+                              />
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">{pricingType.description}</p>
                         </div>
-                        <div className={`flex gap-2 w-full sm:w-auto ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className="flex items-center gap-1 flex-shrink-0">
                           {isConfigured && (
                             <IconButton
                               size="small"
                               onClick={() => removePricingConfig(pricingType._id)}
-                              className="text-red-600"
+                              className="text-red-600 dark:text-red-400"
                             >
                               <Delete fontSize="small" />
                             </IconButton>
@@ -496,8 +479,7 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
                             size="small"
                             variant={isConfigured ? "outlined" : "contained"}
                             onClick={() => setEditingPricingType(pricingType)}
-                            fullWidth
-                            className="sm:w-auto"
+                            sx={{ fontSize: '0.75rem', py: 0.5, px: 1 }}
                           >
                             {isConfigured ? t('common.edit', 'Edit') : t('wizard.configure', 'Configure')}
                           </Button>
@@ -507,9 +489,9 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
                   );
                 })}
 
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mt-4">
-                  <p className="text-sm text-blue-800 dark:text-blue-300">
-                    ℹ️ {t('wizard.pricingOptional', 'Pricing configuration is optional. You can skip this step and configure later.')}
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-2">
+                  <p className="text-xs text-blue-800 dark:text-blue-300">
+                    {t('wizard.pricingOptional', 'Pricing configuration is optional and can be added later')}
                   </p>
                 </div>
               </div>
@@ -519,74 +501,100 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
 
       case 3:
         return (
-          <div className="space-y-3 sm:space-y-4 py-2 sm:py-4">
-            <div className="text-center mb-4 sm:mb-6">
-              <CarRepair className="text-blue-600 dark:text-blue-400 mx-auto mb-2" sx={{ fontSize: { xs: 36, sm: 48 } }} />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                {t('wizard.step4Title', 'Road Services')}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 px-2">
-                {t('wizard.step4Desc', 'Add road services offered by this company (optional)')}
+          <div className="space-y-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-300">
+                {t('wizard.step4Desc', 'Add road services for this company (optional)')}
               </p>
             </div>
 
-            {roadServiceError && (
-              <Alert severity="error" onClose={() => setRoadServiceError('')} className="mb-3">
-                {roadServiceError}
-              </Alert>
+            {validationError && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 flex items-start gap-2">
+                <Warning className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fontSize="small" />
+                <p className="text-sm text-red-800 dark:text-red-300">{validationError}</p>
+              </div>
             )}
 
             {/* Road Service Form */}
-            <div className="bg-gray-50 dark:bg-dark2 rounded-lg p-3 sm:p-4 space-y-3">
-              <TextField
-                fullWidth
-                size="small"
-                label={t('wizard.serviceName', 'Service Name')}
-                value={roadServiceForm.service_name}
-                onChange={(e) => setRoadServiceForm({ ...roadServiceForm, service_name: e.target.value })}
-                InputProps={{ dir: isRTL ? 'rtl' : 'ltr' }}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="number"
-                  label={t('wizard.normalPrice', 'Normal Price (₪)')}
-                  value={roadServiceForm.normal_price}
-                  onChange={(e) => setRoadServiceForm({ ...roadServiceForm, normal_price: e.target.value })}
-                  InputProps={{ dir: 'ltr' }}
-                />
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="number"
-                  label={t('wizard.oldCarPrice', 'Old Car Price (₪)')}
-                  value={roadServiceForm.old_car_price}
-                  onChange={(e) => setRoadServiceForm({ ...roadServiceForm, old_car_price: e.target.value })}
-                  InputProps={{ dir: 'ltr' }}
+            <div className="bg-gray-50 dark:bg-dark2 border border-gray-200 dark:border-gray-700 rounded-lg p-3 space-y-3">
+              <p className="text-sm font-medium text-gray-900 dark:text-white">
+                {editingRoadService !== null ? t('wizard.editService', 'Edit Service') : t('wizard.addService', 'Add Service')}
+              </p>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+                  {t('wizard.serviceName', 'Service Name')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={roadServiceForm.service_name}
+                  onChange={(e) => setRoadServiceForm({ ...roadServiceForm, service_name: e.target.value })}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                  placeholder={t('roadService.placeholders.serviceName', 'Enter service name')}
+                  dir={isRTL ? 'rtl' : 'ltr'}
                 />
               </div>
-              <TextField
-                fullWidth
-                size="small"
-                type="number"
-                label={t('wizard.cutoffYear', 'Cutoff Year')}
-                value={roadServiceForm.cutoff_year}
-                onChange={(e) => setRoadServiceForm({ ...roadServiceForm, cutoff_year: e.target.value })}
-                InputProps={{ dir: 'ltr' }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                multiline
-                rows={2}
-                label={t('wizard.description', 'Description')}
-                value={roadServiceForm.description}
-                onChange={(e) => setRoadServiceForm({ ...roadServiceForm, description: e.target.value })}
-                InputProps={{ dir: isRTL ? 'rtl' : 'ltr' }}
-              />
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+                    {t('wizard.normalPrice', 'Normal Price')} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    value={roadServiceForm.normal_price}
+                    onChange={(e) => setRoadServiceForm({ ...roadServiceForm, normal_price: e.target.value })}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                    placeholder="0"
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+                    {t('wizard.oldCarPrice', 'Old Car Price')} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    value={roadServiceForm.old_car_price}
+                    onChange={(e) => setRoadServiceForm({ ...roadServiceForm, old_car_price: e.target.value })}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                    placeholder="0"
+                    dir="ltr"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+                  {t('wizard.cutoffYear', 'Cutoff Year')}
+                </label>
+                <input
+                  type="number"
+                  value={roadServiceForm.cutoff_year}
+                  onChange={(e) => setRoadServiceForm({ ...roadServiceForm, cutoff_year: e.target.value })}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                  placeholder="2007"
+                  dir="ltr"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+                  {t('wizard.description', 'Description')}
+                </label>
+                <textarea
+                  value={roadServiceForm.description}
+                  onChange={(e) => setRoadServiceForm({ ...roadServiceForm, description: e.target.value })}
+                  rows={2}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                  placeholder={t('companies.placeholders.description', 'Enter description')}
+                  dir={isRTL ? 'rtl' : 'ltr'}
+                />
+              </div>
+
               <Button
                 fullWidth
+                size="small"
                 variant="contained"
                 startIcon={editingRoadService !== null ? <Edit /> : <Add />}
                 onClick={addRoadService}
@@ -598,22 +606,26 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
             {/* Road Services List */}
             {roadServices.length > 0 && (
               <div className="space-y-2">
-                <h4 className="font-semibold text-gray-900 dark:text-white">
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
                   {t('wizard.addedServices', 'Added Services')} ({roadServices.length})
-                </h4>
+                </p>
                 {roadServices.map((service, index) => (
                   <div
                     key={index}
-                    className="bg-white dark:bg-navbarBack rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+                    className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2"
                   >
-                    <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        <h5 className="font-medium text-gray-900 dark:text-white">{service.service_name}</h5>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1" dir="ltr">
-                          {t('roadService.labels.normalPrice', 'Normal')}: ₪{service.normal_price} | {t('roadService.labels.oldCarPrice', 'Old Car')}: ₪{service.old_car_price} | {t('roadService.labels.year', 'Year')}: {service.cutoff_year}
-                        </p>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{service.service_name}</p>
+                        <div className="flex flex-wrap gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          <span>₪{service.normal_price}</span>
+                          <span>•</span>
+                          <span>₪{service.old_car_price}</span>
+                          <span>•</span>
+                          <span>{service.cutoff_year}</span>
+                        </div>
                       </div>
-                      <div className={`flex gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className="flex gap-1 flex-shrink-0">
                         <IconButton size="small" onClick={() => editRoadService(index)}>
                           <Edit fontSize="small" />
                         </IconButton>
@@ -631,62 +643,58 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
 
       case 4:
         return (
-          <div className="space-y-3 sm:space-y-4 py-2 sm:py-4">
-            <div className="text-center mb-4 sm:mb-6">
-              <AssignmentTurnedIn className="text-green-600 dark:text-green-400 mx-auto mb-2" sx={{ fontSize: { xs: 36, sm: 48 } }} />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                {t('wizard.step5Title', 'Review & Submit')}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 px-2">
-                {t('wizard.step5Desc', 'Review all information before creating the company')}
+          <div className="space-y-4">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+              <p className="text-sm text-green-800 dark:text-green-300">
+                {t('wizard.step5Desc', 'Review your information before creating the company')}
               </p>
             </div>
 
-            {/* Summary */}
-            <div className="space-y-3 sm:space-y-4">
+            {/* Summary Sections */}
+            <div className="space-y-3">
               {/* Company Info */}
-              <div className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
-                <h4 className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2">
+                <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-1">
                   <Business fontSize="small" />
                   {t('wizard.companyInfo', 'Company Information')}
-                </h4>
-                <div className="space-y-2 text-xs sm:text-sm">
-                  <div className={`flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                </p>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">{t('wizard.name', 'Name')}:</span>
-                    <span className="font-medium text-gray-900 dark:text-white break-words">{companyName}</span>
+                    <span className="font-medium text-gray-900 dark:text-white">{companyName}</span>
                   </div>
                   {companyDescription && (
-                    <div className={`flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                    <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">{t('wizard.description', 'Description')}:</span>
-                      <span className="font-medium text-gray-900 dark:text-white break-words">{companyDescription}</span>
+                      <span className="font-medium text-gray-900 dark:text-white text-right">{companyDescription}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Insurance Types */}
-              <div className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
-                <h4 className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2">
+                <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-1">
                   <Category fontSize="small" />
                   {t('wizard.insuranceTypes', 'Insurance Types')} ({selectedInsuranceTypes.length})
-                </h4>
-                <div className={`flex flex-wrap gap-2 ${isRTL ? 'justify-end' : ''}`}>
+                </p>
+                <div className="flex flex-wrap gap-1">
                   {availableInsuranceTypes
                     .filter((type) => selectedInsuranceTypes.includes(type._id))
                     .map((type) => (
-                      <Chip key={type._id} label={type.name} color="primary" size="small" />
+                      <Chip key={type._id} label={type.name} size="small" sx={{ height: 20, fontSize: '0.7rem' }} />
                     ))}
                 </div>
               </div>
 
               {/* Pricing Configurations */}
-              <div className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
-                <h4 className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2">
+                <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-1">
                   <AttachMoney fontSize="small" />
                   {t('wizard.pricingConfigs', 'Pricing Configurations')} ({Object.keys(pricingConfigs).length})
-                </h4>
+                </p>
                 {Object.keys(pricingConfigs).length > 0 ? (
-                  <div className={`flex flex-wrap gap-2 ${isRTL ? 'justify-end' : ''}`}>
+                  <div className="flex flex-wrap gap-1">
                     {Object.keys(pricingConfigs).map((typeId) => {
                       const pricingType = pricingTypes.find((pt) => pt._id === typeId);
                       return (
@@ -696,37 +704,38 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
                           color="success"
                           size="small"
                           icon={<CheckCircle />}
+                          sx={{ height: 20, fontSize: '0.7rem' }}
                         />
                       );
                     })}
                   </div>
                 ) : (
-                  <p className={`text-xs sm:text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {t('wizard.noPricingConfigured', 'No pricing configured (can be added later)')}
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {t('wizard.noPricingConfigured', 'No pricing configured')}
                   </p>
                 )}
               </div>
 
               {/* Road Services */}
-              <div className="bg-white dark:bg-dark2 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
-                <h4 className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-dark2">
+                <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-1">
                   <CarRepair fontSize="small" />
                   {t('wizard.roadServices', 'Road Services')} ({roadServices.length})
-                </h4>
+                </p>
                 {roadServices.length > 0 ? (
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {roadServices.map((service, index) => (
-                      <div key={index} className={`text-xs sm:text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-                        <span className="font-medium text-gray-900 dark:text-white break-words">{service.service_name}</span>
-                        <span className={`text-gray-600 dark:text-gray-400 ${isRTL ? 'mr-2' : 'ml-2'}`} dir="ltr">
+                      <div key={index} className="text-xs">
+                        <span className="font-medium text-gray-900 dark:text-white">{service.service_name}</span>
+                        <span className="text-gray-600 dark:text-gray-400 ml-1">
                           (₪{service.normal_price} / ₪{service.old_car_price})
                         </span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className={`text-xs sm:text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {t('wizard.noRoadServices', 'No road services added (can be added later)')}
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {t('wizard.noRoadServices', 'No road services added')}
                   </p>
                 )}
               </div>
@@ -743,135 +752,97 @@ const AddCompanyWizard = ({ open, onClose, onSuccess }) => {
     <Dialog
       open={open}
       onClose={handleClose}
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth
       dir={isRTL ? 'rtl' : 'ltr'}
       PaperProps={{
-        className: 'dark:bg-navbarBack m-2 sm:m-4',
-        sx: {
-          maxHeight: { xs: '95vh', sm: '90vh' }
-        }
+        className: 'dark:bg-navbarBack'
       }}
     >
-      <DialogTitle className="dark:text-white border-b dark:border-gray-700 px-3 sm:px-6 py-3 sm:py-4">
-        <div className="flex justify-between items-center gap-2">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-base sm:text-xl font-bold truncate">{t('wizard.title', 'Add New Insurance Company')}</h2>
-            <p className="text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400 mt-1 hidden sm:block">
-              {t('wizard.subtitle', 'Step-by-step setup wizard')}
+      <DialogTitle className="dark:text-white border-b dark:border-gray-700">
+        <div className="flex justify-between items-center">
+          <div>
+            <span className="text-lg font-semibold">{t('wizard.title', 'Add Insurance Company')}</span>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              {t('wizard.stepXofY', 'Step {{current}} of {{total}}', { current: activeStep + 1, total: steps.length })}
             </p>
           </div>
-          <IconButton
+          <button
             onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 flex-shrink-0"
-            size="small"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <Close />
-          </IconButton>
+          </button>
         </div>
       </DialogTitle>
 
-      <div className="px-3 sm:px-6 pt-3 sm:pt-4">
-        <LinearProgress variant="determinate" value={getStepProgress()} className="mb-3 sm:mb-4" />
-        {/* Desktop Stepper */}
-        <div className="hidden md:block">
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((step, index) => (
-              <Step key={index}>
-                <StepLabel
-                  StepIconComponent={() => (
-                    <div
-                      className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                        index === activeStep
-                          ? 'bg-blue-600 text-white'
-                          : index < activeStep
-                          ? 'bg-green-600 text-white'
-                          : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                      }`}
-                    >
-                      {index < activeStep ? <CheckCircle fontSize="small" /> : step.icon}
-                    </div>
-                  )}
+      {/* Progress Steps */}
+      <div className="px-6 pt-4 border-b dark:border-gray-700 pb-4">
+        <div className="flex items-center justify-between">
+          {steps.map((step, index) => (
+            <React.Fragment key={index}>
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
+                    index === activeStep
+                      ? 'bg-blue-600 text-white'
+                      : index < activeStep
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                  }`}
                 >
+                  {index < activeStep ? <CheckCircle fontSize="small" /> : step.number}
+                </div>
+                <span className="text-[10px] text-gray-600 dark:text-gray-400 mt-1 hidden sm:block">
                   {step.label}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </div>
-        {/* Mobile/Tablet Stepper */}
-        <div className="md:hidden">
-          <Stepper activeStep={activeStep} orientation="horizontal">
-            {steps.map((step, index) => (
-              <Step key={index}>
-                <StepLabel
-                  StepIconComponent={() => (
-                    <div
-                      className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                        index === activeStep
-                          ? 'bg-blue-600 text-white'
-                          : index < activeStep
-                          ? 'bg-green-600 text-white'
-                          : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                      }`}
-                    >
-                      {index < activeStep ? <CheckCircle fontSize="small" /> : <span className="text-xs">{index + 1}</span>}
-                    </div>
-                  )}
-                />
-              </Step>
-            ))}
-          </Stepper>
-          <div className="text-center mt-2">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {steps[activeStep].label}
-            </p>
-          </div>
+                </span>
+              </div>
+              {index < steps.length - 1 && (
+                <div className={`flex-1 h-0.5 mx-2 ${index < activeStep ? 'bg-green-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
+              )}
+            </React.Fragment>
+          ))}
         </div>
       </div>
 
-      <DialogContent className="dark:bg-navbarBack dark:text-white min-h-[300px] sm:min-h-[400px] px-3 sm:px-6 overflow-y-auto">
-        {renderStepContent()}
+      <DialogContent className="dark:bg-navbarBack dark:text-white">
+        <div className="mt-4">
+          {renderStepContent()}
+        </div>
       </DialogContent>
 
-      <div className={`flex flex-col sm:flex-row justify-between gap-2 sm:gap-0 px-3 sm:px-6 py-3 sm:py-4 border-t dark:border-gray-700 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+      <DialogActions className="dark:bg-navbarBack border-t dark:border-gray-700 px-6 py-3">
         <Button
           onClick={handleBack}
           disabled={activeStep === 0 || loading}
           startIcon={isRTL ? <NavigateNext /> : <NavigateBefore />}
-          fullWidth
-          className="sm:w-auto order-2 sm:order-none"
         >
           {t('common.back', 'Back')}
         </Button>
 
-        <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''} order-1 sm:order-none`}>
-          {activeStep < steps.length - 1 ? (
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              endIcon={isRTL ? <NavigateBefore /> : <NavigateNext />}
-              disabled={loading}
-              fullWidth
-              className="sm:w-auto"
-            >
-              {t('common.next', 'Next')}
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSubmit}
-              disabled={loading}
-              startIcon={<CheckCircle />}
-              fullWidth
-              className="sm:w-auto"
-            >
-              {loading ? t('common.creating', 'Creating...') : t('wizard.createCompany', 'Create Company')}
-            </Button>
-          )}
-        </div>
-      </div>
+        <div className="flex-1" />
+
+        {activeStep < steps.length - 1 ? (
+          <Button
+            variant="contained"
+            onClick={handleNext}
+            endIcon={isRTL ? <NavigateBefore /> : <NavigateNext />}
+            disabled={loading}
+          >
+            {t('common.next', 'Next')}
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleSubmit}
+            disabled={loading}
+            startIcon={<CheckCircle />}
+          >
+            {loading ? t('common.creating', 'Creating...') : t('wizard.createCompany', 'Create Company')}
+          </Button>
+        )}
+      </DialogActions>
     </Dialog>
   );
 };
@@ -926,93 +897,144 @@ const PricingConfigEditor = ({ pricingType, config, onSave, onCancel, t, isRTL }
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-dark2 rounded-lg p-4 space-y-4">
-      <h4 className="font-semibold text-gray-900 dark:text-white">{pricingType.name}</h4>
+    <div className="bg-gray-50 dark:bg-dark2 border border-gray-200 dark:border-gray-700 rounded-lg p-3 space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-semibold text-gray-900 dark:text-white">{pricingType.name}</p>
+        <Chip
+          label={pricingType.requiresPricingTable ? t('companyPricing.matrixBased', 'Matrix') : t('companyPricing.simplePricing', 'Simple')}
+          size="small"
+          variant="outlined"
+          sx={{ height: 20, fontSize: '0.7rem' }}
+        />
+      </div>
+
+      {pricingType.description && (
+        <p className="text-xs text-gray-600 dark:text-gray-400">{pricingType.description}</p>
+      )}
 
       {isFixedAmount ? (
-        <TextField
-          fullWidth
-          type="number"
-          label={t('wizard.fixedAmount', 'Fixed Amount (₪)')}
-          value={fixedAmount}
-          onChange={(e) => setFixedAmount(e.target.value)}
-          InputProps={{ dir: 'ltr' }}
-        />
+        <div>
+          <label className="block text-xs font-medium text-gray-700 dark:text-white mb-1">
+            {t('wizard.fixedAmount', 'Fixed Amount')} <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            value={fixedAmount}
+            onChange={(e) => setFixedAmount(e.target.value)}
+            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+            placeholder="0"
+            dir="ltr"
+          />
+        </div>
       ) : isMatrixType ? (
-        <div className="space-y-3">
-          <Button size="small" startIcon={<Add />} onClick={addMatrixRule}>
+        <div className="space-y-2">
+          <Button size="small" variant="outlined" startIcon={<Add />} onClick={addMatrixRule}>
             {t('wizard.addRule', 'Add Rule')}
           </Button>
-          {matrixRules.map((rule, index) => (
-            <div key={index} className="bg-white dark:bg-navbarBack rounded p-3 space-y-2">
-              <div className={`flex justify-between items-center mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <span className="text-sm font-medium">{t('wizard.ruleNumber', 'Rule #{{number}}', { number: index + 1 })}</span>
-                <IconButton size="small" onClick={() => removeMatrixRule(index)}>
-                  <Delete fontSize="small" />
-                </IconButton>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <TextField
-                  select
-                  size="small"
-                  label={t('wizard.vehicleType', 'Vehicle Type')}
-                  value={rule.vehicle_type}
-                  onChange={(e) => updateMatrixRule(index, 'vehicle_type', e.target.value)}
-                  SelectProps={{ native: true }}
-                >
-                  <option value="car">{t('vehicleTypes.car', 'Car')}</option>
-                  <option value="bus">{t('vehicleTypes.bus', 'Bus')}</option>
-                  <option value="commercial_under_4t">{t('vehicleTypes.commercialUnder4t', 'Commercial < 4t')}</option>
-                  <option value="commercial_over_4t">{t('vehicleTypes.commercialOver4t', 'Commercial > 4t')}</option>
-                  <option value="taxi">{t('vehicleTypes.taxi', 'Taxi')}</option>
-                </TextField>
-                <TextField
-                  select
-                  size="small"
-                  label={t('wizard.driverAge', 'Driver Age')}
-                  value={rule.driver_age_group}
-                  onChange={(e) => updateMatrixRule(index, 'driver_age_group', e.target.value)}
-                  SelectProps={{ native: true }}
-                >
-                  <option value="under_24">{t('driverAge.under24', 'Under 24')}</option>
-                  <option value="above_24">{t('driverAge.above24', '24 and Above')}</option>
-                </TextField>
-                <TextField
-                  size="small"
-                  type="number"
-                  label={t('wizard.minAmount', 'Min Amount')}
-                  value={rule.offer_amount_min}
-                  onChange={(e) => updateMatrixRule(index, 'offer_amount_min', e.target.value)}
-                  InputProps={{ dir: 'ltr' }}
-                />
-                <TextField
-                  size="small"
-                  type="number"
-                  label={t('wizard.maxAmount', 'Max Amount')}
-                  value={rule.offer_amount_max}
-                  onChange={(e) => updateMatrixRule(index, 'offer_amount_max', e.target.value)}
-                  InputProps={{ dir: 'ltr' }}
-                />
-                <TextField
-                  size="small"
-                  type="number"
-                  label={t('wizard.price', 'Price')}
-                  value={rule.price}
-                  onChange={(e) => updateMatrixRule(index, 'price', e.target.value)}
-                  className="col-span-2"
-                  InputProps={{ dir: 'ltr' }}
-                />
-              </div>
+
+          {matrixRules.length === 0 ? (
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 text-center">
+              <p className="text-xs text-yellow-800 dark:text-yellow-300">
+                {t('companyPricing.noRules', 'No rules added yet')}
+              </p>
             </div>
-          ))}
+          ) : (
+            matrixRules.map((rule, index) => (
+              <div key={index} className="bg-white dark:bg-navbarBack border border-gray-200 dark:border-gray-700 rounded-lg p-2 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-gray-900 dark:text-white">
+                    {t('companyPricing.rule', 'Rule')} #{index + 1}
+                  </span>
+                  <IconButton size="small" onClick={() => removeMatrixRule(index)} className="text-red-600">
+                    <Delete fontSize="small" />
+                  </IconButton>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      {t('wizard.vehicleType', 'Vehicle')}
+                    </label>
+                    <select
+                      value={rule.vehicle_type}
+                      onChange={(e) => updateMatrixRule(index, 'vehicle_type', e.target.value)}
+                      className="block w-full rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                    >
+                      <option value="car">{t('vehicleTypes.car', 'Car')}</option>
+                      <option value="bus">{t('vehicleTypes.bus', 'Bus')}</option>
+                      <option value="commercial_under_4t">{t('vehicleTypes.commercialUnder4t', 'Commercial < 4t')}</option>
+                      <option value="commercial_over_4t">{t('vehicleTypes.commercialOver4t', 'Commercial > 4t')}</option>
+                      <option value="taxi">{t('vehicleTypes.taxi', 'Taxi')}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      {t('wizard.driverAge', 'Age')}
+                    </label>
+                    <select
+                      value={rule.driver_age_group}
+                      onChange={(e) => updateMatrixRule(index, 'driver_age_group', e.target.value)}
+                      className="block w-full rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                    >
+                      <option value="under_24">{t('driverAge.under24', 'Under 24')}</option>
+                      <option value="above_24">{t('driverAge.above24', '24+')}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      {t('wizard.minAmount', 'Min')}
+                    </label>
+                    <input
+                      type="number"
+                      value={rule.offer_amount_min}
+                      onChange={(e) => updateMatrixRule(index, 'offer_amount_min', e.target.value)}
+                      className="block w-full rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                      placeholder="0"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      {t('wizard.maxAmount', 'Max')}
+                    </label>
+                    <input
+                      type="number"
+                      value={rule.offer_amount_max}
+                      onChange={(e) => updateMatrixRule(index, 'offer_amount_max', e.target.value)}
+                      className="block w-full rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                      placeholder="0"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <label className="block text-[10px] font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      {t('wizard.price', 'Price')}
+                    </label>
+                    <input
+                      type="number"
+                      value={rule.price}
+                      onChange={(e) => updateMatrixRule(index, 'price', e.target.value)}
+                      className="block w-full rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-navbarBack dark:text-white"
+                      placeholder="0"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       ) : null}
 
-      <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <Button variant="outlined" onClick={onCancel}>
+      <div className="flex gap-2 pt-2">
+        <Button size="small" variant="outlined" onClick={onCancel}>
           {t('common.cancel', 'Cancel')}
         </Button>
-        <Button variant="contained" onClick={handleSave}>
+        <Button size="small" variant="contained" onClick={handleSave}>
           {t('common.save', 'Save')}
         </Button>
       </div>

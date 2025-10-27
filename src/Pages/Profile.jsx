@@ -68,7 +68,7 @@ function Profile() {
 
     return (
         <div className='py-3 dark:bg-dark2 border-t dark:border-borderNav-b-gray-200 min-h-screen'>
-            <main className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 flex-1 pb-10">
+            <main className="px-4 mx-auto max-w-9xl sm:px-6 lg:px-9 flex-1 pb-10">
                 <div className="px-4 mx-auto sm:px-6 lg:px-8">
                     <div className="mt-8">
                         <div className="bg-[rgb(255,255,255)] card dark:bg-navbarBack flex p-4 md:p-[22px] rounded-md justify-between mb-4 flex-wrap shadow-sm">

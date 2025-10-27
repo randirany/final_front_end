@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowBack, CloudUpload, Delete, Palette, FormatSize, Image } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
 import { ChromePicker } from 'react-color';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const AddDocumentSettings = () => {
@@ -152,30 +151,39 @@ const AddDocumentSettings = () => {
     setLoading(true);
 
     try {
-      const token = `islam__${localStorage.getItem("token")}`;
-
-      // Create FormData for file upload
-      const formDataToSend = new FormData();
-
-      // Only append fields that are allowed by the backend validation schema
-      // Based on the API validation error, only companyName is allowed from formData
-      if (formData.companyName) {
-        formDataToSend.append('companyName', formData.companyName);
-      }
-
-      // Append logo file if selected
-      if (uploadedLogo) {
-        formDataToSend.append('logo', uploadedLogo);
-      }
-
-      const response = await axios.post('http://localhost:3002/api/v1/documentSettings/create', formDataToSend, {
-        headers: {
-          token,
-          'Content-Type': 'multipart/form-data'
+      // Prepare the data according to API specification
+      const documentSettingsData = {
+        companyName: formData.companyName,
+        header: {
+          text: formData.headerText || '',
+          backgroundColor: formData.headerBgColor,
+          textColor: formData.headerTextColor,
+          fontSize: parseInt(formData.headerFontSize)
+        },
+        footer: {
+          text: formData.footerText || '',
+          backgroundColor: formData.footerBgColor,
+          textColor: formData.footerTextColor,
+          fontSize: parseInt(formData.footerFontSize)
+        },
+        documentTemplate: {
+          marginTop: parseInt(formData.marginTop),
+          marginBottom: parseInt(formData.marginBottom),
+          marginLeft: parseInt(formData.marginLeft),
+          marginRight: parseInt(formData.marginRight)
         }
-      });
+      };
 
-      console.log('Document settings created:', response.data);
+      // Add logo file if selected
+      if (uploadedLogo) {
+        documentSettingsData.logo = uploadedLogo;
+      }
+
+      // Use the API service
+      const { documentSettingsApi } = await import('../services/documentSettingsApi');
+      const response = await documentSettingsApi.create(documentSettingsData);
+
+      console.log('Document settings created:', response);
 
       Swal.fire({
         title: t('documentSettings.createSuccess'),

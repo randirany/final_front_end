@@ -4,155 +4,175 @@ import DataTable from '../shared/DataTable';
 import FormInput from '../shared/FormInput';
 import StatCard from '../shared/StatCard';
 import { toLocaleDateStringEN } from '../../utils/dateFormatter';
+import { getAllAccidents, getAccidentStats } from '../../services/accidentApi';
+import { toast } from 'react-hot-toast';
 
 const AccidentsReport = () => {
   const { t, i18n: { language } } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalAccidents: 0,
+    openAccidents: 0,
+    closedAccidents: 0,
+    inProgressAccidents: 0
+  });
   const [filters, setFilters] = useState({
     periodFrom: '',
     periodTo: '',
-    severity: '',
+    priority: '',
     status: ''
   });
 
-
-  // Mock data - replace with actual API call
-  const mockData = [
-    {
-      id: 1,
-      reportNumber: 'ACC-2023-001',
-      customerName: 'أحمد محمد علي',
-      plateNumber: 'ع ق م 123',
-      accidentDate: '2023-02-15',
-      location: 'شارع الملك فهد، الرياض',
-      severity: 'minor',
-      damageAmount: 3500,
-      insuranceCompany: 'الأهلية',
-      status: 'completed',
-      reportDate: '2023-02-16'
-    },
-    {
-      id: 2,
-      reportNumber: 'ACC-2023-002',
-      customerName: 'فاطمة حسن',
-      plateNumber: 'ص ل م 456',
-      accidentDate: '2023-04-10',
-      location: 'طريق الخرج، الرياض',
-      severity: 'major',
-      damageAmount: 15000,
-      insuranceCompany: 'المشرق',
-      status: 'in_progress',
-      reportDate: '2023-04-10'
-    },
-    {
-      id: 3,
-      reportNumber: 'ACC-2023-003',
-      customerName: 'خالد سعد',
-      plateNumber: 'ح ك ل 789',
-      accidentDate: '2023-07-22',
-      location: 'شارع العليا، الرياض',
-      severity: 'moderate',
-      damageAmount: 8500,
-      insuranceCompany: 'تكافل',
-      status: 'pending',
-      reportDate: '2023-07-23'
-    }
-  ];
-
   const columns = [
     {
-      header: t('reports.accidents.reportNumber'),
-      accessor: 'reportNumber'
-    },
-    {
-      header: t('reports.accidents.customerName'),
-      accessor: 'customerName'
-    },
-    {
-      header: t('reports.accidents.plateNumber'),
-      accessor: 'plateNumber'
-    },
-    {
-      header: t('reports.accidents.accidentDate'),
-      accessor: 'accidentDate',
-      render: (value) => toLocaleDateStringEN(value)
-    },
-    {
-      header: t('reports.accidents.location'),
-      accessor: 'location'
-    },
-    {
-      header: t('reports.accidents.severity'),
-      accessor: 'severity',
+      header: t('accidents.ticketNumber', 'Ticket #'),
+      accessor: 'ticketNumber',
       render: (value) => (
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value === 'minor'
-            ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-            : value === 'moderate'
-            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
-            : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-        }`}>
-          {t(`reports.accidents.severityTypes.${value}`)}
+        <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">
+          {value}
         </span>
       )
     },
     {
-      header: t('reports.accidents.damageAmount'),
-      accessor: 'damageAmount',
-      render: (value) => `${value.toLocaleString()} ${t('common.currency')}`
+      header: t('accidents.customer', 'Customer'),
+      accessor: 'insured',
+      render: (value, row) => (
+        <div>
+          <div className="font-medium text-gray-900 dark:text-gray-100">
+            {row.insured?.first_name} {row.insured?.last_name}
+          </div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {row.insured?.id_Number}
+          </div>
+        </div>
+      )
     },
     {
-      header: t('reports.accidents.insuranceCompany'),
-      accessor: 'insuranceCompany'
+      header: t('accidents.vehicle', 'Vehicle'),
+      accessor: 'vehicle',
+      render: (value, row) => (
+        <div>
+          <div className="font-medium text-gray-900 dark:text-gray-100">
+            {row.vehicle?.model || '-'}
+          </div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {row.vehicle?.plateNumber || '-'}
+          </div>
+        </div>
+      )
     },
     {
-      header: t('reports.accidents.status'),
+      header: t('accidents.priority', 'Priority'),
+      accessor: 'priority',
+      render: (value) => (
+        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+          value === 'urgent'
+            ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+            : value === 'high'
+            ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
+            : value === 'medium'
+            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+        }`}>
+          {value}
+        </span>
+      )
+    },
+    {
+      header: t('accidents.status', 'Status'),
       accessor: 'status',
       render: (value) => (
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value === 'completed'
-            ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
+          value === 'closed'
+            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
             : value === 'in_progress'
-            ? 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
-            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
+            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+            : value === 'open'
+            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
         }`}>
-          {t(`common.${value}`)}
+          {value}
         </span>
       )
+    },
+    {
+      header: t('accidents.description', 'Description'),
+      accessor: 'description',
+      render: (value, row) => (
+        <div className="max-w-xs truncate text-gray-700 dark:text-gray-300">
+          {row.title || row.description || '-'}
+        </div>
+      )
+    },
+    {
+      header: t('accidents.createdAt', 'Created'),
+      accessor: 'createdAt',
+      render: (value) => toLocaleDateStringEN(value)
     }
   ];
 
   useEffect(() => {
     fetchData();
+    fetchStats();
+  }, []);
+
+  useEffect(() => {
+    fetchData();
   }, [filters]);
+
+  const fetchStats = async () => {
+    try {
+      const response = await getAccidentStats();
+      setStats(response.stats || {
+        totalAccidents: 0,
+        openAccidents: 0,
+        closedAccidents: 0,
+        inProgressAccidents: 0
+      });
+    } catch (error) {
+      console.error('Error fetching accident stats:', error);
+      toast.error(t('accidents.statsLoadError', 'Failed to load statistics'));
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      let filteredData = mockData;
+      const apiFilters = {
+        sortBy: 'createdAt',
+        sortOrder: 'desc'
+      };
 
+      // Add filters if they exist
+      if (filters.status) {
+        apiFilters.status = filters.status;
+      }
+      if (filters.priority) {
+        apiFilters.priority = filters.priority;
+      }
+
+      // Get all accidents with filters
+      const response = await getAllAccidents(apiFilters);
+      let accidents = response.accidents || [];
+
+      // Apply date range filters on the client side
       if (filters.periodFrom) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.accidentDate) >= new Date(filters.periodFrom)
+        accidents = accidents.filter(item =>
+          new Date(item.createdAt) >= new Date(filters.periodFrom)
         );
       }
       if (filters.periodTo) {
-        filteredData = filteredData.filter(item =>
-          new Date(item.accidentDate) <= new Date(filters.periodTo)
+        accidents = accidents.filter(item =>
+          new Date(item.createdAt) <= new Date(filters.periodTo)
         );
       }
-      if (filters.severity) {
-        filteredData = filteredData.filter(item => item.severity === filters.severity);
-      }
-      if (filters.status) {
-        filteredData = filteredData.filter(item => item.status === filters.status);
-      }
 
-      setData(filteredData);
+      setData(accidents);
     } catch (error) {
       console.error('Error fetching accidents data:', error);
+      toast.error(t('accidents.loadError', 'Failed to load accidents'));
+      setData([]);
     } finally {
       setLoading(false);
     }
@@ -166,12 +186,10 @@ const AccidentsReport = () => {
     setFilters({
       periodFrom: '',
       periodTo: '',
-      severity: '',
+      priority: '',
       status: ''
     });
   };
-
-  const totalDamage = data.reduce((sum, item) => sum + item.damageAmount, 0);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
@@ -185,10 +203,10 @@ const AccidentsReport = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <StatCard
-            title={t('reports.accidents.totalAccidents')}
-            value={data.length}
+            title={t('accidents.totalAccidents', 'Total Accidents')}
+            value={stats.totalAccidents || data.length}
             color="red"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,24 +215,32 @@ const AccidentsReport = () => {
             }
           />
           <StatCard
-            title={t('reports.accidents.totalDamage')}
-            value={totalDamage.toLocaleString()}
-            suffix={t('common.currency')}
+            title={t('accidents.openAccidents', 'Open')}
+            value={stats.openAccidents || data.filter(a => a.status === 'open').length}
             color="yellow"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             }
           />
           <StatCard
-            title={t('reports.accidents.averageDamage')}
-            value={data.length ? Math.round(totalDamage / data.length).toLocaleString() : '0'}
-            suffix={t('common.currency')}
+            title={t('accidents.inProgressAccidents', 'In Progress')}
+            value={stats.inProgressAccidents || data.filter(a => a.status === 'in_progress').length}
             color="blue"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            }
+          />
+          <StatCard
+            title={t('accidents.closedAccidents', 'Closed')}
+            value={stats.closedAccidents || data.filter(a => a.status === 'closed').length}
+            color="green"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             }
           />
@@ -242,27 +268,28 @@ const AccidentsReport = () => {
 
             <FormInput
               type="select"
-              label={t('reports.accidents.severity')}
-              value={filters.severity}
-              onChange={(e) => handleFilterChange('severity', e.target.value)}
+              label={t('accidents.priority', 'Priority')}
+              value={filters.priority}
+              onChange={(e) => handleFilterChange('priority', e.target.value)}
               options={[
                 { value: '', label: t('common.all') },
-                { value: 'minor', label: t('reports.accidents.severityTypes.minor') },
-                { value: 'moderate', label: t('reports.accidents.severityTypes.moderate') },
-                { value: 'major', label: t('reports.accidents.severityTypes.major') }
+                { value: 'low', label: t('accidents.priorityLow', 'Low') },
+                { value: 'medium', label: t('accidents.priorityMedium', 'Medium') },
+                { value: 'high', label: t('accidents.priorityHigh', 'High') },
+                { value: 'urgent', label: t('accidents.priorityUrgent', 'Urgent') }
               ]}
             />
 
             <FormInput
               type="select"
-              label={t('reports.accidents.status')}
+              label={t('accidents.status', 'Status')}
               value={filters.status}
               onChange={(e) => handleFilterChange('status', e.target.value)}
               options={[
                 { value: '', label: t('common.all') },
-                { value: 'pending', label: t('common.pending') },
-                { value: 'in_progress', label: t('common.in_progress') },
-                { value: 'completed', label: t('common.completed') }
+                { value: 'open', label: t('accidents.statusOpen', 'Open') },
+                { value: 'in_progress', label: t('accidents.statusInProgress', 'In Progress') },
+                { value: 'closed', label: t('accidents.statusClosed', 'Closed') }
               ]}
             />
           </div>
